@@ -11,6 +11,7 @@ public abstract class ExceptionHandler
             ValidationException validationException => HandleException(validationException),
             AuthorizationException authorizationException => HandleException(authorizationException),
             NotFoundException notFoundException => HandleException(notFoundException),
+            BadRequestException badRequestException => HandleException(badRequestException),
             _ => HandleException(exception)
         };
 
@@ -18,5 +19,6 @@ public abstract class ExceptionHandler
     protected abstract Task HandleException(ValidationException validationException);
     protected abstract Task HandleException(AuthorizationException authorizationException);
     protected abstract Task HandleException(NotFoundException notFoundException);
+    protected abstract Task HandleException(BadRequestException badRequestException);
     protected abstract Task HandleException(Exception exception);
 }

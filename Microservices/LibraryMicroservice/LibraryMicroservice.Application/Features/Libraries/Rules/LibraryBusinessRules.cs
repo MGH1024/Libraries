@@ -16,7 +16,7 @@ public class LibraryBusinessRules : BaseBusinessRules
     {
         var library = await _libraryRepository.GetAsync(a => a.LibraryCode == code);
         if (library is not null)
-            throw new BadRequestException("library code must be unique");
+            throw new BusinessException("library code must be unique");
     }
 
     public Task LibraryShouldBeExistsWhenSelected(Library library)
