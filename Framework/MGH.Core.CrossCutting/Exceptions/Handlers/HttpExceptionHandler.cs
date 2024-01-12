@@ -22,6 +22,13 @@ public class HttpExceptionHandler : ExceptionHandler
         return Response.WriteAsync(details);
     }
 
+    protected override Task HandleException(BadRequestException badRequestException)
+    {
+        Response.StatusCode = StatusCodes.Status400BadRequest;
+        var details = new BusinessProblemDetails(badRequestException.Message).AsJson();
+        return Response.WriteAsync(details);
+    }
+
     protected override Task HandleException(ValidationException validationException)
     {
         Response.StatusCode = StatusCodes.Status400BadRequest;
