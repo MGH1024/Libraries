@@ -10,12 +10,8 @@ namespace Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class LibrariesController : AppController
+public class LibrariesController(ISender sender) : AppController(sender)
 {
-    public LibrariesController(ISender sender) : base(sender)
-    {
-    }
-
     [HttpPost("create-library")]
     [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
     public async Task<IActionResult> InsertAsync([FromBody] CreateLibraryCommand command, CancellationToken

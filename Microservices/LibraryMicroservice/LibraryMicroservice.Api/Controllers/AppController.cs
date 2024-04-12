@@ -3,14 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
 
-public abstract class AppController : ControllerBase
+public abstract class AppController(ISender sender) : ControllerBase
 {
-    protected readonly ISender Sender;
-
-    protected AppController(ISender sender)
-    {
-        Sender = sender;
-    }
+    protected readonly ISender Sender = sender;
 
     protected string IpAddress()
     {
