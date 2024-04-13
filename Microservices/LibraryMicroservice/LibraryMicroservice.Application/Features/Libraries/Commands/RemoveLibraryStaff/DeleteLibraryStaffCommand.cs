@@ -1,8 +1,8 @@
-﻿using Domain.Entities.Libraries;
-using MediatR;
-using MGH.Core.Application.Buses.Commands;
-using MGH.Core.Persistence.UnitOfWork;
+﻿using MediatR;
+using Domain.Entities.Libraries;
 using Microsoft.EntityFrameworkCore;
+using MGH.Core.Persistence.UnitOfWork;
+using MGH.Core.Application.Buses.Commands;
 
 namespace Application.Features.Libraries.Commands.RemoveLibraryStaff;
 
@@ -12,24 +12,16 @@ public class DeleteLibraryStaffCommand : ICommand<Unit>
     public Guid LibraryId { get; set; }
 }
 
-public class RemoveLibraryStaffCommandHandler : ICommandHandler<DeleteLibraryStaffCommand, Unit>
+public class RemoveLibraryStaffCommandHandler(ILibraryRepository libraryRepository, IUnitOfWork unitOfWork)
+    : ICommandHandler<DeleteLibraryStaffCommand, Unit>
 {
-    private readonly ILibraryRepository _libraryRepository;
-    private readonly IUnitOfWork _unitOfWork;
-
-    public RemoveLibraryStaffCommandHandler(ILibraryRepository libraryRepository, IUnitOfWork unitOfWork)
-    {
-        _libraryRepository = libraryRepository;
-        _unitOfWork = unitOfWork;
-    }
-
     public async Task<Unit> Handle(DeleteLibraryStaffCommand request, CancellationToken cancellationToken)
     {
-        var library = await _libraryRepository
+        var library = await libraryRepository
             .GetAsync(a => a.Id == request.LibraryId, a => a.Include(b => b.LibraryStaves),
                 cancellationToken: cancellationToken);
         library.RemoveLibraryStaff(request.NationalCode);
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
         return Unit.Value;
     }
 }

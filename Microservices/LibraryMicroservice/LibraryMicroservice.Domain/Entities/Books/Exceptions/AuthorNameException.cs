@@ -1,8 +1,3 @@
 ﻿namespace Domain.Entities.Books.Exceptions;
 
-public class AuthorNameException :BookException
-{
-    public AuthorNameException() : base("author name is empty")
-    {
-    }
-}
+public class AuthorNameException() : BookException("author name is empty");

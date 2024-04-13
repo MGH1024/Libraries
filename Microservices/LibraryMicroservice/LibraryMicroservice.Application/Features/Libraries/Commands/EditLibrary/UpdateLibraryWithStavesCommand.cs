@@ -18,32 +18,24 @@ public class UpdateLibraryWithStavesCommand : ICommand<Guid>
     public List<StaffDto> StavesDto { get; set; }
 }
 
-public class EditLibraryWithStavesCommandHandler : ICommandHandler<UpdateLibraryWithStavesCommand, Guid>
+public class EditLibraryWithStavesCommandHandler(
+    ILibraryRepository libraryRepository,
+    IUnitOfWork unitOfWork,
+    LibraryBusinessRules libraryBusinessRules)
+    : ICommandHandler<UpdateLibraryWithStavesCommand, Guid>
 {
-    private readonly ILibraryRepository _libraryRepository;
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly LibraryBusinessRules _libraryBusinessRules;
-
-    public EditLibraryWithStavesCommandHandler(ILibraryRepository libraryRepository, IUnitOfWork unitOfWork,
-        LibraryBusinessRules libraryBusinessRules)
-    {
-        _libraryRepository = libraryRepository;
-        _unitOfWork = unitOfWork;
-        _libraryBusinessRules = libraryBusinessRules;
-    }
-
     public async Task<Guid> Handle(UpdateLibraryWithStavesCommand request, CancellationToken cancellationToken)
     {
         var library = 
-            await _libraryRepository.GetAsync(a => a.Id == request.LibraryId, cancellationToken: cancellationToken);
-        await _libraryBusinessRules.LibraryShouldBeExistsWhenSelected(library);
+            await libraryRepository.GetAsync(a => a.Id == request.LibraryId, cancellationToken: cancellationToken);
+        await libraryBusinessRules.LibraryShouldBeExistsWhenSelected(library);
         
         if (request.Code != library.LibraryCode)
-            await _libraryBusinessRules.LibraryCodeMustBeUnique(request.Code);
+            await libraryBusinessRules.LibraryCodeMustBeUnique(request.Code);
         
         library.EditLibrary(request.Name, request.Code, request.Location, request.District,
             request.RegistrationDate,request.StavesDto.ToStaffList());
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
         return library.Id;
     }
 }

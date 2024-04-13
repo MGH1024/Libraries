@@ -16,31 +16,23 @@ public class UpdateLibraryCommand : ICommand<Guid>
     public DateTime RegistrationDate { get; set; }
 }
 
-public class EditLibraryCommandHandler : ICommandHandler<UpdateLibraryCommand, Guid>
+public class EditLibraryCommandHandler(
+    ILibraryRepository libraryRepository,
+    IUnitOfWork unitOfWork,
+    LibraryBusinessRules libraryBusinessRules)
+    : ICommandHandler<UpdateLibraryCommand, Guid>
 {
-    private readonly ILibraryRepository _libraryRepository;
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly LibraryBusinessRules _libraryBusinessRules;
-
-    public EditLibraryCommandHandler(ILibraryRepository libraryRepository, IUnitOfWork unitOfWork,
-        LibraryBusinessRules libraryBusinessRules)
-    {
-        _libraryRepository = libraryRepository;
-        _unitOfWork = unitOfWork;
-        _libraryBusinessRules = libraryBusinessRules;
-    }
-
     public async Task<Guid> Handle(UpdateLibraryCommand request, CancellationToken cancellationToken)
     {
         var library =
-            await _libraryRepository.GetAsync(a => a.Id == request.LibraryId, cancellationToken: cancellationToken);
-        await _libraryBusinessRules.LibraryShouldBeExistsWhenSelected(library);
+            await libraryRepository.GetAsync(a => a.Id == request.LibraryId, cancellationToken: cancellationToken);
+        await libraryBusinessRules.LibraryShouldBeExistsWhenSelected(library);
 
         if (request.Code != library.LibraryCode)
-            await _libraryBusinessRules.LibraryCodeMustBeUnique(request.Code);
+            await libraryBusinessRules.LibraryCodeMustBeUnique(request.Code);
 
         library.EditLibrary(request.Name, request.Code, request.Location, request.District, request.RegistrationDate);
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
         return library.Id;
     }
 }

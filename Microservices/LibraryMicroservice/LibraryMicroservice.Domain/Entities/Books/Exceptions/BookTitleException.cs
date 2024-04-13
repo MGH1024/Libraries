@@ -1,8 +1,3 @@
 ﻿namespace Domain.Entities.Books.Exceptions;
 
-public class BookTitleException : BookException
-{
-    public BookTitleException() : base("book title is empty")
-    {
-    }
-}
+public class BookTitleException() : BookException("book title is empty");

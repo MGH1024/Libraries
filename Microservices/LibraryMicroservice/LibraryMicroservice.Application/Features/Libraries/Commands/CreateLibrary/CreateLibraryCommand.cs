@@ -16,30 +16,21 @@ public class CreateLibraryCommand : ICommand<Guid>
     public DateTime RegistrationDate { get; set; }
 }
 
-public class CreateLibraryCommandHandler : ICommandHandler<CreateLibraryCommand, Guid>
+public class CreateLibraryCommandHandler(
+    ILibraryRepository libraryRepository,
+    ILibraryFactory libraryFactory,
+    IUnitOfWork unitOfWork,
+    LibraryBusinessRules libraryBusinessRules)
+    : ICommandHandler<CreateLibraryCommand, Guid>
 {
-    private readonly ILibraryRepository _libraryRepository;
-    private readonly ILibraryFactory _libraryFactory;
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly LibraryBusinessRules _libraryBusinessRules;
-
-    public CreateLibraryCommandHandler(ILibraryRepository libraryRepository, ILibraryFactory libraryFactory,
-        IUnitOfWork unitOfWork, LibraryBusinessRules libraryBusinessRules)
-    {
-        _libraryRepository = libraryRepository;
-        _libraryFactory = libraryFactory;
-        _unitOfWork = unitOfWork;
-        _libraryBusinessRules = libraryBusinessRules;
-    }
-
     public async Task<Guid> Handle(CreateLibraryCommand command, CancellationToken cancellationToken)
     {
-        await _libraryBusinessRules.LibraryCodeMustBeUnique(command.Code);
+        await libraryBusinessRules.LibraryCodeMustBeUnique(command.Code);
 
-        var library = _libraryFactory.Create(command.Name, command.Code, command.Location,
+        var library = libraryFactory.Create(command.Name, command.Code, command.Location,
             command.RegistrationDate, command.District);
-        await _libraryRepository.AddAsync(library, cancellationToken);
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
+        await libraryRepository.AddAsync(library, cancellationToken);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
         return library.Id;
     }
 }

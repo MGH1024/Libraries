@@ -1,9 +1,3 @@
 ﻿namespace Domain.Entities.Books.Exceptions;
 
-public class IsbnInvalidLengthException:BookException
-{
-    public IsbnInvalidLengthException() : base("invalid isbn length")
-    {
-        
-    }
-}
+public class IsbnInvalidLengthException() : BookException("invalid isbn length");

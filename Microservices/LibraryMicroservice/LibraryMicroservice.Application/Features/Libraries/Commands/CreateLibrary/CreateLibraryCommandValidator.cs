@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using MongoDB.Driver.Core.Operations;
 
 namespace Application.Features.Libraries.Commands.CreateLibrary;
 

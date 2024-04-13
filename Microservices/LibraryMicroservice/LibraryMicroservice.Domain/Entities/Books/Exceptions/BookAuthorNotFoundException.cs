@@ -3,9 +3,4 @@
 
 namespace Domain.Entities.Books.Exceptions;
 
-public class BookAuthorNotFoundException : BookException
-{
-    public BookAuthorNotFoundException() : base("book author not found")
-    {
-    }
-}
+public class BookAuthorNotFoundException() : BookException("book author not found");

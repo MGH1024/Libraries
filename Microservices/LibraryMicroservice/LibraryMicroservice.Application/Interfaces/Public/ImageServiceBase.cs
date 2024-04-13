@@ -1,5 +1,5 @@
-﻿using MGH.Core.CrossCutting.Exceptions.Types;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
+using MGH.Core.CrossCutting.Exceptions.Types;
 
 namespace Application.Interfaces.Public;
 
@@ -19,9 +19,9 @@ public abstract class ImageServiceBase
 
     protected async Task FileMustBeInImageFormat(IFormFile formFile)
     {
-        List<string> extensions = new() { ".jpg", ".png", ".jpeg", ".webp" };
+        List<string> extensions = [".jpg", ".png", ".jpeg", ".webp"];
 
-        string extension = Path.GetExtension(formFile.FileName)?.ToLower();
+        var extension = Path.GetExtension(formFile.FileName)?.ToLower();
         if (!extensions.Contains(extension))
             throw new BusinessException("Unsupported format");
         await Task.CompletedTask;

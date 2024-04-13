@@ -4,17 +4,11 @@ using MGH.Core.CrossCutting.Exceptions.Types;
 
 namespace Application.Features.Libraries.Rules;
 
-public class LibraryBusinessRules : BaseBusinessRules
+public class LibraryBusinessRules(ILibraryRepository libraryRepository) : BaseBusinessRules
 {
-    private readonly ILibraryRepository _libraryRepository;
-
-    public LibraryBusinessRules(ILibraryRepository libraryRepository)
-    {
-        _libraryRepository = libraryRepository;
-    }
     public async Task LibraryCodeMustBeUnique(string code)
     {
-        var library = await _libraryRepository.GetAsync(a => a.LibraryCode == code);
+        var library = await libraryRepository.GetAsync(a => a.LibraryCode == code);
         if (library is not null)
             throw new BusinessException("library code must be unique");
     }

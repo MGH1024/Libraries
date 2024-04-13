@@ -1,8 +1,3 @@
 ﻿namespace Domain.Entities.Books.Exceptions;
 
-public class BookUniqueCodeException : BookException
-{
-    public BookUniqueCodeException() : base("unique code is empty")
-    {
-    }
-}
+public class BookUniqueCodeException() : BookException("unique code is empty");
