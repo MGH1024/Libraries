@@ -45,18 +45,18 @@ public class LibrariesController(ISender sender) : AppController(sender)
     {
         return Ok(await Sender.Send(command, cancellationToken));
     }
-    
+
     [HttpPut("update-library-with-staves")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> UpdateLibraryWithStavesAsync([FromBody] UpdateLibraryWithStavesCommand command, 
+    public async Task<IActionResult> UpdateLibraryWithStavesAsync([FromBody] UpdateLibraryWithStavesCommand command,
         CancellationToken cancellationToken)
     {
         return Ok(await Sender.Send(command, cancellationToken));
     }
-    
+
     [HttpDelete("delete-library")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> RemoveLibraryWithStavesAsync([FromBody] DeleteLibraryCommand command, 
+    public async Task<IActionResult> RemoveLibraryWithStavesAsync([FromBody] DeleteLibraryCommand command,
         CancellationToken cancellationToken)
     {
         return Ok(await Sender.Send(command, cancellationToken));

@@ -6,19 +6,12 @@ using Persistence.Extensions;
 
 namespace Persistence.Interceptors;
 
-public class AddAuditFieldsInterceptor : SaveChangesInterceptor
+public class AddAuditFieldsInterceptor(IDateTime dateTime) : SaveChangesInterceptor
 {
-    private readonly IDateTime _dateTime;
-
-    public AddAuditFieldsInterceptor(IDateTime dateTime)
-    {
-        _dateTime = dateTime;
-    }
-
     public override ValueTask<InterceptionResult<int>> SavingChangesAsync(DbContextEventData eventData,
         InterceptionResult<int> result, CancellationToken cancellationToken = default)
     {
-        var now = _dateTime.IranNow;
+        var now = dateTime.IranNow;
         var userName = "admin";
         if (eventData.Context != null)
         {

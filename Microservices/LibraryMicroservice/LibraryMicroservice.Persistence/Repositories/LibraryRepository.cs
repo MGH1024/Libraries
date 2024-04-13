@@ -11,14 +11,9 @@ using Persistence.Contexts;
 
 namespace Persistence.Repositories;
 
-public class LibraryRepository : ILibraryRepository
+public class LibraryRepository(LibraryDbContext libraryDbContext) : ILibraryRepository
 {
-    private readonly LibraryDbContext _libraryDbContext;
-
-    public LibraryRepository(LibraryDbContext libraryDbContext)
-        => _libraryDbContext = libraryDbContext;
-
-    public IQueryable<Library> Query() => _libraryDbContext.Set<Library>();
+    public IQueryable<Library> Query() => libraryDbContext.Set<Library>();
 
     public async Task<Library> GetAsync(
         Expression<Func<Library, bool>> predicate,
@@ -101,25 +96,25 @@ public class LibraryRepository : ILibraryRepository
 
     public async Task<Library> AddAsync(Library entity, CancellationToken cancellationToken)
     {
-        await _libraryDbContext.AddAsync(entity, cancellationToken);
+        await libraryDbContext.AddAsync(entity, cancellationToken);
         return entity;
     }
 
     public async Task<ICollection<Library>> AddRangeAsync(ICollection<Library> entity)
     {
-        await _libraryDbContext.AddRangeAsync(entity);
+        await libraryDbContext.AddRangeAsync(entity);
         return entity;
     }
 
     public Library  Update(Library entity)
     {
-        _libraryDbContext.Update(entity);
+        libraryDbContext.Update(entity);
         return entity;
     }
 
     public ICollection<Library> UpdateRange(ICollection<Library> entity)
     {
-        _libraryDbContext.UpdateRange(entity);
+        libraryDbContext.UpdateRange(entity);
         return entity;
     }
 
@@ -143,14 +138,14 @@ public class LibraryRepository : ILibraryRepository
         }
         else
         {
-            _libraryDbContext.Remove(entity);
+            libraryDbContext.Remove(entity);
         }
     }
 
     private void CheckHasEntityHaveOneToOneRelation(Library entity)
     {
         bool hasEntityHaveOneToOneRelation =
-            _libraryDbContext
+            libraryDbContext
                 .Entry(entity)
                 .Metadata.GetForeignKeys()
                 .All(
@@ -172,7 +167,7 @@ public class LibraryRepository : ILibraryRepository
             return;
         entity.DeletedAt = DateTime.UtcNow;
 
-        var navigations = _libraryDbContext
+        var navigations = libraryDbContext
             .Entry(entity)
             .Metadata.GetNavigations()
             .Where(x => x is
@@ -192,7 +187,7 @@ public class LibraryRepository : ILibraryRepository
             {
                 if (navValue == null)
                 {
-                    IQueryable query = _libraryDbContext.Entry(entity).Collection(navigation.PropertyInfo.Name).Query();
+                    IQueryable query = libraryDbContext.Entry(entity).Collection(navigation.PropertyInfo.Name).Query();
                     navValue = await GetRelationLoaderQuery(query,
                         navigationPropertyType: navigation.PropertyInfo.GetType()).ToListAsync();
                 }
@@ -204,7 +199,7 @@ public class LibraryRepository : ILibraryRepository
             {
                 if (navValue == null)
                 {
-                    IQueryable query = _libraryDbContext.Entry(entity).Reference(navigation.PropertyInfo.Name).Query();
+                    IQueryable query = libraryDbContext.Entry(entity).Reference(navigation.PropertyInfo.Name).Query();
                     navValue = await GetRelationLoaderQuery(query,
                             navigationPropertyType: navigation.PropertyInfo.GetType())
                         .FirstOrDefaultAsync();
@@ -216,7 +211,7 @@ public class LibraryRepository : ILibraryRepository
             }
         }
 
-        _libraryDbContext.Update(entity);
+        libraryDbContext.Update(entity);
     }
 
     private IQueryable<object> GetRelationLoaderQuery(IQueryable query, Type navigationPropertyType)

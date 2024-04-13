@@ -3,21 +3,15 @@ using Persistence.Contexts;
 
 namespace Persistence;
 
-public class UnitOfWork : IUnitOfWork
+public class UnitOfWork(LibraryDbContext context) : IUnitOfWork
 {
-    private readonly LibraryDbContext _context;
-    public UnitOfWork(LibraryDbContext context)
-    {
-        _context = context;
-    }
-
     public async Task SaveChangesAsync(CancellationToken cancellationToken)
     {
-        await _context.SaveChangesAsync(cancellationToken);
+        await context.SaveChangesAsync(cancellationToken);
     }
 
     public void Dispose()
     {
-        _context.Dispose();
+        context.Dispose();
     }
 }

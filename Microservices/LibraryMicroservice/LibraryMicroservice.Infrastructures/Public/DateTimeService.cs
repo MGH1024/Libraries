@@ -1,5 +1,4 @@
-﻿using Application.Interfaces;
-using Application.Interfaces.Public;
+﻿using Application.Interfaces.Public;
 
 namespace Infrastructures.Public;
 

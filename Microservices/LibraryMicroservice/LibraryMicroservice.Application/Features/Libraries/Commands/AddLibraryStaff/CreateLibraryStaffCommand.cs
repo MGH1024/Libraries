@@ -1,4 +1,5 @@
-﻿using Domain.Entities.Libraries;
+﻿using Application.Features.Libraries.Rules;
+using Domain.Entities.Libraries;
 using Domain.Entities.Libraries.ValueObjects;
 using MediatR;
 using MGH.Core.Application.Buses.Commands;
@@ -15,25 +16,22 @@ public class CreateLibraryStaffCommand : ICommand<Unit>
     public Guid LibraryId { get; set; }
 }
 
-public class AddLibraryStaffCommandHandler : ICommandHandler<CreateLibraryStaffCommand, Unit>
+public class AddLibraryStaffCommandHandler(ILibraryRepository libraryRepository,
+    LibraryBusinessRules libraryBusinessRules,
+    IUnitOfWork unitOfWork)
+    : ICommandHandler<CreateLibraryStaffCommand, Unit>
 {
-    private readonly ILibraryRepository _libraryRepository;
-    private readonly IUnitOfWork _unitOfWork;
-
-    public AddLibraryStaffCommandHandler(ILibraryRepository libraryRepository, IUnitOfWork unitOfWork)
-    {
-        _libraryRepository = libraryRepository;
-        _unitOfWork = unitOfWork;
-    }
-
     public async Task<Unit> Handle(CreateLibraryStaffCommand request, CancellationToken cancellationToken)
     {
-        var library = await _libraryRepository
+        var library = await libraryRepository
             .GetAsync(a => a.Id == request.LibraryId,
                 a => a.Include(b => b.LibraryStaves),
                 cancellationToken: cancellationToken);
+
+        await libraryBusinessRules.LibraryShouldBeExistsWhenSelected(library);
+
         library.AddLibraryStaff(new LibraryStaff(request.Name, request.Position, request.NationalCode));
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
         return Unit.Value;
     }
 }

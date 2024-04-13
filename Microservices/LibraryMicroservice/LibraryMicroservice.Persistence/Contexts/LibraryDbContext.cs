@@ -5,15 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.Contexts;
 
-public class LibraryDbContext : DbContext
+public class LibraryDbContext(DbContextOptions<LibraryDbContext> options, IDateTime dateTime)
+    : DbContext(options)
 {
-    private readonly IDateTime _dateTime;
-
-    public LibraryDbContext(DbContextOptions<LibraryDbContext> options, IDateTime dateTime) : base(options)
-    {
-        _dateTime = dateTime;
-    }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(LibraryDbContext).Assembly);
@@ -28,7 +22,7 @@ public class LibraryDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.AddInterceptors(new AddAuditFieldsInterceptor(_dateTime));
+        optionsBuilder.AddInterceptors(new AddAuditFieldsInterceptor(dateTime));
     }
 
     private DbSet<Library> Libraries { get; set; }
