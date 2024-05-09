@@ -5,8 +5,8 @@ using Application;
 using Infrastructures;
 using MGH.Core.CrossCutting.Exceptions;
 
-var configurationBuilder = new ConfigurationBuilder();
-ApiServiceRegistration.CreateLoggerByConfig(configurationBuilder.GetLogConfig());
+//var configurationBuilder = new ConfigurationBuilder();
+//ApiServiceRegistration.CreateLoggerByConfig(configurationBuilder.GetLogConfig());
 
 var builder = WebApplication.CreateBuilder(args);
 Log.Information("web starting up ...");

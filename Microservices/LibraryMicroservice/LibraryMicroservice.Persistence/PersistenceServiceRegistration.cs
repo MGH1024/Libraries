@@ -19,23 +19,40 @@ public static class PersistenceServiceRegistration
     public static IServiceCollection AddPersistenceService(this IServiceCollection services,
         IConfiguration configuration)
     {
-        var sqlConfig = configuration
+        // var sqlConfig = configuration
+        //     .GetSection(nameof(DatabaseConnection))
+        //     .Get<DatabaseConnection>()
+        //     .SqlConnection;
+        //
+        // services
+        //     .AddDbContext<LibraryDbContext>(options =>
+        //         options.UseSqlServer(sqlConfig, a =>
+        //             {
+        //                 a.EnableRetryOnFailure();
+        //                 //a.MigrationsAssembly("LibraryMicroservice.Api");
+        //             })
+        //             .AddInterceptors()
+        //             .LogTo(Console.Write, LogLevel.Information));
+        var postgresConfig = configuration
             .GetSection(nameof(DatabaseConnection))
             .Get<DatabaseConnection>()
-            .SqlConnection;
-
-        services.AddHealthChecks()
-            .AddDbContextCheck<LibraryDbContext>();
-
+            .PostgresConnection;
         services
             .AddDbContext<LibraryDbContext>(options =>
-                options.UseSqlServer(sqlConfig, a =>
+                options.UseNpgsql(postgresConfig, a =>
                     {
                         a.EnableRetryOnFailure();
                         a.MigrationsAssembly("LibraryMicroservice.Api");
                     })
                     .AddInterceptors()
                     .LogTo(Console.Write, LogLevel.Information));
+        
+      
+        
+        services.AddHealthChecks()
+            .AddDbContextCheck<LibraryDbContext>();
+        
+        
 
         services.AddDbContext<LibraryDbContext>(options => options.UseInMemoryDatabase("LibraryMicroService"));
         services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();

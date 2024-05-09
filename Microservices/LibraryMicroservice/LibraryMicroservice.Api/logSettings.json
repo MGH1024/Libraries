@@ -29,10 +29,10 @@
       {
         "Name": "File",
         "Args": {
-          "path": "C:\\Projects\\CleanArchCqrs\\log\\ApiLog\\log.txt",
+          "path": "C:\\Users\\Meysam\\source\\repos\\Libraries\\Microservices\\LibraryMicroservice\\LibraryMicroservice.Api\\logs\\log.txt",
           "outputTemplate": "{Timestamp:G} {Message}{NewLine:1}{Excepton:1}"
         }
-      },
+      }//,
 
       //,
       //{

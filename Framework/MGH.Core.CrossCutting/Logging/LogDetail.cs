@@ -1,25 +1,13 @@
 ﻿namespace MGH.Core.CrossCutting.Logging;
 
-public class LogDetail
+public class LogDetail(string fullName, string methodName, string user, List<LogParameter> parameters)
 {
-    public string FullName { get; set; }
-    public string MethodName { get; set; }
-    public string User { get; set; }
-    public List<LogParameter> Parameters { get; set; }
+    public string FullName { get; set; } = fullName;
+    public string MethodName { get; set; } = methodName;
+    public string User { get; set; } = user;
+    public List<LogParameter> Parameters { get; set; } = parameters;
 
-    public LogDetail()
+    public LogDetail() : this(string.Empty, string.Empty, string.Empty, new List<LogParameter>())
     {
-        FullName = string.Empty;
-        MethodName = string.Empty;
-        User = string.Empty;
-        Parameters = new List<LogParameter>();
-    }
-
-    public LogDetail(string fullName, string methodName, string user, List<LogParameter> parameters)
-    {
-        FullName = fullName;
-        MethodName = methodName;
-        User = user;
-        Parameters = parameters;
     }
 }

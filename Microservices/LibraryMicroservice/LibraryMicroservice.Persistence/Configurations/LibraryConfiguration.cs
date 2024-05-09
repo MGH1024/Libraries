@@ -13,7 +13,7 @@ public class LibraryConfiguration : IEntityTypeConfiguration<Library>
     public void Configure(EntityTypeBuilder<Library> builder)
     {
         //table
-        builder.ToTable(DatabaseTableName.Library, DatabaseSchema.LibrarySchema);
+        //builder.ToTable(DatabaseTableName.Library, DatabaseSchema.LibrarySchema);
 
 
         //fix fields section
@@ -88,7 +88,8 @@ public class LibraryConfiguration : IEntityTypeConfiguration<Library>
         builder.Property(a => a.CreatedBy)
             .HasDefaultValue("user");
 
-        builder.Property(a => a.CreatedAt)
-            .HasDefaultValueSql("GetDate()");
+        builder.Property(a => a.CreatedAt);
+        //.HasDefaultValueSql("GetDate()")
+        //.HasDefaultValueSql("now()");
     }
 }

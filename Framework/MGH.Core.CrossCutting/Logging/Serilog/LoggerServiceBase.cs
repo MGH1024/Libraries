@@ -2,18 +2,12 @@
 
 namespace MGH.Core.CrossCutting.Logging.Serilog;
 
-public abstract class LoggerServiceBase
+public abstract class LoggerServiceBase(ILogger logger)
 {
-    protected ILogger Logger { get; set; }
+    protected ILogger Logger { get; set; } = logger;
 
-    protected LoggerServiceBase()
+    protected LoggerServiceBase() : this(null!)
     {
-        Logger = null!;
-    }
-
-    protected LoggerServiceBase(ILogger logger)
-    {
-        Logger = logger;
     }
 
     public void Verbose(string message) => Logger.Verbose(message);

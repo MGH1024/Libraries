@@ -1,22 +1,12 @@
 ﻿namespace MGH.Core.CrossCutting.Logging;
 
-public class LogParameter
+public class LogParameter(string name, object value, string type)
 {
-    public string Name { get; set; }
-    public object Value { get; set; }
-    public string Type { get; set; }
+    public string Name { get; set; } = name;
+    public object Value { get; set; } = value;
+    public string Type { get; set; } = type;
 
-    public LogParameter()
+    public LogParameter() : this(string.Empty, string.Empty, string.Empty)
     {
-        Name = string.Empty;
-        Value = string.Empty;
-        Type = string.Empty;
-    }
-
-    public LogParameter(string name, object value, string type)
-    {
-        Name = name;
-        Value = value;
-        Type = type;
     }
 }
