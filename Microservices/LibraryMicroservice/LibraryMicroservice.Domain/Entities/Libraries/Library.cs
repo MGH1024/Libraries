@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using Domain.Entities.Libraries.Constant;
+﻿using Domain.Entities.Libraries.Constant;
 using Domain.Entities.Libraries.Exceptions;
 using Domain.Entities.Libraries.ValueObjects;
 using MGH.Core.Domain.Concretes;
