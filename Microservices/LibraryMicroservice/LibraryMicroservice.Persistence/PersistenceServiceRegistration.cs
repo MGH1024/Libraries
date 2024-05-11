@@ -42,7 +42,7 @@ public static class PersistenceServiceRegistration
                 options.UseNpgsql(postgresConfig, a =>
                     {
                         a.EnableRetryOnFailure();
-                        a.MigrationsAssembly("LibraryMicroservice.Api");
+                        //a.MigrationsAssembly("LibraryMicroservice.Api");
                     })
                     .AddInterceptors()
                     .LogTo(Console.Write, LogLevel.Information));
