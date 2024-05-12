@@ -2,7 +2,7 @@
 using Application.Features.Libraries.Commands.CreateLibrary;
 using Domain.Entities.Libraries.Constant;
 using FluentValidation.TestHelper;
-using LibraryMicroservice.Test.Builders;
+using LibraryMicroservice.Test.Base.Builders;
 
 namespace LibraryMicroservice.Test.ValidatorTests;
 

@@ -25,23 +25,23 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Remove="Base\**" />
       <Compile Remove="Categories\**" />
+      <Compile Include="Base\TestBase.cs" />
     </ItemGroup>
 
     <ItemGroup>
-      <EmbeddedResource Remove="Base\**" />
       <EmbeddedResource Remove="Categories\**" />
     </ItemGroup>
 
     <ItemGroup>
-      <None Remove="Base\**" />
       <None Remove="Categories\**" />
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\LibraryMicroservice.Api\LibraryMicroservice.Api.csproj" />
       <ProjectReference Include="..\LibraryMicroservice.Application\LibraryMicroservice.Application.csproj" />
       <ProjectReference Include="..\LibraryMicroservice.Infrastructures\LibraryMicroservice.Infrastructures.csproj" />
+      <ProjectReference Include="..\LibraryMicroservice.Persistence\LibraryMicroservice.Persistence.csproj" />
     </ItemGroup>
 
 </Project>

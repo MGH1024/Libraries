@@ -1,8 +1,7 @@
 ﻿using Application.Features.Libraries.Commands.CreateLibrary;
 using Domain.Entities.Libraries.Constant;
 
-
-namespace LibraryMicroservice.Test.Builders;
+namespace LibraryMicroservice.Test.Base.Builders;
 
 public class CreateLibraryCommandBuilder
 {
