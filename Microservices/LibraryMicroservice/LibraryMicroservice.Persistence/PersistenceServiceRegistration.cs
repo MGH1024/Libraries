@@ -33,6 +33,7 @@ public static class PersistenceServiceRegistration
         //             })
         //             .AddInterceptors()
         //             .LogTo(Console.Write, LogLevel.Information));
+        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         var postgresConfig = configuration
             .GetSection(nameof(DatabaseConnection))
             .Get<DatabaseConnection>()
