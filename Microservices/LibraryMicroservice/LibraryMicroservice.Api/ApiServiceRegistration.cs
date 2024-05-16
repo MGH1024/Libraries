@@ -14,7 +14,10 @@ public static class ApiServiceRegistration
         Log.Logger = new LoggerConfiguration()
             .ReadFrom.Configuration(builder.Configuration)
             .WriteTo.Async(wt=>wt.Console())
+            //.WriteTo.File(,)
             .CreateLogger();
+        builder.Host.UseSerilog((hostingContext, loggerConfiguration) =>
+            loggerConfiguration.ReadFrom.Configuration(hostingContext.Configuration));
         Log.Information("The global logger has been configured");
     }
 
