@@ -1,7 +1,5 @@
-﻿using System.Text.Json;
-using MGH.Core.CrossCutting.Exceptions.Handlers;
+﻿using MGH.Core.CrossCutting.Exceptions.Handlers;
 using MGH.Core.CrossCutting.Logging;
-using MGH.Core.CrossCutting.Logging.Serilog;
 using Microsoft.AspNetCore.Http;
 
 namespace MGH.Core.CrossCutting.Exceptions;
@@ -10,14 +8,12 @@ public class ExceptionMiddleware
 {
     private readonly IHttpContextAccessor _contextAccessor;
     private readonly HttpExceptionHandler _httpExceptionHandler;
-    private readonly LoggerServiceBase _loggerService;
     private readonly RequestDelegate _next;
 
-    public ExceptionMiddleware(RequestDelegate next, IHttpContextAccessor contextAccessor, LoggerServiceBase loggerService)
+    public ExceptionMiddleware(RequestDelegate next, IHttpContextAccessor contextAccessor)
     {
         _next = next;
         _contextAccessor = contextAccessor;
-        _loggerService = loggerService;
         _httpExceptionHandler = new HttpExceptionHandler();
     }
 
@@ -57,7 +53,7 @@ public class ExceptionMiddleware
                 User = _contextAccessor.HttpContext?.User.Identity?.Name ?? "?"
             };
 
-        _loggerService.Info(JsonSerializer.Serialize(logDetail));
+        //_loggerService.Info(JsonSerializer.Serialize(logDetail));
         return Task.CompletedTask;
     }
 }

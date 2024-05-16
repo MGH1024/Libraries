@@ -9,18 +9,13 @@ namespace Api;
 
 public static class ApiServiceRegistration
 {
-    public static IConfigurationRoot GetLogConfig(this ConfigurationBuilder configurationBuilder)
-    {
-        return configurationBuilder
-            .AddJsonFile("logSettings.json", optional: true, reloadOnChange: true)
-            .Build();
-    }
-
-    public static void CreateLoggerByConfig(IConfigurationRoot configurationRoot)
+    public static void CreateLoggerByConfig(this  WebApplicationBuilder builder )
     {
         Log.Logger = new LoggerConfiguration()
-            .ReadFrom.Configuration(configurationRoot)
+            .ReadFrom.Configuration(builder.Configuration)
+            .WriteTo.Async(wt=>wt.Console())
             .CreateLogger();
+        Log.Information("The global logger has been configured");
     }
 
     public static void AddSwagger(this WebApplicationBuilder builder)

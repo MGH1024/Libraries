@@ -2,8 +2,6 @@
 using Application.Interfaces.Public;
 using Application.Models.Email;
 using Infrastructures.Public;
-using MGH.Core.CrossCutting.Logging.Serilog;
-using MGH.Core.CrossCutting.Logging.Serilog.Logger;
 using MGH.Core.ElasticSearch;
 using MGH.Core.Mailing;
 using MGH.Core.Mailing.MailKitImplementations;
@@ -26,10 +24,8 @@ public static class InfrastructureServiceRegistration
         services.AddTransient<IDateTime, DateTimeService>();
         services.AddSingleton<IMailService, MailKitMailService>();
         services.AddScoped<IEmailAuthenticatorHelper, EmailAuthenticatorHelper>();
-        services.AddSingleton<LoggerServiceBase, FileLogger>();
         services.AddSingleton<IElasticSearch, ElasticSearchManager>();
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
-
         services.AddScoped<ITokenHelper, JwtHelper>();
         services.AddScoped<IOtpAuthenticatorHelper, OtpNetOtpAuthenticatorHelper>();
 
