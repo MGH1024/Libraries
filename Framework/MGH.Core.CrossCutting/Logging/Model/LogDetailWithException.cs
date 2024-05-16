@@ -1,4 +1,4 @@
-﻿namespace MGH.Core.CrossCutting.Logging;
+﻿namespace MGH.Core.CrossCutting.Logging.Model;
 
 public class LogDetailWithException : LogDetail
 {

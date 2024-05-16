@@ -1,25 +1,24 @@
 ﻿using FluentValidation;
 using MediatR;
 using MGH.Core.CrossCutting.Exceptions.Types;
+using Microsoft.Extensions.Logging;
 using ValidationException = MGH.Core.CrossCutting.Exceptions.Types.ValidationException;
 
 namespace MGH.Core.Application.Pipelines.Validation;
 
-public class RequestValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+public class RequestValidationBehavior<TRequest, TResponse>(
+    IEnumerable<IValidator<TRequest>> validators,
+    ILogger<RequestValidationBehavior<TRequest, TResponse>> logger)
+    : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
 {
-    private readonly IEnumerable<IValidator<TRequest>> _validators;
-
-    public RequestValidationBehavior(IEnumerable<IValidator<TRequest>> validators)
-    {
-        _validators = validators;
-    }
+    private readonly ILogger<RequestValidationBehavior<TRequest, TResponse>> _logger = logger;
 
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken 
         cancellationToken)
     {
         ValidationContext<object> context = new(request);
-        IEnumerable<ValidationExceptionModel> errors = _validators
+        IEnumerable<ValidationExceptionModel> errors = validators
             .Select(validator => validator.Validate(context))
             .SelectMany(result => result.Errors)
             .Where(failure => failure != null)

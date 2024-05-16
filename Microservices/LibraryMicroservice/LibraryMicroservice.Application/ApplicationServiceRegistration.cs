@@ -7,27 +7,29 @@ using Microsoft.Extensions.DependencyInjection;
 using MGH.Core.Application.Pipelines.Authorization;
 using MGH.Core.Application.Pipelines.Transaction;
 using MGH.Core.Application.Pipelines.Validation;
+using Microsoft.AspNetCore.Builder;
 
 namespace Application;
 
 public static class ApplicationServiceRegistration
 {
-    public static IServiceCollection AddApplicationServices(this IServiceCollection services)
+    public static IServiceCollection AddApplicationServices(this WebApplicationBuilder builder)
     {
-        services.AddAutoMapper(Assembly.GetExecutingAssembly());
-        services.AddMediatR(configuration =>
+        
+        builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+        builder.Services.AddMediatR(configuration =>
         {
             configuration.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
-            configuration.AddOpenBehavior(typeof(RequestValidationBehavior<,>));
-            configuration.AddOpenBehavior(typeof(AuthorizationBehavior<,>));
             configuration.AddOpenBehavior(typeof(CachingBehavior<,>));
+            configuration.AddOpenBehavior(typeof(LoggingBehaviour<,>));
+            configuration.AddOpenBehavior(typeof(AuthorizationBehavior<,>));
             configuration.AddOpenBehavior(typeof(CacheRemovingBehavior<,>));
-            configuration.AddOpenBehavior(typeof(LoggingBehavior<,>));
             configuration.AddOpenBehavior(typeof(TransactionScopeBehavior<,>));
+            configuration.AddOpenBehavior(typeof(RequestValidationBehavior<,>));
         });
-        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-        services.AddSubClassesOfType(Assembly.GetExecutingAssembly(), typeof(BaseBusinessRules));
-        return services;
+        builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+        builder.Services.AddSubClassesOfType(Assembly.GetExecutingAssembly(), typeof(BaseBusinessRules));
+        return builder.Services;
     }
 
     private static IServiceCollection AddSubClassesOfType(this IServiceCollection services, Assembly assembly,

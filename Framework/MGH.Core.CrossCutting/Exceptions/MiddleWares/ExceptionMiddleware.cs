@@ -1,27 +1,21 @@
-﻿using MGH.Core.CrossCutting.Exceptions.Handlers;
-using MGH.Core.CrossCutting.Logging;
+﻿using System.Text.Json;
+using MGH.Core.CrossCutting.Exceptions.Handlers;
+using MGH.Core.CrossCutting.Logging.Model;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 
-namespace MGH.Core.CrossCutting.Exceptions;
+namespace MGH.Core.CrossCutting.Exceptions.MiddleWares;
 
-public class ExceptionMiddleware
+public class ExceptionMiddleware(RequestDelegate next, 
+    IHttpContextAccessor contextAccessor, 
+    ILogger<ExceptionMiddleware> logger)
 {
-    private readonly IHttpContextAccessor _contextAccessor;
-    private readonly HttpExceptionHandler _httpExceptionHandler;
-    private readonly RequestDelegate _next;
-
-    public ExceptionMiddleware(RequestDelegate next, IHttpContextAccessor contextAccessor)
-    {
-        _next = next;
-        _contextAccessor = contextAccessor;
-        _httpExceptionHandler = new HttpExceptionHandler();
-    }
-
+    private readonly HttpExceptionHandler _httpExceptionHandler = new();
     public async Task Invoke(HttpContext context)
     {
         try
         {
-            await _next(context);
+            await next(context);
         }
         catch (Exception exception)
         {
@@ -48,12 +42,12 @@ public class ExceptionMiddleware
         LogDetail logDetail =
             new()
             {
-                MethodName = _next.Method.Name,
+                MethodName = next.Method.Name,
                 Parameters = logParameters,
-                User = _contextAccessor.HttpContext?.User.Identity?.Name ?? "?"
+                User = contextAccessor.HttpContext?.User.Identity?.Name ?? "?"
             };
 
-        //_loggerService.Info(JsonSerializer.Serialize(logDetail));
+        logger.LogInformation(JsonSerializer.Serialize(logDetail));
         return Task.CompletedTask;
     }
 }

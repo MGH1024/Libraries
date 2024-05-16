@@ -1,38 +1,29 @@
-﻿using System.Text.Json;
-using MediatR;
-using MGH.Core.CrossCutting.Logging;
-
-using Microsoft.AspNetCore.Http;
-
+﻿using MediatR;
+using System.Reflection;
+using Microsoft.Extensions.Logging;
 namespace MGH.Core.Application.Pipelines.Logging;
 
-public class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
-    where TRequest : IRequest<TResponse>, ILoggableRequest
+public class LoggingBehaviour<TRequest, TResponse>(ILogger<LoggingBehaviour<TRequest, TResponse>> logger)
+    : IPipelineBehavior<TRequest, TResponse>
 {
-    private readonly IHttpContextAccessor _httpContextAccessor;
-
-    public LoggingBehavior( IHttpContextAccessor httpContextAccessor)
+    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, 
+        CancellationToken cancellationToken)
     {
-        _httpContextAccessor = httpContextAccessor;
-    }
+        //Request
+        logger.LogInformation($"Handling {typeof(TRequest).Name}");
+        Type myType = request.GetType();
+        IList<PropertyInfo> props = new List<PropertyInfo>(myType.GetProperties());
+        foreach (PropertyInfo prop in props)
+        {
+            object propValue = prop.GetValue(request, null);
+            logger.LogInformation("{Property} : {@Value}", prop.Name, propValue);
+        }
 
-    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
-    {
-        List<LogParameter> logParameters =
-            new()
-            {
-                new LogParameter { Type = request.GetType().Name, Value = request }
-            };
+        var response = await next();
 
-        LogDetail logDetail =
-            new()
-            {
-                MethodName = next.Method.Name,
-                Parameters = logParameters,
-                User = _httpContextAccessor.HttpContext.User.Identity?.Name ?? "?"
-            };
-
-        //_loggerServiceBase.Info(JsonSerializer.Serialize(logDetail));
-        return await next();
+        //Response
+        logger.LogInformation($"Handled {typeof(TResponse).Name}");
+        return response;
     }
 }
+

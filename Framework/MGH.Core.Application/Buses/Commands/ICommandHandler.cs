@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using MGH.Core.Application.Pipelines.Logging;
 
 namespace MGH.Core.Application.Buses.Commands;
 

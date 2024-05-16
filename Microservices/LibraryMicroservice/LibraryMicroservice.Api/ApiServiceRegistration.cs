@@ -1,27 +1,49 @@
-﻿using System.Text.Json.Serialization;
-using MGH.Swagger;
+﻿using MGH.Swagger;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.OpenApi.Models;
-using Serilog;
+using System.Text.Json.Serialization;
+using MGH.Core.CrossCutting.Exceptions;
+using MGH.Core.CrossCutting.Logging;
+using Microsoft.AspNetCore.Mvc.Formatters;
 
 namespace Api;
 
 public static class ApiServiceRegistration
 {
-    public static void CreateLoggerByConfig(this  WebApplicationBuilder builder )
+    public static void AddApiService(this WebApplicationBuilder builder)
     {
-        Log.Logger = new LoggerConfiguration()
-            .ReadFrom.Configuration(builder.Configuration)
-            .WriteTo.Async(wt=>wt.Console())
-            //.WriteTo.File(,)
-            .CreateLogger();
-        builder.Host.UseSerilog((hostingContext, loggerConfiguration) =>
-            loggerConfiguration.ReadFrom.Configuration(hostingContext.Configuration));
-        Log.Information("The global logger has been configured");
+        AddLogger(builder);
+        builder.Services.AddControllers();
+        AddSwagger(builder);
+        AddBaseMvc(builder);
+        AddCors(builder);
+        builder.Services.AddMemoryCache();
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddHttpContextAccessor();
     }
+    public static void RegisterApp(this WebApplicationBuilder builder)
+    {
+        var app = builder.Build();
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI();
+        }
 
-    public static void AddSwagger(this WebApplicationBuilder builder)
+        app.UseAuthentication();
+        app.UseAuthorization();
+        app.UseHttpsRedirection();
+        app.UseCors("CorsPolicy");
+        app.MapControllers();
+        app.UseExceptionMiddleWare();
+        app.Run();
+    }
+    
+    private static void AddLogger( WebApplicationBuilder builder)
+    {
+        builder.CreateLoggerByConfig();    
+    }
+    private static void AddSwagger( WebApplicationBuilder builder)
     {
         builder.Services.AddSwaggerGen(op =>
         {
@@ -47,8 +69,7 @@ public static class ApiServiceRegistration
             });
         });
     }
-
-    public static void AddBaseMvc(this WebApplicationBuilder builder)
+    private static void AddBaseMvc( WebApplicationBuilder builder)
     {
         builder.Services.AddControllers()
             .ConfigureApiBehaviorOptions(opt =>
@@ -79,8 +100,7 @@ public static class ApiServiceRegistration
                 options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
             });
     }
-
-    public static void AddCors(this WebApplicationBuilder builder)
+    private static void AddCors( WebApplicationBuilder builder)
     {
         builder.Services.AddCors(options =>
         {
@@ -89,19 +109,5 @@ public static class ApiServiceRegistration
                     .AllowAnyMethod()
                     .AllowAnyHeader());
         });
-    }
-    public static void RegisterApp (this WebApplication app )
-    {
-        if (app.Environment.IsDevelopment())
-        {
-            app.UseSwagger();
-            app.UseSwaggerUI();
-        }
-
-        app.UseAuthentication();
-        app.UseAuthorization();
-        app.UseHttpsRedirection();
-        app.UseCors("CorsPolicy");
-        app.MapControllers();
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using MGH.Core.CrossCutting.Exceptions.MiddleWares;
+using Microsoft.AspNetCore.Builder;
 
 namespace MGH.Core.CrossCutting.Exceptions.Extensions;
 
