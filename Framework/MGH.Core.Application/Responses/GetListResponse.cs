@@ -1,4 +1,4 @@
-﻿using MGH.Core.Persistence.Paging;
+﻿using MGH.Core.Infrastructure.Persistence.Paging;
 
 namespace MGH.Core.Application.Responses;
 

@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using MGH.Core.CrossCutting.Exceptions.Types;
-using MGH.Core.Security.Constants;
-using MGH.Core.Security.Extensions;
+using MGH.Core.Infrastructure.Security.Constants;
+using MGH.Core.Infrastructure.Security.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 

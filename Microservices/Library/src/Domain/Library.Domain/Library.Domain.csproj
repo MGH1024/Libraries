@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>disable</Nullable>
+        <RootNamespace>Domain</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Folder Include="Entities\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\..\..\Framework\MGH.Core.CrossCutting\MGH.Core.CrossCutting.csproj" />
+      <ProjectReference Include="..\..\..\..\..\Framework\MGH.Core.Domain\MGH.Core.Domain.csproj" />
+      <ProjectReference Include="..\..\..\..\..\Framework\MGH.Core.Infrastructure\MGH.Core.Infrastructure.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="Microsoft.EntityFrameworkCore">
+      </Reference>
+    </ItemGroup>
+</Project>

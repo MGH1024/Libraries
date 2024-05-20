@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>disable</Nullable>
+        <RootNamespace>Application</RootNamespace>
+    </PropertyGroup>
+
+  
+
+    <ItemGroup>
+        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.9.0" />
+        <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="8.0.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="Exceptions\Common\BadRequestException.cs" />
+      <Compile Remove="Models\Validation\ValidationError.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Features\Libraries\Queries\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\..\..\Framework\MGH.Core.Application\MGH.Core.Application.csproj" />
+      <ProjectReference Include="..\..\Domain\Library.Domain\Library.Domain.csproj" />
+    </ItemGroup>
+
+</Project>
