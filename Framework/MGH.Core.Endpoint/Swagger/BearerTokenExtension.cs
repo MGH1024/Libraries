@@ -2,7 +2,7 @@
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace MGH.Swagger;
+namespace MGH.Core.Endpoint.Swagger;
 
 public static class BearerTokenExtension
 {

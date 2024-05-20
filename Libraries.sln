@@ -39,6 +39,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MGH.Core.Security", "Framew
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MGH.Swagger", "Framework\MGH.Swagger\MGH.Swagger.csproj", "{AD7CDD7B-F019-4718-855F-0FC0D74083A7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MGH.Core.Endpoint", "Framework\MGH.Core.Endpoint\MGH.Core.Endpoint.csproj", "{E6693C38-3F24-485C-80E8-66092413C5E4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -105,6 +107,10 @@ Global
 		{AD7CDD7B-F019-4718-855F-0FC0D74083A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD7CDD7B-F019-4718-855F-0FC0D74083A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AD7CDD7B-F019-4718-855F-0FC0D74083A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6693C38-3F24-485C-80E8-66092413C5E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6693C38-3F24-485C-80E8-66092413C5E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6693C38-3F24-485C-80E8-66092413C5E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6693C38-3F24-485C-80E8-66092413C5E4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -126,6 +132,7 @@ Global
 		{067758BC-B465-4B37-BC80-5B5F513624C8} = {084E41B7-2029-4EB7-8CC3-EDBEE5C66534}
 		{E8DD0EC7-888C-4502-B668-24376D0E8364} = {084E41B7-2029-4EB7-8CC3-EDBEE5C66534}
 		{AD7CDD7B-F019-4718-855F-0FC0D74083A7} = {084E41B7-2029-4EB7-8CC3-EDBEE5C66534}
+		{E6693C38-3F24-485C-80E8-66092413C5E4} = {084E41B7-2029-4EB7-8CC3-EDBEE5C66534}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {04EE5569-4196-47F2-A52B-CF1049C542F2}

@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace MGH.Swagger;
+namespace MGH.Core.Endpoint.Swagger;
 
 public static class XmlCommentExtension
 {

@@ -26,6 +26,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\..\..\Framework\MGH.Core.Endpoint\MGH.Core.Endpoint.csproj" />
         <ProjectReference Include="..\..\..\Framework\MGH.Swagger\MGH.Swagger.csproj" />
         <ProjectReference Include="..\LibraryMicroservice.Application\LibraryMicroservice.Application.csproj" />
         <ProjectReference Include="..\LibraryMicroservice.Infrastructures\LibraryMicroservice.Infrastructures.csproj" />
