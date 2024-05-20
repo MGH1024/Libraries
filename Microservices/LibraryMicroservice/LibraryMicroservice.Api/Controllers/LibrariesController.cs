@@ -9,7 +9,7 @@ using Application.Features.Libraries.Commands.RemoveLibraryStaff;
 namespace Api.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("{culture:CultureRouteConstraint}/api/[Controller]")]
 public class LibrariesController(ISender sender) : AppController(sender)
 {
     [HttpPost("create-library")]

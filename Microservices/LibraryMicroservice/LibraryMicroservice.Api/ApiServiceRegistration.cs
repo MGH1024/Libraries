@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
 using MGH.Core.CrossCutting.Exceptions;
+using MGH.Core.CrossCutting.Localizations.ModelBinders;
 using MGH.Core.CrossCutting.Logging;
 using Microsoft.AspNetCore.Mvc.Formatters;
 
@@ -13,9 +14,8 @@ public static class ApiServiceRegistration
     public static void AddApiService(this WebApplicationBuilder builder)
     {
         AddLogger(builder);
-        builder.Services.AddControllers();
-        AddSwagger(builder);
         AddBaseMvc(builder);
+        AddSwagger(builder);
         AddCors(builder);
         builder.Services.AddMemoryCache();
         builder.Services.AddEndpointsApiExplorer();
@@ -24,6 +24,7 @@ public static class ApiServiceRegistration
     public static void RegisterApp(this WebApplicationBuilder builder)
     {
         var app = builder.Build();
+        app.UseRequestLocalization();
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
@@ -38,12 +39,11 @@ public static class ApiServiceRegistration
         app.UseExceptionMiddleWare();
         app.Run();
     }
-    
-    private static void AddLogger( WebApplicationBuilder builder)
+    private static void AddLogger(WebApplicationBuilder builder)
     {
-        builder.CreateLoggerByConfig();    
+        builder.CreateLoggerByConfig();
     }
-    private static void AddSwagger( WebApplicationBuilder builder)
+    private static void AddSwagger(WebApplicationBuilder builder)
     {
         builder.Services.AddSwaggerGen(op =>
         {
@@ -69,21 +69,19 @@ public static class ApiServiceRegistration
             });
         });
     }
-    private static void AddBaseMvc( WebApplicationBuilder builder)
+    private static void AddBaseMvc(WebApplicationBuilder builder)
     {
-        builder.Services.AddControllers()
-            .ConfigureApiBehaviorOptions(opt =>
+        builder.Services.AddControllers(options =>
             {
-                // opt.InvalidModelStateResponseFactory = (ctx) =>
-                // {
-                //     var modelState = ctx.ModelState;
-                //     var errors = modelState
-                //         .Keys
-                //         .SelectMany(key => modelState[key]?
-                //             .Errors
-                //             .Select(err => new ValidationError(key.Replace("$.", ""), err.ErrorMessage)));
-                //     throw new CustomValidationException(errors);
-                // };
+                options.ModelBinderProviders.Insert(0, new DateTimeModelBinderProvider());
+                options.ValueProviderFactories.Insert(0, new SeparatedQueryStringValueProviderFactory(","));
+                options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
+            })
+            .AddJsonOptions(opts =>
+            {
+                var enumConvertor = new JsonStringEnumConverter();
+                opts.JsonSerializerOptions.Converters.Add(new DateTimeConverter());
+                opts.JsonSerializerOptions.Converters.Add(enumConvertor);
             });
 
         builder.Services.Configure<ApiBehaviorOptions>(options => { options.SuppressModelStateInvalidFilter = true; });
@@ -100,14 +98,14 @@ public static class ApiServiceRegistration
                 options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
             });
     }
-    private static void AddCors( WebApplicationBuilder builder)
+    private static void AddCors(WebApplicationBuilder builder)
     {
         builder.Services.AddCors(options =>
         {
-            options.AddPolicy("CorsPolicy",
-                config => config.AllowAnyOrigin()
-                    .AllowAnyMethod()
-                    .AllowAnyHeader());
+            options.AddPolicy("CorsPolicy", config => config
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
         });
     }
 }
