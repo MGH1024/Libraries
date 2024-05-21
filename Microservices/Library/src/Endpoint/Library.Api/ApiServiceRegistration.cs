@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
 using MGH.Core.CrossCutting.Exceptions;
 using MGH.Core.CrossCutting.Localizations.ModelBinders;
 using MGH.Core.CrossCutting.Logging;
 using MGH.Core.Endpoint.Swagger;
+using MGH.Core.Endpoint.Swagger.ConfigurationModel;
 using Microsoft.AspNetCore.Mvc.Formatters;
 
 namespace Api;
@@ -21,16 +21,12 @@ public static class ApiServiceRegistration
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddHttpContextAccessor();
     }
+
     public static void RegisterApp(this WebApplicationBuilder builder)
     {
         var app = builder.Build();
         app.UseRequestLocalization();
-        if (app.Environment.IsDevelopment())
-        {
-            app.UseSwagger();
-            app.UseSwaggerUI();
-        }
-
+        app.UseSwaggerMiddleware();
         app.UseAuthentication();
         app.UseAuthorization();
         app.UseHttpsRedirection();
@@ -39,36 +35,27 @@ public static class ApiServiceRegistration
         app.UseExceptionMiddleWare();
         app.Run();
     }
+
     private static void AddLogger(WebApplicationBuilder builder)
     {
         builder.CreateLoggerByConfig();
     }
+
     private static void AddSwagger(WebApplicationBuilder builder)
     {
+        var swaggerConfig = builder.Configuration
+            .GetSection(nameof(SwaggerConfig))
+            .Get<SwaggerConfig>();
+
         builder.Services.AddSwaggerGen(op =>
         {
             op.AddXmlComments();
-            op.AddBearerToken(new OpenApiSecurityScheme
-            {
-                Description = "just copy token in value TextBox",
-                Name = "Authorization",
-                In = ParameterLocation.Header,
-                Type = SecuritySchemeType.Http,
-                Scheme = "bearer",
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                }
-            });
-            op.AddSwaggerDoc(new OpenApiInfo
-            {
-                Title = "Library microservice",
-                Version = "v1",
-                Description = "API"
-            });
+            op.AddBearerToken(swaggerConfig.OpenApiSecuritySchemeConfig,
+                swaggerConfig.OpenApiReferenceConfig);
+            op.AddSwaggerDoc(swaggerConfig.OpenApiInfoConfig);
         });
     }
+
     private static void AddBaseMvc(WebApplicationBuilder builder)
     {
         builder.Services.AddControllers(options =>
@@ -98,6 +85,7 @@ public static class ApiServiceRegistration
                 options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
             });
     }
+
     private static void AddCors(WebApplicationBuilder builder)
     {
         builder.Services.AddCors(options =>
