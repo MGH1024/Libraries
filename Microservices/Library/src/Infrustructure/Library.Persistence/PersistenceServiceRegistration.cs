@@ -1,7 +1,7 @@
-﻿using Application.Models.Database;
-using Domain.Entities.Libraries;
+﻿using Domain.Entities.Libraries;
 using Domain.Entities.Libraries.Factories;
 using Domain.Entities.Libraries.Policies;
+using MGH.Core.Infrastructure.Persistence.Models;
 using MGH.Core.Infrastructure.Persistence.UnitOfWork;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;

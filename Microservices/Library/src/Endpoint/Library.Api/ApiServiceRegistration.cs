@@ -4,7 +4,7 @@ using MGH.Core.CrossCutting.Exceptions;
 using MGH.Core.CrossCutting.Localizations.ModelBinders;
 using MGH.Core.CrossCutting.Logging;
 using MGH.Core.Endpoint.Swagger;
-using MGH.Core.Endpoint.Swagger.ConfigurationModel;
+using MGH.Core.Endpoint.Swagger.Models;
 using Microsoft.AspNetCore.Mvc.Formatters;
 
 namespace Api;

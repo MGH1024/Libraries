@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using Application.Interfaces.Public;
 using Application.Models.Email;
+using MGH.Core.Infrastructure.Mails.Models;
 using Microsoft.Extensions.Options;
 using SendGrid;
 using SendGrid.Helpers.Mail;

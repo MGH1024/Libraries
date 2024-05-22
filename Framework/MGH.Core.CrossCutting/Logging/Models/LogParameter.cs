@@ -1,4 +1,4 @@
-﻿namespace MGH.Core.CrossCutting.Logging.Model;
+﻿namespace MGH.Core.CrossCutting.Logging.Models;
 
 public class LogParameter(string name, object value, string type)
 {

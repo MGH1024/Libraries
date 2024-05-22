@@ -42,10 +42,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Persistence\" />
-    </ItemGroup>
-
-    <ItemGroup>
         <ProjectReference Include="..\MGH.Core.Domain\MGH.Core.Domain.csproj" />
     </ItemGroup>
 

@@ -1,4 +1,4 @@
-﻿namespace MGH.Core.CrossCutting.Logging.Model;
+﻿namespace MGH.Core.CrossCutting.Logging.Models;
 
 public class LogDetail(string fullName, string methodName, string user, List<LogParameter> parameters)
 {

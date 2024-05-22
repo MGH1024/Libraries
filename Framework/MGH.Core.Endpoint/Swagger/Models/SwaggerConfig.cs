@@ -1,4 +1,4 @@
-namespace MGH.Core.Endpoint.Swagger.ConfigurationModel;
+namespace MGH.Core.Endpoint.Swagger.Models;
 
 public class SwaggerConfig
 {

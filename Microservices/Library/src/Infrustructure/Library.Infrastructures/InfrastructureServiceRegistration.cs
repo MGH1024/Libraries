@@ -7,6 +7,7 @@ using MGH.Core.CrossCutting.Localizations.RouteConstraints;
 using MGH.Core.Infrastructure.ElasticSearch;
 using MGH.Core.Infrastructure.Mails;
 using MGH.Core.Infrastructure.Mails.MailKitImplementations;
+using MGH.Core.Infrastructure.Mails.Models;
 using MGH.Core.Infrastructure.Security.EmailAuthenticator;
 using MGH.Core.Infrastructure.Security.JWT;
 using MGH.Core.Infrastructure.Security.OtpAuthenticator;

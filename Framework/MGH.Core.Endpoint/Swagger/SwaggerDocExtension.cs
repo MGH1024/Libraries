@@ -1,4 +1,4 @@
-﻿using MGH.Core.Endpoint.Swagger.ConfigurationModel;
+﻿using MGH.Core.Endpoint.Swagger.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
