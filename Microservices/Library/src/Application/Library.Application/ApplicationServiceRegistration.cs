@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using MGH.Core.Application.Pipelines.Authorization;
 using MGH.Core.Application.Pipelines.Transaction;
 using MGH.Core.Application.Pipelines.Validation;
+using MGH.Core.Infrastructure.ElasticSearch;
 using Microsoft.AspNetCore.Builder;
 
 namespace Application;
@@ -29,6 +30,7 @@ public static class ApplicationServiceRegistration
         });
         builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         builder.Services.AddSubClassesOfType(Assembly.GetExecutingAssembly(), typeof(BaseBusinessRules));
+        builder.Services.AddSingleton<IElasticSearch, ElasticSearchManager>();
         return builder.Services;
     }
 

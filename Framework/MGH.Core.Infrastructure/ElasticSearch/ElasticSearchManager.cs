@@ -53,7 +53,8 @@ public class ElasticSearchManager : IElasticSearch
         CreateIndexResponse response = await elasticClient.Indices.CreateAsync(
             indexModel.IndexName,
             selector: se =>
-                se.Settings(a => a.NumberOfReplicas(indexModel.NumberOfReplicas).NumberOfShards(indexModel.NumberOfShards))
+                se.Settings(a => a.NumberOfReplicas(indexModel.NumberOfReplicas)
+                        .NumberOfShards(indexModel.NumberOfShards))
                     .Aliases(x => x.Alias(indexModel.AliasName))
         );
 
