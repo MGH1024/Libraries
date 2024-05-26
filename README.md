@@ -2,9 +2,9 @@
 
 
 
-dotnet ef migrations add --project Microservices/LibraryMicroservice/LibraryMicroservice.Persistence/LibraryMicroservice.Persistence.csproj --startup-project Microservices/LibraryMicroservice/LibraryMicroservice.Api/LibraryMicroservice.Api.csproj --context Persistence.Contexts.LibraryDbContext --configuration Debug Initial --output-dir Migrations
+dotnet ef migrations add --project Microservices\Library\src\Infrustructure\Library.Persistence\Library.Persistence.csproj --startup-project Microservices\Library\src\Endpoint\Library.Api\Library.Api.csproj --context Persistence.Contexts.LibraryDbContext --configuration Debug Initial --output-dir Migrations
 
-dotnet ef database update --project Microservices/LibraryMicroservice/LibraryMicroservice.Persistence/LibraryMicroservice.Persistence.csproj --startup-project Microservices/LibraryMicroservice/LibraryMicroservice.Api/LibraryMicroservice.Api.csproj --context Persistence.Contexts.LibraryDbContext --configuration Debug 20240511151100_Initial
+dotnet ef database update --project Microservices\Library\src\Infrustructure\Library.Persistence\Library.Persistence.csproj --startup-project Microservices\Library\src\Endpoint\Library.Api\Library.Api.csproj --context Persistence.Contexts.LibraryDbContext --configuration Debug 20240526080643_Initial
 
 
 
