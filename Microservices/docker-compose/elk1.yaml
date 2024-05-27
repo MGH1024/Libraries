@@ -3,7 +3,7 @@ version : '3.8'
 services: 
   elasticsearch:
     container_name: els
-docker-compose    image: elasticsearch:8.13.4
+    image: elasticsearch:8.13.4
     ports:
       - 9200:9200
     volumes:
