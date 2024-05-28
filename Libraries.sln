@@ -47,6 +47,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker-compose", "docker-co
 	ProjectSection(SolutionItems) = preProject
 		Microservices\docker-compose\elk1.yaml = Microservices\docker-compose\elk1.yaml
 		Microservices\docker-compose\elk2.yaml = Microservices\docker-compose\elk2.yaml
+		Microservices\docker-compose\elk3.yaml = Microservices\docker-compose\elk3.yaml
 	EndProjectSection
 EndProject
 Global
