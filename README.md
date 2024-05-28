@@ -8,3 +8,33 @@ dotnet ef database update --project Microservices\Library\src\Infrustructure\Lib
 
 
 
+put /person/
+
+
+post /person/_doc
+{
+  "name" : "meysam",
+  "age" : 20
+}
+
+post /person/_doc
+{
+  "name" : "partow",
+  "age" : 20
+}
+
+
+
+GET person/_search
+
+post person/_update/HQuFwI8Bzh2yCnvju0pf
+{
+  "doc":{
+    "age":3,
+    "color":"white"
+  }
+  
+}
+
+
+
