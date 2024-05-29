@@ -1,7 +1,7 @@
 ﻿using MGH.Core.Infrastructure.Persistence.UnitOfWork;
 using Persistence.Contexts;
 
-namespace Persistence;
+namespace Persistence.UOW;
 
 public class UnitOfWork(LibraryDbContext context) : IUnitOfWork
 {

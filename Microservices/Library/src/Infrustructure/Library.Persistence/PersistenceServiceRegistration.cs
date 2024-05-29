@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using Persistence.Contexts;
 using Persistence.Repositories;
+using Persistence.UOW;
 
 namespace Persistence;
 

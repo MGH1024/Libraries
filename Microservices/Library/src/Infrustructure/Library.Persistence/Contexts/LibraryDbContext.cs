@@ -1,6 +1,6 @@
 ﻿using Domain.Entities.Libraries;
+using MGH.Core.Infrastructure.Persistence.Interceptors;
 using MGH.Core.Infrastructure.Public;
-using Persistence.Interceptors;
 using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.Contexts;

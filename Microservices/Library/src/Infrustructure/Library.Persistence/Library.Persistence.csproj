@@ -28,10 +28,6 @@
       <ProjectReference Include="..\Library.Infrastructures\Library.Infrastructures.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Interceptors\" />
-    </ItemGroup>
-
    
 
 </Project>

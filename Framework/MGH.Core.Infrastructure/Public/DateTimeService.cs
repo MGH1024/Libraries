@@ -1,6 +1,4 @@
-﻿using MGH.Core.Infrastructure.Public;
-
-namespace Infrastructures.Public;
+﻿namespace MGH.Core.Infrastructure.Public;
 
 public class DateTimeService : IDateTime
 {

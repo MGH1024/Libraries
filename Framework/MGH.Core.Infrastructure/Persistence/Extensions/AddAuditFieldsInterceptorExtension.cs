@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
 
-namespace Persistence.Extensions;
+namespace MGH.Core.Infrastructure.Persistence.Extensions;
 
 public static class AddAuditFieldsInterceptorExtension
 {

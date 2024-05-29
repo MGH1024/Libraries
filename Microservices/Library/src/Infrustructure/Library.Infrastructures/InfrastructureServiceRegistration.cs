@@ -1,6 +1,5 @@
 ﻿using System.Globalization;
 using System.Reflection;
-using Infrastructures.Public;
 using MGH.Core.CrossCutting.Localizations.RouteConstraints;
 using MGH.Core.Infrastructure.ElasticSearch;
 using MGH.Core.Infrastructure.Mails;
