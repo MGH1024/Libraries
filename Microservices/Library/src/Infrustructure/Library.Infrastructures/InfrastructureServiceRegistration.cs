@@ -1,13 +1,12 @@
 ﻿using System.Globalization;
 using System.Reflection;
-using Application.Interfaces.Public;
-using Application.Models.Email;
 using Infrastructures.Public;
 using MGH.Core.CrossCutting.Localizations.RouteConstraints;
 using MGH.Core.Infrastructure.ElasticSearch;
 using MGH.Core.Infrastructure.Mails;
 using MGH.Core.Infrastructure.Mails.MailKitImplementations;
 using MGH.Core.Infrastructure.Mails.Models;
+using MGH.Core.Infrastructure.Public;
 using MGH.Core.Infrastructure.Security.EmailAuthenticator;
 using MGH.Core.Infrastructure.Security.JWT;
 using MGH.Core.Infrastructure.Security.OtpAuthenticator;
@@ -24,7 +23,6 @@ public static class InfrastructureServiceRegistration
     public static IServiceCollection AddInfrastructuresServices(this WebApplicationBuilder builder)
     {
         builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
-        builder.Services.AddTransient<IEmailSender, EmailSender>();
         builder.Services.AddTransient<IDateTime, DateTimeService>();
         builder.Services.AddSingleton<IMailService, MailKitMailService>();
         builder.Services.AddScoped<IEmailAuthenticatorHelper, EmailAuthenticatorHelper>();

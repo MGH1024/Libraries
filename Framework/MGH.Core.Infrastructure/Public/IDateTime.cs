@@ -1,4 +1,4 @@
-﻿namespace Application.Interfaces.Public;
+﻿namespace MGH.Core.Infrastructure.Public;
 
 public interface IDateTime
 {

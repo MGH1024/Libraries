@@ -1,5 +1,5 @@
-﻿using Application.Interfaces.Public;
-using MGH.Core.Domain.Abstracts;
+﻿using MGH.Core.Domain.Abstracts;
+using MGH.Core.Infrastructure.Public;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Persistence.Extensions;

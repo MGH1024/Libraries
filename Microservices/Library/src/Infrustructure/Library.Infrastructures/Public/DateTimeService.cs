@@ -1,4 +1,4 @@
-﻿using Application.Interfaces.Public;
+﻿using MGH.Core.Infrastructure.Public;
 
 namespace Infrastructures.Public;
 

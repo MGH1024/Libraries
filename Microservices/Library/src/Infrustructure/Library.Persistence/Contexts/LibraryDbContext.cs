@@ -1,5 +1,5 @@
-﻿using Application.Interfaces.Public;
-using Domain.Entities.Libraries;
+﻿using Domain.Entities.Libraries;
+using MGH.Core.Infrastructure.Public;
 using Persistence.Interceptors;
 using Microsoft.EntityFrameworkCore;
 
