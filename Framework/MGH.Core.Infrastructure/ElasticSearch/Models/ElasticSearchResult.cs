@@ -1,18 +1,11 @@
 ﻿namespace MGH.Core.Infrastructure.ElasticSearch.Models;
 
-public class ElasticSearchResult : IElasticSearchResult //todo: refactor
+public class ElasticSearchResult(bool success, string message = null) : IElasticSearchResult //todo: refactor
 {
-    public bool Success { get; }
-    public string Message { get; }
+    public bool Success { get; } = success;
+    public string Message { get; } = message;
 
-    public ElasticSearchResult()
+    public ElasticSearchResult() : this(false, string.Empty)
     {
-        Message = string.Empty;
-    }
-
-    public ElasticSearchResult(bool success, string message = null)
-    {
-        Success = success;
-        Message = message;
     }
 }

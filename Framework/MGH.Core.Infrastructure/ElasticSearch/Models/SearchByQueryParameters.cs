@@ -1,22 +1,12 @@
 ﻿namespace MGH.Core.Infrastructure.ElasticSearch.Models;
 
-public class SearchByQueryParameters : SearchParameters
+public class SearchByQueryParameters(string queryName, string query, string[] fields) : SearchParameters
 {
-    public string QueryName { get; set; }
-    public string Query { get; set; }
-    public string[] Fields { get; set; }
+    public string QueryName { get; set; } = queryName;
+    public string Query { get; set; } = query;
+    public string[] Fields { get; set; } = fields;
 
-    public SearchByQueryParameters()
+    public SearchByQueryParameters() : this(string.Empty, string.Empty, Array.Empty<string>())
     {
-        QueryName = string.Empty;
-        Query = string.Empty;
-        Fields = Array.Empty<string>();
-    }
-
-    public SearchByQueryParameters(string queryName, string query, string[] fields)
-    {
-        QueryName = queryName;
-        Query = query;
-        Fields = fields;
     }
 }

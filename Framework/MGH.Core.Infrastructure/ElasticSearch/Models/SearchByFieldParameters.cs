@@ -1,19 +1,11 @@
 ﻿namespace MGH.Core.Infrastructure.ElasticSearch.Models;
 
-public class SearchByFieldParameters : SearchParameters
+public class SearchByFieldParameters(string fieldName, string value) : SearchParameters
 {
-    public string FieldName { get; set; }
-    public string Value { get; set; }
+    public string FieldName { get; set; } = fieldName;
+    public string Value { get; set; } = value;
 
-    public SearchByFieldParameters()
+    public SearchByFieldParameters() : this(string.Empty, string.Empty)
     {
-        FieldName = string.Empty;
-        Value = string.Empty;
-    }
-
-    public SearchByFieldParameters(string fieldName, string value)
-    {
-        FieldName = fieldName;
-        Value = value;
     }
 }

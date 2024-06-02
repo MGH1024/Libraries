@@ -1,22 +1,15 @@
-﻿namespace MGH.Core.Infrastructure.ElasticSearch.Models;
+﻿using Nest;
 
-public class ElasticSearchConfig
+namespace MGH.Core.Infrastructure.ElasticSearch.Models;
+
+public class ElasticSearchConfig(string connectionString, string userName, string password, IEnumerable<Index> indices)
 {
-    public string ConnectionString { get; set; }
-    public string UserName { get; set; }
-    public string Password { get; set; }
+    public string ConnectionString { get; set; } = connectionString;
+    public string UserName { get; set; } = userName;
+    public string Password { get; set; } = password;
+    public IEnumerable<Index> Indices { get; set; } = indices;
 
-    public ElasticSearchConfig()
+    public ElasticSearchConfig() : this(string.Empty, string.Empty, string.Empty, [])
     {
-        ConnectionString = string.Empty;
-        UserName = string.Empty;
-        Password = string.Empty;
-    }
-
-    public ElasticSearchConfig(string connectionString, string userName, string password)
-    {
-        ConnectionString = connectionString;
-        UserName = userName;
-        Password = password;
     }
 }

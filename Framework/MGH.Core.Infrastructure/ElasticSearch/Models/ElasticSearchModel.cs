@@ -2,20 +2,12 @@
 
 namespace MGH.Core.Infrastructure.ElasticSearch.Models;
 
-public class ElasticSearchModel
+public class ElasticSearchModel(Id elasticId, string indexName)
 {
-    public Id ElasticId { get; set; }
-    public string IndexName { get; set; }
+    public Id ElasticId { get; set; } = elasticId;
+    public string IndexName { get; set; } = indexName;
 
-    public ElasticSearchModel()
+    public ElasticSearchModel() : this(null!, string.Empty)
     {
-        ElasticId = null!;
-        IndexName = string.Empty;
-    }
-
-    public ElasticSearchModel(Id elasticId, string indexName)
-    {
-        ElasticId = elasticId;
-        IndexName = indexName;
     }
 }

@@ -1,21 +1,13 @@
 ﻿namespace MGH.Core.Infrastructure.ElasticSearch.Models;
 
-public class IndexModel
+public class IndexModel(string indexName, string aliasName)
 {
-    public string IndexName { get; set; }
-    public string AliasName { get; set; }
+    public string IndexName { get; set; } = indexName;
+    public string AliasName { get; set; } = aliasName;
     public int NumberOfReplicas { get; set; } = 3;
     public int NumberOfShards { get; set; } = 3;
 
-    public IndexModel()
+    public IndexModel() : this(string.Empty, string.Empty)
     {
-        IndexName = string.Empty;
-        AliasName = string.Empty;
-    }
-
-    public IndexModel(string indexName, string aliasName)
-    {
-        IndexName = indexName;
-        AliasName = aliasName;
     }
 }

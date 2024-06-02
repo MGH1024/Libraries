@@ -1,19 +1,11 @@
 ﻿namespace MGH.Core.Infrastructure.ElasticSearch.Models;
 
-public class ElasticSearchGetModel<T>
+public class ElasticSearchGetModel<T>(string elasticId, T item)
 {
-    public string ElasticId { get; set; }
-    public T Item { get; set; }
+    public string ElasticId { get; set; } = elasticId;
+    public T Item { get; set; } = item;
 
-    public ElasticSearchGetModel()
+    public ElasticSearchGetModel() : this(string.Empty, default!)
     {
-        ElasticId = string.Empty;
-        Item = default!;
-    }
-
-    public ElasticSearchGetModel(string elasticId, T item)
-    {
-        ElasticId = elasticId;
-        Item = item;
     }
 }

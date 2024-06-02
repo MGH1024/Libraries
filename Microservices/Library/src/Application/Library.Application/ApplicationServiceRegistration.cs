@@ -30,11 +30,11 @@ public static class ApplicationServiceRegistration
         });
         builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         builder.Services.AddSubClassesOfType(Assembly.GetExecutingAssembly(), typeof(BaseBusinessRules));
-        builder.Services.AddSingleton<IElasticSearch, ElasticSearchManager>();
+        builder.Services.AddSingleton<IElasticSearch, ElasticSearchService>();
         return builder.Services;
     }
 
-    private static IServiceCollection AddSubClassesOfType(this IServiceCollection services, Assembly assembly,
+    private static void AddSubClassesOfType(this IServiceCollection services, Assembly assembly,
         Type type, Func<IServiceCollection, Type, IServiceCollection> addWithLifeCycle = null)
     {
         var types = assembly.GetTypes().Where(t => t.IsSubclassOf(type) && type != t).ToList();
@@ -43,6 +43,5 @@ public static class ApplicationServiceRegistration
                 services.AddScoped(item);
             else
                 addWithLifeCycle(services, type);
-        return services;
     }
 }
