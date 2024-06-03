@@ -6,6 +6,7 @@ using MGH.Core.Infrastructure.ElasticSearch.Models;
 using MGH.Core.Infrastructure.Mails;
 using MGH.Core.Infrastructure.Mails.MailKitImplementations;
 using MGH.Core.Infrastructure.Mails.Models;
+using MGH.Core.Infrastructure.MessageBrokers.RabbitMQ;
 using MGH.Core.Infrastructure.Public;
 using MGH.Core.Infrastructure.Security.EmailAuthenticator;
 using MGH.Core.Infrastructure.Security.JWT;
@@ -17,8 +18,6 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Nest;
-using Nest.JsonNetSerializer;
-using Newtonsoft.Json;
 
 namespace Infrastructures;
 
@@ -35,6 +34,7 @@ public static class InfrastructureServiceRegistration
         builder.Services.AddScoped<IOtpAuthenticatorHelper, OtpNetOtpAuthenticatorHelper>();
         builder.Services.AddCulture();
         builder.AddElasticSearch();
+        builder.AddRabbitMq();
         return builder.Services;
     }
 
@@ -82,5 +82,22 @@ public static class InfrastructureServiceRegistration
                 );
             }
         }
+    }
+
+    private static async void AddRabbitMq(this WebApplicationBuilder builder)
+    {
+        const string configurationSection = "RabbitMQ";
+        var setting =
+            builder.Configuration.GetSection(configurationSection).Get<RabbitMq>()
+            ?? throw new NullReferenceException($"\"{configurationSection}\" " +
+                                                $"section cannot found in configuration.");
+        
+        builder.Services.Configure<RabbitMq>(option =>
+            builder.Configuration.GetSection(nameof(RabbitMq)).Bind(option));
+        
+            
+        builder.Services.AddTransient(typeof(MGH.Core.Infrastructure.MessageBrokers.IMessageSender<>),
+            typeof(MGH.Core.Infrastructure.MessageBrokers.RabbitMqService<>));
+        
     }
 }

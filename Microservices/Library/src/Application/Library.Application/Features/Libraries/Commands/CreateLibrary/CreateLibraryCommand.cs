@@ -5,6 +5,8 @@ using Domain.Entities.Libraries.Factories;
 using MGH.Core.Application.Buses.Commands;
 using MGH.Core.Infrastructure.ElasticSearch;
 using MGH.Core.Infrastructure.ElasticSearch.Models;
+using MGH.Core.Infrastructure.MessageBrokers;
+using MGH.Core.Infrastructure.MessageBrokers.RabbitMQ;
 using MGH.Core.Infrastructure.Persistence.UnitOfWork;
 using Nest;
 
@@ -24,7 +26,8 @@ public class CreateLibraryCommandHandler(
     ILibraryFactory libraryFactory,
     IElasticSearch elasticSearch,
     IUnitOfWork unitOfWork,
-    LibraryBusinessRules libraryBusinessRules)
+    LibraryBusinessRules libraryBusinessRules,
+    IMessageSender<Library> sender)
     : ICommandHandler<CreateLibraryCommand, Guid>
 {
     public async Task<Guid> Handle(CreateLibraryCommand command, CancellationToken cancellationToken)
@@ -36,7 +39,27 @@ public class CreateLibraryCommandHandler(
         await libraryRepository.AddAsync(library, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
-       
+        sender.Publish(new PublishModel<Library>
+        {
+            Item = library,
+            ExchangeName = "mgh-exchange",
+            RoutingKey = "mgh-routingkey",
+            QueueName = "mgh-queue",
+            ExchangeType = "direct",
+        });
+
+
+        // sender.Publish(new PublishList<Library>(new List<Library>()
+        // {
+        //     library, library, library
+        // })
+        // {
+        //     ExchangeName = "mgh-exchange",
+        //     RoutingKey = "mgh-routingkey",
+        //     QueueName = "mgh-queue",
+        //     ExchangeType = "direct",
+        // });
+
 
         var a = new IndexModel("library", "lib1024");
         await elasticSearch.CreateNewIndexAsync(a);
@@ -46,7 +69,7 @@ public class CreateLibraryCommandHandler(
             a.IndexName,
             command);
         await elasticSearch.InsertAsync(b);
-        
+
         return library.Id;
     }
 }
