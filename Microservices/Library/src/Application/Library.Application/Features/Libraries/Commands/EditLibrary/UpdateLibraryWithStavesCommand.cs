@@ -35,7 +35,7 @@ public class EditLibraryWithStavesCommandHandler(
         
         library.EditLibrary(request.Name, request.Code, request.Location, request.District,
             request.RegistrationDate,request.StavesDto.ToStaffList());
-        await unitOfWork.SaveChangesAsync(cancellationToken);
+        await unitOfWork.CompleteAsync(cancellationToken);
         return library.Id;
     }
 }

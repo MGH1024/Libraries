@@ -37,7 +37,7 @@ public class CreateLibraryCommandHandler(
         var library = libraryFactory.Create(command.Name, command.Code, command.Location,
             command.RegistrationDate, command.District);
         await libraryRepository.AddAsync(library, cancellationToken);
-        await unitOfWork.SaveChangesAsync(cancellationToken);
+        await unitOfWork.CompleteAsync(cancellationToken);
 
         sender.Publish(new PublishModel<Library>
         {

@@ -21,7 +21,7 @@ public class RemoveLibraryStaffCommandHandler(ILibraryRepository libraryReposito
             .GetAsync(a => a.Id == request.LibraryId, a => a.Include(b => b.LibraryStaves),
                 cancellationToken: cancellationToken);
         library.RemoveLibraryStaff(request.NationalCode);
-        await unitOfWork.SaveChangesAsync(cancellationToken);
+        await unitOfWork.CompleteAsync(cancellationToken);
         return Unit.Value;
     }
 }

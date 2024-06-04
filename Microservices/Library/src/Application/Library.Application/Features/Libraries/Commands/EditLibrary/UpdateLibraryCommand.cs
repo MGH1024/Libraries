@@ -32,7 +32,7 @@ public class EditLibraryCommandHandler(
             await libraryBusinessRules.LibraryCodeMustBeUnique(request.Code);
 
         library.EditLibrary(request.Name, request.Code, request.Location, request.District, request.RegistrationDate);
-        await unitOfWork.SaveChangesAsync(cancellationToken);
+        await unitOfWork.CompleteAsync(cancellationToken);
         return library.Id;
     }
 }

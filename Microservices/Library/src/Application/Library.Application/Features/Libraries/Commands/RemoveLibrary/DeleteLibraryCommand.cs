@@ -25,7 +25,7 @@ public class RemoveLibraryCommandHandler(
 
         await library.RemoveLibrary(library);
         await libraryRepository.DeleteAsync(library, true);
-        await unitOfWork.SaveChangesAsync(cancellationToken);
+        await unitOfWork.CompleteAsync(cancellationToken);
         return Unit.Value;
     }
 }
