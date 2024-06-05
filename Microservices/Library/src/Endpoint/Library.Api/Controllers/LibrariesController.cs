@@ -5,6 +5,9 @@ using Application.Features.Libraries.Commands.CreateLibrary;
 using Application.Features.Libraries.Commands.EditLibrary;
 using Application.Features.Libraries.Commands.RemoveLibrary;
 using Application.Features.Libraries.Commands.RemoveLibraryStaff;
+using Application.Features.Libraries.Queries.GetList;
+using MGH.Core.Application.Requests;
+using MGH.Core.Application.Responses;
 
 namespace Api.Controllers;
 
@@ -12,6 +15,16 @@ namespace Api.Controllers;
 [Route("{culture:CultureRouteConstraint}/api/[Controller]")]
 public class LibrariesController(ISender sender) : AppController(sender)
 {
+    
+    [HttpGet]
+    public async Task<IActionResult> GetList([FromQuery] PageRequest pageRequest)
+    {
+        GetLibraryListQuery getLibraryListUserQuery = new() { PageRequest = pageRequest };
+        GetListResponse<GetLibraryListDto> result = await Sender.Send(getLibraryListUserQuery);
+        return Ok(result);
+    }
+    
+    
     [HttpPost("create-library")]
     [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
     public async Task<IActionResult> InsertAsync([FromBody] CreateLibraryCommand command, CancellationToken
