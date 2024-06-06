@@ -1,7 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using Domain.Entities.Members.Exceptions;
-
-using MGH.Core.Domain.Concretes;
+using MGH.Core.Domain.Aggregate;
 
 namespace Domain.Entities.Members.ValueObjects;
 

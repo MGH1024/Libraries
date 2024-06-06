@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Domain.Entities.Libraries;
-using MGH.Core.Application.Buses.Commands;
 using Application.Features.Libraries.Rules;
+using MGH.Core.Domain.Buses.Commands;
 using MGH.Core.Infrastructure.Persistence.UnitOfWork;
 
 namespace Application.Features.Libraries.Commands.RemoveLibrary;

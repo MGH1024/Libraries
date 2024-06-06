@@ -1,7 +1,6 @@
 ﻿using Domain.Entities.Libraries.Constant;
 using Domain.Entities.Libraries.Exceptions;
-
-using MGH.Core.Domain.Concretes;
+using MGH.Core.Domain.Aggregate;
 
 namespace Domain.Entities.Libraries.ValueObjects;
 

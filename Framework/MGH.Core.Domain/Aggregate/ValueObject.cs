@@ -1,4 +1,4 @@
-namespace MGH.Core.Domain.Concretes;
+namespace MGH.Core.Domain.Aggregate;
 
 public abstract class ValueObject
 {

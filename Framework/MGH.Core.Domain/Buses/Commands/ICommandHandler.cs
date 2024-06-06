@@ -1,7 +1,6 @@
 ﻿using MediatR;
-using MGH.Core.Application.Pipelines.Logging;
 
-namespace MGH.Core.Application.Buses.Commands;
+namespace MGH.Core.Domain.Buses.Commands;
 
 public interface ICommandHandler<in TCommand> : IRequestHandler<TCommand>
     where TCommand : ICommand

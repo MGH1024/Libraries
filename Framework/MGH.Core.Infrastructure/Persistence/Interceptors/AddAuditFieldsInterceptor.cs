@@ -1,8 +1,6 @@
-﻿using MGH.Core.Domain.Abstracts;
-using MGH.Core.Infrastructure.Persistence.Extensions;
-using MGH.Core.Infrastructure.Public;
-using Microsoft.EntityFrameworkCore;
+﻿using MGH.Core.Infrastructure.Public;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using MGH.Core.Infrastructure.Persistence.Extensions;
 
 namespace MGH.Core.Infrastructure.Persistence.Interceptors;
 
@@ -13,28 +11,18 @@ public class AddAuditFieldsInterceptor(IDateTime dateTime) : SaveChangesIntercep
     {
         var now = dateTime.IranNow;
         var userName = "admin";
-        if (eventData.Context != null)
-        {
-            var modifiedEntries = eventData.Context.ChangeTracker.Entries<IAuditable>().ToList();
-            foreach (var item in modifiedEntries)
-            {
-                var entityType = item.Context.Model.FindEntityType(item.Entity.GetType());
-                if (entityType is null)
-                    continue;
+        var dbContext = eventData.Context;
+        if (dbContext is null)
+            return base.SavingChangesAsync(eventData, result, cancellationToken);
 
-                if (item.State == EntityState.Added)
-                    item.AttachAddedState(now, userName);
-
-
-                if (item.State == EntityState.Modified)
-                    item.AttachModifiedState(now, userName);
-
-
-                if (item.State == EntityState.Deleted)
-                    item.AttachDeletedState(now, userName);
-            }
-        }
+        if (eventData.Context == null) 
+            return base.SavingChangesAsync(eventData, result, cancellationToken);
+        
+        eventData.SetAuditEntries( now, userName);
+        eventData.SetOutbox( dbContext);
 
         return base.SavingChangesAsync(eventData, result, cancellationToken);
     }
+
+    
 }

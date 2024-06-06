@@ -1,4 +1,4 @@
-﻿namespace MGH.Core.Domain.Abstracts;
+﻿namespace MGH.Core.Domain.Base;
 
 public interface IOrderAble
 {

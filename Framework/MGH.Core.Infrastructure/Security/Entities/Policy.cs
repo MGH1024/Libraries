@@ -1,4 +1,4 @@
-using MGH.Core.Domain.Concretes;
+using MGH.Core.Domain.Base;
 
 namespace MGH.Core.Infrastructure.Security.Entities;
 

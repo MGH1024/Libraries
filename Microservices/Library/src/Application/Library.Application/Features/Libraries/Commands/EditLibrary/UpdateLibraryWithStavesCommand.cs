@@ -2,7 +2,7 @@
 using Application.Features.Libraries.Rules;
 using Domain.Entities.Libraries;
 using Domain.Entities.Libraries.Constant;
-using MGH.Core.Application.Buses.Commands;
+using MGH.Core.Domain.Buses.Commands;
 using MGH.Core.Infrastructure.Persistence.UnitOfWork;
 
 namespace Application.Features.Libraries.Commands.EditLibrary;

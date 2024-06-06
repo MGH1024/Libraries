@@ -17,7 +17,7 @@ namespace Persistence.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.1")
+                .HasAnnotation("ProductVersion", "8.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -29,7 +29,7 @@ namespace Persistence.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
@@ -39,7 +39,7 @@ namespace Persistence.Migrations
                         .HasDefaultValue("user");
 
                     b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("DeletedBy")
                         .HasMaxLength(64)
@@ -69,11 +69,11 @@ namespace Persistence.Migrations
                         .HasColumnName("Name");
 
                     b.Property<DateTime>("LibraryRegistrationDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("RegistrationDate");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("UpdatedBy")
                         .HasMaxLength(64)
@@ -85,6 +85,53 @@ namespace Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Libraries");
+                });
+
+            modelBuilder.Entity("MGH.Core.Domain.Abstracts.DomainEvent", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("LibraryId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LibraryId");
+
+                    b.ToTable("DomainEvent");
+                });
+
+            modelBuilder.Entity("MGH.Core.Domain.Outboxes.OutboxMessage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasMaxLength(4096)
+                        .HasColumnType("character varying(4096)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("Error")
+                        .HasMaxLength(512)
+                        .HasColumnType("character varying(512)");
+
+                    b.Property<DateTime?>("ProcessedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OutBox", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Libraries.Library", b =>
@@ -124,6 +171,18 @@ namespace Persistence.Migrations
                         });
 
                     b.Navigation("LibraryStaves");
+                });
+
+            modelBuilder.Entity("MGH.Core.Domain.Abstracts.DomainEvent", b =>
+                {
+                    b.HasOne("Domain.Entities.Libraries.Library", null)
+                        .WithMany("Events")
+                        .HasForeignKey("LibraryId");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Libraries.Library", b =>
+                {
+                    b.Navigation("Events");
                 });
 #pragma warning restore 612, 618
         }

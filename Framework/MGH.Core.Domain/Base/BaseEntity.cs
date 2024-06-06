@@ -1,6 +1,4 @@
-﻿using MGH.Core.Domain.Abstracts;
-
-namespace MGH.Core.Domain.Concretes;
+﻿namespace MGH.Core.Domain.Base;
 
 public class BaseEntity<T> : IEntity<T>,IEquatable<T>
 {

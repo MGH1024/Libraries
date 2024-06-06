@@ -1,7 +1,8 @@
 ﻿using Domain.Entities.Libraries.Constant;
+using Domain.Entities.Libraries.Events;
 using Domain.Entities.Libraries.Exceptions;
 using Domain.Entities.Libraries.ValueObjects;
-using MGH.Core.Domain.Concretes;
+using MGH.Core.Domain.Aggregate;
 
 namespace Domain.Entities.Libraries;
 
@@ -29,6 +30,9 @@ public class Library : AggregateRoot<Guid>
         LibraryLocation = libraryLocation;
         LibraryDistrict = libraryDistrict;
         LibraryRegistrationDate = libraryRegistrationDate;
+        
+        AddEvent(new LibraryCreatedDomainEvent(new Guid(),libraryName,libraryCode,libraryLocation,
+            (int)libraryDistrict.Value,libraryRegistrationDate));
     }
 
     public void EditLibrary(string name, string libraryCode, string libraryLocation,

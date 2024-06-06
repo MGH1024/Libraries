@@ -6,6 +6,8 @@ using MGH.Core.CrossCutting.Logging;
 using MGH.Core.Endpoint.Swagger;
 using MGH.Core.Endpoint.Swagger.Models;
 using Microsoft.AspNetCore.Mvc.Formatters;
+using Persistence.BackgroundJobs;
+using Quartz;
 
 namespace Api;
 
@@ -17,6 +19,7 @@ public static class ApiServiceRegistration
         AddBaseMvc(builder);
         AddSwagger(builder);
         AddCors(builder);
+        AddQuartzJob(builder);
         builder.Services.AddMemoryCache();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddHttpContextAccessor();
@@ -39,6 +42,25 @@ public static class ApiServiceRegistration
     private static void AddLogger(WebApplicationBuilder builder)
     {
         builder.CreateLoggerByConfig();
+    }
+
+    private static void AddQuartzJob(WebApplicationBuilder builder)
+    {
+        builder.Services.AddQuartz(config =>
+        {
+            var jobKey = new JobKey(nameof(ProcessOutboxMessagesJob));
+
+            config.AddJob<ProcessOutboxMessagesJob>(jobKey)
+                .AddTrigger(
+                    trigger =>
+                        trigger.ForJob(jobKey)
+                            .WithSimpleSchedule(
+                                schedule =>
+                                    schedule.WithIntervalInSeconds(5)
+                                        .RepeatForever()));
+            config.UseMicrosoftDependencyInjectionJobFactory();
+        });
+        builder.Services.AddQuartzHostedService();
     }
 
     private static void AddSwagger(WebApplicationBuilder builder)

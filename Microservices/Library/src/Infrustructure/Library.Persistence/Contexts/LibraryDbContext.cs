@@ -1,4 +1,5 @@
 ﻿using Domain.Entities.Libraries;
+using MGH.Core.Domain.Outboxes;
 using MGH.Core.Infrastructure.Persistence.Interceptors;
 using MGH.Core.Infrastructure.Public;
 using Microsoft.EntityFrameworkCore;
@@ -23,7 +24,9 @@ public class LibraryDbContext(DbContextOptions<LibraryDbContext> options, IDateT
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.AddInterceptors(new AddAuditFieldsInterceptor(dateTime));
+        
     }
 
     private DbSet<Library> Libraries { get; set; }
+    private DbSet<OutboxMessage> OutboxMessages { get; set; }
 }

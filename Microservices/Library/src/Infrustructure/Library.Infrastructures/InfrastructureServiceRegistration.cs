@@ -84,7 +84,7 @@ public static class InfrastructureServiceRegistration
         }
     }
 
-    private static async void AddRabbitMq(this WebApplicationBuilder builder)
+    private static  void AddRabbitMq(this WebApplicationBuilder builder)
     {
         const string configurationSection = "RabbitMQ";
         var setting =

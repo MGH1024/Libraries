@@ -4,25 +4,18 @@ using Domain.Entities.Libraries.ValueObjects;
 
 namespace Domain.Entities.Libraries.Factories;
 
-public class LibraryFactory : ILibraryFactory
+public class LibraryFactory(ILibraryPolicy policy) : ILibraryFactory
 {
-    private readonly ILibraryPolicy _policy;
-
-    public LibraryFactory(ILibraryPolicy policy)
-    {
-        _policy = policy;
-    }
-
     public Library Create(string libraryName, string libraryCode, string libraryLocation,
         DateTime libraryRegistrationDate, District libraryDistrict)
     {
         var policyData = new LibraryPolicyData(libraryDistrict);
-        var newLibraryName = _policy.GenerateName(policyData, libraryName);
-
-        return new Library(new LibraryName(newLibraryName),
+        var newLibraryName = policy.GenerateName(policyData, libraryName);
+        var library = new Library(new LibraryName(newLibraryName),
             new LibraryCode(libraryCode),
             new LibraryLocation(libraryLocation),
             new LibraryDistrict(libraryDistrict),
             new LibraryRegistrationDate(libraryRegistrationDate));
+        return library;
     }
 }

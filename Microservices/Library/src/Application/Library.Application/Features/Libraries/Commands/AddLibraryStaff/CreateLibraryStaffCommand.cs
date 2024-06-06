@@ -2,7 +2,7 @@
 using Domain.Entities.Libraries;
 using Domain.Entities.Libraries.ValueObjects;
 using MediatR;
-using MGH.Core.Application.Buses.Commands;
+using MGH.Core.Domain.Buses.Commands;
 using MGH.Core.Infrastructure.Persistence.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 

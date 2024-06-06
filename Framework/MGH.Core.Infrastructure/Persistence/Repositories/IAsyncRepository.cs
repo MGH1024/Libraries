@@ -1,5 +1,5 @@
 ﻿using System.Linq.Expressions;
-using MGH.Core.Domain.Concretes;
+using MGH.Core.Domain.Base;
 using MGH.Core.Infrastructure.Persistence.Dynamic;
 using MGH.Core.Infrastructure.Persistence.Paging;
 using Microsoft.EntityFrameworkCore.Query;

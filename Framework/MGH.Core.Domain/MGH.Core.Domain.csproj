@@ -17,4 +17,9 @@
         <Description>it's a package for manage Core Domains</Description>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="MediatR.Contracts" Version="2.0.1" />
+        <PackageReference Include="MediatR" Version="12.2.0" />
+    </ItemGroup>
+
 </Project>
