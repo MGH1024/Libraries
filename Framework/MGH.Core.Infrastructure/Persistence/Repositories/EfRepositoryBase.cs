@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Linq.Expressions;
 using System.Reflection;
-using MGH.Core.Domain.Base;
+using MGH.Core.Domain.Entity.Base;
 using MGH.Core.Infrastructure.Persistence.Dynamic;
 using MGH.Core.Infrastructure.Persistence.Paging;
 using Microsoft.EntityFrameworkCore;

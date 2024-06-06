@@ -1,5 +1,5 @@
 ﻿using MGH.Core.Domain.Aggregate;
-using MGH.Core.Domain.Base;
+using MGH.Core.Domain.Entity.Base;
 using MGH.Core.Domain.Outboxes;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;

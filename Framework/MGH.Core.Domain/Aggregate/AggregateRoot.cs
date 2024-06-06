@@ -1,8 +1,14 @@
-﻿using MGH.Core.Domain.Base;
+﻿using MGH.Core.Domain.Entity.Base;
 
 namespace MGH.Core.Domain.Aggregate;
 
-public abstract class AggregateRoot<T> : BaseEntity<T>, IAuditable,IAggregateRoot
+public interface IAggregateRoot
+{
+    IEnumerable<DomainEvent> Events { get; }
+    void ClearEvents();
+}
+
+public abstract class AggregateRoot<T> : BaseEntity<T>, IAuditable, IAggregateRoot
 {
     public int Version { get; set; }
     private bool _versionIncremented;
@@ -17,6 +23,7 @@ public abstract class AggregateRoot<T> : BaseEntity<T>, IAuditable,IAggregateRoo
             Version++;
             _versionIncremented = true;
         }
+
         _events.Add(@event);
     }
 
@@ -36,5 +43,4 @@ public abstract class AggregateRoot<T> : BaseEntity<T>, IAuditable,IAggregateRoo
     public string UpdatedBy { get; set; }
     public DateTime? DeletedAt { get; set; }
     public string DeletedBy { get; set; }
-    
 }

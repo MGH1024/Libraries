@@ -1,5 +1,9 @@
-﻿namespace MGH.Core.Domain.Base;
+﻿namespace MGH.Core.Domain.Entity.Base;
 
+public interface IEntity<out T> 
+{
+    T Id { get; }
+}
 public class BaseEntity<T> : IEntity<T>,IEquatable<T>
 {
     public T Id { get; protected set; }

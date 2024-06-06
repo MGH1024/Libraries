@@ -1,4 +1,4 @@
-﻿namespace MGH.Core.Domain.Base;
+﻿namespace MGH.Core.Domain.Entity.Features;
 
 public interface ICodeAble 
 {
