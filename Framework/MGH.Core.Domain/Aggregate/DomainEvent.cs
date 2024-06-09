@@ -1,3 +1,6 @@
 ﻿namespace MGH.Core.Domain.Aggregate;
 
-public record DomainEvent(Guid Id) ;
+public class DomainEvent : IEvent
+{
+    public Guid Id { get; private set; } = Guid.NewGuid();
+}

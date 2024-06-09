@@ -1,8 +1,20 @@
 using MGH.Core.Domain.Aggregate;
 using MGH.Core.Domain.Buses.Commands;
+using Nest;
 
 namespace Domain.Entities.Libraries.Events;
 
-public record LibraryCreatedDomainEvent(Guid Id, string LibraryName, string LibraryCode, 
-    string LibraryLocation, int LibraryDistrict, 
-    DateTime LibraryRegistrationDate) : DomainEvent(Id),ICommand;
+public class LibraryCreatedDomainEvent(
+    string libraryName,
+    string libraryCode,
+    string libraryLocation,
+    int libraryDistrict,
+    DateTime libraryRegistrationDate)
+    : DomainEvent, ICommand
+{
+    public string LibraryName { get; set; } = libraryName;
+    public string LibraryCode { get; set; } = libraryCode;
+    public string LibraryLocation { get; set; } = libraryLocation;
+    public int LibraryDistrict { get; set; } = libraryDistrict;
+    public DateTime LibraryRegistrationDate { get; set; } = libraryRegistrationDate;
+}

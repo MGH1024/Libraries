@@ -60,6 +60,7 @@ public static class PersistenceServiceRegistration
         builder.Services.AddDbContext<LibraryDbContext>(options => options.UseInMemoryDatabase("LibraryMicroService"));
         builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         builder.Services.AddScoped<ILibraryRepository, LibraryRepository>();
+        builder.Services.AddScoped<IOutBoxRepository, OutBoxRepository>();
         builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
         builder.Services.AddScoped<ILibraryFactory, LibraryFactory>();
         builder.Services.AddScoped<ILibraryPolicy, DistrictPolicy>();

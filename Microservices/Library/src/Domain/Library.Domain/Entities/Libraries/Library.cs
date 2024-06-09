@@ -31,7 +31,7 @@ public class Library : AggregateRoot<Guid>
         LibraryDistrict = libraryDistrict;
         LibraryRegistrationDate = libraryRegistrationDate;
         
-        AddEvent(new LibraryCreatedDomainEvent(new Guid(),libraryName,libraryCode,libraryLocation,
+        AddEvent(new LibraryCreatedDomainEvent(libraryName,libraryCode,libraryLocation,
             (int)libraryDistrict.Value,libraryRegistrationDate));
     }
 
