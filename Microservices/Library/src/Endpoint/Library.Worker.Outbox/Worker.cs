@@ -6,6 +6,8 @@ using Application.Features.Libraries.Extensions;
 using Domain.Entities.Libraries;
 using MGH.Core.Infrastructure.ElasticSearch;
 using MGH.Core.Infrastructure.ElasticSearch.Models;
+using MGH.Core.Infrastructure.MessageBrokers;
+using MGH.Core.Infrastructure.MessageBrokers.RabbitMQ;
 using MGH.Core.Infrastructure.Public;
 
 namespace Library.Worker.Outbox;
@@ -15,7 +17,8 @@ public class Worker(
     ISender sender,
     IOutBoxRepository outBoxRepository,
     IDateTime dateTime,
-    IElasticSearch elasticSearch)
+    IElasticSearch elasticSearch,
+    IMessageSender<GetOutboxListDto> messageSender)
     : BackgroundService
 {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -26,6 +29,7 @@ public class Worker(
                 new GetOutboxListQuery(new PageRequest { PageIndex = 0, PageSize = 1000 });
 
             var result = await sender.Send(getOutboxListQuery, stoppingToken);
+
             foreach (var getOutboxListDto in result.Items)
             {
                 using var transactionScope = new TransactionScope();
@@ -35,16 +39,22 @@ public class Worker(
                 outbox.ProcessedAt = dateTime.IranNow;
                 outBoxRepository.Update(outbox);
 
-                //publish in elastic
                 await elasticSearch.InsertAsync(new ElasticSearchInsertUpdateModel(outbox)
                 {
                     IndexName = "libraries",
                     ElasticId = outbox.Id
                 });
 
-                //publish to buses
+                messageSender.Publish(new PublishModel<GetOutboxListDto>
+                {
+                    Item = getOutboxListDto,
+                    ExchangeName = "mgh-exchange",
+                    RoutingKey = "mgh-routingkey",
+                    QueueName = "mgh-queue",
+                    ExchangeType = "direct",
+                });
             }
-
+            
             if (logger.IsEnabled(LogLevel.Information))
             {
                 logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);

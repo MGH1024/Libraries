@@ -2,9 +2,9 @@ namespace MGH.Core.Infrastructure.MessageBrokers.RabbitMQ;
 
 public class PublishList<T>
 {
-    public PublishList(List<T> items)
+    public PublishList()
     {
-        Items = items;
+        Items = new List<T>();
     }
 
     public string RoutingKey { get; set; }
