@@ -3,11 +3,10 @@ using Domain.Entities.Libraries;
 using MediatR;
 using MGH.Core.Application.Requests;
 using MGH.Core.Application.Responses;
-using MGH.Core.Domain.Outboxes;
 
 namespace Application.Features.OutBoxes.Queries.GetList;
 
-public class GetOutboxListQuery(PageRequest pageRequest) : IRequest<IList<OutboxMessage>>
+public class GetOutboxListQuery(PageRequest pageRequest) : IRequest<GetListResponse<GetOutboxListDto>>
 {
     public PageRequest PageRequest { get; set; } = pageRequest;
 
@@ -15,10 +14,10 @@ public class GetOutboxListQuery(PageRequest pageRequest) : IRequest<IList<Outbox
     {
     }
 
-    public class GetLibraryListQueryHandler(IOutBoxRepository outBoxRepository)
+    public class GetOutboxListQueryHandler(IOutBoxRepository outBoxRepository)
         : IRequestHandler<GetOutboxListQuery, GetListResponse<GetOutboxListDto>>
     {
-        public async Task<IList<GetOutboxListDto>> Handle(GetOutboxListQuery request,
+        public async Task<GetListResponse<GetOutboxListDto>> Handle(GetOutboxListQuery request,
             CancellationToken cancellationToken)
         {
             var outboxes = await outBoxRepository.GetListAsync(
@@ -27,8 +26,8 @@ public class GetOutboxListQuery(PageRequest pageRequest) : IRequest<IList<Outbox
                 orderBy: a => a.OrderBy(x => x.CreatedAt),
                 cancellationToken: cancellationToken
             );
-            return outboxes.Items;
-            //return outboxes.ToGetOutboxListDto();
+
+            return outboxes.ToGetOutboxListDto();
         }
     }
 }

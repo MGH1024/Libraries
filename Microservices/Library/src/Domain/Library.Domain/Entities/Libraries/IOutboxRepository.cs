@@ -8,6 +8,13 @@ namespace Domain.Entities.Libraries;
 
 public interface IOutBoxRepository : IQuery<OutboxMessage>
 {
+    Task<OutboxMessage> GetAsync(
+        Expression<Func<OutboxMessage, bool>> predicate,
+        Func<IQueryable<OutboxMessage>, IIncludableQueryable<OutboxMessage, object>> include = null,
+        bool withDeleted = false,
+        bool enableTracking = true,
+        CancellationToken cancellationToken = default);
+    
     Task<IPaginate<OutboxMessage>> GetListAsync(
         Expression<Func<OutboxMessage, bool>> predicate = null,
         Func<IQueryable<OutboxMessage>, IOrderedQueryable<OutboxMessage>> orderBy = null,
@@ -18,4 +25,6 @@ public interface IOutBoxRepository : IQuery<OutboxMessage>
         bool enableTracking = true,
         CancellationToken cancellationToken = default
     );
+
+    OutboxMessage Update(OutboxMessage entity);
 }

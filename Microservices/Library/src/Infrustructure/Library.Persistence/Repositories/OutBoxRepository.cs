@@ -12,6 +12,25 @@ public class OutBoxRepository(LibraryDbContext libraryDbContext) : IOutBoxReposi
 {
     public IQueryable<OutboxMessage> Query() => libraryDbContext.Set<OutboxMessage>();
 
+    
+    
+    public async Task<OutboxMessage> GetAsync(
+        Expression<Func<OutboxMessage, bool>> predicate,
+        Func<IQueryable<OutboxMessage>, IIncludableQueryable<OutboxMessage, object>> include = null,
+        bool withDeleted = false,
+        bool enableTracking = true,
+        CancellationToken cancellationToken = default)
+    {
+        var queryable = Query();
+        if (!enableTracking)
+            queryable = queryable.AsNoTracking();
+        if (include != null)
+            queryable = include(queryable);
+        if (withDeleted)
+            queryable = queryable.IgnoreQueryFilters();
+        return await queryable.FirstOrDefaultAsync(predicate, cancellationToken);
+    }
+    
     public async Task<IPaginate<OutboxMessage>> GetListAsync(Expression<Func<OutboxMessage, bool>> predicate = null,
         Func<IQueryable<OutboxMessage>, IOrderedQueryable<OutboxMessage>> orderBy = null,
         Func<IQueryable<OutboxMessage>, IIncludableQueryable<OutboxMessage, object>> include = null, int index = 0,
@@ -30,5 +49,11 @@ public class OutBoxRepository(LibraryDbContext libraryDbContext) : IOutBoxReposi
         if (orderBy != null)
             return await orderBy(queryable).ToPaginateAsync(index, size, from: 0, cancellationToken);
         return await queryable.ToPaginateAsync(index, size, from: 0, cancellationToken);
+    }
+    
+    public OutboxMessage  Update(OutboxMessage entity)
+    {
+        libraryDbContext.Update(entity);
+        return entity;
     }
 }
