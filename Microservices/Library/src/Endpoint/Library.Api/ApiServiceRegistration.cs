@@ -60,7 +60,7 @@ public static class ApiServiceRegistration
                                         .RepeatForever()));
             config.UseMicrosoftDependencyInjectionJobFactory();
         });
-        builder.Services.AddQuartzHostedService();
+        //builder.Services.AddQuartzHostedService();
     }
 
     private static void AddSwagger(WebApplicationBuilder builder)

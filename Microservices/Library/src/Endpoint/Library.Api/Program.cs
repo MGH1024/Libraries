@@ -2,8 +2,6 @@ using Api;
 using Application;
 using Infrastructures;
 using Persistence;
-using Persistence.BackgroundJobs;
-using Quartz;
 
 var builder = WebApplication.CreateBuilder(args);
 
