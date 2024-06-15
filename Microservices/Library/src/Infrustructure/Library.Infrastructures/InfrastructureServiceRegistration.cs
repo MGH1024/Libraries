@@ -23,19 +23,19 @@ namespace Infrastructures;
 
 public static class InfrastructureServiceRegistration
 {
-    public static IServiceCollection AddInfrastructuresServices(this WebApplicationBuilder builder)
+    public static IServiceCollection AddInfrastructuresServices(this IServiceCollection services,IConfiguration configuration)
     {
-        builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
-        builder.Services.AddTransient<IDateTime, DateTimeService>();
-        builder.Services.AddSingleton<IMailService, MailKitMailService>();
-        builder.Services.AddScoped<IEmailAuthenticatorHelper, EmailAuthenticatorHelper>();
-        builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
-        builder.Services.AddScoped<ITokenHelper, JwtHelper>();
-        builder.Services.AddScoped<IOtpAuthenticatorHelper, OtpNetOtpAuthenticatorHelper>();
-        builder.Services.AddCulture();
-        builder.AddElasticSearch();
-        builder.AddRabbitMq();
-        return builder.Services;
+        services.Configure<EmailSettings>(configuration.GetSection("EmailSettings"));
+        services.AddTransient<IDateTime, DateTimeService>();
+        services.AddSingleton<IMailService, MailKitMailService>();
+        services.AddScoped<IEmailAuthenticatorHelper, EmailAuthenticatorHelper>();
+        services.AddAutoMapper(Assembly.GetExecutingAssembly());
+        services.AddScoped<ITokenHelper, JwtHelper>();
+        services.AddScoped<IOtpAuthenticatorHelper, OtpNetOtpAuthenticatorHelper>();
+        services.AddCulture();
+        services.AddElasticSearch(configuration);
+        services.AddRabbitMq(configuration);
+        return services;
     }
 
     private static void AddCulture(this IServiceCollection services)
@@ -58,18 +58,18 @@ public static class InfrastructureServiceRegistration
             .AddLocalization(opt => { opt.ResourcesPath = "Resources"; });
     }
 
-    private static async void AddElasticSearch(this WebApplicationBuilder builder)
+    private static async void AddElasticSearch(this IServiceCollection services, IConfiguration configuration)
     {
         const string configurationSection = "ElasticSearchConfig";
         var setting =
-            builder.Configuration.GetSection(configurationSection).Get<ElasticSearchConfig>()
+            configuration.GetSection(configurationSection).Get<ElasticSearchConfig>()
             ?? throw new NullReferenceException($"\"{configurationSection}\" " +
                                                 $"section cannot found in configuration.");
 
         var connectionSettings = new ConnectionSettings(new Uri(setting.ConnectionString));
         var client = new ElasticClient(connectionSettings);
-        builder.Services.AddSingleton(client);
-        builder.Services.AddSingleton<IElasticSearch, ElasticSearchService>(x => new ElasticSearchService(client));
+        services.AddSingleton(client);
+        services.AddSingleton<IElasticSearch, ElasticSearchService>(x => new ElasticSearchService(client));
 
         foreach (var i in setting.Indices)
         {
@@ -84,20 +84,19 @@ public static class InfrastructureServiceRegistration
         }
     }
 
-    private static  void AddRabbitMq(this WebApplicationBuilder builder)
+    private static  void AddRabbitMq(this IServiceCollection services, IConfiguration configuration)
     {
         const string configurationSection = "RabbitMQ";
         var setting =
-            builder.Configuration.GetSection(configurationSection).Get<RabbitMq>()
+            configuration.GetSection(configurationSection).Get<RabbitMq>()
             ?? throw new NullReferenceException($"\"{configurationSection}\" " +
                                                 $"section cannot found in configuration.");
         
-        builder.Services.Configure<RabbitMq>(option =>
-            builder.Configuration.GetSection(nameof(RabbitMq)).Bind(option));
+        services.Configure<RabbitMq>(option =>
+            configuration.GetSection(nameof(RabbitMq)).Bind(option));
         
             
-        builder.Services.AddTransient(typeof(MGH.Core.Infrastructure.MessageBrokers.IMessageSender<>),
+        services.AddTransient(typeof(MGH.Core.Infrastructure.MessageBrokers.IMessageSender<>),
             typeof(MGH.Core.Infrastructure.MessageBrokers.RabbitMqService<>));
-        
     }
 }

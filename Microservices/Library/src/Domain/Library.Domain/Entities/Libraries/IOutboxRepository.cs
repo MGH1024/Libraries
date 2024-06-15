@@ -27,4 +27,5 @@ public interface IOutBoxRepository : IQuery<OutboxMessage>
     );
 
     OutboxMessage Update(OutboxMessage entity);
+    void Update(IEnumerable<Guid> idList);
 }

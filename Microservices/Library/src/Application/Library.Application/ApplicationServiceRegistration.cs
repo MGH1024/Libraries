@@ -14,11 +14,11 @@ namespace Application;
 
 public static class ApplicationServiceRegistration
 {
-    public static IServiceCollection AddApplicationServices(this WebApplicationBuilder builder)
+    public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
         
-        builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
-        builder.Services.AddMediatR(configuration =>
+        services.AddAutoMapper(Assembly.GetExecutingAssembly());
+        services.AddMediatR(configuration =>
         {
             configuration.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
             configuration.AddOpenBehavior(typeof(CachingBehavior<,>));
@@ -28,10 +28,10 @@ public static class ApplicationServiceRegistration
             configuration.AddOpenBehavior(typeof(TransactionScopeBehavior<,>));
             configuration.AddOpenBehavior(typeof(RequestValidationBehavior<,>));
         });
-        builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-        builder.Services.AddSubClassesOfType(Assembly.GetExecutingAssembly(), typeof(BaseBusinessRules));
-        builder.Services.AddSingleton<IElasticSearch, ElasticSearchService>();
-        return builder.Services;
+        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+        services.AddSubClassesOfType(Assembly.GetExecutingAssembly(), typeof(BaseBusinessRules));
+        services.AddSingleton<IElasticSearch, ElasticSearchService>();
+        return services;
     }
 
     private static void AddSubClassesOfType(this IServiceCollection services, Assembly assembly,

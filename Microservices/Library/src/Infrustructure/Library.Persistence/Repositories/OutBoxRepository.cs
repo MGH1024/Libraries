@@ -2,13 +2,14 @@
 using Domain.Entities.Libraries;
 using MGH.Core.Domain.Outboxes;
 using MGH.Core.Infrastructure.Persistence.Paging;
+using MGH.Core.Infrastructure.Public;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using Persistence.Contexts;
 
 namespace Persistence.Repositories;
 
-public class OutBoxRepository(LibraryDbContext libraryDbContext) : IOutBoxRepository
+public class OutBoxRepository(LibraryDbContext libraryDbContext , IDateTime dateTime) : IOutBoxRepository
 {
     public IQueryable<OutboxMessage> Query() => libraryDbContext.Set<OutboxMessage>();
 
@@ -55,5 +56,13 @@ public class OutBoxRepository(LibraryDbContext libraryDbContext) : IOutBoxReposi
     {
         libraryDbContext.Update(entity);
         return entity;
+    }
+
+    public void Update(IEnumerable<Guid> idList)
+    {
+        var lstOutbox 
+            = Query().Where(a => idList.Contains(a.Id)).ToList();
+        
+        lstOutbox.ForEach(x => x.ProcessedAt = dateTime.IranNow);
     }
 }

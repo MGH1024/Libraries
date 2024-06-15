@@ -5,8 +5,8 @@ using Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.AddApiService();
-builder.AddPersistenceService();
-builder.AddApplicationServices();
-builder.AddInfrastructuresServices();
+builder.Services.AddApiService(builder.Configuration,builder.Host);
+builder.Services.AddPersistenceService(builder.Configuration);
+builder.Services.AddApplicationServices();
+builder.Services.AddInfrastructuresServices(builder.Configuration);
 builder.RegisterApp();

@@ -13,16 +13,17 @@ namespace Api;
 
 public static class ApiServiceRegistration
 {
-    public static void AddApiService(this WebApplicationBuilder builder)
+    public static void AddApiService(this IServiceCollection services, IConfiguration configuration,
+        IHostBuilder hostBuilder)
     {
-        AddLogger(builder);
-        AddBaseMvc(builder);
-        AddSwagger(builder);
-        AddCors(builder);
-        AddQuartzJob(builder);
-        builder.Services.AddMemoryCache();
-        builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddHttpContextAccessor();
+        AddLogger(configuration, hostBuilder);
+        services.AddSwagger(configuration);
+        services.AddCors();
+        services.AddBaseMvc();
+        services.AddQuartzJob();
+        services.AddMemoryCache();
+        services.AddHttpContextAccessor();
+        services.AddEndpointsApiExplorer();
     }
 
     public static void RegisterApp(this WebApplicationBuilder builder)
@@ -39,14 +40,44 @@ public static class ApiServiceRegistration
         app.Run();
     }
 
-    private static void AddLogger(WebApplicationBuilder builder)
+    private static void AddLogger(IConfiguration configuration, IHostBuilder hostBuilder)
     {
-        builder.CreateLoggerByConfig();
+        RegisterLogger.CreateLoggerByConfig(configuration, hostBuilder);
     }
 
-    private static void AddQuartzJob(WebApplicationBuilder builder)
+    private static void AddBaseMvc(this IServiceCollection services)
     {
-        builder.Services.AddQuartz(config =>
+        services.AddControllers(options =>
+            {
+                options.ModelBinderProviders.Insert(0, new DateTimeModelBinderProvider());
+                options.ValueProviderFactories.Insert(0, new SeparatedQueryStringValueProviderFactory(","));
+                options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
+            })
+            .AddJsonOptions(opts =>
+            {
+                var enumConvertor = new JsonStringEnumConverter();
+                opts.JsonSerializerOptions.Converters.Add(new DateTimeConverter());
+                opts.JsonSerializerOptions.Converters.Add(enumConvertor);
+            });
+
+        services.Configure<ApiBehaviorOptions>(options => { options.SuppressModelStateInvalidFilter = true; });
+
+        services.AddMvc(setup =>
+            {
+                setup.ReturnHttpNotAcceptable = true;
+                setup.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
+            })
+            .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+                options.JsonSerializerOptions.PropertyNamingPolicy = null;
+                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            });
+    }
+
+    private static void AddQuartzJob(this IServiceCollection services)
+    {
+        services.AddQuartz(config =>
         {
             var jobKey = new JobKey(nameof(ProcessOutboxMessagesJob));
 
@@ -60,16 +91,16 @@ public static class ApiServiceRegistration
                                         .RepeatForever()));
             config.UseMicrosoftDependencyInjectionJobFactory();
         });
-        //builder.Services.AddQuartzHostedService();
+        //services.AddQuartzHostedService();
     }
 
-    private static void AddSwagger(WebApplicationBuilder builder)
+    private static void AddSwagger(this IServiceCollection services, IConfiguration configuration)
     {
-        var swaggerConfig = builder.Configuration
+        var swaggerConfig = configuration
             .GetSection(nameof(SwaggerConfig))
             .Get<SwaggerConfig>();
 
-        builder.Services.AddSwaggerGen(op =>
+        services.AddSwaggerGen(op =>
         {
             op.AddXmlComments();
             op.AddBearerToken(swaggerConfig.OpenApiSecuritySchemeConfig,
@@ -78,39 +109,9 @@ public static class ApiServiceRegistration
         });
     }
 
-    private static void AddBaseMvc(WebApplicationBuilder builder)
+    private static void AddCors(this IServiceCollection services)
     {
-        builder.Services.AddControllers(options =>
-            {
-                options.ModelBinderProviders.Insert(0, new DateTimeModelBinderProvider());
-                options.ValueProviderFactories.Insert(0, new SeparatedQueryStringValueProviderFactory(","));
-                options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
-            })
-            .AddJsonOptions(opts =>
-            {
-                var enumConvertor = new JsonStringEnumConverter();
-                opts.JsonSerializerOptions.Converters.Add(new DateTimeConverter());
-                opts.JsonSerializerOptions.Converters.Add(enumConvertor);
-            });
-
-        builder.Services.Configure<ApiBehaviorOptions>(options => { options.SuppressModelStateInvalidFilter = true; });
-
-        builder.Services.AddMvc(setup =>
-            {
-                setup.ReturnHttpNotAcceptable = true;
-                setup.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
-            })
-            .AddJsonOptions(options =>
-            {
-                options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
-                options.JsonSerializerOptions.PropertyNamingPolicy = null;
-                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-            });
-    }
-
-    private static void AddCors(WebApplicationBuilder builder)
-    {
-        builder.Services.AddCors(options =>
+        services.AddCors(options =>
         {
             options.AddPolicy("CorsPolicy", config => config
                 .AllowAnyOrigin()

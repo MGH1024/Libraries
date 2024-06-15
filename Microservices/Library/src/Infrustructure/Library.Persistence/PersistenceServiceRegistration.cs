@@ -18,7 +18,7 @@ namespace Persistence;
 
 public static class PersistenceServiceRegistration
 {
-    public static IServiceCollection AddPersistenceService(this WebApplicationBuilder builder)
+    public static IServiceCollection AddPersistenceService(this IServiceCollection services , IConfiguration configuration)
     {
         #region sqlserver
 
@@ -42,11 +42,11 @@ public static class PersistenceServiceRegistration
         #region postgres
 
         AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
-        var postgresConfig = builder.Configuration
+        var postgresConfig = configuration
             .GetSection(nameof(DatabaseConnection))
             .Get<DatabaseConnection>()
             .PostgresConnection;
-        builder.Services
+        services
             .AddDbContext<LibraryDbContext>(options =>
                 options.UseNpgsql(postgresConfig, a =>
                     {
@@ -56,16 +56,17 @@ public static class PersistenceServiceRegistration
                     .AddInterceptors()
                     .LogTo(Console.Write, LogLevel.Information));
 
-        builder.Services.AddHealthChecks().AddDbContextCheck<LibraryDbContext>();
-        builder.Services.AddDbContext<LibraryDbContext>(options => options.UseInMemoryDatabase("LibraryMicroService"));
-        builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-        builder.Services.AddScoped<ILibraryRepository, LibraryRepository>();
-        builder.Services.AddScoped<IOutBoxRepository, OutBoxRepository>();
-        builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-        builder.Services.AddScoped<ILibraryFactory, LibraryFactory>();
-        builder.Services.AddScoped<ILibraryPolicy, DistrictPolicy>();
-        return builder.Services;
+        services.AddHealthChecks().AddDbContextCheck<LibraryDbContext>();
+        services.AddDbContext<LibraryDbContext>(options => options.UseInMemoryDatabase("LibraryMicroService"));
+        services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+        services.AddScoped<ILibraryRepository, LibraryRepository>();
+        services.AddScoped<IOutBoxRepository, OutBoxRepository>();
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<ILibraryFactory, LibraryFactory>();
+        services.AddScoped<ILibraryPolicy, DistrictPolicy>();
+        return services;
 
         #endregion
     }
+    
 }

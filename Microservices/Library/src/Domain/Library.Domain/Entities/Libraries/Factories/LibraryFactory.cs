@@ -11,6 +11,7 @@ public class LibraryFactory(ILibraryPolicy policy) : ILibraryFactory
     {
         var policyData = new LibraryPolicyData(libraryDistrict);
         var newLibraryName = policy.GenerateName(policyData, libraryName);
+        
         var library = new Library(new LibraryName(newLibraryName),
             new LibraryCode(libraryCode),
             new LibraryLocation(libraryLocation),
