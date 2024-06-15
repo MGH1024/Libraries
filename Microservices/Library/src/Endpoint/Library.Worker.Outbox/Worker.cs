@@ -1,5 +1,4 @@
 using MediatR;
-using System.Transactions;
 using Application.Features.OutBoxes.Commands.UpdateProcessAt;
 using MGH.Core.Application.Requests;
 using Application.Features.OutBoxes.Queries.GetList;
@@ -21,39 +20,32 @@ public class Worker(IServiceProvider serviceProvider) : BackgroundService
 
         while (!cancellationToken.IsCancellationRequested)
         {
-            try
-            {
-                using var transactionScope = new TransactionScope();
-                var result = await sender.Send(
-                    new GetOutboxListQuery(new PageRequest
-                    {
-                        PageIndex = 0,
-                        PageSize = 1000
-                    }), cancellationToken);
-
-                await sender.Send(new UpdateProcessAtCommand
+            //using var transactionScope = new TransactionScope();
+            var result = await sender.Send(
+                new GetOutboxListQuery(new PageRequest
                 {
-                    Guids = result.Items.Select(a => a.Id)
-                }, cancellationToken);
+                    PageIndex = 0,
+                    PageSize = 1000
+                }), cancellationToken);
 
-                await elastic.InsertManyAsync("libraries", result.Items.ToArray());
-                messageBus.Publish(new PublishList<GetOutboxListDto>()
-                {
-                    Items = result.Items.ToList(),
-                    ExchangeName = "mgh-exchange",
-                    RoutingKey = "mgh-routingkey",
-                    QueueName = "mgh-queue",
-                    ExchangeType = "direct",
-                });
-
-                transactionScope.Complete();
-            }
-            catch (Exception e)
+            await sender.Send(new UpdateProcessAtCommand
             {
-                Console.WriteLine(e);
-                throw;
-            }
-            await Task.Delay(1000, cancellationToken);
+                Guids = result.Items.Select(a => a.Id)
+            }, cancellationToken);
+
+            await elastic.InsertManyAsync("libraries", result.Items.ToArray());
+            messageBus.Publish(new PublishList<GetOutboxListDto>()
+            {
+                Items = result.Items.ToList(),
+                ExchangeName = "mgh-exchange",
+                RoutingKey = "mgh-routingkey",
+                QueueName = "mgh-queue",
+                ExchangeType = "direct",
+            });
+
+            //transactionScope.Complete();
         }
+
+        await Task.Delay(1000, cancellationToken);
     }
 }

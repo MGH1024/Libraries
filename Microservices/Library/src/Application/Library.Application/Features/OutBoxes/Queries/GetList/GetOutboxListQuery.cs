@@ -23,8 +23,6 @@ public class GetOutboxListQuery(PageRequest pageRequest) : IRequest<GetListRespo
             var outboxes = await outBoxRepository.GetListAsync(
                 index: request.PageRequest.PageIndex,
                 size: request.PageRequest.PageSize,
-                orderBy: a => a.OrderBy(x => x.CreatedAt),
-                predicate: a => a.ProcessedAt == null,
                 cancellationToken: cancellationToken
             );
 
