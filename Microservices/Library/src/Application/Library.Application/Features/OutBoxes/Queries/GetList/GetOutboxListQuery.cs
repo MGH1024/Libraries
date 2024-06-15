@@ -10,7 +10,7 @@ public class GetOutboxListQuery(PageRequest pageRequest) : IRequest<GetListRespo
 {
     public PageRequest PageRequest { get; set; } = pageRequest;
 
-    public GetOutboxListQuery() : this(new PageRequest { PageIndex = 0, PageSize = 10 })
+    public GetOutboxListQuery() : this(new PageRequest { PageIndex = 0, PageSize = 100 })
     {
     }
 
@@ -24,6 +24,7 @@ public class GetOutboxListQuery(PageRequest pageRequest) : IRequest<GetListRespo
                 index: request.PageRequest.PageIndex,
                 size: request.PageRequest.PageSize,
                 orderBy: a => a.OrderBy(x => x.CreatedAt),
+                predicate: a => a.ProcessedAt == null,
                 cancellationToken: cancellationToken
             );
 
