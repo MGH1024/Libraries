@@ -1,4 +1,5 @@
 ﻿using Elasticsearch.Net;
+using MGH.Core.Infrastructure.ElasticSearch.Base;
 using MGH.Core.Infrastructure.ElasticSearch.Models;
 using Nest;
 

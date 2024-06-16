@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using MGH.Core.Domain.Outboxes;
-using MGH.Core.Infrastructure.Persistence.Paging;
-using MGH.Core.Infrastructure.Persistence.Repositories;
+using MGH.Core.Infrastructure.Persistence.Base;
+using MGH.Core.Infrastructure.Persistence.Models.Paging;
 using Microsoft.EntityFrameworkCore.Query;
 
 namespace Domain.Entities.Libraries;

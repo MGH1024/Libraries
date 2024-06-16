@@ -1,8 +1,9 @@
 ﻿using Domain.Entities.Libraries;
 using Domain.Entities.Libraries.Factories;
 using Domain.Entities.Libraries.Policies;
+using MGH.Core.Infrastructure.Persistence.Base;
 using MGH.Core.Infrastructure.Persistence.Models;
-using MGH.Core.Infrastructure.Persistence.UnitOfWork;
+using MGH.Core.Infrastructure.Persistence.Models.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;

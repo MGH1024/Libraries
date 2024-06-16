@@ -1,4 +1,6 @@
 ﻿using MailKit.Net.Smtp;
+using MGH.Core.Infrastructure.Mails.Base;
+using MGH.Core.Infrastructure.Mails.MailKitImplementations.Models;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
 using MimeKit.Cryptography;

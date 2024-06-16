@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using MGH.Core.Infrastructure.Persistence.Models.Paging;
+using Microsoft.EntityFrameworkCore;
 
-namespace MGH.Core.Infrastructure.Persistence.Paging;
+namespace MGH.Core.Infrastructure.Persistence.Extensions;
 
-public static class IQueryablePaginateExtensions
+public static class QueryablePaginateExtensions
 {
     public static async Task<IPaginate<T>> ToPaginateAsync<T>(
         this IQueryable<T> source,

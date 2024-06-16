@@ -1,4 +1,4 @@
-﻿using MGH.Core.Infrastructure.Persistence.UnitOfWork;
+﻿using MGH.Core.Infrastructure.Persistence.Base;
 using Microsoft.EntityFrameworkCore.Storage;
 using Persistence.Contexts;
 

@@ -1,7 +1,7 @@
 ﻿using MGH.Core.Infrastructure.ElasticSearch.Models;
 using Nest;
 
-namespace MGH.Core.Infrastructure.ElasticSearch;
+namespace MGH.Core.Infrastructure.ElasticSearch.Base;
 
 public interface IElasticSearch
 {

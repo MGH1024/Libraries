@@ -1,4 +1,4 @@
-﻿namespace MGH.Core.Infrastructure.Mails.Models;
+﻿namespace MGH.Core.Infrastructure.Mails.Configuration;
 
 public class EmailSettings
 {

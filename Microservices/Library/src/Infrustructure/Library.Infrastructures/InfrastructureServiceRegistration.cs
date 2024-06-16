@@ -2,11 +2,15 @@
 using System.Reflection;
 using MGH.Core.CrossCutting.Localizations.RouteConstraints;
 using MGH.Core.Infrastructure.ElasticSearch;
+using MGH.Core.Infrastructure.ElasticSearch.Base;
 using MGH.Core.Infrastructure.ElasticSearch.Models;
 using MGH.Core.Infrastructure.Mails;
+using MGH.Core.Infrastructure.Mails.Base;
+using MGH.Core.Infrastructure.Mails.Configuration;
 using MGH.Core.Infrastructure.Mails.MailKitImplementations;
-using MGH.Core.Infrastructure.Mails.Models;
+using MGH.Core.Infrastructure.MessageBrokers.Base;
 using MGH.Core.Infrastructure.MessageBrokers.RabbitMQ;
+using MGH.Core.Infrastructure.MessageBrokers.RabbitMQ.Model;
 using MGH.Core.Infrastructure.Public;
 using MGH.Core.Infrastructure.Security.EmailAuthenticator;
 using MGH.Core.Infrastructure.Security.JWT;
@@ -96,7 +100,7 @@ public static class InfrastructureServiceRegistration
             configuration.GetSection(nameof(RabbitMq)).Bind(option));
         
             
-        services.AddTransient(typeof(MGH.Core.Infrastructure.MessageBrokers.IMessageSender<>),
-            typeof(MGH.Core.Infrastructure.MessageBrokers.RabbitMqService<>));
+        services.AddTransient(typeof(IMessageSender<>),
+            typeof(RabbitMqService<>));
     }
 }

@@ -2,7 +2,7 @@
 using Domain.Entities.Libraries;
 using Microsoft.EntityFrameworkCore;
 using MGH.Core.Domain.Buses.Commands;
-using MGH.Core.Infrastructure.Persistence.UnitOfWork;
+using MGH.Core.Infrastructure.Persistence.Base;
 
 namespace Application.Features.Libraries.Commands.RemoveLibraryStaff;
 

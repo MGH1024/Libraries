@@ -2,9 +2,10 @@
 using System.Linq.Expressions;
 using Domain.Entities.Libraries;
 using MGH.Core.Domain.Entity.Base;
+using MGH.Core.Infrastructure.Persistence.Extensions;
 using MGH.Core.Infrastructure.Persistence.Models;
-using MGH.Core.Infrastructure.Persistence.Paging;
-using MGH.Core.Infrastructure.Persistence.Repositories;
+using MGH.Core.Infrastructure.Persistence.Models.Filters;
+using MGH.Core.Infrastructure.Persistence.Models.Paging;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Query;

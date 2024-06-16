@@ -1,12 +1,13 @@
-﻿using Polly;
-using System.Text;
-using RabbitMQ.Client;
+﻿using System.Text;
 using System.Text.Json;
-using RabbitMQ.Client.Events;
+using MGH.Core.Infrastructure.MessageBrokers.Base;
+using MGH.Core.Infrastructure.MessageBrokers.RabbitMQ.Model;
 using Microsoft.Extensions.Options;
-using MGH.Core.Infrastructure.MessageBrokers.RabbitMQ;
+using Polly;
+using RabbitMQ.Client;
+using RabbitMQ.Client.Events;
 
-namespace MGH.Core.Infrastructure.MessageBrokers;
+namespace MGH.Core.Infrastructure.MessageBrokers.RabbitMQ;
 
 public class RabbitMqService<T> : IMessageSender<T>
 {

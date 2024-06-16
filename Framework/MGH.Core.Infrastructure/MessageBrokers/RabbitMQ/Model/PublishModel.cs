@@ -1,4 +1,4 @@
-namespace MGH.Core.Infrastructure.MessageBrokers.RabbitMQ;
+namespace MGH.Core.Infrastructure.MessageBrokers.RabbitMQ.Model;
 
 public class PublishModel<T>
 {

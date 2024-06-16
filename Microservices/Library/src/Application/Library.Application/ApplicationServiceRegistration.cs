@@ -8,6 +8,7 @@ using MGH.Core.Application.Pipelines.Authorization;
 using MGH.Core.Application.Pipelines.Transaction;
 using MGH.Core.Application.Pipelines.Validation;
 using MGH.Core.Infrastructure.ElasticSearch;
+using MGH.Core.Infrastructure.ElasticSearch.Base;
 using Microsoft.AspNetCore.Builder;
 
 namespace Application;

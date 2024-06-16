@@ -1,4 +1,4 @@
-﻿namespace MGH.Core.Infrastructure.Persistence.Paging;
+﻿namespace MGH.Core.Infrastructure.Persistence.Models.Paging;
 
 public class Paginate<T> : IPaginate<T>
 {

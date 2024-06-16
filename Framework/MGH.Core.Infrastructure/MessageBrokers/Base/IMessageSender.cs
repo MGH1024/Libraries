@@ -1,6 +1,6 @@
-﻿using MGH.Core.Infrastructure.MessageBrokers.RabbitMQ;
+﻿using MGH.Core.Infrastructure.MessageBrokers.RabbitMQ.Model;
 
-namespace MGH.Core.Infrastructure.MessageBrokers;
+namespace MGH.Core.Infrastructure.MessageBrokers.Base;
 
 public interface IMessageSender<T> : IDisposable
 {

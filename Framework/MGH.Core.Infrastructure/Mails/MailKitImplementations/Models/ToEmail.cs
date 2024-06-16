@@ -1,4 +1,4 @@
-﻿namespace MGH.Core.Infrastructure.Mails;
+﻿namespace MGH.Core.Infrastructure.Mails.MailKitImplementations.Models;
 
 public class ToEmail
 {

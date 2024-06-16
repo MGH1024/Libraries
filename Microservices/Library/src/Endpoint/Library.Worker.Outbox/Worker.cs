@@ -3,8 +3,11 @@ using Application.Features.OutBoxes.Commands.UpdateProcessAt;
 using MGH.Core.Application.Requests;
 using Application.Features.OutBoxes.Queries.GetList;
 using MGH.Core.Infrastructure.ElasticSearch;
+using MGH.Core.Infrastructure.ElasticSearch.Base;
 using MGH.Core.Infrastructure.MessageBrokers;
+using MGH.Core.Infrastructure.MessageBrokers.Base;
 using MGH.Core.Infrastructure.MessageBrokers.RabbitMQ;
+using MGH.Core.Infrastructure.MessageBrokers.RabbitMQ.Model;
 
 namespace Library.Worker.Outbox;
 

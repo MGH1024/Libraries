@@ -1,8 +1,9 @@
 ﻿using System.Linq.Dynamic.Core;
 using System.Text;
 using MGH.Core.Infrastructure.Persistence.Models;
+using MGH.Core.Infrastructure.Persistence.Models.Filters;
 
-namespace MGH.Core.Infrastructure.Persistence.Repositories;
+namespace MGH.Core.Infrastructure.Persistence.Extensions;
 
 public static class QueryableDynamicFilterExtensions
 {
