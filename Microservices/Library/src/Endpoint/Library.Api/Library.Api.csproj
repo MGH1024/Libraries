@@ -26,7 +26,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\..\..\..\Framework\MGH.Core.Endpoint\MGH.Core.Endpoint.csproj"/>
+        <ProjectReference Include="..\..\..\..\..\Framework\MGH.Core.Endpoint.Swagger\MGH.Core.Endpoint.Swagger.csproj" />
         <ProjectReference Include="..\..\Infrustructure\Library.Persistence\Library.Persistence.csproj"/>
     </ItemGroup>
 </Project>

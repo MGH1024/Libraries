@@ -29,7 +29,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MGH.Core.Domain", "Framewor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MGH.Core.Infrastructure", "Framework\MGH.Core.Infrastructure\MGH.Core.Infrastructure.csproj", "{47E2D613-6B19-49DA-97DB-F365AE027327}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MGH.Core.Endpoint", "Framework\MGH.Core.Endpoint\MGH.Core.Endpoint.csproj", "{E6693C38-3F24-485C-80E8-66092413C5E4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MGH.Core.Endpoint.Swagger", "Framework\MGH.Core.Endpoint.Swagger\MGH.Core.Endpoint.Swagger.csproj", "{E6693C38-3F24-485C-80E8-66092413C5E4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{C43F332F-A615-438C-8DAF-6DD04C84241A}"
 EndProject
