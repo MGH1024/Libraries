@@ -1,10 +1,9 @@
 ﻿using Elasticsearch.Net;
-using MGH.Core.Infrastructure.ElasticSearch.Base;
-using MGH.Core.Infrastructure.ElasticSearch.Models;
+using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Base;
+using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Models;
 using Nest;
 
-
-namespace MGH.Core.Infrastructure.ElasticSearch;
+namespace MGH.Core.Infrastructure.ElasticSearch.ElasticSearch;
 
 public class ElasticSearchService(ElasticClient elasticClient) : IElasticSearch
 {

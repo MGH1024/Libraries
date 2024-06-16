@@ -2,8 +2,9 @@
 using System.Reflection;
 using MGH.Core.CrossCutting.Localizations.RouteConstraints;
 using MGH.Core.Infrastructure.ElasticSearch;
-using MGH.Core.Infrastructure.ElasticSearch.Base;
-using MGH.Core.Infrastructure.ElasticSearch.Models;
+using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch;
+using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Base;
+using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Models;
 using MGH.Core.Infrastructure.Mails;
 using MGH.Core.Infrastructure.Mails.Base;
 using MGH.Core.Infrastructure.Mails.Configuration;

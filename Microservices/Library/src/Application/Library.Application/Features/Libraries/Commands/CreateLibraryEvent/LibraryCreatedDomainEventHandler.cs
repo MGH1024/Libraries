@@ -1,8 +1,8 @@
 using Domain.Entities.Libraries.Events;
 using MGH.Core.Domain.Buses.Commands;
 using MGH.Core.Infrastructure.ElasticSearch;
-using MGH.Core.Infrastructure.ElasticSearch.Base;
-using MGH.Core.Infrastructure.ElasticSearch.Models;
+using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Base;
+using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Models;
 
 namespace Application.Features.Libraries.Commands.CreateLibraryEvent;
 

@@ -1,4 +1,4 @@
-﻿namespace MGH.Core.Infrastructure.ElasticSearch.Models;
+﻿namespace MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Models;
 
 public class SearchByQueryParameters(string queryName, string query, string[] fields) : SearchParameters
 {

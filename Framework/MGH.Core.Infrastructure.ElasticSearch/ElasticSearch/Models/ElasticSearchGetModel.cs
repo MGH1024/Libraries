@@ -1,4 +1,4 @@
-﻿namespace MGH.Core.Infrastructure.ElasticSearch.Models;
+﻿namespace MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Models;
 
 public class ElasticSearchGetModel<T>(string elasticId, T item)
 {

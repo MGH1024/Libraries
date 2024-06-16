@@ -1,6 +1,6 @@
 ﻿using Nest;
 
-namespace MGH.Core.Infrastructure.ElasticSearch.Models;
+namespace MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Models;
 
 public class ElasticSearchModel(Id elasticId, string indexName)
 {

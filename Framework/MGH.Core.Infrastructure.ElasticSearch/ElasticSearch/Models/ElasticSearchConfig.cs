@@ -1,6 +1,4 @@
-﻿using Nest;
-
-namespace MGH.Core.Infrastructure.ElasticSearch.Models;
+﻿namespace MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Models;
 
 public class ElasticSearchConfig(string connectionString, string userName, string password, IEnumerable<Index> indices)
 {

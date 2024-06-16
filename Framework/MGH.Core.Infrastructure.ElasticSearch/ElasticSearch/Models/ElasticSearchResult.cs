@@ -1,4 +1,4 @@
-﻿namespace MGH.Core.Infrastructure.ElasticSearch.Models;
+﻿namespace MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Models;
 
 public class ElasticSearchResult(bool success, string message = null) : IElasticSearchResult //todo: refactor
 {
