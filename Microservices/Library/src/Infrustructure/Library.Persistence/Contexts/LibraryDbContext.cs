@@ -1,6 +1,6 @@
 ﻿using Domain.Entities.Libraries;
 using MGH.Core.Domain.Outboxes;
-using MGH.Core.Infrastructure.Persistence.Interceptors;
+using MGH.Core.Infrastructure.Persistence.Persistence.Interceptors;
 using MGH.Core.Infrastructure.Public;
 using Microsoft.EntityFrameworkCore;
 

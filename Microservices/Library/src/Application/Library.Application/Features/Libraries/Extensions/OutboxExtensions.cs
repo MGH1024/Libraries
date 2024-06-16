@@ -1,7 +1,7 @@
 ﻿using Application.Features.OutBoxes.Queries.GetList;
 using MGH.Core.Application.Responses;
 using MGH.Core.Domain.Outboxes;
-using MGH.Core.Infrastructure.Persistence.Models.Paging;
+using MGH.Core.Infrastructure.Persistence.Persistence.Models.Paging;
 
 namespace Application.Features.Libraries.Extensions;
 

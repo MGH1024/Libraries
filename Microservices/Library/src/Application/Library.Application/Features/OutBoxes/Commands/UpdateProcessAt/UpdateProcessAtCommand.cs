@@ -1,6 +1,6 @@
 ﻿using Domain.Entities.Libraries;
 using MGH.Core.Domain.Buses.Commands;
-using MGH.Core.Infrastructure.Persistence.Base;
+using MGH.Core.Infrastructure.Persistence.Persistence.Base;
 
 namespace Application.Features.OutBoxes.Commands.UpdateProcessAt;
 

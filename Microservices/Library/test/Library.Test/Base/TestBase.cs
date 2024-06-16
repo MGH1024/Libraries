@@ -2,7 +2,7 @@
 using Api.Controllers;
 using Application;
 using Domain.Entities.Libraries;
-using MGH.Core.Infrastructure.Persistence.Base;
+using MGH.Core.Infrastructure.Persistence.Persistence.Base;
 using NetArchTest.Rules;
 using Persistence.Contexts;
 using Persistence.Repositories;

@@ -3,7 +3,7 @@ using Application.Features.Libraries.Commands.EditLibrary;
 using Application.Features.Libraries.Queries.GetList;
 using Domain.Entities.Libraries;
 using MGH.Core.Application.Responses;
-using MGH.Core.Infrastructure.Persistence.Models.Paging;
+using MGH.Core.Infrastructure.Persistence.Persistence.Models.Paging;
 
 namespace Application.Features.Libraries.Extensions;
 

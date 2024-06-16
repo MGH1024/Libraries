@@ -1,8 +1,6 @@
 ﻿using System.Linq.Expressions;
-using MGH.Core.Infrastructure.Persistence.Base;
-using MGH.Core.Infrastructure.Persistence.Models;
-using MGH.Core.Infrastructure.Persistence.Models.Filters;
-using MGH.Core.Infrastructure.Persistence.Models.Paging;
+using MGH.Core.Domain.Buses.Queries;
+using MGH.Core.Infrastructure.Persistence.Persistence.Models.Paging;
 using Microsoft.EntityFrameworkCore.Query;
 
 namespace Domain.Entities.Libraries;

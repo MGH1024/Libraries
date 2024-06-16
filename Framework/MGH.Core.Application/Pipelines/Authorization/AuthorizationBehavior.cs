@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using MGH.Core.CrossCutting.Exceptions.Types;
-using MGH.Core.Infrastructure.Security.Constants;
-using MGH.Core.Infrastructure.Security.Extensions;
+using MGH.Core.Infrastructure.Securities.Security.Constants;
+using MGH.Core.Infrastructure.Securities.Security.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 
@@ -19,16 +19,17 @@ public class AuthorizationBehavior<TRequest, TResponse> : IPipelineBehavior<TReq
 
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
-        List<string> userRoleClaims = _httpContextAccessor.HttpContext.User.ClaimRoles();
+        List<string> userRoleClaims = _httpContextAccessor.HttpContext?.User.ClaimRoles();
 
         if (userRoleClaims == null)
             throw new AuthorizationException("You are not authenticated.");
 
         bool isNotMatchedAUserRoleClaimWithRequestRoles = userRoleClaims
             .FirstOrDefault(
-                userRoleClaim => userRoleClaim == GeneralOperationClaims.Admin || request.Roles.Any(role => role == userRoleClaim)
-            )
-            .IsNullOrEmpty();
+                userRoleClaim => userRoleClaim == GeneralOperationClaims.Admin || 
+                                 request.Roles.Any(role => role == userRoleClaim)
+            ).IsNullOrEmpty();
+        
         if (isNotMatchedAUserRoleClaimWithRequestRoles)
             throw new AuthorizationException("You are not authorized.");
 

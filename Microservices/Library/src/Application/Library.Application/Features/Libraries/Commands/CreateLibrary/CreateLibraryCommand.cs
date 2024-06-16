@@ -3,7 +3,7 @@ using Domain.Entities.Libraries.Constant;
 using Domain.Entities.Libraries.Factories;
 using Application.Features.Libraries.Rules;
 using MGH.Core.Domain.Buses.Commands;
-using MGH.Core.Infrastructure.Persistence.Base;
+using MGH.Core.Infrastructure.Persistence.Persistence.Base;
 
 namespace Application.Features.Libraries.Commands.CreateLibrary;
 

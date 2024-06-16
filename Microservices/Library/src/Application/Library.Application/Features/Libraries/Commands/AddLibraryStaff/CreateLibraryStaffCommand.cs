@@ -3,7 +3,7 @@ using Domain.Entities.Libraries;
 using Domain.Entities.Libraries.ValueObjects;
 using MediatR;
 using MGH.Core.Domain.Buses.Commands;
-using MGH.Core.Infrastructure.Persistence.Base;
+using MGH.Core.Infrastructure.Persistence.Persistence.Base;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Libraries.Commands.AddLibraryStaff;

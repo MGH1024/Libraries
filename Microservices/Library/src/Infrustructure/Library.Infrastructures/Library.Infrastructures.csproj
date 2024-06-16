@@ -16,7 +16,9 @@
     </ItemGroup>
     
     <ItemGroup>
+      <ProjectReference Include="..\..\..\..\..\Framework\MGH.Core.Infrastructure.Mail\MGH.Core.Infrastructure.Mail.csproj" />
       <ProjectReference Include="..\..\..\..\..\Framework\MGH.Core.Infrastructure.MessageBroker.RabbitMq\MGH.Core.Infrastructure.MessageBroker.RabbitMq.csproj" />
+      <ProjectReference Include="..\..\..\..\..\Framework\MGH.Core.Infrastructure.Securities\MGH.Core.Infrastructure.Securities.csproj" />
       <ProjectReference Include="..\..\Application\Library.Application\Library.Application.csproj" />
     </ItemGroup>
 

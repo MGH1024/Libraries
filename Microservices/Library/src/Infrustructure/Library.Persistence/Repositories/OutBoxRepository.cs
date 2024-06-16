@@ -1,8 +1,8 @@
 ﻿using System.Linq.Expressions;
 using Domain.Entities.Libraries;
 using MGH.Core.Domain.Outboxes;
-using MGH.Core.Infrastructure.Persistence.Extensions;
-using MGH.Core.Infrastructure.Persistence.Models.Paging;
+using MGH.Core.Infrastructure.Persistence.Persistence.Extensions;
+using MGH.Core.Infrastructure.Persistence.Persistence.Models.Paging;
 using MGH.Core.Infrastructure.Public;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
