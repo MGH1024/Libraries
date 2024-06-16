@@ -2,12 +2,8 @@ using MediatR;
 using Application.Features.OutBoxes.Commands.UpdateProcessAt;
 using MGH.Core.Application.Requests;
 using Application.Features.OutBoxes.Queries.GetList;
-using MGH.Core.Infrastructure.ElasticSearch;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Base;
-using MGH.Core.Infrastructure.MessageBrokers;
-using MGH.Core.Infrastructure.MessageBrokers.Base;
-using MGH.Core.Infrastructure.MessageBrokers.RabbitMQ;
-using MGH.Core.Infrastructure.MessageBrokers.RabbitMQ.Model;
+using MGH.Core.Infrastructure.MessageBroker;
 
 namespace Library.Worker.Outbox;
 

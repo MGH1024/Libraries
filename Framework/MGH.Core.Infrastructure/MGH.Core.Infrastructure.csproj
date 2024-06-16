@@ -24,6 +24,7 @@
         <!--mail-->
         <PackageReference Include="MailKit" Version="4.6.0" />
         <PackageReference Include="MimeKit" Version="4.6.0" />
+        
         <!--persistenc-->
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.5" />
         <PackageReference Include="System.Linq.Dynamic.Core" Version="1.3.14" />
@@ -34,9 +35,7 @@
         <PackageReference Include="Otp.NET" Version="1.4.0" />
         <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.5.2" />
         
-        <!--message borkers-->
-        <PackageReference Include="Polly" Version="7.2.3" />
-        <PackageReference Include="RabbitMQ.Client" Version="6.2.3" />
+        
     </ItemGroup>
 
     <ItemGroup>

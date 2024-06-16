@@ -16,6 +16,7 @@
     </ItemGroup>
     
     <ItemGroup>
+      <ProjectReference Include="..\..\..\..\..\Framework\MGH.Core.Infrastructure.MessageBroker.RabbitMq\MGH.Core.Infrastructure.MessageBroker.RabbitMq.csproj" />
       <ProjectReference Include="..\..\Application\Library.Application\Library.Application.csproj" />
     </ItemGroup>
 

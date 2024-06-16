@@ -1,13 +1,11 @@
 ﻿using System.Text;
 using System.Text.Json;
-using MGH.Core.Infrastructure.MessageBrokers.Base;
-using MGH.Core.Infrastructure.MessageBrokers.RabbitMQ.Model;
 using Microsoft.Extensions.Options;
 using Polly;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
-namespace MGH.Core.Infrastructure.MessageBrokers.RabbitMQ;
+namespace MGH.Core.Infrastructure.MessageBroker.RabbitMq;
 
 public class RabbitMqService<T> : IMessageSender<T>
 {
@@ -20,7 +18,7 @@ public class RabbitMqService<T> : IMessageSender<T>
     private bool IsChannelConnected => _channel is not null && _channel.IsOpen;
 
 
-    public RabbitMqService(IOptions<RabbitMq> options)
+    public RabbitMqService(IOptions<Model.RabbitMq> options)
     {
         CreateConnectionPolicy();
         CreateConnectionFactory(options.Value);
@@ -96,7 +94,7 @@ public class RabbitMqService<T> : IMessageSender<T>
                 });
     }
 
-    private void CreateConnectionFactory(RabbitMq rabbitMq)
+    private void CreateConnectionFactory(Model.RabbitMq rabbitMq)
     {
         _connectionFactory = new ConnectionFactory()
         {

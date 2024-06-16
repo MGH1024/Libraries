@@ -12,6 +12,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\..\..\..\..\Framework\MGH.Core.Infrastructure.MessageBroker\MGH.Core.Infrastructure.MessageBroker.csproj" />
         <ProjectReference Include="..\..\Application\Library.Application\Library.Application.csproj"/>
         <ProjectReference Include="..\..\Infrustructure\Library.Persistence\Library.Persistence.csproj"/>
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.4"/>
