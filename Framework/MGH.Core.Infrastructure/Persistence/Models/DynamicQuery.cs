@@ -1,4 +1,4 @@
-﻿namespace  MGH.Core.Infrastructure.Persistence.Dynamic;
+﻿namespace  MGH.Core.Infrastructure.Persistence.Models;
 
 public class DynamicQuery
 {

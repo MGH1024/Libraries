@@ -1,14 +1,15 @@
 ﻿using System.Linq.Dynamic.Core;
 using System.Text;
+using MGH.Core.Infrastructure.Persistence.Models;
 
-namespace MGH.Core.Infrastructure.Persistence.Dynamic;
+namespace MGH.Core.Infrastructure.Persistence.Repositories;
 
-public static class IQueryableDynamicFilterExtensions
+public static class QueryableDynamicFilterExtensions
 {
-    private static readonly string[] _orders = { "asc", "desc" };
-    private static readonly string[] _logics = { "and", "or" };
+    private static readonly string[] Orders = ["asc", "desc"];
+    private static readonly string[] Logics = ["and", "or"];
 
-    private static readonly IDictionary<string, string> _operators = new Dictionary<string, string>
+    private static readonly IDictionary<string, string> Operators = new Dictionary<string, string>
     {
         { "eq", "=" },
         { "neq", "!=" },
@@ -38,7 +39,7 @@ public static class IQueryableDynamicFilterExtensions
         IList<Filter> filters = GetAllFilters(filter);
         string[] values = filters.Select(f => f.Value).ToArray();
         string where = Transform(filter, filters);
-        if (!string.IsNullOrEmpty(where) && values != null)
+        if (!string.IsNullOrEmpty(where))
             queryable = queryable.Where(where, values);
 
         return queryable;
@@ -46,24 +47,25 @@ public static class IQueryableDynamicFilterExtensions
 
     private static IQueryable<T> Sort<T>(IQueryable<T> queryable, IEnumerable<Sort> sort)
     {
-        foreach (Sort item in sort)
+        var enumerable = sort as Sort[] ?? sort.ToArray();
+        foreach (Sort item in enumerable)
         {
             if (string.IsNullOrEmpty(item.Field))
                 throw new ArgumentException("Invalid Field");
-            if (string.IsNullOrEmpty(item.Dir) || !_orders.Contains(item.Dir))
+            if (string.IsNullOrEmpty(item.Dir) || !Orders.Contains(item.Dir))
                 throw new ArgumentException("Invalid Order Type");
         }
 
-        if (sort.Any())
+        if (enumerable.Any())
         {
-            string ordering = string.Join(separator: ",", values: sort.Select(s => $"{s.Field} {s.Dir}"));
+            string ordering = string.Join(separator: ",", values: enumerable.Select(s => $"{s.Field} {s.Dir}"));
             return queryable.OrderBy(ordering);
         }
 
         return queryable;
     }
 
-    public static IList<Filter> GetAllFilters(Filter filter)
+    private static IList<Filter> GetAllFilters(Filter filter)
     {
         List<Filter> filters = new();
         GetFilters(filter, filters);
@@ -78,15 +80,15 @@ public static class IQueryableDynamicFilterExtensions
                 GetFilters(item, filters);
     }
 
-    public static string Transform(Filter filter, IList<Filter> filters)
+    private static string Transform(Filter filter, IList<Filter> filters)
     {
         if (string.IsNullOrEmpty(filter.Field))
             throw new ArgumentException("Invalid Field");
-        if (string.IsNullOrEmpty(filter.Operator) || !_operators.ContainsKey(filter.Operator))
+        if (string.IsNullOrEmpty(filter.Operator) || !Operators.ContainsKey(filter.Operator))
             throw new ArgumentException("Invalid Operator");
 
         int index = filters.IndexOf(filter);
-        string comparison = _operators[filter.Operator];
+        string comparison = Operators[filter.Operator];
         StringBuilder where = new();
 
         if (!string.IsNullOrEmpty(filter.Value))
@@ -105,7 +107,7 @@ public static class IQueryableDynamicFilterExtensions
 
         if (filter.Logic is not null && filter.Filters is not null && filter.Filters.Any())
         {
-            if (!_logics.Contains(filter.Logic))
+            if (!Logics.Contains(filter.Logic))
                 throw new ArgumentException("Invalid Logic");
             return $"{where} {filter.Logic} ({string.Join(separator: $" {filter.Logic} ", value: filter.Filters.Select(f => Transform(f, filters)).ToArray())})";
         }

@@ -1,5 +1,5 @@
 ﻿using System.Linq.Expressions;
-using MGH.Core.Infrastructure.Persistence.Dynamic;
+using MGH.Core.Infrastructure.Persistence.Models;
 using MGH.Core.Infrastructure.Persistence.Paging;
 using MGH.Core.Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore.Query;
