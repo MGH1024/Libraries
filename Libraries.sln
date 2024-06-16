@@ -65,6 +65,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MGH.Core.Infrastructure.Mai
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MGH.Core.Infrastructure.Securities", "Framework\MGH.Core.Infrastructure.Securities\MGH.Core.Infrastructure.Securities.csproj", "{50A58174-DBD1-4186-B086-06921C8F7917}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MGH.Core.CrossCutting.Logging", "Framework\MGH.Core.CrossCutting.Logging\MGH.Core.CrossCutting.Logging.csproj", "{4B933F1B-2FE4-442D-A77D-7BFBE2752091}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -143,6 +145,10 @@ Global
 		{50A58174-DBD1-4186-B086-06921C8F7917}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{50A58174-DBD1-4186-B086-06921C8F7917}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{50A58174-DBD1-4186-B086-06921C8F7917}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B933F1B-2FE4-442D-A77D-7BFBE2752091}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B933F1B-2FE4-442D-A77D-7BFBE2752091}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B933F1B-2FE4-442D-A77D-7BFBE2752091}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B933F1B-2FE4-442D-A77D-7BFBE2752091}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -174,6 +180,7 @@ Global
 		{C20AB32A-CAE4-4048-A356-C20AC76F13B0} = {084E41B7-2029-4EB7-8CC3-EDBEE5C66534}
 		{F5964394-8612-409D-8696-CD2A054CE644} = {084E41B7-2029-4EB7-8CC3-EDBEE5C66534}
 		{50A58174-DBD1-4186-B086-06921C8F7917} = {084E41B7-2029-4EB7-8CC3-EDBEE5C66534}
+		{4B933F1B-2FE4-442D-A77D-7BFBE2752091} = {084E41B7-2029-4EB7-8CC3-EDBEE5C66534}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {04EE5569-4196-47F2-A52B-CF1049C542F2}

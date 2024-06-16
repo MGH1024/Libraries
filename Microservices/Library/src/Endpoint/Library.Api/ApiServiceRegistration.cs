@@ -3,7 +3,6 @@ using System.Text.Json.Serialization;
 using MGH.Core.CrossCutting.Exceptions;
 using MGH.Core.CrossCutting.Localizations.ModelBinders;
 using MGH.Core.CrossCutting.Logging;
-using MGH.Core.Endpoint.Swagger;
 using MGH.Core.Endpoint.Swagger.Swagger;
 using MGH.Core.Endpoint.Swagger.Swagger.Models;
 using Microsoft.AspNetCore.Mvc.Formatters;
