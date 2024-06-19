@@ -38,7 +38,7 @@ public static class QueryableDynamicFilterExtensions
     {
         IList<Filter> filters = GetAllFilters(filter);
         string[] values = filters.Select(f => f.Value).ToArray();
-        string where = Transform(filter, filters);
+        string where = Transform(filter, filters, typeof(T));
         if (!string.IsNullOrEmpty(where))
             queryable = queryable.Where(where, values);
 
@@ -80,13 +80,15 @@ public static class QueryableDynamicFilterExtensions
                 GetFilters(item, filters);
     }
 
-    private static string Transform(Filter filter, IList<Filter> filters)
+    private static string Transform(Filter filter, IList<Filter> filters,Type type)
     {
+        var props = type.GetProperties();
+        
         if (string.IsNullOrEmpty(filter.Field))
             throw new ArgumentException("Invalid Field");
         if (string.IsNullOrEmpty(filter.Operator) || !Operators.ContainsKey(filter.Operator))
             throw new ArgumentException("Invalid Operator");
-
+        
         int index = filters.IndexOf(filter);
         string comparison = Operators[filter.Operator];
         StringBuilder where = new();
@@ -109,7 +111,7 @@ public static class QueryableDynamicFilterExtensions
         {
             if (!Logics.Contains(filter.Logic))
                 throw new ArgumentException("Invalid Logic");
-            return $"{where} {filter.Logic} ({string.Join(separator: $" {filter.Logic} ", value: filter.Filters.Select(f => Transform(f, filters)).ToArray())})";
+            return $"{where} {filter.Logic} ({string.Join(separator: $" {filter.Logic} ", value: filter.Filters.Select(f => Transform(f, filters,type)).ToArray())})";
         }
 
         return where.ToString();

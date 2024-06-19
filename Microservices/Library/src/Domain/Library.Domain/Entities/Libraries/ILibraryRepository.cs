@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using MGH.Core.Domain.Buses.Queries;
+using MGH.Core.Infrastructure.Persistence.Persistence.Models.Filters;
 using MGH.Core.Infrastructure.Persistence.Persistence.Models.Paging;
 using Microsoft.EntityFrameworkCore.Query;
 
@@ -26,5 +27,15 @@ public interface ILibraryRepository : IQuery<Library>
     );
     Task<Library> AddAsync(Library entity,CancellationToken cancellationToken);
     Task<Library> DeleteAsync(Library entity, bool permanent = false);
-    
+
+    Task<IPaginate<Library>> GetDynamicListAsync(
+        DynamicQuery dynamic,
+        Expression<Func<Library, bool>> predicate = null,
+        Func<IQueryable<Library>, IIncludableQueryable<Library, object>> include = null,
+        int index = 0,
+        int size = 10,
+        bool withDeleted = false,
+        bool enableTracking = true,
+        CancellationToken cancellationToken = default);
+
 }
