@@ -4,6 +4,6 @@ namespace Domain.Entities.Members.Factories;
 
 public interface IMemberFactory
 {
-    Member Create(MemberFullName memberFullName, MemberNationalCode memberNationalCode,
-        MemberMobileNumber memberMobileNumber, MemberAddress memberAddress);
+    Member Create(FullName fullName, NationalCode nationalCode,
+        MobileNumber mobileNumber, Address address);
 }

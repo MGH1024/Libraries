@@ -2,11 +2,11 @@
 
 namespace Domain.Entities.Books.ValueObjects;
 
-public class BookBorrow : ValueObject
+public class Borrow : ValueObject
 {
     public bool Value { get; }
 
-    public BookBorrow(bool value)
+    public Borrow(bool value)
     {
         Value = value;
     }

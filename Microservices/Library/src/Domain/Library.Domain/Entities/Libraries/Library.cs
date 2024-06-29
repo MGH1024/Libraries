@@ -3,47 +3,48 @@ using Domain.Entities.Libraries.Events;
 using Domain.Entities.Libraries.Exceptions;
 using Domain.Entities.Libraries.ValueObjects;
 using MGH.Core.Domain.Aggregate;
+using District = Domain.Entities.Libraries.ValueObjects.District;
 
 namespace Domain.Entities.Libraries;
 
 public class Library : AggregateRoot<Guid>
 {
-    public LibraryName LibraryName { get; private set; }
-    public LibraryCode LibraryCode { get; private set; }
-    public LibraryLocation LibraryLocation { get; private set; }
-    public LibraryDistrict LibraryDistrict { get; private set; }
-    public LibraryRegistrationDate LibraryRegistrationDate { get; private set; }
+    public Name Name { get; private set; }
+    public Code Code { get; private set; }
+    public Location Location { get; private set; }
+    public District District { get; private set; }
+    public RegistrationDate RegistrationDate { get; private set; }
 
-    private readonly List<LibraryStaff> _staves = new();
-    public IReadOnlyCollection<LibraryStaff> LibraryStaves => _staves;
+    private readonly List<Staff> _staves = new();
+    public IReadOnlyCollection<Staff> LibraryStaves => _staves;
 
     private Library()
     {
     }
 
-    public Library(LibraryName libraryName, LibraryCode libraryCode, LibraryLocation libraryLocation,
-        LibraryDistrict libraryDistrict, LibraryRegistrationDate libraryRegistrationDate)
+    public Library(Name name, Code code, Location location,
+        District district, RegistrationDate registrationDate)
     {
         Id = Guid.NewGuid();
-        LibraryName = libraryName;
-        LibraryCode = libraryCode;
-        LibraryLocation = libraryLocation;
-        LibraryDistrict = libraryDistrict;
-        LibraryRegistrationDate = libraryRegistrationDate;
+        Name = name;
+        Code = code;
+        Location = location;
+        District = district;
+        RegistrationDate = registrationDate;
         
-        AddEvent(new LibraryCreatedDomainEvent(libraryName,libraryCode,libraryLocation,
-            (int)libraryDistrict.Value,libraryRegistrationDate));
+        AddEvent(new LibraryCreatedDomainEvent(name,code,location,
+            (int)district.Value,registrationDate));
     }
 
     public void EditLibrary(string name, string libraryCode, string libraryLocation,
-        District libraryDistrict, DateTime libraryRegistrationDate)
+        Constant.District libraryDistrict, DateTime libraryRegistrationDate)
     {
         SetLibraryPropertiesForEdit(name, libraryCode, libraryLocation, libraryDistrict, libraryRegistrationDate);
     }
 
     public void EditLibrary(string name, string libraryCode, string libraryLocation,
-        District libraryDistrict, DateTime libraryRegistrationDate,
-        IEnumerable<LibraryStaff> libraryStaves)
+        Constant.District libraryDistrict, DateTime libraryRegistrationDate,
+        IEnumerable<Staff> libraryStaves)
     {
         SetLibraryPropertiesForEdit(name, libraryCode, libraryLocation, libraryDistrict, libraryRegistrationDate);
         _staves.RemoveAll(a => !string.IsNullOrEmpty(a.NationalCode));
@@ -57,11 +58,11 @@ public class Library : AggregateRoot<Guid>
         return Task.CompletedTask;
     }
 
-    public void AddLibraryStaff(LibraryStaff libraryStaff)
+    public void AddLibraryStaff(Staff staff)
     {
-        if (LibraryStaffExist(libraryStaff.NationalCode))
+        if (LibraryStaffExist(staff.NationalCode))
             throw new LibraryStaffAlreadyExistException();
-        _staves.Add(libraryStaff);
+        _staves.Add(staff);
     }
 
     public void RemoveLibraryStaff(string nationalCode)
@@ -73,13 +74,13 @@ public class Library : AggregateRoot<Guid>
     }
 
     //BL: you can update only  the name and position of library staff
-    public void EditLibraryStaff(LibraryStaff libraryStaff)
+    public void EditLibraryStaff(Staff staff)
     {
-        var oldLibraryStaff = GetLibraryStaffByNationalCode(libraryStaff.NationalCode);
+        var oldLibraryStaff = GetLibraryStaffByNationalCode(staff.NationalCode);
         if (oldLibraryStaff is null)
             throw new LibraryStaffNotFoundException();
         RemoveLibraryStaff(oldLibraryStaff.NationalCode);
-        AddLibraryStaff(libraryStaff);
+        AddLibraryStaff(staff);
     }
 
     private bool LibraryStaffExist(string nationalCode)
@@ -87,15 +88,15 @@ public class Library : AggregateRoot<Guid>
 
 
     private void SetLibraryPropertiesForEdit(string name, string libraryCode, string libraryLocation,
-        District libraryDistrict, DateTime libraryRegistrationDate)
+        Constant.District libraryDistrict, DateTime libraryRegistrationDate)
     {
-        LibraryName = new LibraryName(name);
-        LibraryCode = new LibraryCode(libraryCode);
-        LibraryLocation = new LibraryLocation(libraryLocation);
-        LibraryDistrict = new LibraryDistrict(libraryDistrict);
-        LibraryRegistrationDate = new LibraryRegistrationDate(libraryRegistrationDate);
+        Name = new Name(name);
+        Code = new Code(libraryCode);
+        Location = new Location(libraryLocation);
+        District = new District(libraryDistrict);
+        RegistrationDate = new RegistrationDate(libraryRegistrationDate);
     }
 
-    private LibraryStaff GetLibraryStaffByNationalCode(string nationalCode)
+    private Staff GetLibraryStaffByNationalCode(string nationalCode)
         => _staves.Find(a => a.NationalCode == nationalCode);
 }

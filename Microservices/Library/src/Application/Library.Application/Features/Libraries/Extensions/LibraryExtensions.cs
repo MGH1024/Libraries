@@ -22,19 +22,19 @@ public static class LibraryExtensions
             Items = libraries.Items.Select(a => new GetLibraryListDto
             {
                 Id = a.Id,
-                Title = a.LibraryName.Value,
+                Title = a.Name.Value,
                 CreatedAt = a.CreatedAt,
             }).ToList()
         };
     }
 
-    public static IEnumerable<LibraryStaff> ToStaffList(this List<StaffDto> staffDtOs)
+    public static IEnumerable<Staff> ToStaffList(this List<StaffDto> staffDtOs)
     {
         return staffDtOs.Select(a => a.ToStaff());
     }
 
-    private static LibraryStaff ToStaff(this StaffDto staffDto)
+    private static Staff ToStaff(this StaffDto staffDto)
     {
-        return new LibraryStaff(staffDto.Name, staffDto.Position, staffDto.NationalCode);
+        return new Staff(staffDto.Name, staffDto.Position, staffDto.NationalCode);
     }
 }

@@ -4,10 +4,10 @@ namespace Domain.Entities.Members.Factories;
 
 public class MemberFactory : IMemberFactory
 {
-    public Member Create( MemberFullName memberFullName, MemberNationalCode memberNationalCode,
-        MemberMobileNumber memberMobileNumber, MemberAddress memberAddress)
+    public Member Create( FullName fullName, NationalCode nationalCode,
+        MobileNumber mobileNumber, Address address)
     {
-        return new Member(memberFullName, memberNationalCode,
-            memberMobileNumber, memberAddress);
+        return new Member(fullName, nationalCode,
+            mobileNumber, address);
     }
 }

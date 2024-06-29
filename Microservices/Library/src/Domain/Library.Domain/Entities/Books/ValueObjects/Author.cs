@@ -3,11 +3,11 @@ using MGH.Core.Domain.Aggregate;
 
 namespace Domain.Entities.Books.ValueObjects;
 
-public class BookAuthor : ValueObject
+public class Author : ValueObject
 {
     public string Name { get; }
 
-    public BookAuthor(string name)
+    public Author(string name)
     {
         if (string.IsNullOrEmpty(name))
             throw new AuthorNameException();

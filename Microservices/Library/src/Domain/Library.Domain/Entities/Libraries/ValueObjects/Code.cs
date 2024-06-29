@@ -3,11 +3,11 @@ using MGH.Core.Domain.Aggregate;
 
 namespace Domain.Entities.Libraries.ValueObjects;
 
-public class LibraryCode : ValueObject
+public class Code : ValueObject
 {
     public string Value { get; }
 
-    public LibraryCode(string value)
+    public Code(string value)
     {
         if (string.IsNullOrEmpty(value))
             throw new LibraryCodeNullException();
@@ -18,8 +18,8 @@ public class LibraryCode : ValueObject
         Value = value;
     }
 
-    public static implicit operator string(LibraryCode libraryCode) => libraryCode.Value;
-    public static implicit operator LibraryCode(string libraryCode) => new(libraryCode);
+    public static implicit operator string(Code code) => code.Value;
+    public static implicit operator Code(string libraryCode) => new(libraryCode);
 
     protected override IEnumerable<object> GetEqualityComponents()
     {

@@ -3,11 +3,11 @@ using MGH.Core.Domain.Aggregate;
 
 namespace Domain.Entities.Members.ValueObjects;
 
-public class MemberNationalCode: ValueObject
+public class NationalCode: ValueObject
 {
     public string Value { get; }
 
-    public MemberNationalCode(string value)
+    public NationalCode(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
             throw new MemberNationalCodeNullException();
@@ -16,8 +16,8 @@ public class MemberNationalCode: ValueObject
         Value = value;
     }
 
-    public static implicit operator string(MemberNationalCode nationalCode) => nationalCode.Value;
-    public static implicit operator MemberNationalCode(string nationalCode) => new(nationalCode);
+    public static implicit operator string(NationalCode nationalCode) => nationalCode.Value;
+    public static implicit operator NationalCode(string nationalCode) => new(nationalCode);
     protected override IEnumerable<object> GetEqualityComponents()
     {
         yield return Value;

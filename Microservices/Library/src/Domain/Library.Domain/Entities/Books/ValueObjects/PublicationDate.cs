@@ -3,11 +3,11 @@ using MGH.Core.Domain.Aggregate;
 
 namespace Domain.Entities.Books.ValueObjects;
 
-public class BookPublicationDate : ValueObject
+public class PublicationDate : ValueObject
 {
     public DateTime Value { get; }
 
-    public BookPublicationDate(DateTime value)
+    public PublicationDate(DateTime value)
     {
         var now = DateTime.Now.Date;
         if (value > now)
@@ -15,8 +15,8 @@ public class BookPublicationDate : ValueObject
         Value = value;
     }
 
-    public static implicit operator DateTime(BookPublicationDate publicationDate) => publicationDate.Value;
-    public static implicit operator BookPublicationDate(DateTime publicationDate) => new(publicationDate);
+    public static implicit operator DateTime(PublicationDate publicationDate) => publicationDate.Value;
+    public static implicit operator PublicationDate(DateTime publicationDate) => new(publicationDate);
 
     protected override IEnumerable<object> GetEqualityComponents()
     {

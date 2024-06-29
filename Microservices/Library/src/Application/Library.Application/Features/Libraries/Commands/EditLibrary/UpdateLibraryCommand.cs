@@ -28,7 +28,7 @@ public class EditLibraryCommandHandler(
             await libraryRepository.GetAsync(a => a.Id == request.LibraryId, cancellationToken: cancellationToken);
         await libraryBusinessRules.LibraryShouldBeExistsWhenSelected(library);
 
-        if (request.Code != library.LibraryCode)
+        if (request.Code != library.Code)
             await libraryBusinessRules.LibraryCodeMustBeUnique(request.Code);
 
         library.EditLibrary(request.Name, request.Code, request.Location, request.District, request.RegistrationDate);

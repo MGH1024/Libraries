@@ -8,7 +8,7 @@ public  class LibraryBusinessRules(ILibraryRepository libraryRepository) : BaseB
 {
     public async Task LibraryCodeMustBeUnique(string code)
     {
-        var library = await libraryRepository.GetAsync(a => a.LibraryCode == code);
+        var library = await libraryRepository.GetAsync(a => a.Code == code);
         if (library is not null)
             throw new BusinessException("library code must be unique");
     }

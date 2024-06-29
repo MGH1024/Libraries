@@ -3,19 +3,19 @@ using MGH.Core.Domain.Aggregate;
 
 namespace Domain.Entities.Members.ValueObjects;
 
-public class MemberFullName : ValueObject
+public class FullName : ValueObject
 {
     public string Value { get; }
 
-    public MemberFullName(string value)
+    public FullName(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
             throw new MemberFullNameException();
         Value = value;
     }
 
-    public static implicit operator string(MemberFullName fullName) => fullName.Value;
-    public static implicit operator MemberFullName(string fullName) => new(fullName);
+    public static implicit operator string(FullName fullName) => fullName.Value;
+    public static implicit operator FullName(string fullName) => new(fullName);
 
     protected override IEnumerable<object> GetEqualityComponents()
     {

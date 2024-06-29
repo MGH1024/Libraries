@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence.Configurations.Base;
+using District = Domain.Entities.Libraries.ValueObjects.District;
 
 namespace Persistence.Configurations;
 
@@ -19,28 +20,28 @@ public class LibraryConfiguration : IEntityTypeConfiguration<Library>
         //fix fields section
         builder.Property(t => t.Id).IsRequired();
 
-        var libraryNameConvertor = new ValueConverter<LibraryName, string>(a => a.Value, a => new LibraryName(a));
-        builder.Property(typeof(LibraryName), "LibraryName").HasConversion(libraryNameConvertor).HasColumnName("Name")
+        var libraryNameConvertor = new ValueConverter<Name, string>(a => a.Value, a => new Name(a));
+        builder.Property(typeof(Name), "LibraryName").HasConversion(libraryNameConvertor).HasColumnName("Name")
             .HasMaxLength(128).IsRequired();
         
-        var libraryCodeConvertor = new ValueConverter<LibraryCode, string>(a => a.Value, a => new LibraryCode(a));
-        builder.Property(typeof(LibraryCode), "LibraryCode").HasConversion(libraryCodeConvertor).HasColumnName("Code")
+        var libraryCodeConvertor = new ValueConverter<Code, string>(a => a.Value, a => new Code(a));
+        builder.Property(typeof(Code), "LibraryCode").HasConversion(libraryCodeConvertor).HasColumnName("Code")
             .HasMaxLength(3).IsRequired().IsUnicode();
         
         var libraryLocationConvertor = 
-            new ValueConverter<LibraryLocation, string>(a => a.Value, a => new LibraryLocation(a));
-        builder.Property(typeof(LibraryLocation), "LibraryLocation").HasConversion(libraryLocationConvertor)
+            new ValueConverter<Location, string>(a => a.Value, a => new Location(a));
+        builder.Property(typeof(Location), "LibraryLocation").HasConversion(libraryLocationConvertor)
             .HasColumnName("Location").HasMaxLength(256).IsRequired();
         
         
         var libraryDistrictConvertor = 
-            new ValueConverter<LibraryDistrict, int>(a => (int)a.Value, a => new LibraryDistrict((District)a));
-        builder.Property(typeof(LibraryDistrict), "LibraryDistrict").HasConversion(libraryDistrictConvertor)
+            new ValueConverter<District, int>(a => (int)a.Value, a => new District((Domain.Entities.Libraries.Constant.District)a));
+        builder.Property(typeof(District), "LibraryDistrict").HasConversion(libraryDistrictConvertor)
             .HasColumnName("District").IsRequired();
         
         var libraryRegisterDateConvertor = 
-            new ValueConverter<LibraryRegistrationDate, DateTime>(a => a.Value, a => new LibraryRegistrationDate(a));
-        builder.Property(typeof(LibraryRegistrationDate), "LibraryRegistrationDate")
+            new ValueConverter<RegistrationDate, DateTime>(a => a.Value, a => new RegistrationDate(a));
+        builder.Property(typeof(RegistrationDate), "LibraryRegistrationDate")
             .HasConversion(libraryRegisterDateConvertor).HasColumnName("RegistrationDate").IsRequired();
 
         builder.OwnsMany(

@@ -3,9 +3,9 @@ using MGH.Core.Domain.Aggregate;
 
 namespace Domain.Entities.Libraries.ValueObjects;
 
-public class LibraryStaff : ValueObject
+public class Staff : ValueObject
 {
-    public LibraryStaff(string name, string position, string nationalCode)
+    public Staff(string name, string position, string nationalCode)
     {
         if (string.IsNullOrEmpty(name))
             throw new StaffNameException();

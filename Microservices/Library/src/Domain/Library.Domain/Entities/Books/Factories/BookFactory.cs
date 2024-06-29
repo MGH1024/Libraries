@@ -4,10 +4,10 @@ namespace Domain.Entities.Books.Factories;
 
 public class BookFactory : IBookFactory
 {
-    public Book Create(BookIsbn bookIsbn, BookTitle bookTitle, BookPublicationDate bookPublicationDate,
-        BookUniqueCode bookUniqueCode, BookIsReference bookIsReference)
+    public Book Create(Isbn isbn, Title title, PublicationDate publicationDate,
+        UniqueCode uniqueCode, IsReference isReference)
     {
-        return new Book(bookIsbn, bookTitle, bookPublicationDate,
-            bookUniqueCode, bookIsReference);
+        return new Book(isbn, title, publicationDate,
+            uniqueCode, isReference);
     }
 }

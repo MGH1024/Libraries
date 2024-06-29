@@ -4,11 +4,11 @@ using MGH.Core.Domain.Aggregate;
 
 namespace Domain.Entities.Members.ValueObjects;
 
-public class MemberMobileNumber : ValueObject
+public class MobileNumber : ValueObject
 {
     public string Value { get; }
 
-    public MemberMobileNumber(string value)
+    public MobileNumber(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
             throw new MemberMobileNumberNullException();
@@ -25,8 +25,8 @@ public class MemberMobileNumber : ValueObject
         Value = value;
     }
 
-    public static implicit operator string(MemberMobileNumber memberMobileNumber) => memberMobileNumber.Value;
-    public static implicit operator MemberMobileNumber(string memberMobileNumber) => new(memberMobileNumber);
+    public static implicit operator string(MobileNumber mobileNumber) => mobileNumber.Value;
+    public static implicit operator MobileNumber(string memberMobileNumber) => new(memberMobileNumber);
 
     protected override IEnumerable<object> GetEqualityComponents()
     {

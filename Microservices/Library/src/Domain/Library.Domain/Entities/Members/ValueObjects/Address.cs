@@ -3,14 +3,14 @@ using MGH.Core.Domain.Aggregate;
 
 namespace Domain.Entities.Members.ValueObjects;
 
-public class MemberAddress : ValueObject
+public class Address : ValueObject
 {
     public string Street { get; }
     public string City { get; }
     public string State { get; }
     public string PostalCode { get; }
 
-    public MemberAddress(string street, string city, string state, string postalCode)
+    public Address(string street, string city, string state, string postalCode)
     {
         Street = street ?? throw new MemberAddressException("street is empty");
         City = city ?? throw new MemberAddressException("city is empty");

@@ -6,54 +6,54 @@ namespace Domain.Entities.Books;
 
 public class Book : AggregateRoot<Guid>
 {
-    public BookIsbn BookIsbn { get; }
-    public BookTitle BookTitle { get; }
-    public BookUniqueCode BookUniqueCode { get; }
-    public BookIsReference BookIsReference { get; }
-    public BookBorrow BookBorrow { get; }
-    public BookReturnDate BookReturnDate { get; }
-    public BookRegisterBorrowDate BookRegisterBorrowDate { get; }
-    public BookPublicationDate BookPublicationDate { get; }
+    public Isbn Isbn { get; }
+    public Title Title { get; }
+    public UniqueCode UniqueCode { get; }
+    public IsReference IsReference { get; }
+    public Borrow Borrow { get; }
+    public ReturnDate ReturnDate { get; }
+    public RegisterBorrowDate RegisterBorrowDate { get; }
+    public PublicationDate PublicationDate { get; }
     
-    private readonly List<BookAuthor> _bookAuthors = new();
-    public IReadOnlyCollection<BookAuthor> BookAuthors => _bookAuthors;
+    private readonly List<Author> _bookAuthors = new();
+    public IReadOnlyCollection<Author> BookAuthors => _bookAuthors;
 
-    public Book(BookIsbn bookIsbn, BookTitle bookTitle, BookPublicationDate bookPublicationDate,
-        BookUniqueCode bookUniqueCode, BookIsReference bookIsReference)
+    public Book(Isbn isbn, Title title, PublicationDate publicationDate,
+        UniqueCode uniqueCode, IsReference isReference)
     {
         Id = Guid.NewGuid();
-        BookIsbn = bookIsbn;
-        BookTitle = bookTitle;
-        BookPublicationDate = bookPublicationDate;
-        BookUniqueCode = bookUniqueCode;
-        BookIsReference = bookIsReference;
+        Isbn = isbn;
+        Title = title;
+        PublicationDate = publicationDate;
+        UniqueCode = uniqueCode;
+        IsReference = isReference;
     }
     
-    public Book(BookIsbn bookIsbn, BookTitle bookTitle, BookPublicationDate bookPublicationDate,
-        BookUniqueCode bookUniqueCode, BookIsReference bookIsReference,List<BookAuthor> bookAuthors)
+    public Book(Isbn isbn, Title title, PublicationDate publicationDate,
+        UniqueCode uniqueCode, IsReference isReference,List<Author> bookAuthors)
     {
         Id = Guid.NewGuid();
-        BookIsbn = bookIsbn;
-        BookTitle = bookTitle;
-        BookPublicationDate = bookPublicationDate;
-        BookUniqueCode = bookUniqueCode;
-        BookIsReference = bookIsReference;
+        Isbn = isbn;
+        Title = title;
+        PublicationDate = publicationDate;
+        UniqueCode = uniqueCode;
+        IsReference = isReference;
         _bookAuthors.RemoveAll(a=>!string.IsNullOrEmpty(a.Name));
         bookAuthors.ForEach(AddBookAuthor);
     }
     
-    public void AddBookAuthor(BookAuthor bookAuthor)
+    public void AddBookAuthor(Author author)
     {
-        if (BookAuthorExist(bookAuthor.Name))
+        if (BookAuthorExist(author.Name))
             throw new BookAuthorAlreadyExistException();
-        _bookAuthors.Add(bookAuthor);
+        _bookAuthors.Add(author);
     }
 
-    public void RemoveBookAuthor(BookAuthor bookAuthor)
+    public void RemoveBookAuthor(Author author)
     {
-        if (!BookAuthorExist(bookAuthor.Name))
+        if (!BookAuthorExist(author.Name))
             throw new BookAuthorNotFoundException();
-        _bookAuthors.Remove(bookAuthor);
+        _bookAuthors.Remove(author);
     }
     
 
@@ -61,7 +61,7 @@ public class Book : AggregateRoot<Guid>
         => _bookAuthors.Exists(a => a.Name == name);
     
 
-    BookAuthor GetAuthorByName(string name)
+    Author GetAuthorByName(string name)
     {
         return _bookAuthors.Find(a => a.Name == name);
     }

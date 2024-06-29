@@ -30,7 +30,7 @@ public class AddLibraryStaffCommandHandler(ILibraryRepository libraryRepository,
 
         await libraryBusinessRules.LibraryShouldBeExistsWhenSelected(library);
 
-        library.AddLibraryStaff(new LibraryStaff(request.Name, request.Position, request.NationalCode));
+        library.AddLibraryStaff(new Staff(request.Name, request.Position, request.NationalCode));
         await unitOfWork.CompleteAsync(cancellationToken);
         return Unit.Value;
     }

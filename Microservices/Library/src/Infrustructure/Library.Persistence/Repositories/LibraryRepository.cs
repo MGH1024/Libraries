@@ -43,6 +43,13 @@ public class LibraryRepository(LibraryDbContext libraryDbContext) : ILibraryRepo
         bool enableTracking = true,
         CancellationToken cancellationToken = default)
     {
+
+        await libraryDbContext.Set<Library>().Where(a => a.Name.Value.Contains("kir"))
+            .ToListAsync(cancellationToken);
+        
+        var a1 = Query();
+        var b = a1.Where(a =>((string) a.Name).Contains("test")).ToList();
+        
         IQueryable<Library> queryable = Query();
         if (!enableTracking)
             queryable = queryable.AsNoTracking();

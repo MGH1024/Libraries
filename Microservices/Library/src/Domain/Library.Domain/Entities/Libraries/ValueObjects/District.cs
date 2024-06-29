@@ -4,19 +4,19 @@ using MGH.Core.Domain.Aggregate;
 
 namespace Domain.Entities.Libraries.ValueObjects;
 
-public class LibraryDistrict : ValueObject
+public class District : ValueObject
 {
-    public District Value { get; }
+    public Constant.District Value { get; }
 
-    public LibraryDistrict(District value)
+    public District(Constant.District value)
     {
         if ((int)value > 3 && (int)value <= 0)
             throw new LibraryDistrictException();
         Value = value;
     }
 
-    public static implicit operator District(LibraryDistrict district) => district.Value;
-    public static implicit operator LibraryDistrict(District district) => new(district);
+    public static implicit operator Constant.District(District district) => district.Value;
+    public static implicit operator District(Constant.District district) => new(district);
 
 
     protected override IEnumerable<object> GetEqualityComponents()
