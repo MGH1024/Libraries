@@ -21,11 +21,13 @@ public class GetLibraryListQuery(PageRequest pageRequest) : IRequest<GetListResp
         public async Task<GetListResponse<GetLibraryListDto>> Handle(GetLibraryListQuery request,
             CancellationToken cancellationToken)
         {
+            var dyn = new DynamicQuery();
+            dyn.Filter = new Filter("Name", "eq", "string1_DistrictOne", "and", null);
+            dyn.Sort = null;
             var libraries = await libraryRepository.GetDynamicListAsync(
-                new DynamicQuery
-                {
-                  Filter  = {Field = "LibraryName", Value = "Molaei",Logic = "eq",Operator = "and"}
-                },
+                dynamic: dyn,
+                predicate: null,
+                include: null,
                 index: request.PageRequest.PageIndex,
                 size: request.PageRequest.PageSize,
                 cancellationToken: cancellationToken
