@@ -126,7 +126,7 @@ public class LibraryRepository(LibraryDbContext libraryDbContext) : ILibraryRepo
                 " if you try to create entry again by same foreign key."
             );
     }
-    private async Task SetEntityAsSoftDeletedAsync(IAuditable entity)
+    private async Task SetEntityAsSoftDeletedAsync(IAuditAbleEntity entity)
     {
         if (entity.DeletedAt.HasValue)
             return;
@@ -157,7 +157,7 @@ public class LibraryRepository(LibraryDbContext libraryDbContext) : ILibraryRepo
                         navigationPropertyType: navigation.PropertyInfo.GetType()).ToListAsync();
                 }
 
-                foreach (IAuditable navValueItem in (IEnumerable)navValue)
+                foreach (IAuditAbleEntity navValueItem in (IEnumerable)navValue)
                     await SetEntityAsSoftDeletedAsync(navValueItem);
             }
             else
@@ -172,7 +172,7 @@ public class LibraryRepository(LibraryDbContext libraryDbContext) : ILibraryRepo
                         continue;
                 }
 
-                await SetEntityAsSoftDeletedAsync((IAuditable)navValue);
+                await SetEntityAsSoftDeletedAsync((IAuditAbleEntity)navValue);
             }
         }
 
@@ -189,6 +189,6 @@ public class LibraryRepository(LibraryDbContext libraryDbContext) : ILibraryRepo
         var queryProviderQuery =
             (IQueryable<object>)createQueryMethod.Invoke(query.Provider,
                 parameters: new object[] { query.Expression })!;
-        return queryProviderQuery.Where(x => !((IAuditable)x).DeletedAt.HasValue);
+        return queryProviderQuery.Where(x => !((IAuditAbleEntity)x).DeletedAt.HasValue);
     }
 }

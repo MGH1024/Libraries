@@ -2,7 +2,7 @@
 
 namespace MGH.Core.Infrastructure.Securities.Security.Entities;
 
-public class UserOperationClaim : AuditableEntity<int>
+public class UserOperationClaim : AuditAbleEntity<int>
 {
     public int UserId { get; set; }
     public int OperationClaimId { get; set; }

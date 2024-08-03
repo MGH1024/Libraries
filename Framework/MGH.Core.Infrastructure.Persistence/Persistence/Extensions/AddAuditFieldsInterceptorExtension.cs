@@ -51,7 +51,7 @@ public static class AddAuditFieldsInterceptorExtension
     }
     public static void SetAuditEntries(this DbContextEventData eventData, DateTime now, string userName)
     {
-        var modifiedEntries = eventData.Context?.ChangeTracker.Entries<IAuditable>().ToList();
+        var modifiedEntries = eventData.Context?.ChangeTracker.Entries<IAuditAbleEntity>().ToList();
         if (modifiedEntries == null) return;
         foreach (var item in modifiedEntries)
         {

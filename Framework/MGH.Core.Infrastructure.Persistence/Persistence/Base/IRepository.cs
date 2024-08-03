@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Query;
 namespace MGH.Core.Infrastructure.Persistence.Persistence.Base;
 
 public interface IRepository<TEntity, TEntityId> : IQuery<TEntity>
-    where TEntity : AuditableEntity<TEntityId>
+    where TEntity : AuditAbleEntity<TEntityId>
 {
     Task<TEntity> GetAsync(
         Expression<Func<TEntity, bool>> predicate,

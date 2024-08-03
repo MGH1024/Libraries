@@ -2,7 +2,7 @@ using MGH.Core.Domain.Entity.Base;
 
 namespace MGH.Core.Infrastructure.Securities.Security.Entities;
 
-public class PolicyOperationClaim :AuditableEntity<int>
+public class PolicyOperationClaim :AuditAbleEntity<int>
 {
     public int PolicyId { get; set; }
     public int OperationClaimId { get; set; }

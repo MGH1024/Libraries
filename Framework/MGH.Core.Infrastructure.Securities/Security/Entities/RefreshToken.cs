@@ -2,7 +2,7 @@
 
 namespace MGH.Core.Infrastructure.Securities.Security.Entities;
 
-public class RefreshToken : AuditableEntity<int>
+public class RefreshToken : AuditAbleEntity<int>
 {
     public int UserId { get; set; }
     public string Token { get; set; }

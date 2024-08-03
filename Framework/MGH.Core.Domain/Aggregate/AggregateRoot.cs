@@ -8,7 +8,7 @@ public interface IAggregateRoot
     void ClearEvents();
 }
 
-public abstract class AggregateRoot<T> : BaseEntity<T>, IAuditable, IAggregateRoot
+public abstract class AggregateRoot<T> : BaseEntity<T>, IAuditAbleEntity, IAggregateRoot
 {
     public int Version { get; set; }
     private bool _versionIncremented;

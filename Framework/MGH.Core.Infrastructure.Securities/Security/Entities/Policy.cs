@@ -2,7 +2,7 @@ using MGH.Core.Domain.Entity.Base;
 
 namespace MGH.Core.Infrastructure.Securities.Security.Entities;
 
-public class Policy :AuditableEntity<int>
+public class Policy :AuditAbleEntity<int>
 {
     public string Title { get; set; }
     

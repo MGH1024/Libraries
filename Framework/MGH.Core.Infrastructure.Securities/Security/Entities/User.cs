@@ -3,7 +3,7 @@ using MGH.Core.Infrastructure.Securities.Security.Enums;
 
 namespace MGH.Core.Infrastructure.Securities.Security.Entities;
 
-public class User : AuditableEntity<int>
+public class User : AuditAbleEntity<int>
 {
     public string FirstName { get; set; }
     public string LastName { get; set; }

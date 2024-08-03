@@ -2,7 +2,7 @@
 
 namespace MGH.Core.Infrastructure.Securities.Security.Entities;
 
-public class OtpAuthenticator : AuditableEntity<int>
+public class OtpAuthenticator : AuditAbleEntity<int>
 {
     public int UserId { get; set; }
     public byte[] SecretKey { get; set; }

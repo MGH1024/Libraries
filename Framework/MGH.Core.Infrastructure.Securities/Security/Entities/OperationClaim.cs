@@ -2,7 +2,7 @@
 
 namespace MGH.Core.Infrastructure.Securities.Security.Entities;
 
-public class OperationClaim : AuditableEntity<int>
+public class OperationClaim : AuditAbleEntity<int>
 {
     public string Name { get; set; }
 

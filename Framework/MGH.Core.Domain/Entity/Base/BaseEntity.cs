@@ -1,9 +1,5 @@
 ﻿namespace MGH.Core.Domain.Entity.Base;
 
-public interface IEntity<out T> 
-{
-    T Id { get; }
-}
 public class BaseEntity<T> : IEntity<T>,IEquatable<T>
 {
     public T Id { get; protected set; }
@@ -20,7 +16,7 @@ public class BaseEntity<T> : IEntity<T>,IEquatable<T>
         return Id.GetHashCode();
     }
 
-    public bool Equals(BaseEntity<T> other)
+    private bool Equals(BaseEntity<T> other)
     {
         return other != null && Id.Equals(other.Id);
     }

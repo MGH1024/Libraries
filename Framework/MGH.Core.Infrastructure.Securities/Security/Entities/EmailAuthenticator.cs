@@ -4,7 +4,7 @@ using MGH.Core.Domain.Entity.Base;
 
 namespace MGH.Core.Infrastructure.Securities.Security.Entities;
 
-public class EmailAuthenticator : AuditableEntity<int>
+public class EmailAuthenticator : AuditAbleEntity<int>
 {
     public int UserId { get; set; }
     public string ActivationKey { get; set; }
