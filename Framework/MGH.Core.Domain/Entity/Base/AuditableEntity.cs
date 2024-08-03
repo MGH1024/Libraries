@@ -1,6 +1,6 @@
 ﻿namespace MGH.Core.Domain.Entity.Base;
 
-public interface IAuditable
+public interface IAuditAble
 {
     DateTime CreatedAt { get; set; }
 
@@ -15,20 +15,14 @@ public interface IAuditable
     string DeletedBy { get;set; }
 }
 
-public class AuditableEntity<TId> : IEntity<TId>, IAuditable
+public class AuditAbleEntity<TId>(TId id) : IEntity<TId>, IAuditAble
 {
-    public AuditableEntity()
+    public AuditAbleEntity() : this(default!)
     {
-        Id = default!;
     }
 
-    public AuditableEntity(TId id)
-    {
-        Id = id;
-    }
-    
-    
-    public TId Id { get; set; }
+
+    public TId Id { get; set; } = id;
     public DateTime CreatedAt { get; set; }
     public string CreatedBy { get; set; }
     public DateTime? UpdatedAt { get; set; }
