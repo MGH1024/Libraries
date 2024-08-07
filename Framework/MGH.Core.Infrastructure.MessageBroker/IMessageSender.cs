@@ -2,6 +2,6 @@
 
 public interface IMessageSender<T> : IDisposable
 {
-    void Publish(PublishModel<T> model);
-    void Publish(PublishList<T> model);
+    void Publish(MessageModel<T> model);
+    void Publish(BatchMessageModel<T> model);
 }

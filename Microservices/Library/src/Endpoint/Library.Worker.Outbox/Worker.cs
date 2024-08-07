@@ -33,13 +33,16 @@ public class Worker(IServiceProvider serviceProvider) : BackgroundService
             }, cancellationToken);
 
             await elastic.InsertManyAsync("libraries", result.Items.ToArray());
-            messageBus.Publish(new PublishList<GetOutboxListDto>()
+            messageBus.Publish(new BatchMessageModel<GetOutboxListDto>()
             {
                 Items = result.Items.ToList(),
-                ExchangeName = "mgh-exchange",
-                RoutingKey = "mgh-routingkey",
-                QueueName = "mgh-queue",
-                ExchangeType = "direct",
+                BaseMessage = new BaseMessage
+                {
+                    ExchangeName = "mgh-exchange",
+                    RoutingKey = "mgh-routingkey",
+                    QueueName = "mgh-queue",
+                    ExchangeType = "direct",
+                }
             });
 
             //transactionScope.Complete();

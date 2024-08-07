@@ -34,7 +34,7 @@ public class RabbitMqService<T> : IMessageSender<T>
         _isDisposed = true;
     }
 
-    public void Publish(PublishModel<T> model)
+    public void Publish(MessageModel<T> model)
     {
         ConnectService();
 
@@ -43,11 +43,11 @@ public class RabbitMqService<T> : IMessageSender<T>
         var messageByte = Encoding.UTF8.GetBytes(messageJson);
 
         PrepareToPublish(model);
-        _channel.BasicPublish(exchange: model.ExchangeName, routingKey: model.RoutingKey,
+        _channel.BasicPublish(exchange: model.BaseMessage.ExchangeName, routingKey: model.BaseMessage.RoutingKey,
             basicProperties: basicProperties, body: messageByte);
     }
 
-    public void Publish(PublishList<T> model)
+    public void Publish(BatchMessageModel<T> model)
     {
         ConnectService();
 
@@ -57,27 +57,27 @@ public class RabbitMqService<T> : IMessageSender<T>
         model.Items
             .Select(message => Encoding.UTF8.GetBytes(JsonSerializer.Serialize(message)).AsMemory())
             .ToList()
-            .ForEach(messageByte => basicPublishBatch.Add(model.ExchangeName, model.RoutingKey,
+            .ForEach(messageByte => basicPublishBatch.Add(model.BaseMessage.ExchangeName, model.BaseMessage.RoutingKey,
                 true, basicProperties, messageByte));
 
         PrepareToPublish(model);
         basicPublishBatch.Publish();
     }
 
-    private void PrepareToPublish(PublishList<T> model)
+    private void PrepareToPublish(BatchMessageModel<T> model)
     {
-        _channel.ExchangeDeclare(exchange: model.ExchangeName, type: model.ExchangeType, durable: true,
+        _channel.ExchangeDeclare(exchange: model.BaseMessage.ExchangeName, type: model.BaseMessage.ExchangeType, durable: true,
             autoDelete: false, arguments: null);
-        _channel.QueueDeclare(model.QueueName, true, false, false, null);
-        _channel.QueueBind(model.QueueName, model.ExchangeName, model.RoutingKey);
+        _channel.QueueDeclare(model.BaseMessage.QueueName, true, false, false, null);
+        _channel.QueueBind(model.BaseMessage.QueueName, model.BaseMessage.ExchangeName, model.BaseMessage.RoutingKey);
     }
 
-    private void PrepareToPublish(PublishModel<T> model)
+    private void PrepareToPublish(MessageModel<T> model)
     {
-        _channel.ExchangeDeclare(exchange: model.ExchangeName, type: model.ExchangeType, durable: true,
+        _channel.ExchangeDeclare(exchange: model.BaseMessage.ExchangeName, type: model.BaseMessage.ExchangeType, durable: true,
             autoDelete: false, arguments: null);
-        _channel.QueueDeclare(model.QueueName, true, false, false, null);
-        _channel.QueueBind(model.QueueName, model.ExchangeName, model.RoutingKey);
+        _channel.QueueDeclare(model.BaseMessage.QueueName, true, false, false, null);
+        _channel.QueueBind(model.BaseMessage.QueueName, model.BaseMessage.ExchangeName, model.BaseMessage.RoutingKey);
     }
 
     private void CreateConnectionPolicy()
