@@ -2,9 +2,4 @@
 
 namespace Domain.Entities.Libraries.Exceptions;
 
-public class StaffNationalCodeNullException : LibraryException
-{
-    public StaffNationalCodeNullException() : base("national code name must not be empty")
-    {
-    }
-}
+public class StaffNationalCodeNullException() : LibraryException("national code name must not be empty");

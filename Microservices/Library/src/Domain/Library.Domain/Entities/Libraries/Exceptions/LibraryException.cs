@@ -2,9 +2,4 @@
 
 namespace Domain.Entities.Libraries.Exceptions;
 
-public class LibraryException : BusinessException
-{
-    public LibraryException(string message) : base(message)
-    {
-    }
-}
+public class LibraryException(string message) : BusinessException(message);

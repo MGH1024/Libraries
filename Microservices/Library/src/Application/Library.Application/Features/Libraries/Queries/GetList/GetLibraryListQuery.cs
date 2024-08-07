@@ -22,7 +22,7 @@ public class GetLibraryListQuery(PageRequest pageRequest) : IRequest<GetListResp
             CancellationToken cancellationToken)
         {
             var dyn = new DynamicQuery();
-            dyn.Filter = new Filter("Name", "eq", "string1_DistrictOne", "and", null);
+            dyn.Filter = new Filter("Name", "contains", "fa", "and", null);
             dyn.Sort = null;
             var libraries = await libraryRepository.GetDynamicListAsync(
                 dynamic: dyn,

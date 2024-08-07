@@ -2,10 +2,4 @@
 
 namespace Domain.Entities.Libraries.Exceptions;
 
-public class LibraryIdException: LibraryException
-{
-    public LibraryIdException():base("library id is invalid")
-    {
-        
-    }
-}
+public class LibraryIdException() : LibraryException("library id is invalid");

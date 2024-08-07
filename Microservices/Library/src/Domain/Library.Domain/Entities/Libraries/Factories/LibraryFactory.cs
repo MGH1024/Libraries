@@ -1,23 +1,20 @@
-﻿using Domain.Entities.Libraries.Constant;
-using Domain.Entities.Libraries.Policies;
-using Domain.Entities.Libraries.ValueObjects;
-using District = Domain.Entities.Libraries.ValueObjects.District;
+﻿using Domain.Entities.Libraries.Policies;
 
 namespace Domain.Entities.Libraries.Factories;
 
 public class LibraryFactory(ILibraryPolicy policy) : ILibraryFactory
 {
-    public Library Create(string libraryName, string libraryCode, string libraryLocation,
-        DateTime libraryRegistrationDate, Constant.District libraryDistrict)
+    public Library Create(string name, string code, string location,
+        DateTime registrationDate, Constant.District district)
     {
-        var policyData = new LibraryPolicyData(libraryDistrict);
-        var newLibraryName = policy.GenerateName(policyData, libraryName);
-        
-        var library = new Library(new Name(newLibraryName),
-            new Code(libraryCode),
-            new Location(libraryLocation),
-            new District(libraryDistrict),
-            new RegistrationDate(libraryRegistrationDate));
+        var policyData = new LibraryPolicyData(district);
+        var newLibraryName = policy.GenerateName(policyData, name);
+
+        var library = new Library(newLibraryName,
+            code,
+            location,
+            district,
+            registrationDate);
         return library;
     }
 }

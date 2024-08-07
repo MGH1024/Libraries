@@ -2,9 +2,4 @@
 
 namespace Domain.Entities.Libraries.Exceptions;
 
-public class LibraryHasStavesException : LibraryException
-{
-    public LibraryHasStavesException() : base("library has some staves")
-    {
-    }
-}
+public class LibraryHasStavesException() : LibraryException("library has some staves");

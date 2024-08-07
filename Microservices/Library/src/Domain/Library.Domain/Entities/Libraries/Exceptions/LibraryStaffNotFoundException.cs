@@ -3,10 +3,4 @@ using MGH.Core.CrossCutting.Exceptions.Types;
 
 namespace Domain.Entities.Libraries.Exceptions;
 
-public class LibraryStaffNotFoundException : LibraryException
-{
-    public LibraryStaffNotFoundException():base("library staff not found")
-    {
-        
-    }
-}
+public class LibraryStaffNotFoundException() : LibraryException("library staff not found");

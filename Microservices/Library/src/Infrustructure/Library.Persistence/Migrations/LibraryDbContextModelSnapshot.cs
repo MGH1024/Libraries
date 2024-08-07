@@ -59,6 +59,11 @@ namespace Persistence.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)");
+
                     b.Property<DateTime>("RegistrationDate")
                         .HasColumnType("timestamp without time zone");
 
@@ -126,25 +131,6 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.Libraries.Library", b =>
                 {
-                    b.OwnsOne("Domain.Entities.Libraries.ValueObjects.Name", "Name", b1 =>
-                        {
-                            b1.Property<Guid>("LibraryId")
-                                .HasColumnType("uuid");
-
-                            b1.Property<string>("Value")
-                                .IsRequired()
-                                .HasMaxLength(128)
-                                .HasColumnType("character varying(128)")
-                                .HasColumnName("Name");
-
-                            b1.HasKey("LibraryId");
-
-                            b1.ToTable("Libraries");
-
-                            b1.WithOwner()
-                                .HasForeignKey("LibraryId");
-                        });
-
                     b.OwnsMany("Domain.Entities.Libraries.ValueObjects.Staff", "LibraryStaves", b1 =>
                         {
                             b1.Property<Guid>("Id")
@@ -180,8 +166,6 @@ namespace Persistence.Migrations
                         });
 
                     b.Navigation("LibraryStaves");
-
-                    b.Navigation("Name");
                 });
 
             modelBuilder.Entity("MGH.Core.Domain.Aggregate.DomainEvent", b =>

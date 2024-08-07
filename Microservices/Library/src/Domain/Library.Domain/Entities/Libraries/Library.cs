@@ -1,19 +1,19 @@
-﻿using Domain.Entities.Libraries.Constant;
+﻿using MGH.Core.Domain.Aggregate;
+using Domain.Entities.Libraries.Guards;
 using Domain.Entities.Libraries.Events;
+using Domain.Entities.Libraries.Constant;
 using Domain.Entities.Libraries.Exceptions;
 using Domain.Entities.Libraries.ValueObjects;
-using MGH.Core.Domain.Aggregate;
-using District = Domain.Entities.Libraries.ValueObjects.District;
 
 namespace Domain.Entities.Libraries;
 
 public class Library : AggregateRoot<Guid>
 {
-    public Name Name { get; private set; }
-    public Code Code { get; private set; }
-    public Location Location { get; private set; }
+    public string Name { get; private set; }
+    public string Code { get; private set; }
+    public string Location { get; private set; }
     public District District { get; private set; }
-    public RegistrationDate RegistrationDate { get; private set; }
+    public DateTime RegistrationDate { get; private set; }
 
     private readonly List<Staff> _staves = new();
     public IReadOnlyCollection<Staff> LibraryStaves => _staves;
@@ -22,28 +22,35 @@ public class Library : AggregateRoot<Guid>
     {
     }
 
-    public Library(Name name, Code code, Location location,
-        District district, RegistrationDate registrationDate)
+    public Library(string name, string code, string location,
+        District district, DateTime registrationDate)
     {
+        CodeGuard.CheckCodeLength(code);
+        CodeGuard.CheckCodeIsNotString(code);
+        NameGuard.CheckNameIsNullOrEmpty(name);
+        CodeGuard.CheckCodeIsNullOrEmpty(code);
+        DistrictGuard.CheckDistrictValue(district);
+        LocationGuard.CheckLocationIsNullOrEmpty(location);
+        RegistrationGuard.CheckRegistrationDateValue(registrationDate);
+        
         Id = Guid.NewGuid();
         Name = name;
         Code = code;
         Location = location;
         District = district;
         RegistrationDate = registrationDate;
-        
-        AddEvent(new LibraryCreatedDomainEvent(name,code,location,
-            (int)district.Value,registrationDate));
+
+        AddEvent(new LibraryCreatedDomainEvent(name, code, location, (int)district, registrationDate));
     }
 
     public void EditLibrary(string name, string libraryCode, string libraryLocation,
-        Constant.District libraryDistrict, DateTime libraryRegistrationDate)
+        District libraryDistrict, DateTime libraryRegistrationDate)
     {
         SetLibraryPropertiesForEdit(name, libraryCode, libraryLocation, libraryDistrict, libraryRegistrationDate);
     }
 
     public void EditLibrary(string name, string libraryCode, string libraryLocation,
-        Constant.District libraryDistrict, DateTime libraryRegistrationDate,
+        District libraryDistrict, DateTime libraryRegistrationDate,
         IEnumerable<Staff> libraryStaves)
     {
         SetLibraryPropertiesForEdit(name, libraryCode, libraryLocation, libraryDistrict, libraryRegistrationDate);
@@ -87,14 +94,14 @@ public class Library : AggregateRoot<Guid>
         => _staves.Exists(a => a.NationalCode.Equals(nationalCode));
 
 
-    private void SetLibraryPropertiesForEdit(string name, string libraryCode, string libraryLocation,
-        Constant.District libraryDistrict, DateTime libraryRegistrationDate)
+    private void SetLibraryPropertiesForEdit(string name, string code, string location,
+        District district, DateTime registrationDate)
     {
-        Name = new Name(name);
-        Code = new Code(libraryCode);
-        Location = new Location(libraryLocation);
-        District = new District(libraryDistrict);
-        RegistrationDate = new RegistrationDate(libraryRegistrationDate);
+        Name = name;
+        Code = code;
+        Location = location;
+        District = district;
+        RegistrationDate = registrationDate;
     }
 
     private Staff GetLibraryStaffByNationalCode(string nationalCode)

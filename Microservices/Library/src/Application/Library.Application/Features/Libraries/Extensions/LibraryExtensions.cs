@@ -22,7 +22,7 @@ public static class LibraryExtensions
             Items = libraries.Items.Select(a => new GetLibraryListDto
             {
                 Id = a.Id,
-                Title = a.Name.Value,
+                Title = a.Name,
                 CreatedAt = a.CreatedAt,
             }).ToList()
         };

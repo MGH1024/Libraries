@@ -2,4 +2,4 @@
 
 namespace Domain.Entities.Libraries.Exceptions;
 
-public class StaffPositionException() : LibraryException("name is empty");
+public class CodeNullException() : LibraryException("library code is null");

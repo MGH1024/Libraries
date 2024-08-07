@@ -12,7 +12,7 @@ using Persistence.Contexts;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(LibraryDbContext))]
-    [Migration("20240511155634_Initial")]
+    [Migration("20240807140141_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace Persistence.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.1")
+                .HasAnnotation("ProductVersion", "8.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -31,8 +31,14 @@ namespace Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .IsUnicode(true)
+                        .HasColumnType("character varying(3)");
+
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
@@ -42,41 +48,30 @@ namespace Persistence.Migrations
                         .HasDefaultValue("user");
 
                     b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("DeletedBy")
                         .HasMaxLength(64)
                         .HasColumnType("character varying(64)");
 
-                    b.Property<string>("LibraryCode")
-                        .IsRequired()
-                        .HasMaxLength(3)
-                        .IsUnicode(true)
-                        .HasColumnType("character varying(3)")
-                        .HasColumnName("Code");
+                    b.Property<int>("District")
+                        .HasColumnType("integer");
 
-                    b.Property<int>("LibraryDistrict")
-                        .HasColumnType("integer")
-                        .HasColumnName("District");
-
-                    b.Property<string>("LibraryLocation")
+                    b.Property<string>("Location")
                         .IsRequired()
                         .HasMaxLength(256)
-                        .HasColumnType("character varying(256)")
-                        .HasColumnName("Location");
+                        .HasColumnType("character varying(256)");
 
-                    b.Property<string>("LibraryName")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(128)
-                        .HasColumnType("character varying(128)")
-                        .HasColumnName("Name");
+                        .HasColumnType("character varying(128)");
 
-                    b.Property<DateTime>("LibraryRegistrationDate")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("RegistrationDate");
+                    b.Property<DateTime>("RegistrationDate")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("UpdatedBy")
                         .HasMaxLength(64)
@@ -90,9 +85,56 @@ namespace Persistence.Migrations
                     b.ToTable("Libraries");
                 });
 
+            modelBuilder.Entity("MGH.Core.Domain.Aggregate.DomainEvent", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("LibraryId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LibraryId");
+
+                    b.ToTable("DomainEvent");
+                });
+
+            modelBuilder.Entity("MGH.Core.Domain.Outboxes.OutboxMessage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasMaxLength(4096)
+                        .HasColumnType("character varying(4096)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("Error")
+                        .HasMaxLength(512)
+                        .HasColumnType("character varying(512)");
+
+                    b.Property<DateTime?>("ProcessedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OutBox", (string)null);
+                });
+
             modelBuilder.Entity("Domain.Entities.Libraries.Library", b =>
                 {
-                    b.OwnsMany("Domain.Entities.Libraries.ValueObjects.LibraryStaff", "LibraryStaves", b1 =>
+                    b.OwnsMany("Domain.Entities.Libraries.ValueObjects.Staff", "LibraryStaves", b1 =>
                         {
                             b1.Property<Guid>("Id")
                                 .ValueGeneratedOnAdd()
@@ -127,6 +169,18 @@ namespace Persistence.Migrations
                         });
 
                     b.Navigation("LibraryStaves");
+                });
+
+            modelBuilder.Entity("MGH.Core.Domain.Aggregate.DomainEvent", b =>
+                {
+                    b.HasOne("Domain.Entities.Libraries.Library", null)
+                        .WithMany("Events")
+                        .HasForeignKey("LibraryId");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Libraries.Library", b =>
+                {
+                    b.Navigation("Events");
                 });
 #pragma warning restore 612, 618
         }

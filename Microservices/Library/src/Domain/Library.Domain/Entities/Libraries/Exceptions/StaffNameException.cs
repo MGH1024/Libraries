@@ -2,9 +2,4 @@
 
 namespace Domain.Entities.Libraries.Exceptions;
 
-public class StaffNameException : LibraryException
-{
-    public StaffNameException() : base("name is empty")
-    {
-    }
-}
+public class StaffNameException() : LibraryException("name is empty");

@@ -2,10 +2,4 @@
 
 namespace Domain.Entities.Libraries.Exceptions;
 
-public class LibraryStaffAlreadyExistException : LibraryException
-{
-    public LibraryStaffAlreadyExistException():base("staff already exist")
-    {
-        
-    }
-}
+public class LibraryStaffAlreadyExistException() : LibraryException("staff already exist");
