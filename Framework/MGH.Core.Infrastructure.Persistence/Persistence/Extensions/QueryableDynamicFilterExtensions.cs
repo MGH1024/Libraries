@@ -1,5 +1,6 @@
 ﻿using System.Linq.Dynamic.Core;
 using System.Text;
+using MGH.Core.Domain.Aggregate;
 using MGH.Core.Infrastructure.Persistence.Persistence.Models.Filters;
 
 namespace MGH.Core.Infrastructure.Persistence.Persistence.Extensions;
@@ -80,40 +81,93 @@ public static class QueryableDynamicFilterExtensions
                 GetFilters(item, filters);
     }
 
-    private static string Transform(Filter filter, IList<Filter> filters,Type type)
+    private static string Transform(Filter filter, IList<Filter> filters, Type type)
     {
-        var props = type.GetProperties();
-        
         if (string.IsNullOrEmpty(filter.Field))
             throw new ArgumentException("Invalid Field");
         if (string.IsNullOrEmpty(filter.Operator) || !Operators.ContainsKey(filter.Operator))
             throw new ArgumentException("Invalid Operator");
         
+        string fieldExpression = GetFieldExpression(type, filter.Field);
+        bool isValueObject = CheckIfFieldIsValueObject(type, filter.Field);
+
         int index = filters.IndexOf(filter);
         string comparison = Operators[filter.Operator];
         StringBuilder where = new();
-
+        
+        if (isValueObject)
+            throw new InvalidOperationException($"Property '{filter.Field}' is a value object and cannot be queried directly.");
+        
         if (!string.IsNullOrEmpty(filter.Value))
         {
             if (filter.Operator == "doesnotcontain")
-                where.Append($"(!np({filter.Field}).{comparison}(@{index.ToString()}))");
-            else if (comparison is "StartsWith" or "EndsWith" or "Contains")
-                where.Append($"(np({filter.Field}).{comparison}(@{index.ToString()}))");
+                where.Append($"(!{fieldExpression}.Contains(@{index}))");
+            else if (comparison == "StartsWith")
+                where.Append($"({fieldExpression}.StartsWith(@{index}))");
+            else if (comparison == "EndsWith")
+                where.Append($"({fieldExpression}.EndsWith(@{index}))");
+            else if (comparison == "Contains")
+                where.Append($"({fieldExpression}.Contains(@{index}))");
             else
-                where.Append($"np({filter.Field}) {comparison} @{index.ToString()}");
+                where.Append($"{fieldExpression} {comparison} @{index}");
         }
-        else if (filter.Operator is "isnull" or "isnotnull")
+        else if (filter.Operator == "isnull" || filter.Operator == "isnotnull")
         {
-            where.Append($"np({filter.Field}) {comparison}");
+            where.Append($"{fieldExpression} {comparison}");
         }
-
-        if (filter.Logic is not null && filter.Filters is not null && filter.Filters.Any())
+        
+        if (filter.Logic != null && filter.Filters != null && filter.Filters.Any())
         {
             if (!Logics.Contains(filter.Logic))
                 throw new ArgumentException("Invalid Logic");
-            return $"{where} {filter.Logic} ({string.Join(separator: $" {filter.Logic} ", value: filter.Filters.Select(f => Transform(f, filters,type)).ToArray())})";
+
+            var nestedFilters = string.Join($" {filter.Logic} ",
+                filter.Filters.Select(f => Transform(f, filters, type)).ToArray());
+            return $"({where}) {filter.Logic} ({nestedFilters})";
         }
 
         return where.ToString();
+    }
+
+    private static string GetFieldExpression(Type type, string field)
+    {
+        string[] parts = field.Split('.');
+        StringBuilder fieldExpression = new();
+        Type currentType = type;
+
+        foreach (var part in parts)
+        {
+            var property = currentType.GetProperty(part);
+            if (property == null)
+                throw new ArgumentException($"Invalid Field: {part}");
+
+            string prefix = fieldExpression.Length == 0 ? "" : ".";
+            fieldExpression.Append($"{prefix}{part}");
+            currentType = property.PropertyType;
+        }
+
+        return fieldExpression.ToString();
+    }
+
+    private static bool CheckIfFieldIsValueObject(Type type, string field)
+    {
+        string[] parts = field.Split('.');
+        Type currentType = type;
+
+        foreach (var part in parts)
+        {
+            var property = currentType.GetProperty(part);
+            if (property == null)
+                throw new ArgumentException($"Invalid Field: {part}");
+
+            if (typeof(ValueObject).IsAssignableFrom(property.PropertyType))
+            {
+                return true; // This field or property is a value object
+            }
+
+            currentType = property.PropertyType;
+        }
+
+        return false; // No value object found in the field path
     }
 }

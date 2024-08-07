@@ -74,6 +74,8 @@ public class LibraryRepository(LibraryDbContext libraryDbContext) : ILibraryRepo
         bool enableTracking = true,
         CancellationToken cancellationToken = default)
     {
+        //var a1 = Query();
+        //var b = Query().Where(a =>((string) a.Name).Contains("par")).ToList();
         IQueryable<Library> queryable = Query().ToDynamic(dynamic);
         if (!enableTracking)
             queryable = queryable.AsNoTracking();
