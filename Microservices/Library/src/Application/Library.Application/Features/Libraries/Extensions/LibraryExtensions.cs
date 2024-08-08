@@ -102,7 +102,7 @@ public static class LibraryExtensions
         };
     }
 
-    public static GetDynamicListAsyncModel<Library> ToGetBaseLibraryModel(this GetLibraryListQuery request,
+    public static GetDynamicListAsyncModel<Library> ToGetDynamicListAsyncModel(this GetLibraryListQuery request,
         CancellationToken cancellationToken)
     {
         var dyn = new DynamicQuery();

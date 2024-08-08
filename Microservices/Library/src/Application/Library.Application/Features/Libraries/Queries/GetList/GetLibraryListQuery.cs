@@ -22,7 +22,7 @@ public class GetLibraryListQuery(PageRequest pageRequest) : IRequest<GetListResp
             CancellationToken cancellationToken)
         {
             var libraries = await libraryRepository
-                .GetDynamicListAsync(request.ToGetBaseLibraryModel(cancellationToken));
+                .GetDynamicListAsync(request.ToGetDynamicListAsyncModel(cancellationToken));
             return libraries.ToGetLibraryListDto();
         }
     }

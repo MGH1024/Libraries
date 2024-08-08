@@ -1,9 +1,10 @@
 ﻿using Application.Features.OutBoxes.Queries.GetList;
 using MGH.Core.Application.Responses;
 using MGH.Core.Domain.Outboxes;
+using MGH.Core.Infrastructure.Persistence.Persistence.Models.Filters;
 using MGH.Core.Infrastructure.Persistence.Persistence.Models.Paging;
 
-namespace Application.Features.Libraries.Extensions;
+namespace Application.Features.OutBoxes.Extensions;
 
 public static class OutboxExtensions
 {
@@ -28,4 +29,15 @@ public static class OutboxExtensions
             }).ToList()
         };
     }
+
+    public static GetListAsyncModel<OutboxMessage> ToGetListAsyncMode(this GetOutboxListQuery query,CancellationToken cancellationToken)
+    {
+        return new GetListAsyncModel<OutboxMessage>
+        {
+            Index = query.PageRequest.PageIndex,
+            Size = query.PageRequest.PageSize,
+            CancellationToken = cancellationToken
+        };
+    }
+    
 }

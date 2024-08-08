@@ -2,6 +2,7 @@
 using Domain.Entities.Libraries;
 using MGH.Core.Domain.Outboxes;
 using MGH.Core.Infrastructure.Persistence.Persistence.Extensions;
+using MGH.Core.Infrastructure.Persistence.Persistence.Models.Filters;
 using MGH.Core.Infrastructure.Persistence.Persistence.Models.Paging;
 using MGH.Core.Infrastructure.Public;
 using Microsoft.EntityFrameworkCore;
@@ -13,44 +14,35 @@ namespace Persistence.Repositories;
 public class OutBoxRepository(LibraryDbContext libraryDbContext , IDateTime dateTime) : IOutBoxRepository
 {
     public IQueryable<OutboxMessage> Query() => libraryDbContext.Set<OutboxMessage>();
-
     
-    
-    public async Task<OutboxMessage> GetAsync(
-        Expression<Func<OutboxMessage, bool>> predicate,
-        Func<IQueryable<OutboxMessage>, IIncludableQueryable<OutboxMessage, object>> include = null,
-        bool withDeleted = false,
-        bool enableTracking = true,
-        CancellationToken cancellationToken = default)
+    public async Task<OutboxMessage> GetAsync(GetBaseModel<OutboxMessage> getBaseModel)
     {
         var queryable = Query();
-        if (!enableTracking)
+        if (!getBaseModel.EnableTracking)
             queryable = queryable.AsNoTracking();
-        if (include != null)
-            queryable = include(queryable);
-        if (withDeleted)
+        if (getBaseModel.Include != null)
+            queryable = getBaseModel.Include(queryable);
+        if (getBaseModel.WithDeleted)
             queryable = queryable.IgnoreQueryFilters();
-        return await queryable.FirstOrDefaultAsync(predicate, cancellationToken);
+        return await queryable.FirstOrDefaultAsync(getBaseModel.Predicate, getBaseModel.CancellationToken);
     }
     
-    public async Task<IPaginate<OutboxMessage>> GetListAsync(Expression<Func<OutboxMessage, bool>> predicate = null,
-        Func<IQueryable<OutboxMessage>, IOrderedQueryable<OutboxMessage>> orderBy = null,
-        Func<IQueryable<OutboxMessage>, IIncludableQueryable<OutboxMessage, object>> include = null, int index = 0,
-        int size = 10, bool withDeleted = false, bool enableTracking = true,
-        CancellationToken cancellationToken = default)
+    public async Task<IPaginate<OutboxMessage>> GetListAsync(GetListAsyncModel<OutboxMessage> getListAsyncModel)
     {
         IQueryable<OutboxMessage> queryable = Query();
-        if (!enableTracking)
+        if (!getListAsyncModel.EnableTracking)
             queryable = queryable.AsNoTracking();
-        if (include != null)
-            queryable = include(queryable);
-        if (withDeleted)
+        if (getListAsyncModel.Include != null)
+            queryable = getListAsyncModel.Include(queryable);
+        if (getListAsyncModel.WithDeleted)
             queryable = queryable.IgnoreQueryFilters();
-        if (predicate != null)
-            queryable = queryable.Where(predicate);
-        if (orderBy != null)
-            return await orderBy(queryable).ToPaginateAsync(index, size, from: 0, cancellationToken);
-        return await queryable.ToPaginateAsync(index, size, from: 0, cancellationToken);
+        if (getListAsyncModel.Predicate != null)
+            queryable = queryable.Where(getListAsyncModel.Predicate);
+        if (getListAsyncModel.OrderBy != null)
+            return await getListAsyncModel.OrderBy(queryable)
+                .ToPaginateAsync(getListAsyncModel.Index, getListAsyncModel.Size, from: 0, getListAsyncModel.CancellationToken);
+        return await queryable
+            .ToPaginateAsync(getListAsyncModel.Index, getListAsyncModel.Size, from: 0, getListAsyncModel.CancellationToken);
     }
     
     public OutboxMessage  Update(OutboxMessage entity)
