@@ -4,6 +4,7 @@ using Domain.Entities.Libraries;
 using Domain.Entities.Libraries.Constant;
 using MGH.Core.Domain.Buses.Commands;
 using MGH.Core.Infrastructure.Persistence.Persistence.Base;
+using MGH.Core.Infrastructure.Persistence.Persistence.Models.Filters;
 
 namespace Application.Features.Libraries.Commands.EditLibrary;
 
@@ -26,15 +27,14 @@ public class EditLibraryWithStavesCommandHandler(
 {
     public async Task<Guid> Handle(UpdateLibraryWithStavesCommand request, CancellationToken cancellationToken)
     {
-        var library = 
-            await libraryRepository.GetAsync(a => a.Id == request.LibraryId, cancellationToken: cancellationToken);
+        var library = await libraryRepository.GetAsync(request.ToGetBaseLibraryModel(cancellationToken));
         await libraryBusinessRules.LibraryShouldBeExistsWhenSelected(library);
-        
+
         if (request.Code != library.Code)
             await libraryBusinessRules.LibraryCodeMustBeUnique(request.Code);
-        
+
         library.EditLibrary(request.Name, request.Code, request.Location, request.District,
-            request.RegistrationDate,request.StavesDto.ToStaffList());
+            request.RegistrationDate, request.StavesDto.ToStaffList());
         await unitOfWork.CompleteAsync(cancellationToken);
         return library.Id;
     }

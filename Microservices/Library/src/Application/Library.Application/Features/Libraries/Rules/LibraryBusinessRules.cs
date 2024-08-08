@@ -1,6 +1,8 @@
-﻿using Domain.Entities.Libraries;
+﻿using Application.Features.Libraries.Extensions;
+using Domain.Entities.Libraries;
 using MGH.Core.Application.Rules;
 using MGH.Core.CrossCutting.Exceptions.Types;
+using MGH.Core.Infrastructure.Persistence.Persistence.Models.Filters;
 
 namespace Application.Features.Libraries.Rules;
 
@@ -8,7 +10,7 @@ public  class LibraryBusinessRules(ILibraryRepository libraryRepository) : BaseB
 {
     public async Task LibraryCodeMustBeUnique(string code)
     {
-        var library = await libraryRepository.GetAsync(a => a.Code == code);
+        var library = await libraryRepository.GetAsync(code.ToGetBaseLibraryModel());
         if (library is not null)
             throw new BusinessException("library code must be unique");
     }

@@ -1,4 +1,5 @@
-﻿using Application.Features.Libraries.Rules;
+﻿using Application.Features.Libraries.Extensions;
+using Application.Features.Libraries.Rules;
 using Domain.Entities.Libraries;
 using Domain.Entities.Libraries.Constant;
 using MGH.Core.Domain.Buses.Commands;
@@ -24,8 +25,7 @@ public class EditLibraryCommandHandler(
 {
     public async Task<Guid> Handle(UpdateLibraryCommand request, CancellationToken cancellationToken)
     {
-        var library =
-            await libraryRepository.GetAsync(a => a.Id == request.LibraryId, cancellationToken: cancellationToken);
+        var library = await libraryRepository.GetAsync(request.ToGetBaseLibraryModel(cancellationToken));
         await libraryBusinessRules.LibraryShouldBeExistsWhenSelected(library);
 
         if (request.Code != library.Code)

@@ -16,7 +16,7 @@ public class GetOutboxListDto(
     public string Content { get; set; } = content;
     public DateTime CreatedAt { get; set; } = createdAt;
     public DateTime? ProcessedAt { get; set; } = processedAt;
-    public string? Error { get; set; } = error;
+    public string Error { get; set; } = error;
 
     public GetOutboxListDto() : this(new Guid(),string.Empty,string.Empty,new DateTime(),
         new DateTime(),string.Empty)

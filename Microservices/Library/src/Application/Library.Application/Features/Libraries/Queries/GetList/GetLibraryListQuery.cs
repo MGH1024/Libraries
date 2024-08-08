@@ -21,18 +21,8 @@ public class GetLibraryListQuery(PageRequest pageRequest) : IRequest<GetListResp
         public async Task<GetListResponse<GetLibraryListDto>> Handle(GetLibraryListQuery request,
             CancellationToken cancellationToken)
         {
-            var dyn = new DynamicQuery();
-            dyn.Filter = new Filter("Name", "contains", "fa", "and", null);
-            dyn.Sort = null;
-            var libraries = await libraryRepository.GetDynamicListAsync(
-                dynamic: dyn,
-                predicate: null,
-                include: null,
-                index: request.PageRequest.PageIndex,
-                size: request.PageRequest.PageSize,
-                cancellationToken: cancellationToken
-            );
-
+            var libraries = await libraryRepository
+                .GetDynamicListAsync(request.ToGetBaseLibraryModel(cancellationToken));
             return libraries.ToGetLibraryListDto();
         }
     }

@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Linq.Expressions;
 using Domain.Entities.Libraries;
 using MGH.Core.Domain.Entity.Base;
 using MGH.Core.Infrastructure.Persistence.Persistence.Extensions;
@@ -7,7 +6,6 @@ using MGH.Core.Infrastructure.Persistence.Persistence.Models.Filters;
 using MGH.Core.Infrastructure.Persistence.Persistence.Models.Paging;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Query;
 using Persistence.Contexts;
 
 namespace Persistence.Repositories;
@@ -16,81 +14,63 @@ public class LibraryRepository(LibraryDbContext libraryDbContext) : ILibraryRepo
 {
     public IQueryable<Library> Query() => libraryDbContext.Set<Library>();
 
-    public async Task<Library> GetAsync(
-        Expression<Func<Library, bool>> predicate,
-        Func<IQueryable<Library>, IIncludableQueryable<Library, object>> include = null,
-        bool withDeleted = false,
-        bool enableTracking = true,
-        CancellationToken cancellationToken = default)
+    public async Task<Library> GetAsync(GetBaseModel<Library> getBaseModel)
     {
         var queryable = Query();
-        if (!enableTracking)
+        if (!getBaseModel.EnableTracking)
             queryable = queryable.AsNoTracking();
-        if (include != null)
-            queryable = include(queryable);
-        if (withDeleted)
+        if (getBaseModel.Include != null)
+            queryable = getBaseModel.Include(queryable);
+        if (getBaseModel.WithDeleted)
             queryable = queryable.IgnoreQueryFilters();
-        return await queryable.FirstOrDefaultAsync(predicate, cancellationToken);
+        return await queryable.FirstOrDefaultAsync(getBaseModel.Predicate, getBaseModel.CancellationToken);
     }
 
-    public async Task<IPaginate<Library>> GetListAsync(
-        Expression<Func<Library, bool>> predicate = null,
-        Func<IQueryable<Library>, IOrderedQueryable<Library>> orderBy = null,
-        Func<IQueryable<Library>, IIncludableQueryable<Library, object>> include = null,
-        int index = 0,
-        int size = 10,
-        bool withDeleted = false,
-        bool enableTracking = true,
-        CancellationToken cancellationToken = default)
+    public async Task<IPaginate<Library>> GetListAsync(GetListAsyncModel<Library> getListAsyncModel)
     {
         IQueryable<Library> queryable = Query();
-        if (!enableTracking)
+        if (!getListAsyncModel.EnableTracking)
             queryable = queryable.AsNoTracking();
-        if (include != null)
-            queryable = include(queryable);
-        if (withDeleted)
+        if (getListAsyncModel.Include != null)
+            queryable = getListAsyncModel.Include(queryable);
+        if (getListAsyncModel.WithDeleted)
             queryable = queryable.IgnoreQueryFilters();
-        if (predicate != null)
-            queryable = queryable.Where(predicate);
-        if (orderBy != null)
-            return await orderBy(queryable).ToPaginateAsync(index, size, from: 0, cancellationToken);
-        return await queryable.ToPaginateAsync(index, size, from: 0, cancellationToken);
+        if (getListAsyncModel.Predicate != null)
+            queryable = queryable.Where(getListAsyncModel.Predicate);
+        if (getListAsyncModel.OrderBy != null)
+            return await getListAsyncModel.OrderBy(queryable)
+                .ToPaginateAsync(getListAsyncModel.Index, getListAsyncModel.Size, from: 0, getListAsyncModel.CancellationToken);
+        return await queryable.ToPaginateAsync(getListAsyncModel.Index, getListAsyncModel.Size, from: 0, getListAsyncModel.CancellationToken);
     }
 
-    public async Task<IPaginate<Library>> GetDynamicListAsync(
-        DynamicQuery dynamic,
-        Expression<Func<Library, bool>> predicate = null,
-        Func<IQueryable<Library>, IIncludableQueryable<Library, object>> include = null,
-        int index = 0,
-        int size = 10,
-        bool withDeleted = false,
-        bool enableTracking = true,
-        CancellationToken cancellationToken = default)
+    public async Task<IPaginate<Library>> GetDynamicListAsync(GetDynamicListAsyncModel<Library> dynamicGet)
     {
         //var a1 = Query();
         //var b = Query().Where(a =>((string) a.Name).Contains("par")).ToList();
-        IQueryable<Library> queryable = Query().ToDynamic(dynamic);
-        if (!enableTracking)
+        IQueryable<Library> queryable = Query().ToDynamic(dynamicGet.Dynamic);
+        if (!dynamicGet.EnableTracking)
             queryable = queryable.AsNoTracking();
-        if (include != null)
-            queryable = include(queryable);
-        if (withDeleted)
+        if (dynamicGet.Include != null)
+            queryable = dynamicGet.Include(queryable);
+        if (dynamicGet.WithDeleted)
             queryable = queryable.IgnoreQueryFilters();
-        if (predicate != null)
-            queryable = queryable.Where(predicate);
-        return await queryable.ToPaginateAsync(index, size, from: 0, cancellationToken);
+        if (dynamicGet.Predicate != null)
+            queryable = queryable.Where(dynamicGet.Predicate);
+        return await queryable.ToPaginateAsync(dynamicGet.Index, dynamicGet.Size, from: 0, dynamicGet.CancellationToken);
     }
-    
+
     public async Task<Library> AddAsync(Library entity, CancellationToken cancellationToken)
     {
         await libraryDbContext.AddAsync(entity, cancellationToken);
         return entity;
     }
+
     public async Task<Library> DeleteAsync(Library entity, bool permanent = false)
     {
         await SetEntityAsDeletedAsync(entity, permanent);
         return entity;
     }
+
     private async Task SetEntityAsDeletedAsync(Library entity, bool permanent)
     {
         if (!permanent)
@@ -103,6 +83,7 @@ public class LibraryRepository(LibraryDbContext libraryDbContext) : ILibraryRepo
             libraryDbContext.Remove(entity);
         }
     }
+
     private void CheckHasEntityHaveOneToOneRelation(Library entity)
     {
         bool hasEntityHaveOneToOneRelation =
@@ -121,6 +102,7 @@ public class LibraryRepository(LibraryDbContext libraryDbContext) : ILibraryRepo
                 " if you try to create entry again by same foreign key."
             );
     }
+
     private async Task SetEntityAsSoftDeletedAsync(IAuditAbleEntity entity)
     {
         if (entity.DeletedAt.HasValue)
@@ -173,6 +155,7 @@ public class LibraryRepository(LibraryDbContext libraryDbContext) : ILibraryRepo
 
         libraryDbContext.Update(entity);
     }
+
     private IQueryable<object> GetRelationLoaderQuery(IQueryable query, Type navigationPropertyType)
     {
         var queryProviderType = query.Provider.GetType();

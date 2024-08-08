@@ -1,8 +1,10 @@
-﻿using MediatR;
+﻿using Application.Features.Libraries.Extensions;
+using MediatR;
 using Domain.Entities.Libraries;
 using Microsoft.EntityFrameworkCore;
 using MGH.Core.Domain.Buses.Commands;
 using MGH.Core.Infrastructure.Persistence.Persistence.Base;
+using MGH.Core.Infrastructure.Persistence.Persistence.Models.Filters;
 
 namespace Application.Features.Libraries.Commands.RemoveLibraryStaff;
 
@@ -17,9 +19,7 @@ public class RemoveLibraryStaffCommandHandler(ILibraryRepository libraryReposito
 {
     public async Task<Unit> Handle(DeleteLibraryStaffCommand request, CancellationToken cancellationToken)
     {
-        var library = await libraryRepository
-            .GetAsync(a => a.Id == request.LibraryId, a => a.Include(b => b.LibraryStaves),
-                cancellationToken: cancellationToken);
+        var library = await libraryRepository.GetAsync(request.ToGetBaseLibraryModel(cancellationToken));
         library.RemoveLibraryStaff(request.NationalCode);
         await unitOfWork.CompleteAsync(cancellationToken);
         return Unit.Value;

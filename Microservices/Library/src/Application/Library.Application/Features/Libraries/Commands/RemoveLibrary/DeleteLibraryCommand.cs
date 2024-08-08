@@ -1,8 +1,10 @@
-﻿using MediatR;
+﻿using Application.Features.Libraries.Extensions;
+using MediatR;
 using Domain.Entities.Libraries;
 using Application.Features.Libraries.Rules;
 using MGH.Core.Domain.Buses.Commands;
 using MGH.Core.Infrastructure.Persistence.Persistence.Base;
+using MGH.Core.Infrastructure.Persistence.Persistence.Models.Filters;
 
 namespace Application.Features.Libraries.Commands.RemoveLibrary;
 
@@ -19,8 +21,7 @@ public class RemoveLibraryCommandHandler(
 {
     public async Task<Unit> Handle(DeleteLibraryCommand request, CancellationToken cancellationToken)
     {
-        var library =
-            await libraryRepository.GetAsync(a => a.Id == request.LibraryId, cancellationToken: cancellationToken);
+        var library = await libraryRepository.GetAsync(request.ToGetBaseLibraryModel(cancellationToken));
         await libraryBusinessRules.LibraryShouldBeExistsWhenSelected(library);
 
         await library.RemoveLibrary(library);
