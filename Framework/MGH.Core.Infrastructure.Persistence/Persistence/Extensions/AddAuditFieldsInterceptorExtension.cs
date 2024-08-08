@@ -1,10 +1,10 @@
-﻿using MGH.Core.Domain.Aggregate;
-using MGH.Core.Domain.Entity.Base;
+﻿using System.Text.Json;
 using MGH.Core.Domain.Outboxes;
+using MGH.Core.Domain.Aggregate;
+using MGH.Core.Domain.Entity.Base;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using Newtonsoft.Json;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace MGH.Core.Infrastructure.Persistence.Persistence.Extensions;
 
@@ -27,7 +27,7 @@ public static class AddAuditFieldsInterceptorExtension
         item.Property("UpdatedAt").CurrentValue = now;
         item.Property("UpdatedBy").CurrentValue = userName;
     }
-    
+
     public static void SetOutbox(this DbContextEventData eventData, DbContext dbContext)
     {
         var outboxMessages =
@@ -37,13 +37,14 @@ public static class AddAuditFieldsInterceptorExtension
                 .SelectMany(a => a.Events)
                 .Select(a => new OutboxMessage
                 {
-                    Id = new Guid(),
+                    Id = Guid.NewGuid(),
                     CreatedAt = DateTime.Now,
                     Type = a.GetType().Name,
-                    Content = JsonConvert.SerializeObject(a, new JsonSerializerSettings
+                    Content = JsonSerializer.Serialize(a, new JsonSerializerOptions
                     {
-                        TypeNameHandling = TypeNameHandling.All
-                    }),
+                        WriteIndented = false,
+                        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                    })
                 }).ToList();
 
         if (outboxMessages != null)
