@@ -1,10 +1,8 @@
-﻿using Application.Features.Libraries.Extensions;
-using Application.Features.Libraries.Rules;
-using Domain.Entities.Libraries;
-using Domain.Entities.Libraries.Constant;
+﻿using Domain;
 using MGH.Core.Domain.Buses.Commands;
-using MGH.Core.Infrastructure.Persistence.Persistence.Base;
-using MGH.Core.Infrastructure.Persistence.Persistence.Models.Filters;
+using Domain.Entities.Libraries.Constant;
+using Application.Features.Libraries.Rules;
+using Application.Features.Libraries.Extensions;
 
 namespace Application.Features.Libraries.Commands.EditLibrary;
 
@@ -19,15 +17,13 @@ public class UpdateLibraryWithStavesCommand : ICommand<Guid>
     public List<StaffDto> StavesDto { get; set; }
 }
 
-public class EditLibraryWithStavesCommandHandler(
-    ILibraryRepository libraryRepository,
-    IUnitOfWork unitOfWork,
+public class EditLibraryWithStavesCommandHandler(IUow uow,
     LibraryBusinessRules libraryBusinessRules)
     : ICommandHandler<UpdateLibraryWithStavesCommand, Guid>
 {
     public async Task<Guid> Handle(UpdateLibraryWithStavesCommand request, CancellationToken cancellationToken)
     {
-        var library = await libraryRepository.GetAsync(request.ToGetBaseLibraryModel(cancellationToken));
+        var library = await uow.Library.GetAsync(request.ToGetBaseLibraryModel(cancellationToken));
         await libraryBusinessRules.LibraryShouldBeExistsWhenSelected(library);
 
         if (request.Code != library.Code)
@@ -35,7 +31,7 @@ public class EditLibraryWithStavesCommandHandler(
 
         library.EditLibrary(request.Name, request.Code, request.Location, request.District,
             request.RegistrationDate, request.StavesDto.ToStaffList());
-        await unitOfWork.CompleteAsync(cancellationToken);
+        await uow.CompleteAsync(cancellationToken);
         return library.Id;
     }
 }

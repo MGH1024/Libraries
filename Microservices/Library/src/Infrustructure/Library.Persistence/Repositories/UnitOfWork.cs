@@ -1,13 +1,21 @@
-﻿using MGH.Core.Infrastructure.Persistence.Persistence.Base;
+﻿using Domain;
+using Domain.Entities.Libraries;
+using MGH.Core.Infrastructure.Public;
 using Microsoft.EntityFrameworkCore.Storage;
 using Persistence.Contexts;
 
-namespace Persistence.UOW;
+namespace Persistence.Repositories;
 
-public class UnitOfWork(LibraryDbContext context) : IUnitOfWork
+public class UnitOfWork(LibraryDbContext context, IDateTime dateTime) : IUow
 {
     private IDbContextTransaction _transaction;
-    
+    private LibraryRepository _libraryRepository;
+    private OutBoxRepository _outBoxRepository;
+
+    public ILibraryRepository Library => _libraryRepository ??= new LibraryRepository(context);
+    public IOutBoxRepository OutBox => _outBoxRepository ??= new OutBoxRepository(context, dateTime);
+
+
     public async Task<int> CompleteAsync(CancellationToken cancellationToken)
     {
         return await context.SaveChangesAsync(cancellationToken);

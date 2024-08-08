@@ -1,4 +1,5 @@
-﻿using Domain.Entities.Libraries;
+﻿using Domain;
+using Domain.Entities.Libraries;
 using Domain.Entities.Libraries.Factories;
 using Domain.Entities.Libraries.Policies;
 using MGH.Core.Infrastructure.Persistence.Persistence.Base;
@@ -11,7 +12,6 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using Persistence.Contexts;
 using Persistence.Repositories;
-using Persistence.UOW;
 
 namespace Persistence;
 
@@ -60,7 +60,7 @@ public static class PersistenceServiceRegistration
         services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         services.AddScoped<ILibraryRepository, LibraryRepository>();
         services.AddScoped<IOutBoxRepository, OutBoxRepository>();
-        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<IUow, UnitOfWork>();
         services.AddScoped<ILibraryFactory, LibraryFactory>();
         services.AddScoped<ILibraryPolicy, DistrictPolicy>();
         return services;

@@ -1,9 +1,8 @@
-﻿using Application.Features.Libraries.Extensions;
-using Application.Features.Libraries.Rules;
-using Domain.Entities.Libraries;
-using Domain.Entities.Libraries.Constant;
+﻿using Domain;
 using MGH.Core.Domain.Buses.Commands;
-using MGH.Core.Infrastructure.Persistence.Persistence.Base;
+using Domain.Entities.Libraries.Constant;
+using Application.Features.Libraries.Rules;
+using Application.Features.Libraries.Extensions;
 
 namespace Application.Features.Libraries.Commands.EditLibrary;
 
@@ -18,21 +17,20 @@ public class UpdateLibraryCommand : ICommand<Guid>
 }
 
 public class EditLibraryCommandHandler(
-    ILibraryRepository libraryRepository,
-    IUnitOfWork unitOfWork,
+    IUow uow,
     LibraryBusinessRules libraryBusinessRules)
     : ICommandHandler<UpdateLibraryCommand, Guid>
 {
     public async Task<Guid> Handle(UpdateLibraryCommand request, CancellationToken cancellationToken)
     {
-        var library = await libraryRepository.GetAsync(request.ToGetBaseLibraryModel(cancellationToken));
+        var library = await uow.Library.GetAsync(request.ToGetBaseLibraryModel(cancellationToken));
         await libraryBusinessRules.LibraryShouldBeExistsWhenSelected(library);
 
         if (request.Code != library.Code)
             await libraryBusinessRules.LibraryCodeMustBeUnique(request.Code);
 
         library.EditLibrary(request.Name, request.Code, request.Location, request.District, request.RegistrationDate);
-        await unitOfWork.CompleteAsync(cancellationToken);
+        await uow.CompleteAsync(cancellationToken);
         return library.Id;
     }
 }

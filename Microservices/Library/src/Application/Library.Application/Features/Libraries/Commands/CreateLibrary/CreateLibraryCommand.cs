@@ -1,9 +1,8 @@
-﻿using Domain.Entities.Libraries;
+﻿using Domain;
+using MGH.Core.Domain.Buses.Commands;
 using Domain.Entities.Libraries.Constant;
 using Domain.Entities.Libraries.Factories;
 using Application.Features.Libraries.Rules;
-using MGH.Core.Domain.Buses.Commands;
-using MGH.Core.Infrastructure.Persistence.Persistence.Base;
 
 namespace Application.Features.Libraries.Commands.CreateLibrary;
 
@@ -17,11 +16,9 @@ public class CreateLibraryCommand : ICommand<Guid>
 }
 
 public class CreateLibraryCommandHandler(
-    ILibraryRepository libraryRepository,
     ILibraryFactory libraryFactory,
-    IUnitOfWork unitOfWork,
-    LibraryBusinessRules libraryBusinessRules)
-    : ICommandHandler<CreateLibraryCommand, Guid>
+    IUow uow,
+    LibraryBusinessRules libraryBusinessRules) : ICommandHandler<CreateLibraryCommand, Guid>
 {
     public async Task<Guid> Handle(CreateLibraryCommand command, CancellationToken cancellationToken)
     {
@@ -29,8 +26,8 @@ public class CreateLibraryCommandHandler(
 
         var library = libraryFactory.Create(command.Name, command.Code, command.Location,
             command.RegistrationDate, command.District);
-        await libraryRepository.AddAsync(library, cancellationToken);
-        await unitOfWork.CompleteAsync(cancellationToken);
+        await uow.Library.AddAsync(library, cancellationToken);
+        await uow.CompleteAsync(cancellationToken);
 
         // sender.Publish(new PublishModel<Library>
         // {
@@ -53,8 +50,6 @@ public class CreateLibraryCommandHandler(
         //     ExchangeType = "direct",
         // });
 
-
-      
 
         return library.Id;
     }

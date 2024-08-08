@@ -6,7 +6,6 @@ using MGH.Core.Infrastructure.Persistence.Persistence.Base;
 using NetArchTest.Rules;
 using Persistence.Contexts;
 using Persistence.Repositories;
-using Persistence.UOW;
 
 namespace LibraryMicroservice.Test.Base;
 

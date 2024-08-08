@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Query;
 
 namespace Domain.Entities.Libraries;
 
-public interface IOutBoxRepository : IQuery<OutboxMessage>
+public interface IOutBoxRepository 
 {
     Task<OutboxMessage> GetAsync(GetBaseModel<OutboxMessage> getBaseModel);
     

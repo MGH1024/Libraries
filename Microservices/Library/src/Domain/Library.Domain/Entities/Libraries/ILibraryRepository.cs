@@ -6,7 +6,7 @@ using MGH.Core.Infrastructure.Persistence.Persistence.Base;
 
 namespace Domain.Entities.Libraries;
 
-public interface ILibraryRepository : IQuery<Library>
+public interface ILibraryRepository 
 {
     Task<Library> GetAsync(GetBaseModel<Library> getBaseModel);
 
