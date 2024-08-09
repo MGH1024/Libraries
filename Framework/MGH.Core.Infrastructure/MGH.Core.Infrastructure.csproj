@@ -15,8 +15,4 @@
         <Authors>MGH</Authors>
         <Description>it's a package for manage Core Elastic Search</Description>
     </PropertyGroup>
-    <ItemGroup>
-        <ProjectReference Include="..\MGH.Core.Domain\MGH.Core.Domain.csproj" />
-    </ItemGroup>
-
 </Project>

@@ -12,6 +12,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\MGH.Core.Domain\MGH.Core.Domain.csproj" />
       <ProjectReference Include="..\MGH.Core.Infrastructure\MGH.Core.Infrastructure.csproj" />
     </ItemGroup>
 </Project>
