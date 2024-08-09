@@ -21,15 +21,14 @@
         <PackageReference Include="FluentValidation" Version="11.9.2" />
         <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.9.2" />
         <PackageReference Include="MediatR" Version="12.4.0" />
+        <PackageReference Include="MGH.Core.Persistence" Version="2.0.1" />
         <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
         <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="8.0.0" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\MGH.Core.CrossCutting\MGH.Core.CrossCutting.csproj" />
-      <ProjectReference Include="..\MGH.Core.Infrastructure.Persistence\MGH.Core.Infrastructure.Persistence.csproj" />
       <ProjectReference Include="..\MGH.Core.Infrastructure.Securities\MGH.Core.Infrastructure.Securities.csproj" />
-      <ProjectReference Include="..\MGH.Core.Infrastructure\MGH.Core.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

@@ -1,8 +1,8 @@
 ﻿using System.Reflection;
 using Api.Controllers;
 using Application;
+using Domain;
 using Domain.Entities.Libraries;
-using MGH.Core.Infrastructure.Persistence.Persistence.Base;
 using NetArchTest.Rules;
 using Persistence.Contexts;
 using Persistence.Repositories;
@@ -16,7 +16,7 @@ public abstract class ArchitecturalTestsBase
     protected static Assembly InfrastructureAssembly => typeof(LibraryRepository).Assembly;
     protected static Assembly PersistenceAssembly => typeof(LibraryDbContext).Assembly;
     protected static Assembly ApiAssembly => typeof(LibrariesController).Assembly;
-    protected static Assembly FrameworkPersistenceAssembly => typeof(IUnitOfWork).Assembly;
+    protected static Assembly FrameworkPersistenceAssembly => typeof(IUow).Assembly;
 
     protected static void AssertAreImmutable(IEnumerable<Type> types)
     {

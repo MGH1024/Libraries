@@ -3,7 +3,6 @@ using Domain.Entities.Libraries;
 using MGH.Core.Application.Requests;
 using MGH.Core.Application.Responses;
 using Application.Features.Libraries.Extensions;
-using MGH.Core.Infrastructure.Persistence.Persistence.Models.Filters;
 
 namespace Application.Features.Libraries.Queries.GetList;
 

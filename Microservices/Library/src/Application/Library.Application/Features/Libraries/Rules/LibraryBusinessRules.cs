@@ -2,7 +2,6 @@
 using Domain.Entities.Libraries;
 using MGH.Core.Application.Rules;
 using MGH.Core.CrossCutting.Exceptions.Types;
-using MGH.Core.Infrastructure.Persistence.Persistence.Models.Filters;
 
 namespace Application.Features.Libraries.Rules;
 

@@ -23,7 +23,6 @@
     <ItemGroup>
       <ProjectReference Include="..\..\..\..\..\Framework\MGH.Core.Application\MGH.Core.Application.csproj" />
       <ProjectReference Include="..\..\..\..\..\Framework\MGH.Core.Infrastructure.ElasticSearch\MGH.Core.Infrastructure.ElasticSearch.csproj" />
-      <ProjectReference Include="..\..\..\..\..\Framework\MGH.Core.Infrastructure.Persistence\MGH.Core.Infrastructure.Persistence.csproj" />
       <ProjectReference Include="..\..\Domain\Library.Domain\Library.Domain.csproj" />
     </ItemGroup>
 

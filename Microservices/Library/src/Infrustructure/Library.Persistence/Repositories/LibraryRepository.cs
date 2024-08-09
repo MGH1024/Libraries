@@ -1,9 +1,9 @@
 ﻿using System.Collections;
 using Domain.Entities.Libraries;
 using MGH.Core.Domain.Entity.Base;
-using MGH.Core.Infrastructure.Persistence.Persistence.Extensions;
-using MGH.Core.Infrastructure.Persistence.Persistence.Models.Filters;
-using MGH.Core.Infrastructure.Persistence.Persistence.Models.Paging;
+using MGH.Core.Persistence.Extensions;
+using MGH.Core.Persistence.Models.Filters;
+using MGH.Core.Persistence.Models.Paging;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Persistence.Contexts;

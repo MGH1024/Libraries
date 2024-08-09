@@ -1,4 +1,5 @@
-﻿using MGH.Core.Domain.Entity.Base;
+﻿
+using MGH.Core.Domain.Entity.Base;
 using MGH.Core.Infrastructure.Securities.Security.Enums;
 
 namespace MGH.Core.Infrastructure.Securities.Security.Entities;
