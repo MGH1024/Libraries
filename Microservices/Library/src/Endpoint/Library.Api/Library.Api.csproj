@@ -9,6 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="MGH.Core.Endpoint.Swagger" Version="2.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.7" />
         <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.3" />
         <PackageReference Include="Quartz.Extensions.Hosting" Version="3.12.0" />
@@ -26,7 +27,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\..\..\..\Framework\MGH.Core.Endpoint.Swagger\MGH.Core.Endpoint.Swagger.csproj" />
         <ProjectReference Include="..\..\Infrustructure\Library.Persistence\Library.Persistence.csproj" />
     </ItemGroup>
 </Project>
