@@ -5,6 +5,7 @@ using MGH.Core.Domain.Outboxes;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Nest;
 using Persistence.Configurations.Base;
 
 namespace Persistence.Configurations;
@@ -14,8 +15,7 @@ public class OutboxConfiguration : IEntityTypeConfiguration<OutboxMessage>
     public void Configure(EntityTypeBuilder<OutboxMessage> builder)
     {
         //table
-        builder.ToTable(DatabaseTableName.Outbox);
-
+        builder.ToTable(DatabaseTableName.Outbox, DatabaseSchema.LibrarySchema);
 
         //fix fields section
         builder.Property(t => t.Id)

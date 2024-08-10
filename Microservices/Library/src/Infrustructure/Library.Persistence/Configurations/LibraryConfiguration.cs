@@ -10,58 +10,29 @@ public class LibraryConfiguration : IEntityTypeConfiguration<Library>
     public void Configure(EntityTypeBuilder<Library> builder)
     {
         //table
-        //builder.ToTable(DatabaseTableName.Library, DatabaseSchema.LibrarySchema);
+        builder.ToTable(DatabaseTableName.Library, DatabaseSchema.LibrarySchema);
 
 
         //fix fields section
         builder.Property(t => t.Id).IsRequired();
-
-        // var nameConvertor =
-        //     new ValueConverter<Name, string>
-        //         (a => a.Value, a => new Name(a));
-        
-        builder.Property(a=>a.Name)
-            //.HasConversion(nameConvertor)
+        builder.Property(a => a.Name)
             .HasMaxLength(128).IsRequired();
-       
 
-        // var codeConvertor =
-        //     new ValueConverter<Code, string>
-        //         (a => a.Value, a => new Code(a));
-
-        builder.Property(a=>a.Code)
-            //.HasConversion(codeConvertor)
+        builder.Property(a => a.Code)
             .HasMaxLength(3)
             .IsRequired()
             .IsUnicode();
 
-        // var locationConvertor =
-        //     new ValueConverter<Location, string>
-        //         (a => a.Value, a => new Location(a));
-
-        builder.Property(a=>a.Location)
-            //.HasConversion(locationConvertor)
+        builder.Property(a => a.Location)
             .HasMaxLength(256)
             .IsRequired();
 
-
-        // var districtConvertor =
-        //     new ValueConverter<District, int>
-        //     (a => (int)a.Value, a =>
-        //         new District((Domain.Entities.Libraries.Constant.District)a));
-
         builder
-            //.HasConversion(districtConvertor)
-            .Property(a=>a.District)
+            .Property(a => a.District)
             .IsRequired();
 
-        // var registerDateConvertor =
-        //     new ValueConverter<RegistrationDate, DateTime>
-        //         (a => a.Value, a => new RegistrationDate(a));
-
         builder
-            //.HasConversion(registerDateConvertor)
-            .Property(a=>a.RegistrationDate)
+            .Property(a => a.RegistrationDate)
             .IsRequired();
 
         builder.OwnsMany(
@@ -109,8 +80,7 @@ public class LibraryConfiguration : IEntityTypeConfiguration<Library>
         builder.Property(a => a.CreatedBy)
             .HasDefaultValue("user");
 
-        builder.Property(a => a.CreatedAt);
-        //.HasDefaultValueSql("GetDate()")
-        //.HasDefaultValueSql("now()");
+        builder.Property(a => a.CreatedAt)
+            .HasDefaultValueSql("GetDate()");
     }
 }

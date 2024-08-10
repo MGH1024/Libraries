@@ -33,7 +33,6 @@ public class User : AuditAbleEntity<int>
         string email,
         byte[] passwordSalt,
         byte[] passwordHash,
-        bool status,
         AuthenticatorType authenticatorType
     )
     {
