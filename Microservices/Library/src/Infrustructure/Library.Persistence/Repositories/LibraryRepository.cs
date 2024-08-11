@@ -2,7 +2,7 @@
 using Domain.Entities.Libraries;
 using MGH.Core.Domain.Entity.Base;
 using MGH.Core.Persistence.Extensions;
-using MGH.Core.Persistence.Models.Filters;
+using MGH.Core.Persistence.Models.Filters.GetModels;
 using MGH.Core.Persistence.Models.Paging;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -14,7 +14,7 @@ public class LibraryRepository(LibraryDbContext libraryDbContext) : ILibraryRepo
 {
     public IQueryable<Library> Query() => libraryDbContext.Set<Library>();
 
-    public async Task<Library> GetAsync(GetBaseModel<Library> getBaseModel)
+    public async Task<Library> GetAsync(GetModel<Library> getBaseModel)
     {
         var queryable = Query();
         if (!getBaseModel.EnableTracking)

@@ -4,6 +4,7 @@ using MGH.Core.Domain.Entity.Base;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
 using MGH.Core.Persistence.Extensions;
 using MGH.Core.Persistence.Models.Filters;
+using MGH.Core.Persistence.Models.Filters.GetModels;
 using MGH.Core.Persistence.Models.Paging;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -15,7 +16,7 @@ public class OtpAuthenticatorRepository(LibraryDbContext libraryDbContext) : IOt
 {
    public IQueryable<OtpAuthenticator> Query() => libraryDbContext.Set<OtpAuthenticator>();
 
-    public async Task<OtpAuthenticator> GetAsync(GetBaseModel<OtpAuthenticator> getBaseModel)
+    public async Task<OtpAuthenticator> GetAsync(GetModel<OtpAuthenticator> getBaseModel)
     {
         var queryable = Query();
         if (!getBaseModel.EnableTracking)

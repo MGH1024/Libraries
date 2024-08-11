@@ -26,7 +26,7 @@ public class AuthorizationBehavior<TRequest, TResponse>(IHttpContextAccessor htt
         if (isNotMatchedAUserRoleClaimWithRequestRoles)
             throw new AuthorizationException("You are not authorized.");
 
-        TResponse response = await next();
+        var response = await next();
         return response;
     }
 }

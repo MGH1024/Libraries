@@ -7,6 +7,7 @@ using Application.Features.Libraries.Queries.GetList;
 using Domain.Entities.Libraries;
 using MGH.Core.Application.Responses;
 using MGH.Core.Persistence.Models.Filters;
+using MGH.Core.Persistence.Models.Filters.GetModels;
 using MGH.Core.Persistence.Models.Paging;
 using Microsoft.EntityFrameworkCore;
 
@@ -43,18 +44,18 @@ public static class LibraryExtensions
         return new Staff(staffDto.Name, staffDto.Position, staffDto.NationalCode);
     }
 
-    public static GetBaseModel<Library> ToGetBaseLibraryModel(this string code)
+    public static GetModel<Library> ToGetBaseLibraryModel(this string code)
     {
-        return new GetBaseModel<Library>
+        return new GetModel<Library>
         {
             Predicate = a => a.Code == code
         };
     }
 
-    public static GetBaseModel<Library> ToGetBaseLibraryModel(this DeleteLibraryStaffCommand command,
+    public static GetModel<Library> ToGetBaseLibraryModel(this DeleteLibraryStaffCommand command,
         CancellationToken cancellationToken)
     {
-        return new GetBaseModel<Library>
+        return new GetModel<Library>
         {
             Predicate = a => a.Id == command.LibraryId,
             Include = a => a.Include(b => b.LibraryStaves),
@@ -62,39 +63,39 @@ public static class LibraryExtensions
         };
     }
 
-    public static GetBaseModel<Library> ToGetBaseLibraryModel(this UpdateLibraryCommand request,
+    public static GetModel<Library> ToGetBaseLibraryModel(this UpdateLibraryCommand request,
         CancellationToken cancellationToken)
     {
-        return new GetBaseModel<Library>()
+        return new GetModel<Library>()
         {
             Predicate = a => a.Id == request.LibraryId,
             CancellationToken = cancellationToken
         };
     }
 
-    public static GetBaseModel<Library> ToGetBaseLibraryModel(this UpdateLibraryWithStavesCommand request,
+    public static GetModel<Library> ToGetBaseLibraryModel(this UpdateLibraryWithStavesCommand request,
         CancellationToken cancellationToken)
     {
-        return new GetBaseModel<Library>
+        return new GetModel<Library>
         {
             Predicate = a => a.Id == request.LibraryId, CancellationToken = cancellationToken
         };
     }
 
-    public static GetBaseModel<Library> ToGetBaseLibraryModel(this DeleteLibraryCommand request,
+    public static GetModel<Library> ToGetBaseLibraryModel(this DeleteLibraryCommand request,
         CancellationToken cancellationToken)
     {
-        return new GetBaseModel<Library>
+        return new GetModel<Library>
         {
             Predicate = a => a.Id == request.LibraryId,
             CancellationToken = cancellationToken
         };
     }
 
-    public static GetBaseModel<Library> ToGetBaseLibraryModel(this CreateLibraryStaffCommand request,
+    public static GetModel<Library> ToGetBaseLibraryModel(this CreateLibraryStaffCommand request,
         CancellationToken cancellationToken)
     {
-        return new GetBaseModel<Library>()
+        return new GetModel<Library>()
         {
             Predicate = a => a.Id == request.LibraryId,
             Include = a => a.Include(b => b.LibraryStaves),

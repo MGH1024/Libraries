@@ -3,7 +3,7 @@ using Domain.Security;
 using MGH.Core.Domain.Entity.Base;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
 using MGH.Core.Persistence.Extensions;
-using MGH.Core.Persistence.Models.Filters;
+using MGH.Core.Persistence.Models.Filters.GetModels;
 using MGH.Core.Persistence.Models.Paging;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -15,7 +15,7 @@ public class UserRepository(LibraryDbContext libraryDbContext) : IUserRepository
 {
   public IQueryable<User> Query() => libraryDbContext.Set<User>();
 
-    public async Task<User> GetAsync(GetBaseModel<User> getBaseModel)
+    public async Task<User> GetAsync(GetModel<User> getBaseModel)
     {
         var queryable = Query();
         if (!getBaseModel.EnableTracking)
@@ -68,6 +68,18 @@ public class UserRepository(LibraryDbContext libraryDbContext) : IUserRepository
     {
         await SetEntityAsDeletedAsync(entity, permanent);
         return entity;
+    }
+
+    public async Task<bool> AnyAsync(Base<User> @base)
+    {
+        IQueryable<User> queryable = Query();
+        if (@base.EnableTracking)
+            queryable = queryable.AsNoTracking();
+        if (@base.WithDeleted)
+            queryable = queryable.IgnoreQueryFilters();
+        if (@base.Predicate != null)
+            queryable = queryable.Where(@base.Predicate);
+        return await queryable.AnyAsync(@base.CancellationToken);
     }
 
     private async Task SetEntityAsDeletedAsync(User entity, bool permanent)

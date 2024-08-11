@@ -4,6 +4,7 @@ using MGH.Core.Domain.Entity.Base;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
 using MGH.Core.Persistence.Extensions;
 using MGH.Core.Persistence.Models.Filters;
+using MGH.Core.Persistence.Models.Filters.GetModels;
 using MGH.Core.Persistence.Models.Paging;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -15,7 +16,7 @@ public class UserOperationClaimRepository(LibraryDbContext libraryDbContext) : I
 {
     public IQueryable<UserOperationClaim> Query() => libraryDbContext.Set<UserOperationClaim>();
 
-    public async Task<UserOperationClaim> GetAsync(GetBaseModel<UserOperationClaim> getBaseModel)
+    public async Task<UserOperationClaim> GetAsync(GetModel<UserOperationClaim> getBaseModel)
     {
         var queryable = Query();
         if (!getBaseModel.EnableTracking)

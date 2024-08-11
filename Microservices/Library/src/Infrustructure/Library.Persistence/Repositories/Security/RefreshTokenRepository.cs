@@ -4,6 +4,7 @@ using MGH.Core.Domain.Entity.Base;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
 using MGH.Core.Persistence.Extensions;
 using MGH.Core.Persistence.Models.Filters;
+using MGH.Core.Persistence.Models.Filters.GetModels;
 using MGH.Core.Persistence.Models.Paging;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -15,7 +16,7 @@ public class RefreshTokenRepository(LibraryDbContext libraryDbContext) :IRefresh
 {
    public IQueryable<RefreshToken> Query() => libraryDbContext.Set<RefreshToken>();
 
-    public async Task<RefreshToken> GetAsync(GetBaseModel<RefreshToken> getBaseModel)
+    public async Task<RefreshToken> GetAsync(GetModel<RefreshToken> getBaseModel)
     {
         var queryable = Query();
         if (!getBaseModel.EnableTracking)

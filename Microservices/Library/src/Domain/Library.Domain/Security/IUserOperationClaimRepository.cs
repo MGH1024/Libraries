@@ -1,12 +1,13 @@
 ﻿using MGH.Core.Infrastructure.Securities.Security.Entities;
 using MGH.Core.Persistence.Models.Filters;
+using MGH.Core.Persistence.Models.Filters.GetModels;
 using MGH.Core.Persistence.Models.Paging;
 
 namespace Domain.Security;
 
 public interface IUserOperationClaimRepository
 {
-    Task<UserOperationClaim> GetAsync(GetBaseModel<UserOperationClaim> getBaseModel);
+    Task<UserOperationClaim> GetAsync(GetModel<UserOperationClaim> getBaseModel);
 
     Task<IPaginate<UserOperationClaim>> GetListAsync(GetListAsyncModel<UserOperationClaim> getListAsyncModel);
 

@@ -1,12 +1,13 @@
 ﻿using MGH.Core.Infrastructure.Securities.Security.Entities;
 using MGH.Core.Persistence.Models.Filters;
+using MGH.Core.Persistence.Models.Filters.GetModels;
 using MGH.Core.Persistence.Models.Paging;
 
 namespace Domain.Security;
 
 public interface IOtpAuthenticatorRepository
 {
-    Task<OtpAuthenticator> GetAsync(GetBaseModel<OtpAuthenticator> getBaseModel);
+    Task<OtpAuthenticator> GetAsync(GetModel<OtpAuthenticator> getBaseModel);
 
     Task<IPaginate<OtpAuthenticator>> GetListAsync(GetListAsyncModel<OtpAuthenticator> getListAsyncModel);
 

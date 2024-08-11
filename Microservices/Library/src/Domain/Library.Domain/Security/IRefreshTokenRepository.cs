@@ -1,12 +1,13 @@
 ﻿using MGH.Core.Infrastructure.Securities.Security.Entities;
 using MGH.Core.Persistence.Models.Filters;
+using MGH.Core.Persistence.Models.Filters.GetModels;
 using MGH.Core.Persistence.Models.Paging;
 
 namespace Domain.Security;
 
 public interface IRefreshTokenRepository
 {
-    Task<RefreshToken> GetAsync(GetBaseModel<RefreshToken> getBaseModel);
+    Task<RefreshToken> GetAsync(GetModel<RefreshToken> getBaseModel);
 
     Task<IPaginate<RefreshToken>> GetListAsync(GetListAsyncModel<RefreshToken> getListAsyncModel);
 
