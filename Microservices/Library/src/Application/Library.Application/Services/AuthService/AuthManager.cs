@@ -25,7 +25,7 @@ public class AuthManager : IAuthService
         _tokenHelper = tokenHelper;
         _authBusinessRules = authBusinessRules;
 
-        const string tokenOptionsConfigurationSection = "TokenOptions";
+        const string tokenOptionsConfigurationSection = "TokenOption";
         _tokenOptions =
             configuration.GetSection(tokenOptionsConfigurationSection).Get<TokenOptions>()
             ?? throw new NullReferenceException(

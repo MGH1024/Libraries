@@ -1,4 +1,5 @@
-﻿using Application.Features.Auth.Commands.EnableEmailAuthenticator;
+﻿using MediatR;
+using Application.Features.Auth.Commands.EnableEmailAuthenticator;
 using Application.Features.Auth.Commands.EnableOtpAuthenticator;
 using Application.Features.Auth.Commands.Login;
 using Application.Features.Auth.Commands.RefreshToken;
@@ -6,7 +7,6 @@ using Application.Features.Auth.Commands.Register;
 using Application.Features.Auth.Commands.RevokeToken;
 using Application.Features.Auth.Commands.VerifyEmailAuthenticator;
 using Application.Features.Auth.Commands.VerifyOtpAuthenticator;
-using MediatR;
 using MGH.Core.Application.DTOs.Security;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -38,7 +38,7 @@ public class AuthController : AppController
         LoggedResponse result = await _sender.Send(loginCommand, cancellationToken);
 
         if (result.RefreshTkn is not null)
-            setRefreshTokenToCookie(result.RefreshTkn);
+            SetRefreshTokenToCookie(result.RefreshTkn);
 
         return Ok(result.ToHttpResponse());
     }
@@ -49,7 +49,7 @@ public class AuthController : AppController
     {
         RegisterCommand registerCommand = new() { UserForRegisterDto = userForRegisterDto, IpAddress = IpAddress() };
         RegisteredResponse result = await _sender.Send(registerCommand, cancellationToken);
-        setRefreshTokenToCookie(result.RefreshTkn);
+        SetRefreshTokenToCookie(result.RefreshTkn);
         return Created(uri: "", result.AccessToken);
     }
 
@@ -57,9 +57,9 @@ public class AuthController : AppController
     public async Task<IActionResult> RefreshToken(CancellationToken cancellationToken)
     {
         RefreshTokenCommand refreshTokenCommand = new()
-            { RefreshToken = getRefreshTokenFromCookies(), IpAddress = IpAddress() };
+            { RefreshToken = GetRefreshTokenFromCookies(), IpAddress = IpAddress() };
         RefreshedTokensResponse result = await _sender.Send(refreshTokenCommand, cancellationToken);
-        setRefreshTokenToCookie(result.RefreshTkn);
+        SetRefreshTokenToCookie(result.RefreshTkn);
         return Created(uri: "", result.AccessToken);
     }
 
@@ -69,7 +69,7 @@ public class AuthController : AppController
         string refreshToken, CancellationToken cancellationToken)
     {
         RevokeTokenCommand revokeTokenCommand = new()
-            { Token = refreshToken ?? getRefreshTokenFromCookies(), IpAddress = IpAddress() };
+            { Token = refreshToken ?? GetRefreshTokenFromCookies(), IpAddress = IpAddress() };
         RevokedTokenResponse result = await _sender.Send(revokeTokenCommand, cancellationToken);
         return Ok(result);
     }
@@ -117,11 +117,11 @@ public class AuthController : AppController
         return Ok();
     }
 
-    private string getRefreshTokenFromCookies() =>
+    private string GetRefreshTokenFromCookies() =>
         Request.Cookies["refreshToken"] ??
         throw new ArgumentException("Refresh token is not found in request cookies.");
 
-    private void setRefreshTokenToCookie(RefreshTkn refreshToken)
+    private void SetRefreshTokenToCookie(RefreshTkn refreshToken)
     {
         CookieOptions cookieOptions = new() { HttpOnly = true, Expires = DateTime.UtcNow.AddDays(7) };
         Response.Cookies.Append(key: "refreshToken", refreshToken.Token, cookieOptions);

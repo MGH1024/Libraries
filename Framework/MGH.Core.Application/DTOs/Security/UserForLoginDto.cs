@@ -2,21 +2,13 @@
 
 namespace MGH.Core.Application.DTOs.Security;
 
-public class UserForLoginDto : IDto
+public class UserForLoginDto(string email, string password) : IDto
 {
-    public string Email { get; set; }
-    public string Password { get; set; }
+    public string Email { get; set; } = email;
+    public string Password { get; set; } = password;
     public string AuthenticatorCode { get; set; }
 
-    public UserForLoginDto()
+    public UserForLoginDto() : this(string.Empty, string.Empty)
     {
-        Email = string.Empty;
-        Password = string.Empty;
-    }
-
-    public UserForLoginDto(string email, string password)
-    {
-        Email = email;
-        Password = password;
     }
 }
