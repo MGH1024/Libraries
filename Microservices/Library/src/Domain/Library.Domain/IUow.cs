@@ -9,9 +9,9 @@ public interface IUow : IUnitOfWork
     ILibraryRepository Library { get; }
     IOutBoxRepository OutBox { get; }
     IEmailAuthenticatorRepository EmailAuthenticator { get; }
-    IOperationClaimRepository OperationClaimRepository { get; }
+    IOperationClaimRepository OperationClaim { get; }
     IOtpAuthenticatorRepository OtpAuthenticator { get; }
     IRefreshTokenRepository RefreshToken { get; }
-    IUserOperationClaimRepository OperationClaim { get; }
+    IUserOperationClaimRepository UserOperationClaim { get; }
     IUserRepository User { get; }
 }

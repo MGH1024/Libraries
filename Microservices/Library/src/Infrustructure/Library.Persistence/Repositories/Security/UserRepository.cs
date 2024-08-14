@@ -81,6 +81,12 @@ public class UserRepository(LibraryDbContext libraryDbContext) : IUserRepository
             queryable = queryable.Where(@base.Predicate);
         return await queryable.AnyAsync(@base.CancellationToken);
     }
+    
+    public async Task<User> UpdateAsync(User entity,CancellationToken  cancellationToken)
+    {
+        libraryDbContext.Update(entity);
+        return entity;
+    }
 
     private async Task SetEntityAsDeletedAsync(User entity, bool permanent)
     {

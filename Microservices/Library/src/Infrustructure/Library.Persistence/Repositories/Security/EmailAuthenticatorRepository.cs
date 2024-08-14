@@ -64,6 +64,12 @@ public class EmailAuthenticatorRepository(LibraryDbContext libraryDbContext) : I
         await libraryDbContext.AddAsync(entity, cancellationToken);
         return entity;
     }
+    
+    public async Task<EmailAuthenticator> UpdateAsync(EmailAuthenticator entity,CancellationToken  cancellationToken)
+    {
+        libraryDbContext.Update(entity);
+        return entity;
+    }
 
     public async Task<EmailAuthenticator> DeleteAsync(EmailAuthenticator entity, bool permanent = false)
     {

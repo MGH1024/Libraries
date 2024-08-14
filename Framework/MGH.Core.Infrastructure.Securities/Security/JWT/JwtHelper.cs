@@ -24,7 +24,7 @@ public class JwtHelper : ITokenHelper
             ?? throw new NullReferenceException($"\"{configurationSection}\" section cannot found in configuration.");
     }
 
-    public AccessToken CreateToken(User user, IList<OperationClaim> operationClaims)
+    public AccessToken CreateToken(User user, IEnumerable<OperationClaim> operationClaims)
     {
         _accessTokenExpiration = DateTime.Now.AddMinutes(_tokenOptions.AccessTokenExpiration);
         SecurityKey securityKey = SecurityKeyHelper.CreateSecurityKey(_tokenOptions.SecurityKey);
@@ -36,9 +36,9 @@ public class JwtHelper : ITokenHelper
         return new AccessToken { Token = token, Expiration = _accessTokenExpiration };
     }
 
-    public RefreshToken CreateRefreshToken(User user, string ipAddress)
+    public RefreshTkn CreateRefreshToken(User user, string ipAddress)
     {
-        RefreshToken refreshToken =
+        RefreshTkn refreshTkn =
             new()
             {
                 UserId = user.Id,
@@ -47,14 +47,14 @@ public class JwtHelper : ITokenHelper
                 CreatedByIp = ipAddress
             };
 
-        return refreshToken;
+        return refreshTkn;
     }
 
     public JwtSecurityToken CreateJwtSecurityToken(
         TokenOptions tokenOptions,
         User user,
         SigningCredentials signingCredentials,
-        IList<OperationClaim> operationClaims
+        IEnumerable<OperationClaim> operationClaims
     )
     {
         JwtSecurityToken jwt =
@@ -69,7 +69,7 @@ public class JwtHelper : ITokenHelper
         return jwt;
     }
 
-    private IEnumerable<Claim> SetClaims(User user, IList<OperationClaim> operationClaims)
+    private IEnumerable<Claim> SetClaims(User user, IEnumerable<OperationClaim> operationClaims)
     {
         List<Claim> claims = new();
         claims.AddNameIdentifier(user.Id.ToString());

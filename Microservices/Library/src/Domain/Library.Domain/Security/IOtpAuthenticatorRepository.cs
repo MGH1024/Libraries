@@ -16,4 +16,5 @@ public interface IOtpAuthenticatorRepository
 
     Task<OtpAuthenticator> AddAsync(OtpAuthenticator entity, CancellationToken cancellationToken);
     Task<OtpAuthenticator> DeleteAsync(OtpAuthenticator entity, bool permanent = false);
+    Task<OtpAuthenticator> UpdateAsync(OtpAuthenticator entity,CancellationToken  cancellationToken);
 }

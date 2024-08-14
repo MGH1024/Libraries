@@ -16,4 +16,5 @@ public interface IEmailAuthenticatorRepository
 
     Task<EmailAuthenticator> AddAsync(EmailAuthenticator entity, CancellationToken cancellationToken);
     Task<EmailAuthenticator> DeleteAsync(EmailAuthenticator entity, bool permanent = false);
+    Task<EmailAuthenticator> UpdateAsync(EmailAuthenticator entity,CancellationToken  cancellationToken);
 }

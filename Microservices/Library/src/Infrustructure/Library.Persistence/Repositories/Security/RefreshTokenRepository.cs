@@ -3,7 +3,6 @@ using Domain.Security;
 using MGH.Core.Domain.Entity.Base;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
 using MGH.Core.Persistence.Extensions;
-using MGH.Core.Persistence.Models.Filters;
 using MGH.Core.Persistence.Models.Filters.GetModels;
 using MGH.Core.Persistence.Models.Paging;
 using Microsoft.EntityFrameworkCore;
@@ -12,11 +11,11 @@ using Persistence.Contexts;
 
 namespace Persistence.Repositories.Security;
 
-public class RefreshTokenRepository(LibraryDbContext libraryDbContext) :IRefreshTokenRepository
+public class RefreshTokenRepository(LibraryDbContext libraryDbContext) : IRefreshTokenRepository
 {
-   public IQueryable<RefreshToken> Query() => libraryDbContext.Set<RefreshToken>();
+    public IQueryable<RefreshTkn> Query() => libraryDbContext.Set<RefreshTkn>();
 
-    public async Task<RefreshToken> GetAsync(GetModel<RefreshToken> getBaseModel)
+    public async Task<RefreshTkn> GetAsync(GetModel<RefreshTkn> getBaseModel)
     {
         var queryable = Query();
         if (!getBaseModel.EnableTracking)
@@ -28,9 +27,9 @@ public class RefreshTokenRepository(LibraryDbContext libraryDbContext) :IRefresh
         return await queryable.FirstOrDefaultAsync(getBaseModel.Predicate, getBaseModel.CancellationToken);
     }
 
-    public async Task<IPaginate<RefreshToken>> GetListAsync(GetListAsyncModel<RefreshToken> getListAsyncModel)
+    public async Task<IPaginate<RefreshTkn>> GetListAsync(GetListAsyncModel<RefreshTkn> getListAsyncModel)
     {
-        IQueryable<RefreshToken> queryable = Query();
+        IQueryable<RefreshTkn> queryable = Query();
         if (!getListAsyncModel.EnableTracking)
             queryable = queryable.AsNoTracking();
         if (getListAsyncModel.Include != null)
@@ -41,13 +40,15 @@ public class RefreshTokenRepository(LibraryDbContext libraryDbContext) :IRefresh
             queryable = queryable.Where(getListAsyncModel.Predicate);
         if (getListAsyncModel.OrderBy != null)
             return await getListAsyncModel.OrderBy(queryable)
-                .ToPaginateAsync(getListAsyncModel.Index, getListAsyncModel.Size, from: 0, getListAsyncModel.CancellationToken);
-        return await queryable.ToPaginateAsync(getListAsyncModel.Index, getListAsyncModel.Size, from: 0, getListAsyncModel.CancellationToken);
+                .ToPaginateAsync(getListAsyncModel.Index, getListAsyncModel.Size, from: 0,
+                    getListAsyncModel.CancellationToken);
+        return await queryable.ToPaginateAsync(getListAsyncModel.Index, getListAsyncModel.Size, from: 0,
+            getListAsyncModel.CancellationToken);
     }
 
-    public async Task<IPaginate<RefreshToken>> GetDynamicListAsync(GetDynamicListAsyncModel<RefreshToken> dynamicGet)
+    public async Task<IPaginate<RefreshTkn>> GetDynamicListAsync(GetDynamicListAsyncModel<RefreshTkn> dynamicGet)
     {
-        IQueryable<RefreshToken> queryable = Query().ToDynamic(dynamicGet.Dynamic);
+        IQueryable<RefreshTkn> queryable = Query().ToDynamic(dynamicGet.Dynamic);
         if (!dynamicGet.EnableTracking)
             queryable = queryable.AsNoTracking();
         if (dynamicGet.Include != null)
@@ -56,22 +57,66 @@ public class RefreshTokenRepository(LibraryDbContext libraryDbContext) :IRefresh
             queryable = queryable.IgnoreQueryFilters();
         if (dynamicGet.Predicate != null)
             queryable = queryable.Where(dynamicGet.Predicate);
-        return await queryable.ToPaginateAsync(dynamicGet.Index, dynamicGet.Size, from: 0, dynamicGet.CancellationToken);
+        return await queryable.ToPaginateAsync(dynamicGet.Index, dynamicGet.Size, from: 0,
+            dynamicGet.CancellationToken);
     }
 
-    public async Task<RefreshToken> AddAsync(RefreshToken entity, CancellationToken cancellationToken)
+    public async Task<RefreshTkn> AddAsync(RefreshTkn entity, CancellationToken cancellationToken)
     {
         await libraryDbContext.AddAsync(entity, cancellationToken);
         return entity;
     }
 
-    public async Task<RefreshToken> DeleteAsync(RefreshToken entity, bool permanent = false)
+    public async Task<RefreshTkn> DeleteAsync(RefreshTkn entity, bool permanent = false)
     {
         await SetEntityAsDeletedAsync(entity, permanent);
         return entity;
     }
 
-    private async Task SetEntityAsDeletedAsync(RefreshToken entity, bool permanent)
+    public async Task<bool> AnyAsync(Base<RefreshTkn> @base)
+    {
+        IQueryable<RefreshTkn> queryable = Query();
+        if (@base.EnableTracking)
+            queryable = queryable.AsNoTracking();
+        if (@base.WithDeleted)
+            queryable = queryable.IgnoreQueryFilters();
+        if (@base.Predicate != null)
+            queryable = queryable.Where(@base.Predicate);
+        return await queryable.AnyAsync(@base.CancellationToken);
+    }
+
+    public RefreshTkn Update(RefreshTkn entity, CancellationToken cancellationToken)
+    {
+        libraryDbContext.Update(entity);
+        return entity;
+    }
+
+    public async Task<IEnumerable<RefreshTkn>> GetRefreshTokenByUserId(int userId, int refreshTokenTtl,
+        CancellationToken cancellationToken)
+    {
+        var queryable = Query();
+        queryable.Where(r =>
+            r.UserId == userId
+            && r.Revoked == null
+            && r.Expires >= DateTime.UtcNow
+            && r.CreatedAt.AddDays(refreshTokenTtl) <= DateTime.UtcNow);
+
+        return await queryable.ToListAsync(cancellationToken);
+    }
+
+    public IEnumerable<RefreshTkn> DeleteRange(IEnumerable<RefreshTkn> entities, bool permanent = false)
+    {
+        SetEntitiesAsDeletedAsync(entities, permanent);
+        return entities;
+    }
+
+    private async Task SetEntitiesAsDeletedAsync(IEnumerable<RefreshTkn> entities, bool permanent)
+    {
+        foreach (var entity in entities)
+            await SetEntityAsDeletedAsync(entity, permanent);
+    }
+
+    private async Task SetEntityAsDeletedAsync(RefreshTkn entity, bool permanent)
     {
         if (!permanent)
         {
@@ -84,7 +129,7 @@ public class RefreshTokenRepository(LibraryDbContext libraryDbContext) :IRefresh
         }
     }
 
-    private void CheckHasEntityHaveOneToOneRelation(RefreshToken entity)
+    private void CheckHasEntityHaveOneToOneRelation(RefreshTkn entity)
     {
         bool hasEntityHaveOneToOneRelation =
             libraryDbContext

@@ -70,6 +70,12 @@ public class OtpAuthenticatorRepository(LibraryDbContext libraryDbContext) : IOt
         await SetEntityAsDeletedAsync(entity, permanent);
         return entity;
     }
+    
+    public async Task<OtpAuthenticator> UpdateAsync(OtpAuthenticator entity,CancellationToken  cancellationToken)
+    {
+        libraryDbContext.Update(entity);
+        return entity;
+    }
 
     private async Task SetEntityAsDeletedAsync(OtpAuthenticator entity, bool permanent)
     {

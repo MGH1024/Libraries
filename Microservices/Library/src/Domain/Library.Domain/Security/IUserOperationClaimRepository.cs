@@ -1,11 +1,11 @@
-﻿using MGH.Core.Infrastructure.Securities.Security.Entities;
-using MGH.Core.Persistence.Models.Filters;
-using MGH.Core.Persistence.Models.Filters.GetModels;
+﻿using MGH.Core.Domain.Buses.Queries;
 using MGH.Core.Persistence.Models.Paging;
+using MGH.Core.Persistence.Models.Filters.GetModels;
+using MGH.Core.Infrastructure.Securities.Security.Entities;
 
 namespace Domain.Security;
 
-public interface IUserOperationClaimRepository
+public interface IUserOperationClaimRepository : IQuery<UserOperationClaim>
 {
     Task<UserOperationClaim> GetAsync(GetModel<UserOperationClaim> getBaseModel);
 
@@ -16,4 +16,7 @@ public interface IUserOperationClaimRepository
 
     Task<UserOperationClaim> AddAsync(UserOperationClaim entity, CancellationToken cancellationToken);
     Task<UserOperationClaim> DeleteAsync(UserOperationClaim entity, bool permanent = false);
+    Task<bool> AnyAsync(Base<UserOperationClaim> @base);
+    Task<UserOperationClaim> UpdateAsync(UserOperationClaim entity, CancellationToken cancellationToken);
+    Task<IEnumerable<OperationClaim>> GetOperationClaim(User user,CancellationToken cancellationToken);
 }

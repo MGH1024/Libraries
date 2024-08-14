@@ -5,9 +5,9 @@ using Persistence.Configurations.Base;
 
 namespace Persistence.Configurations.Security;
 
-public class RefreshTokenConfiguration : IEntityTypeConfiguration<RefreshToken>
+public class RefreshTokenConfiguration : IEntityTypeConfiguration<RefreshTkn>
 {
-    public void Configure(EntityTypeBuilder<RefreshToken> builder)
+    public void Configure(EntityTypeBuilder<RefreshTkn> builder)
     {
         builder.ToTable(DatabaseTableName.RefreshToken, DatabaseSchema.SecuritySchema).HasKey(ea => ea.Id);
 

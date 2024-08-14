@@ -1,4 +1,4 @@
-namespace Application.Features.Users.Constants;
+namespace Application.Features.Auth.Constants;
 
 public static class AuthMessages
 {

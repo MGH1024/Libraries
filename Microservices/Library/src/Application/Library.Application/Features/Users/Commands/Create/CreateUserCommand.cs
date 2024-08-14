@@ -1,14 +1,13 @@
 ﻿using Application.Features.Users.Rules;
 using AutoMapper;
 using Domain;
-using MediatR;
 using MGH.Core.Application.Pipelines.Authorization;
 using MGH.Core.Domain.Buses.Commands;
+using MGH.Core.Infrastructure.Securities.Security.Constants;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
 using MGH.Core.Infrastructure.Securities.Security.Hashing;
-using MGH.Core.Infrastructure.Securities.Security.Constants;
 
-namespace Application.Features.Users.Commands.AddUser;
+namespace Application.Features.Users.Commands.Create;
 
 public class CreateUserCommand(string firstName, string lastName, string email, string password)
     : ICommand<CreatedUserResponse>, ISecuredRequest
@@ -26,7 +25,7 @@ public class CreateUserCommand(string firstName, string lastName, string email, 
         { GeneralOperationClaims.Admin, GeneralOperationClaims.Write, GeneralOperationClaims.Add };
 
     public class CreateUserCommandHandler(IMapper mapper, UserBusinessRules userBusinessRules, IUow uow)
-        : IRequestHandler<CreateUserCommand, CreatedUserResponse>
+        : ICommandHandler<CreateUserCommand, CreatedUserResponse>
     {
         public async Task<CreatedUserResponse> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {

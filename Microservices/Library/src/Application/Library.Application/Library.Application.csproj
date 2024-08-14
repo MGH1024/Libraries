@@ -23,11 +23,13 @@
     <ItemGroup>
       <ProjectReference Include="..\..\..\..\..\Framework\MGH.Core.Application\MGH.Core.Application.csproj" />
       <ProjectReference Include="..\..\..\..\..\Framework\MGH.Core.Infrastructure.ElasticSearch\MGH.Core.Infrastructure.ElasticSearch.csproj" />
+      <ProjectReference Include="..\..\..\..\..\Framework\MGH.Core.Infrastructure.Mail\MGH.Core.Infrastructure.Mail.csproj" />
       <ProjectReference Include="..\..\Domain\Library.Domain\Library.Domain.csproj" />
     </ItemGroup>
 
     <ItemGroup>
       <Folder Include="Features\Libraries\Queries\" />
+      <Folder Include="Features\OperationClaims\" />
     </ItemGroup>
 
 </Project>

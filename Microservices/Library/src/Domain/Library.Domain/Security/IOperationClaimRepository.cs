@@ -16,4 +16,6 @@ public interface IOperationClaimRepository
 
     Task<OperationClaim> AddAsync(OperationClaim entity, CancellationToken cancellationToken);
     Task<OperationClaim> DeleteAsync(OperationClaim entity, bool permanent = false);
+    Task<OperationClaim> UpdateAsync(OperationClaim entity,CancellationToken  cancellationToken);
+    Task<bool> AnyAsync(Base<OperationClaim> @base ,CancellationToken cancellationToken);
 }

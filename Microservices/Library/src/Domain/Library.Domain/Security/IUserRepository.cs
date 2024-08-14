@@ -17,4 +17,5 @@ public interface IUserRepository
     Task<User> AddAsync(User entity, CancellationToken cancellationToken);
     Task<User> DeleteAsync(User entity, bool permanent = false);
     Task<bool> AnyAsync(Base<User> @base);
+    Task<User> UpdateAsync(User entity,CancellationToken  cancellationToken);
 }

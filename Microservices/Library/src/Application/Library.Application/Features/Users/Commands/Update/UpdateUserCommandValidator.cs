@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
 
-namespace Application.Features.Users.Commands.AddUser;
+namespace Application.Features.Users.Commands.Update;
 
-public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
+public class UpdateUserCommandValidator : AbstractValidator<UpdateUserCommand>
 {
-    public CreateUserCommandValidator()
+    public UpdateUserCommandValidator()
     {
         RuleFor(c => c.FirstName).NotEmpty().MinimumLength(2);
         RuleFor(c => c.LastName).NotEmpty().MinimumLength(2);

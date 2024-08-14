@@ -26,8 +26,9 @@ public class UnitOfWork(LibraryDbContext context, IDateTime dateTime) : IUow
 
     public IEmailAuthenticatorRepository EmailAuthenticator =>
         _emailAuthenticatorRepository ??= new EmailAuthenticatorRepository(context);
+    
 
-    public IOperationClaimRepository OperationClaimRepository =>
+    public IOperationClaimRepository OperationClaim =>
         _operationClaimRepository ??= new OperationClaimRepository(context);
 
     public IOtpAuthenticatorRepository OtpAuthenticator =>
@@ -36,7 +37,7 @@ public class UnitOfWork(LibraryDbContext context, IDateTime dateTime) : IUow
     public IRefreshTokenRepository RefreshToken =>
         _refreshTokenRepository ??= new RefreshTokenRepository(context);
 
-    public IUserOperationClaimRepository OperationClaim =>
+    public IUserOperationClaimRepository UserOperationClaim =>
         _userOperationClaimRepository ??= new UserOperationClaimRepository(context);
 
     public IUserRepository User => _userRepository ??= new UserRepository(context);

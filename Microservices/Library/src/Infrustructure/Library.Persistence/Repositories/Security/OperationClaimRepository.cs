@@ -70,6 +70,24 @@ public class OperationClaimRepository(LibraryDbContext libraryDbContext) : IOper
         await SetEntityAsDeletedAsync(entity, permanent);
         return entity;
     }
+    
+    public async Task<OperationClaim> UpdateAsync(OperationClaim entity,CancellationToken  cancellationToken)
+    {
+        libraryDbContext.Update(entity);
+        return entity;
+    }
+    
+    public async Task<bool> AnyAsync(Base<OperationClaim> @base , CancellationToken cancellationToken)
+    {
+        IQueryable<OperationClaim> queryable = Query();
+        if (@base.EnableTracking)
+            queryable = queryable.AsNoTracking();
+        if (@base.WithDeleted)
+            queryable = queryable.IgnoreQueryFilters();
+        if (@base.Predicate != null)
+            queryable = queryable.Where(@base.Predicate);
+        return await queryable.AnyAsync(@base.CancellationToken);
+    }
 
     private async Task SetEntityAsDeletedAsync(OperationClaim entity, bool permanent)
     {

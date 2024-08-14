@@ -7,13 +7,17 @@ namespace Domain.Security;
 
 public interface IRefreshTokenRepository
 {
-    Task<RefreshToken> GetAsync(GetModel<RefreshToken> getBaseModel);
+    Task<RefreshTkn> GetAsync(GetModel<RefreshTkn> getBaseModel);
 
-    Task<IPaginate<RefreshToken>> GetListAsync(GetListAsyncModel<RefreshToken> getListAsyncModel);
+    Task<IPaginate<RefreshTkn>> GetListAsync(GetListAsyncModel<RefreshTkn> getListAsyncModel);
 
-    Task<IPaginate<RefreshToken>> GetDynamicListAsync(
-        GetDynamicListAsyncModel<RefreshToken> dynamicListAsyncModel);
+    Task<IPaginate<RefreshTkn>> GetDynamicListAsync(
+        GetDynamicListAsyncModel<RefreshTkn> dynamicListAsyncModel);
 
-    Task<RefreshToken> AddAsync(RefreshToken entity, CancellationToken cancellationToken);
-    Task<RefreshToken> DeleteAsync(RefreshToken entity, bool permanent = false);
+    Task<RefreshTkn> AddAsync(RefreshTkn entity, CancellationToken cancellationToken);
+    Task<RefreshTkn> DeleteAsync(RefreshTkn entity, bool permanent = false);
+    IEnumerable<RefreshTkn> DeleteRange(IEnumerable<RefreshTkn> entity, bool permanent = false);
+    Task<bool> AnyAsync(Base<RefreshTkn> @base);
+    RefreshTkn Update(RefreshTkn entity,CancellationToken  cancellationToken);
+    Task<IEnumerable<RefreshTkn>> GetRefreshTokenByUserId(int userId,int refreshTokenTtl, CancellationToken cancellationToken);
 }

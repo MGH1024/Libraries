@@ -2,7 +2,7 @@
 
 namespace MGH.Core.Infrastructure.Securities.Security.Entities;
 
-public class RefreshToken : AuditAbleEntity<int>
+public class RefreshTkn : AuditAbleEntity<int>
 {
     public int UserId { get; set; }
     public string Token { get; set; }
@@ -16,13 +16,13 @@ public class RefreshToken : AuditAbleEntity<int>
 
     public virtual User User { get; set; } = null!;
 
-    public RefreshToken()
+    public RefreshTkn()
     {
         Token = string.Empty;
         CreatedByIp = string.Empty;
     }
 
-    public RefreshToken(int userId, string token, DateTime expires, string createdByIp)
+    public RefreshTkn(int userId, string token, DateTime expires, string createdByIp)
     {
         UserId = userId;
         Token = token;
@@ -30,7 +30,7 @@ public class RefreshToken : AuditAbleEntity<int>
         CreatedByIp = createdByIp;
     }
 
-    public RefreshToken(int id, int userId, string token, DateTime expires, string createdByIp)
+    public RefreshTkn(int id, int userId, string token, DateTime expires, string createdByIp)
         : base(id)
     {
         UserId = userId;

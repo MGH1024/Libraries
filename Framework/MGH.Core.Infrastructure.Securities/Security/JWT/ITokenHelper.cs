@@ -4,7 +4,7 @@ namespace MGH.Core.Infrastructure.Securities.Security.JWT;
 
 public interface ITokenHelper
 {
-    AccessToken CreateToken(User user, IList<OperationClaim> operationClaims);
+    AccessToken CreateToken(User user, IEnumerable<OperationClaim> operationClaims);
 
-    RefreshToken CreateRefreshToken(User user, string ipAddress);
+    RefreshTkn CreateRefreshToken(User user, string ipAddress);
 }
