@@ -34,8 +34,8 @@ public class AuthController : AppController
     public async Task<IActionResult> Login([FromBody] UserForLoginDto userForLoginDto,
         CancellationToken cancellationToken)
     {
-        LoginCommand loginCommand = new() { UserForLoginDto = userForLoginDto, IpAddress = IpAddress() };
-        LoggedResponse result = await _sender.Send(loginCommand, cancellationToken);
+        var loginCommand = new LoginCommand { UserForLoginDto = userForLoginDto, IpAddress = IpAddress() };
+        var result = await _sender.Send(loginCommand, cancellationToken);
 
         if (result.RefreshTkn is not null)
             SetRefreshTokenToCookie(result.RefreshTkn);
@@ -47,8 +47,8 @@ public class AuthController : AppController
     public async Task<IActionResult> Register([FromBody] UserForRegisterDto userForRegisterDto,
         CancellationToken cancellationToken)
     {
-        RegisterCommand registerCommand = new() { UserForRegisterDto = userForRegisterDto, IpAddress = IpAddress() };
-        RegisteredResponse result = await _sender.Send(registerCommand, cancellationToken);
+        var registerCommand = new RegisterCommand { UserForRegisterDto = userForRegisterDto, IpAddress = IpAddress() };
+        var result = await _sender.Send(registerCommand, cancellationToken);
         SetRefreshTokenToCookie(result.RefreshTkn);
         return Created(uri: "", result.AccessToken);
     }

@@ -1,4 +1,5 @@
 using Application;
+using Application.Extensions;
 using Infrastructures;
 using Library.Worker.Outbox;
 using Persistence;

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 
-namespace MGH.Core.Application.Extensions;
+namespace Application;
 
 public class CancellationTokenResolver<TSource, TDestination> : IValueResolver<TSource, TDestination, CancellationToken>
 {

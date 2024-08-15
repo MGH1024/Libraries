@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using Api.Controllers;
 using Application;
+using Application.Extensions;
 using Domain;
 using Domain.Entities.Libraries;
 using NetArchTest.Rules;

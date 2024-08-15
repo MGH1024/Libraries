@@ -1,23 +1,23 @@
-﻿using FluentValidation;
-using System.Reflection;
+﻿using System.Reflection;
 using Application.Services.AuthenticatorService;
 using Application.Services.AuthService;
 using Application.Services.OperationClaims;
 using Application.Services.UserOperationClaims;
 using Application.Services.UsersService;
-using MGH.Core.Application.Rules;
+using FluentValidation;
+using MGH.Core.Application.Pipelines.Authorization;
 using MGH.Core.Application.Pipelines.Caching;
 using MGH.Core.Application.Pipelines.Logging;
-using Microsoft.Extensions.DependencyInjection;
-using MGH.Core.Application.Pipelines.Authorization;
 using MGH.Core.Application.Pipelines.Transaction;
 using MGH.Core.Application.Pipelines.Validation;
+using MGH.Core.Application.Rules;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Base;
 using MGH.Core.Infrastructure.Mail.Base;
 using MGH.Core.Infrastructure.Mail.MailKitImplementations;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace Application;
+namespace Application.Extensions;
 
 public static class ApplicationServiceRegistration
 {

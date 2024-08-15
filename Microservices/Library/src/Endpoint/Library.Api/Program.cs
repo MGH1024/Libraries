@@ -1,5 +1,6 @@
 using Api;
 using Application;
+using Application.Extensions;
 using Infrastructures;
 using Persistence;
 
