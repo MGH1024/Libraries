@@ -12,21 +12,17 @@ public class AuthorizationBehavior<TRequest, TResponse>(IHttpContextAccessor htt
 {
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
-        List<string> userRoleClaims = httpContextAccessor.HttpContext?.User.ClaimRoles();
-
+        var userRoleClaims = httpContextAccessor.HttpContext?.User.ClaimRoles();
         if (userRoleClaims == null)
             throw new AuthorizationException("You are not authenticated.");
 
-        bool isNotMatchedAUserRoleClaimWithRequestRoles = string.IsNullOrEmpty(userRoleClaims
-            .FirstOrDefault(
-                userRoleClaim => userRoleClaim == GeneralOperationClaims.Admin || 
-                                 request.Roles.Any(role => role == userRoleClaim)
-            ));
+        var isNotMatchedAUserRoleClaimWithRequestRoles = 
+            string.IsNullOrEmpty(userRoleClaims.FirstOrDefault(urc => 
+                urc == GeneralOperationClaims.Admin || request.Roles.Any(role => role == urc)));
         
         if (isNotMatchedAUserRoleClaimWithRequestRoles)
             throw new AuthorizationException("You are not authorized.");
 
-        var response = await next();
-        return response;
+        return await next();
     }
 }

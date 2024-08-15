@@ -10,7 +10,7 @@ using MGH.Core.Infrastructure.Securities.Security.Hashing;
 namespace Application.Features.Users.Commands.Create;
 
 public class CreateUserCommand(string firstName, string lastName, string email, string password)
-    : ICommand<CreatedUserResponse>//, ISecuredRequest
+    : ICommand<CreatedUserResponse>, ISecuredRequest
 {
     public string FirstName { get; set; } = firstName;
     public string LastName { get; set; } = lastName;

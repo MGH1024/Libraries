@@ -1,26 +1,19 @@
 ﻿namespace MGH.Core.Infrastructure.Securities.Security.JWT;
 
-public class TokenOptions
+public class TokenOptions(
+    string audience,
+    string issuer,
+    int accessTokenExpiration,
+    string securityKey,
+    int refreshTokenTtl)
 {
-    public string Audience { get; set; }
-    public string Issuer { get; set; }
-    public int AccessTokenExpiration { get; set; }
-    public string SecurityKey { get; set; }
-    public int RefreshTokenTTL { get; set; }
+    public string Audience { get; set; } = audience;
+    public string Issuer { get; set; } = issuer;
+    public int AccessTokenExpiration { get; set; } = accessTokenExpiration;
+    public string SecurityKey { get; set; } = securityKey;
+    public int RefreshTokenTtl { get; set; } = refreshTokenTtl;
 
-    public TokenOptions()
+    public TokenOptions() : this(string.Empty, string.Empty, 0, string.Empty, 0)
     {
-        Audience = string.Empty;
-        Issuer = string.Empty;
-        SecurityKey = string.Empty;
-    }
-
-    public TokenOptions(string audience, string issuer, int accessTokenExpiration, string securityKey, int refreshTokenTtl)
-    {
-        Audience = audience;
-        Issuer = issuer;
-        AccessTokenExpiration = accessTokenExpiration;
-        SecurityKey = securityKey;
-        RefreshTokenTTL = refreshTokenTtl;
     }
 }

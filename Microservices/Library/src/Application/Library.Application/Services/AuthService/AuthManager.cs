@@ -25,7 +25,7 @@ public class AuthManager : IAuthService
         _tokenHelper = tokenHelper;
         _authBusinessRules = authBusinessRules;
 
-        const string tokenOptionsConfigurationSection = "TokenOption";
+        const string tokenOptionsConfigurationSection = "TokenOptions";
         _tokenOptions =
             configuration.GetSection(tokenOptionsConfigurationSection).Get<TokenOptions>()
             ?? throw new NullReferenceException(
@@ -47,7 +47,7 @@ public class AuthManager : IAuthService
     public async Task DeleteOldRefreshTokens(int userId, CancellationToken cancellationToken)
     {
         var refreshTokens = await _uow.RefreshToken.GetRefreshTokenByUserId(userId,
-            _tokenOptions.RefreshTokenTTL, cancellationToken);
+            _tokenOptions.RefreshTokenTtl, cancellationToken);
 
         _uow.RefreshToken.DeleteRange(refreshTokens);
     }

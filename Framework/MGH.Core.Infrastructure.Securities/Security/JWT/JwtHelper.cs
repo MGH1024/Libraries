@@ -18,7 +18,7 @@ public class JwtHelper : ITokenHelper
     public JwtHelper(IConfiguration configuration)
     {
         Configuration = configuration;
-        const string configurationSection = "TokenOption";
+        const string configurationSection = "TokenOptions";
         _tokenOptions =
             Configuration.GetSection(configurationSection).Get<TokenOptions>()
             ?? throw new NullReferenceException($"\"{configurationSection}\" section cannot found in configuration.");

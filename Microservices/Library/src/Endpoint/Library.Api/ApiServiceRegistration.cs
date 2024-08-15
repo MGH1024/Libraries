@@ -5,7 +5,11 @@ using MGH.Core.CrossCutting.Localizations.ModelBinders;
 using MGH.Core.CrossCutting.Logging;
 using MGH.Core.Endpoint.Swagger.Swagger;
 using MGH.Core.Endpoint.Swagger.Swagger.Models;
+using MGH.Core.Infrastructure.Securities.Security.Encryption;
+using MGH.Core.Infrastructure.Securities.Security.JWT;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.IdentityModel.Tokens;
 using Persistence.BackgroundJobs;
 using Quartz;
 
@@ -24,7 +28,9 @@ public static class ApiServiceRegistration
         services.AddMemoryCache();
         services.AddHttpContextAccessor();
         services.AddEndpointsApiExplorer();
+        services.AddJwt(configuration);
     }
+
 
     public static void RegisterApp(this WebApplicationBuilder builder)
     {
@@ -38,6 +44,27 @@ public static class ApiServiceRegistration
         app.MapControllers();
         app.UseExceptionMiddleWare();
         app.Run();
+    }
+    private static void AddJwt(this IServiceCollection services, IConfiguration configuration)
+    {
+        var tokenOptions =
+            configuration.GetSection("TokenOptions").Get<TokenOptions>()
+            ?? throw new InvalidOperationException("TokenOptions section cannot found in configuration.");
+        services
+            .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidIssuer = tokenOptions.Issuer,
+                    ValidAudience = tokenOptions.Audience,
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = SecurityKeyHelper.CreateSecurityKey(tokenOptions.SecurityKey)
+                };
+            });
     }
 
     private static void AddLogger(IConfiguration configuration, IHostBuilder hostBuilder)
@@ -73,6 +100,8 @@ public static class ApiServiceRegistration
                 options.JsonSerializerOptions.PropertyNamingPolicy = null;
                 options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
             });
+
+        services.AddHttpContextAccessor();
     }
 
     private static void AddQuartzJob(this IServiceCollection services)

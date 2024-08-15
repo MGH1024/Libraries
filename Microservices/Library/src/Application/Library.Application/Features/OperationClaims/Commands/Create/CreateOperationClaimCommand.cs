@@ -18,20 +18,18 @@ public class CreateOperationClaimCommand(string name) : ICommand<CreatedOperatio
 
     public string[] Roles => new[] { Admin, Write, Add };
 
-    public class CreateOperationClaimCommandHandler(
-        IOperationClaimRepository operationClaimRepository,
-        IMapper mapper,
-        OperationClaimBusinessRules operationClaimBusinessRules)
+    public class CreateOperationClaimCommandHandler(IOperationClaimRepository operationClaimRepository,
+        IMapper mapper, OperationClaimBusinessRules operationClaimBusinessRules)
         : ICommandHandler<CreateOperationClaimCommand, CreatedOperationClaimResponse>
     {
         public async Task<CreatedOperationClaimResponse> Handle(CreateOperationClaimCommand request, CancellationToken cancellationToken)
         {
             await operationClaimBusinessRules.OperationClaimNameShouldNotExistWhenCreating(request.Name,cancellationToken);
-            OperationClaim mappedOperationClaim = mapper.Map<OperationClaim>(request);
+            var mappedOperationClaim = mapper.Map<OperationClaim>(request);
 
-            OperationClaim createdOperationClaim = await operationClaimRepository.AddAsync(mappedOperationClaim,cancellationToken);
+            var createdOperationClaim = await operationClaimRepository.AddAsync(mappedOperationClaim,cancellationToken);
 
-            CreatedOperationClaimResponse response = mapper.Map<CreatedOperationClaimResponse>(createdOperationClaim);
+            var response = mapper.Map<CreatedOperationClaimResponse>(createdOperationClaim);
             return response;
         }
     }
