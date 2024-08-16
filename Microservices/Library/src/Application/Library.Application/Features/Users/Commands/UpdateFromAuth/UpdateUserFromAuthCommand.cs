@@ -45,13 +45,9 @@ public class UpdateUserFromAuthCommand(int id, string firstName, string lastName
             user = mapper.Map(request, user);
             if (request.NewPassword != null && !string.IsNullOrWhiteSpace(request.NewPassword))
             {
-                HashingHelper.CreatePasswordHash(
-                    request.Password,
-                    passwordHash: out byte[] passwordHash,
-                    passwordSalt: out byte[] passwordSalt
-                );
-                user!.PasswordHash = passwordHash;
-                user!.PasswordSalt = passwordSalt;
+                var hashingHelperModel = HashingHelper.CreatePasswordHash(request.Password);
+                user!.PasswordHash = hashingHelperModel.PasswordHash;
+                user!.PasswordSalt = hashingHelperModel.PasswordSalt;
             }
 
             var updatedUser = await uow.User.UpdateAsync(user!, cancellationToken);

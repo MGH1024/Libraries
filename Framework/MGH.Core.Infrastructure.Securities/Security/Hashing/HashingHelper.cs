@@ -5,12 +5,14 @@ namespace MGH.Core.Infrastructure.Securities.Security.Hashing;
 
 public static class HashingHelper
 {
-    public static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
+    public static HashingHelperModel CreatePasswordHash(string password)
     {
         using HMACSHA512 hmac = new();
-
-        passwordSalt = hmac.Key;
-        passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+        return new HashingHelperModel
+        {
+            PasswordSalt = hmac.Key,
+            PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password))
+        };
     }
 
     public static bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)

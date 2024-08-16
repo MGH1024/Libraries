@@ -32,13 +32,9 @@ public class CreateUserCommand(string firstName, string lastName, string email, 
             await userBusinessRules.UserEmailShouldNotExistsWhenInsert(request.Email);
             var user = mapper.Map<User>(request);
 
-            HashingHelper.CreatePasswordHash(
-                request.Password,
-                passwordHash: out byte[] passwordHash,
-                passwordSalt: out byte[] passwordSalt
-            );
-            user.PasswordHash = passwordHash;
-            user.PasswordSalt = passwordSalt;
+            var hashingHelperModel = HashingHelper.CreatePasswordHash(request.Password);
+            user.PasswordHash = hashingHelperModel.PasswordHash;
+            user.PasswordSalt = hashingHelperModel.PasswordSalt;
             var createdUser = await uow.User.AddAsync(user, cancellationToken);
             await uow.CompleteAsync(cancellationToken);
             var response = mapper.Map<CreatedUserResponse>(createdUser);

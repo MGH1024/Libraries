@@ -25,6 +25,7 @@ public class User : AuditAbleEntity<int>
         Email = string.Empty;
         PasswordHash = Array.Empty<byte>();
         PasswordSalt = Array.Empty<byte>();
+        RefreshTokens = new List<RefreshTkn>();
     }
 
     public User(

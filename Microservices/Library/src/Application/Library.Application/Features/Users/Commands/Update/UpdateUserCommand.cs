@@ -40,13 +40,9 @@ public class UpdateUserCommand(int id, string firstName, string lastName, string
             await userBusinessRules.UserEmailShouldNotExistsWhenUpdate(user!.Id, user.Email);
             user = mapper.Map(request, user);
 
-            HashingHelper.CreatePasswordHash(
-                request.Password,
-                passwordHash: out byte[] passwordHash,
-                passwordSalt: out byte[] passwordSalt
-            );
-            user!.PasswordHash = passwordHash;
-            user.PasswordSalt = passwordSalt;
+           var hashingHelperModel = HashingHelper.CreatePasswordHash(request.Password);
+            user!.PasswordHash = hashingHelperModel.PasswordHash;
+            user.PasswordSalt = hashingHelperModel.PasswordSalt;
             await uow.User.UpdateAsync(user, cancellationToken);
             await uow.CompleteAsync(cancellationToken);
             var response = mapper.Map<UpdatedUserResponse>(user);

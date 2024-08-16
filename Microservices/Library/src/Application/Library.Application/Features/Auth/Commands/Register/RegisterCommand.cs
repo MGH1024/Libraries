@@ -1,4 +1,5 @@
-﻿using Application.Features.Auth.Rules;
+﻿using Application.Features.Auth.Extensions;
+using Application.Features.Auth.Rules;
 using Application.Services.AuthService;
 using Domain;
 using MGH.Core.Application.DTOs.Security;
@@ -23,36 +24,27 @@ public class RegisterCommand(UserForRegisterDto userForRegisterDto, string ipAdd
         AuthBusinessRules authBusinessRules)
         : ICommandHandler<RegisterCommand, RegisteredResponse>
     {
-
         public async Task<RegisteredResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
             await authBusinessRules.UserEmailShouldBeNotExists(request.UserForRegisterDto.Email);
 
-            HashingHelper.CreatePasswordHash(
-                request.UserForRegisterDto.Password,
-                passwordHash: out byte[] passwordHash,
-                passwordSalt: out byte[] passwordSalt
-            );
-            User newUser =
-                new()
-                {
-                    Email = request.UserForRegisterDto.Email,
-                    FirstName = request.UserForRegisterDto.FirstName,
-                    LastName = request.UserForRegisterDto.LastName,
-                    PasswordHash = passwordHash,
-                    PasswordSalt = passwordSalt
-                };
+            var hashingHelperModel = HashingHelper.CreatePasswordHash(request.UserForRegisterDto.Password);
+
+            var newUser = request.ToUser(hashingHelperModel);
             var createdUser = await uow.User.AddAsync(newUser, cancellationToken);
-
-            var createdAccessToken = await authService.CreateAccessToken(createdUser, cancellationToken);
-
+            
             var createdRefreshTkn =
                 await authService.CreateRefreshToken(createdUser, request.IpAddress, cancellationToken);
-            var addedRefreshTkn =
-                await authService.AddRefreshToken(createdRefreshTkn, cancellationToken);
+            newUser.RefreshTokens.Add(createdRefreshTkn);
+            
+            await uow.CompleteAsync(cancellationToken);
 
-            RegisteredResponse registeredResponse = new()
-                { AccessToken = createdAccessToken, RefreshTkn = addedRefreshTkn };
+            var createdAccessToken = await authService.CreateAccessToken(createdUser, cancellationToken);
+            var registeredResponse = new RegisteredResponse
+            {
+                AccessToken = createdAccessToken,
+                RefreshTkn = createdRefreshTkn
+            };
             return registeredResponse;
         }
     }
