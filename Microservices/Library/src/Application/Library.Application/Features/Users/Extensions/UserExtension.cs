@@ -1,4 +1,5 @@
 ﻿using MGH.Core.Infrastructure.Securities.Security.Entities;
+using MGH.Core.Infrastructure.Securities.Security.Hashing;
 using MGH.Core.Persistence.Models.Filters.GetModels;
 
 namespace Application.Features.Users.Extensions;
@@ -30,5 +31,11 @@ public static class UserExtension
             Predicate = u => u.Id != id && u.Email == email,
             EnableTracking = false
         };
+    }
+
+    public static void SetHashPassword(this User user,HashingHelperModel hashingHelperModel)
+    {
+        user.PasswordHash = hashingHelperModel.PasswordHash;
+        user.PasswordSalt = hashingHelperModel.PasswordSalt;
     }
 }

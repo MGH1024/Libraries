@@ -1,3 +1,4 @@
+using Application.Features.Users.Extensions;
 using Application.Features.Users.Rules;
 using AutoMapper;
 using Domain;
@@ -10,7 +11,8 @@ using MGH.Core.Persistence.Models.Filters.GetModels;
 
 namespace Application.Features.Users.Commands.Update;
 
-public class UpdateUserCommand(int id, string firstName, string lastName, string email, string password)
+public class UpdateUserCommand(int id, string firstName, string lastName, string email, string password ,
+    string confirmPassword , string oldPassword)
     : ICommand<UpdatedUserResponse>, ISecuredRequest
 {
     public int Id { get; set; } = id;
@@ -18,13 +20,15 @@ public class UpdateUserCommand(int id, string firstName, string lastName, string
     public string LastName { get; set; } = lastName;
     public string Email { get; set; } = email;
     public string Password { get; set; } = password;
+    public string ConfirmPassword { get; set; } = confirmPassword;
+    public string OldPassword { get; set; } = oldPassword;
 
-    public UpdateUserCommand() : this(0, string.Empty, string.Empty, string.Empty, string.Empty)
+    public UpdateUserCommand() : this(0, string.Empty, string.Empty,
+        string.Empty, string.Empty,string.Empty,string.Empty)
     {
     }
 
-    public string[] Roles => new[]
-        { GeneralOperationClaims.Admin, GeneralOperationClaims.Write, GeneralOperationClaims.Update };
+    public string[] Roles => new[] {  GeneralOperationClaims.UpdateUsers };
 
     public class UpdateUserCommandHandler(
         IUow uow,
@@ -34,19 +38,20 @@ public class UpdateUserCommand(int id, string firstName, string lastName, string
     {
         public async Task<UpdatedUserResponse> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
         {
-            var user = await uow.User.GetAsync(
-                new GetModel<User> { Predicate = u => u.Id == request.Id, CancellationToken = cancellationToken });
+            var getUserModel = mapper.Map<GetModel<User>>(request, opt =>
+                opt.Items["CancellationToken"] = cancellationToken);
+            var user = await uow.User.GetAsync(getUserModel);
+            
             await userBusinessRules.UserShouldBeExistsWhenSelected(user);
             await userBusinessRules.UserEmailShouldNotExistsWhenUpdate(user!.Id, user.Email);
+            
             user = mapper.Map(request, user);
-
            var hashingHelperModel = HashingHelper.CreatePasswordHash(request.Password);
-            user!.PasswordHash = hashingHelperModel.PasswordHash;
-            user.PasswordSalt = hashingHelperModel.PasswordSalt;
+           user.SetHashPassword(hashingHelperModel);
+            
             await uow.User.UpdateAsync(user, cancellationToken);
             await uow.CompleteAsync(cancellationToken);
-            var response = mapper.Map<UpdatedUserResponse>(user);
-            return response;
+            return mapper.Map<UpdatedUserResponse>(user);
         }
     }
 }

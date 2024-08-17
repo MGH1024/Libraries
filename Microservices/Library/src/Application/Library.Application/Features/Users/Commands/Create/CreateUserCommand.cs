@@ -1,4 +1,5 @@
-﻿using Application.Features.Users.Rules;
+﻿using Application.Features.Users.Extensions;
+using Application.Features.Users.Rules;
 using AutoMapper;
 using Domain;
 using MGH.Core.Application.Pipelines.Authorization;
@@ -21,8 +22,7 @@ public class CreateUserCommand(string firstName, string lastName, string email, 
     {
     }
 
-    public string[] Roles => new[]
-        { GeneralOperationClaims.Admin, GeneralOperationClaims.Write, GeneralOperationClaims.Add };
+    public string[] Roles => new[] {GeneralOperationClaims.AddUsers };
 
     public class CreateUserCommandHandler(IMapper mapper, UserBusinessRules userBusinessRules, IUow uow)
         : ICommandHandler<CreateUserCommand, CreatedUserResponse>
@@ -33,12 +33,12 @@ public class CreateUserCommand(string firstName, string lastName, string email, 
             var user = mapper.Map<User>(request);
 
             var hashingHelperModel = HashingHelper.CreatePasswordHash(request.Password);
-            user.PasswordHash = hashingHelperModel.PasswordHash;
-            user.PasswordSalt = hashingHelperModel.PasswordSalt;
+            user.SetHashPassword(hashingHelperModel);
+            
             var createdUser = await uow.User.AddAsync(user, cancellationToken);
             await uow.CompleteAsync(cancellationToken);
-            var response = mapper.Map<CreatedUserResponse>(createdUser);
-            return response;
+            
+            return mapper.Map<CreatedUserResponse>(createdUser);
         }
     }
 }

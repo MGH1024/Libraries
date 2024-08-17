@@ -13,31 +13,22 @@ public class DeleteUserCommand : ICommand<DeletedUserResponse>, ISecuredRequest
 {
     public int Id { get; set; }
 
-    public string[] Roles => new[]
-    {
-        GeneralOperationClaims.Admin, GeneralOperationClaims.Write,
-        GeneralOperationClaims.Delete
-    };
+    public string[] Roles => new[] { GeneralOperationClaims.DeleteUsers };
 
-    public class DeleteUserCommandHandler(
-        IMapper mapper,
-        IUow uow,
-        UserBusinessRules userBusinessRules)
+    public class DeleteUserCommandHandler(IMapper mapper, IUow uow, UserBusinessRules userBusinessRules)
         : ICommandHandler<DeleteUserCommand, DeletedUserResponse>
     {
         public async Task<DeletedUserResponse> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
         {
-            var user = await uow.User.GetAsync(new GetModel<User>
-            {
-                Predicate = u => u.Id == request.Id,
-                CancellationToken = cancellationToken
-            });
+            var getUserModel = mapper.Map<GetModel<User>>(request, opt =>
+                opt.Items["CancellationToken"] = cancellationToken);
+            var user = await uow.User.GetAsync(getUserModel);
+
             await userBusinessRules.UserShouldBeExistsWhenSelected(user);
 
             await uow.User.DeleteAsync(user!);
             await uow.CompleteAsync(cancellationToken);
-            var response = mapper.Map<DeletedUserResponse>(user);
-            return response;
+            return mapper.Map<DeletedUserResponse>(user);
         }
     }
 }

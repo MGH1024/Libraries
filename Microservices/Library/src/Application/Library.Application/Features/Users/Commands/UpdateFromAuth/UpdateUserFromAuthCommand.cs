@@ -1,4 +1,5 @@
-﻿using Domain;
+﻿using Application.Features.Users.Extensions;
+using Domain;
 using AutoMapper;
 using MGH.Core.Domain.Buses.Commands;
 using Application.Features.Users.Rules;
@@ -9,16 +10,15 @@ using MGH.Core.Infrastructure.Securities.Security.Entities;
 
 namespace Application.Features.Users.Commands.UpdateFromAuth;
 
-public class UpdateUserFromAuthCommand(int id, string firstName, string lastName, string password)
-    : ICommand<UpdatedUserFromAuthResponse>
+public class UpdateUserFromAuthCommand : ICommand<UpdatedUserFromAuthResponse>
 {
-    public int Id { get; set; } = id;
-    public string FirstName { get; set; } = firstName;
-    public string LastName { get; set; } = lastName;
-    public string Password { get; set; } = password;
+    public int Id { get; set; } 
+    public string FirstName { get; set; } 
+    public string LastName { get; set; } 
+    public string Password { get; set; } 
     public string NewPassword { get; set; }
 
-    public UpdateUserFromAuthCommand() : this(0, string.Empty, string.Empty, string.Empty)
+    public UpdateUserFromAuthCommand() 
     {
     }
 
@@ -32,11 +32,9 @@ public class UpdateUserFromAuthCommand(int id, string firstName, string lastName
         public async Task<UpdatedUserFromAuthResponse> Handle(UpdateUserFromAuthCommand request,
             CancellationToken cancellationToken)
         {
-            var user = await uow.User.GetAsync(new GetModel<User>
-            {
-                Predicate = u => u.Id == request.Id,
-                CancellationToken = cancellationToken
-            });
+            var getUserModel = mapper.Map<GetModel<User>>(request, opt =>
+                opt.Items["CancellationToken"] = cancellationToken);
+            var user = await uow.User.GetAsync(getUserModel);
 
             await userBusinessRules.UserShouldBeExistsWhenSelected(user);
             await userBusinessRules.UserPasswordShouldBeMatched(user: user!, request.Password);
@@ -45,14 +43,13 @@ public class UpdateUserFromAuthCommand(int id, string firstName, string lastName
             user = mapper.Map(request, user);
             if (request.NewPassword != null && !string.IsNullOrWhiteSpace(request.NewPassword))
             {
-                var hashingHelperModel = HashingHelper.CreatePasswordHash(request.Password);
-                user!.PasswordHash = hashingHelperModel.PasswordHash;
-                user!.PasswordSalt = hashingHelperModel.PasswordSalt;
+                var hashingHelperModel = HashingHelper.CreatePasswordHash(request.NewPassword);
+                user.SetHashPassword(hashingHelperModel);
             }
 
             var updatedUser = await uow.User.UpdateAsync(user!, cancellationToken);
 
-            UpdatedUserFromAuthResponse response = mapper.Map<UpdatedUserFromAuthResponse>(updatedUser);
+            var response = mapper.Map<UpdatedUserFromAuthResponse>(updatedUser);
             response.AccessToken = await authService.CreateAccessToken(user!, cancellationToken);
             return response;
         }

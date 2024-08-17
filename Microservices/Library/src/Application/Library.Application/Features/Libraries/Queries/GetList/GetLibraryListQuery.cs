@@ -15,7 +15,7 @@ public class GetLibraryListQuery(PageRequest pageRequest) : IRequest<GetListResp
     public GetLibraryListQuery() : this(new PageRequest { PageIndex = 0, PageSize = 10 })
     {
     }
-    public string[] Roles => new[] { GeneralOperationClaims.Read};
+    public string[] Roles => new[] { GeneralOperationClaims.GetLibraries};
     public class GetLibraryListQueryHandler(ILibraryRepository libraryRepository)
         : IRequestHandler<GetLibraryListQuery, GetListResponse<GetLibraryListDto>>
     {

@@ -1,5 +1,6 @@
 ﻿using Application.Features.Users.Commands.Create;
 using Application.Features.Users.Commands.Delete;
+using Application.Features.Users.Commands.Update;
 using Application.Features.Users.Commands.UpdateFromAuth;
 using Application.Features.Users.Queries.GetById;
 using Application.Features.Users.Queries.GetList;
@@ -43,6 +44,15 @@ public class UsersController(ISender sender) : AppController(sender)
     {
         var result = await Sender.Send(createUserCommand, cancellationToken);
         return Created(uri: "", result);
+    }
+    
+    
+    [HttpPut("update")]
+    public async Task<IActionResult> Update([FromBody] UpdateUserCommand updateUserCommand,
+        CancellationToken cancellationToken)
+    {
+        var result = await Sender.Send(updateUserCommand, cancellationToken);
+        return Ok(result);
     }
 
     [HttpPut("FromAuth")]
