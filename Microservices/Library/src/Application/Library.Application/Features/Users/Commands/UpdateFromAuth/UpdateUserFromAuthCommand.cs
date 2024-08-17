@@ -4,23 +4,31 @@ using AutoMapper;
 using MGH.Core.Domain.Buses.Commands;
 using Application.Features.Users.Rules;
 using Application.Services.AuthService;
+using MGH.Core.Application.Pipelines.Authorization;
+using MGH.Core.Infrastructure.Securities.Security.Constants;
 using MGH.Core.Persistence.Models.Filters.GetModels;
 using MGH.Core.Infrastructure.Securities.Security.Hashing;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
 
 namespace Application.Features.Users.Commands.UpdateFromAuth;
 
-public class UpdateUserFromAuthCommand : ICommand<UpdatedUserFromAuthResponse>
+public class UpdateUserFromAuthCommand(
+    int id,
+    string firstName,
+    string lastName,
+    string password,
+    string confirmPassword,
+    string oldPassword)
+    : ICommand<UpdatedUserFromAuthResponse>, ISecuredRequest
 {
-    public int Id { get; set; } 
-    public string FirstName { get; set; } 
-    public string LastName { get; set; } 
-    public string Password { get; set; } 
-    public string NewPassword { get; set; }
+    public int Id { get; set; } = id;
+    public string FirstName { get; set; } = firstName;
+    public string LastName { get; set; } = lastName;
+    public string Password { get; set; } = password;
+    public string ConfirmPassword { get; set; } = confirmPassword;
+    public string OldPassword { get; set; } = oldPassword;
 
-    public UpdateUserFromAuthCommand() 
-    {
-    }
+    public string[] Roles => new[] { GeneralOperationClaims.UpdateUsers };
 
     public class UpdateUserFromAuthCommandHandler(
         IUow uow,
@@ -41,11 +49,8 @@ public class UpdateUserFromAuthCommand : ICommand<UpdatedUserFromAuthResponse>
             await userBusinessRules.UserEmailShouldNotExistsWhenUpdate(user!.Id, user.Email);
 
             user = mapper.Map(request, user);
-            if (request.NewPassword != null && !string.IsNullOrWhiteSpace(request.NewPassword))
-            {
-                var hashingHelperModel = HashingHelper.CreatePasswordHash(request.NewPassword);
-                user.SetHashPassword(hashingHelperModel);
-            }
+            var hashingHelperModel = HashingHelper.CreatePasswordHash(request.Password);
+            user.SetHashPassword(hashingHelperModel);
 
             var updatedUser = await uow.User.UpdateAsync(user!, cancellationToken);
 
