@@ -1,6 +1,8 @@
-﻿using Application.Features.Auth.Extensions;
-using Application.Features.Auth.Rules;
+﻿using Application.Features.Auth.Rules;
+using Application.Features.OperationClaims.Constants;
+using Application.Features.Users.Extensions;
 using Application.Services.AuthService;
+using AutoMapper;
 using Domain;
 using MGH.Core.Application.DTOs.Security;
 using MGH.Core.Domain.Buses.Commands;
@@ -21,31 +23,31 @@ public class RegisterCommand(UserForRegisterDto userForRegisterDto, string ipAdd
     public class RegisterCommandHandler(
         IUow uow,
         IAuthService authService,
-        AuthBusinessRules authBusinessRules)
+        AuthBusinessRules authBusinessRules,
+        IMapper mapper)
         : ICommandHandler<RegisterCommand, RegisteredResponse>
     {
         public async Task<RegisteredResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
             await authBusinessRules.UserEmailShouldBeNotExists(request.UserForRegisterDto.Email);
-
+            var newUser = mapper.Map<User>(request);
             var hashingHelperModel = HashingHelper.CreatePasswordHash(request.UserForRegisterDto.Password);
+            newUser.SetHashPassword(hashingHelperModel);
 
-            var newUser = request.ToUser(hashingHelperModel);
             var createdUser = await uow.User.AddAsync(newUser, cancellationToken);
-            
+
             var createdRefreshTkn =
                 await authService.CreateRefreshToken(createdUser, request.IpAddress, cancellationToken);
             newUser.RefreshTokens.Add(createdRefreshTkn);
-            
+
             await uow.CompleteAsync(cancellationToken);
 
             var createdAccessToken = await authService.CreateAccessToken(createdUser, cancellationToken);
-            var registeredResponse = new RegisteredResponse
+            return new RegisteredResponse
             {
                 AccessToken = createdAccessToken,
                 RefreshTkn = createdRefreshTkn
             };
-            return registeredResponse;
         }
     }
 }
