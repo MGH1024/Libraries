@@ -49,5 +49,12 @@ public class MappingProfiles : Profile
                 => opt.MapFrom(src => (Expression<Func<User, bool>>)(u => u.Id == src.Id)))
             .ForMember(dest => dest.CancellationToken, opt
                 => opt.MapFrom<CancellationTokenResolver<UpdateUserFromAuthCommand, GetModel<User>>>()).ReverseMap();
+        
+        CreateMap<GetByIdUserQuery, GetModel<User>>()
+            .ForMember(dest => dest.Predicate, opt
+                => opt.MapFrom(src => (Expression<Func<User, bool>>)(u => u.Id == src.Id)))
+            .ForMember(dest => dest.CancellationToken, opt
+                => opt.MapFrom<CancellationTokenResolver<GetByIdUserQuery, GetModel<User>>>()).ReverseMap();
+        
     }
 }
