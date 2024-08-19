@@ -7,17 +7,16 @@ using MGH.Core.Domain.Buses.Commands;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
 using MGH.Core.Persistence.Models.Filters.GetModels;
 using Microsoft.EntityFrameworkCore;
-using static Application.Features.OperationClaims.Constants.OperationClaimsOperationClaims;
 
 namespace Application.Features.OperationClaims.Commands.Delete;
 
-public class DeleteOperationClaimCommand : ICommand<DeletedOperationClaimResponse>, ISecuredRequest
+[Roles(OperationClaimOperationClaims.DeleteOperationClaims)]
+public class DeleteOperationClaimCommand : ICommand<DeletedOperationClaimResponse>
 {
     public int Id { get; set; }
+}
 
-    public string[] Roles => new[] { Admin, Write, OperationClaimsOperationClaims.Delete };
-
-    public class DeleteOperationClaimCommandHandler(
+public class DeleteOperationClaimCommandHandler(
         IUow uow,
         IMapper mapper,
         OperationClaimBusinessRules operationClaimBusinessRules)
@@ -38,8 +37,6 @@ public class DeleteOperationClaimCommand : ICommand<DeletedOperationClaimRespons
 
             await uow.OperationClaim.DeleteAsync(entity: operationClaim!);
 
-            var response = mapper.Map<DeletedOperationClaimResponse>(operationClaim);
-            return response;
+            return mapper.Map<DeletedOperationClaimResponse>(operationClaim);
         }
     }
-}

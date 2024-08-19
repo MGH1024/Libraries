@@ -1,36 +1,38 @@
-﻿using Application.Features.OperationClaims.Rules;
+﻿using Application.Features.OperationClaims.Constants;
+using Application.Features.OperationClaims.Rules;
 using AutoMapper;
 using Domain.Security;
 using MGH.Core.Application.Pipelines.Authorization;
 using MGH.Core.Domain.Buses.Commands;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
-using static Application.Features.OperationClaims.Constants.OperationClaimsOperationClaims;
 
 namespace Application.Features.OperationClaims.Commands.Create;
 
-public class CreateOperationClaimCommand(string name) : ICommand<CreatedOperationClaimResponse>, ISecuredRequest
+[Roles(OperationClaimOperationClaims.AddOperationClaims)]
+public class CreateOperationClaimCommand(string name) : ICommand<CreatedOperationClaimResponse>
 {
     public string Name { get; set; } = name;
 
     public CreateOperationClaimCommand() : this(string.Empty)
     {
     }
+}
 
-    public string[] Roles => new[] { Admin, Write, Add };
-
-    public class CreateOperationClaimCommandHandler(IOperationClaimRepository operationClaimRepository,
-        IMapper mapper, OperationClaimBusinessRules operationClaimBusinessRules)
-        : ICommandHandler<CreateOperationClaimCommand, CreatedOperationClaimResponse>
+public class CreateOperationClaimCommandHandler(
+    IOperationClaimRepository operationClaimRepository,
+    IMapper mapper,
+    OperationClaimBusinessRules operationClaimBusinessRules)
+    : ICommandHandler<CreateOperationClaimCommand, CreatedOperationClaimResponse>
+{
+    public async Task<CreatedOperationClaimResponse> Handle(CreateOperationClaimCommand request,
+        CancellationToken cancellationToken)
     {
-        public async Task<CreatedOperationClaimResponse> Handle(CreateOperationClaimCommand request, CancellationToken cancellationToken)
-        {
-            await operationClaimBusinessRules.OperationClaimNameShouldNotExistWhenCreating(request.Name,cancellationToken);
-            var mappedOperationClaim = mapper.Map<OperationClaim>(request);
+        await operationClaimBusinessRules.OperationClaimNameShouldNotExistWhenCreating(request.Name, cancellationToken);
+        var mappedOperationClaim = mapper.Map<OperationClaim>(request);
 
-            var createdOperationClaim = await operationClaimRepository.AddAsync(mappedOperationClaim,cancellationToken);
+        var createdOperationClaim = await operationClaimRepository.AddAsync(mappedOperationClaim, cancellationToken);
 
-            var response = mapper.Map<CreatedOperationClaimResponse>(createdOperationClaim);
-            return response;
-        }
+        var response = mapper.Map<CreatedOperationClaimResponse>(createdOperationClaim);
+        return response;
     }
 }

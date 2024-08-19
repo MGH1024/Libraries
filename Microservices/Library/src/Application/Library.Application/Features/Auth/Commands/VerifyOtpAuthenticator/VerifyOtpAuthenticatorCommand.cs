@@ -17,33 +17,33 @@ public class VerifyOtpAuthenticatorCommand(int userId, string activationCode) : 
     public VerifyOtpAuthenticatorCommand() : this(0, string.Empty)
     {
     }
+}
 
-    public class VerifyOtpAuthenticatorCommandHandler(
-        IUow uow,
-        AuthBusinessRules authBusinessRules,
-        IUserService userService,
-        IAuthenticatorService authenticatorService)
-        : ICommandHandler<VerifyOtpAuthenticatorCommand>
+public class VerifyOtpAuthenticatorCommandHandler(
+    IUow uow,
+    AuthBusinessRules authBusinessRules,
+    IUserService userService,
+    IAuthenticatorService authenticatorService)
+    : ICommandHandler<VerifyOtpAuthenticatorCommand>
+{
+    public async Task Handle(VerifyOtpAuthenticatorCommand request, CancellationToken cancellationToken)
     {
-        public async Task Handle(VerifyOtpAuthenticatorCommand request, CancellationToken cancellationToken)
+        var otpAuthenticator = await uow.OtpAuthenticator.GetAsync(new GetModel<OtpAuthenticator>
         {
-            var otpAuthenticator = await uow.OtpAuthenticator.GetAsync(new GetModel<OtpAuthenticator>
-            {
-                Predicate = e => e.UserId == request.UserId,
-                CancellationToken = cancellationToken
-            });
-            await authBusinessRules.OtpAuthenticatorShouldBeExists(otpAuthenticator);
-            var user = await userService.GetAsync(new GetModel<User>
-            {
-                Predicate = u => u.Id == request.UserId,
-                CancellationToken = cancellationToken
-            });
-            await authBusinessRules.UserShouldBeExistsWhenSelected(user);
-            otpAuthenticator!.IsVerified = true;
-            user!.AuthenticatorType = AuthenticatorType.Otp;
-            await authenticatorService.VerifyAuthenticatorCode(user, request.ActivationCode,cancellationToken);
-            await uow.OtpAuthenticator.UpdateAsync(otpAuthenticator,cancellationToken);
-            await userService.UpdateAsync(user,cancellationToken);
-        }
+            Predicate = e => e.UserId == request.UserId,
+            CancellationToken = cancellationToken
+        });
+        await authBusinessRules.OtpAuthenticatorShouldBeExists(otpAuthenticator);
+        var user = await userService.GetAsync(new GetModel<User>
+        {
+            Predicate = u => u.Id == request.UserId,
+            CancellationToken = cancellationToken
+        });
+        await authBusinessRules.UserShouldBeExistsWhenSelected(user);
+        otpAuthenticator!.IsVerified = true;
+        user!.AuthenticatorType = AuthenticatorType.Otp;
+        await authenticatorService.VerifyAuthenticatorCode(user, request.ActivationCode, cancellationToken);
+        await uow.OtpAuthenticator.UpdateAsync(otpAuthenticator, cancellationToken);
+        await userService.UpdateAsync(user, cancellationToken);
     }
 }

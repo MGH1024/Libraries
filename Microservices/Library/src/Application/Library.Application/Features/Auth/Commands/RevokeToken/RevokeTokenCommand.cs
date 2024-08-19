@@ -13,23 +13,25 @@ public class RevokeTokenCommand(string token, string ipAddress) : ICommand<Revok
     public RevokeTokenCommand() : this(string.Empty, string.Empty)
     {
     }
+}
 
-    public class RevokeTokenCommandHandler(
-        IAuthService authService,
-        AuthBusinessRules authBusinessRules,
-        IMapper mapper)
-        : ICommandHandler<RevokeTokenCommand, RevokedTokenResponse>
+public class RevokeTokenCommandHandler(
+    IAuthService authService,
+    AuthBusinessRules authBusinessRules,
+    IMapper mapper)
+    : ICommandHandler<RevokeTokenCommand, RevokedTokenResponse>
+{
+    public async Task<RevokedTokenResponse> Handle(RevokeTokenCommand request, CancellationToken cancellationToken)
     {
-        public async Task<RevokedTokenResponse> Handle(RevokeTokenCommand request, CancellationToken cancellationToken)
-        {
-           MGH.Core.Infrastructure.Securities.Security.Entities.RefreshTkn refreshTkn = await authService.GetRefreshTokenByToken(request.Token,cancellationToken);
-            await authBusinessRules.RefreshTokenShouldBeExists(refreshTkn);
-            await authBusinessRules.RefreshTokenShouldBeActive(refreshTkn!);
+        MGH.Core.Infrastructure.Securities.Security.Entities.RefreshTkn refreshTkn =
+            await authService.GetRefreshTokenByToken(request.Token, cancellationToken);
+        await authBusinessRules.RefreshTokenShouldBeExists(refreshTkn);
+        await authBusinessRules.RefreshTokenShouldBeActive(refreshTkn!);
 
-            await authService.RevokeRefreshToken(tkn: refreshTkn!, request.IpAddress, reason: "Revoked without replacement",cancellationToken:cancellationToken);
+        await authService.RevokeRefreshToken(tkn: refreshTkn!, request.IpAddress, reason: "Revoked without replacement",
+            cancellationToken: cancellationToken);
 
-            RevokedTokenResponse revokedTokenResponse = mapper.Map<RevokedTokenResponse>(refreshTkn);
-            return revokedTokenResponse;
-        }
+        RevokedTokenResponse revokedTokenResponse = mapper.Map<RevokedTokenResponse>(refreshTkn);
+        return revokedTokenResponse;
     }
 }

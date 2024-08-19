@@ -29,7 +29,6 @@
 
     <ItemGroup>
       <Folder Include="Features\Libraries\Queries\" />
-      <Folder Include="Features\OperationClaims\" />
     </ItemGroup>
 
 </Project>

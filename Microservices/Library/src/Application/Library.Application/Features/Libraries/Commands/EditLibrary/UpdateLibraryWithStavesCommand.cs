@@ -1,11 +1,14 @@
-﻿using Domain;
+﻿using Application.Features.Libraries.Constants;
+using Domain;
 using MGH.Core.Domain.Buses.Commands;
 using Domain.Entities.Libraries.Constant;
 using Application.Features.Libraries.Rules;
 using Application.Features.Libraries.Extensions;
+using MGH.Core.Application.Pipelines.Authorization;
 
 namespace Application.Features.Libraries.Commands.EditLibrary;
 
+[Roles(LibraryOperationClaims.UpdateLibraryWithStaves)]
 public class UpdateLibraryWithStavesCommand : ICommand<Guid>
 {
     public Guid LibraryId { get; set; }

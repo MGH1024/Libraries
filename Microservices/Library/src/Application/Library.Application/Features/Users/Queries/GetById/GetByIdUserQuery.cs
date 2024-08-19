@@ -1,18 +1,18 @@
+using Application.Features.Users.Constants;
 using Application.Features.Users.Rules;
 using AutoMapper;
 using Domain;
 using MediatR;
 using MGH.Core.Application.Pipelines.Authorization;
-using MGH.Core.Infrastructure.Securities.Security.Constants;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
 using MGH.Core.Persistence.Models.Filters.GetModels;
 
 namespace Application.Features.Users.Queries.GetById;
 
-public class GetByIdUserQuery : IRequest<GetByIdUserResponse>, ISecuredRequest
+[Roles(UsersOperationClaims.GetUsers)]
+public class GetByIdUserQuery : IRequest<GetByIdUserResponse>
 {
     public int Id { get; set; }
-    public string[] Roles => new[] { GeneralOperationClaims.GetUsers };
 }
 
 public class GetByIdUserQueryHandler(

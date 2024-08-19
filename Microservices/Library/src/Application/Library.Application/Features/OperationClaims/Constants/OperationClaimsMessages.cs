@@ -1,4 +1,4 @@
-namespace Application.Features.OperationClaims.Constants;
+﻿namespace Application.Features.OperationClaims.Constants;
 
 public static class OperationClaimsMessages
 {

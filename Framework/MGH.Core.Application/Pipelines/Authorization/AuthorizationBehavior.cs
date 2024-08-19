@@ -6,23 +6,27 @@ using Microsoft.AspNetCore.Http;
 
 namespace MGH.Core.Application.Pipelines.Authorization;
 
-public class AuthorizationBehavior<TRequest, TResponse>(IHttpContextAccessor httpContextAccessor)
-    : IPipelineBehavior<TRequest, TResponse>
-    where TRequest : IRequest<TResponse>, ISecuredRequest
+public class AuthorizationBehavior<TRequest, TResponse>(IHttpContextAccessor httpContextAccessor) : IPipelineBehavior<TRequest, TResponse>
+    where TRequest : class 
 {
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
+        var attribute = (RolesAttribute)Attribute.GetCustomAttribute(typeof(TRequest), typeof(RolesAttribute));
+        if (attribute == null) 
+            return await next();
+        
+        var roles = attribute.Roles;
         var userRoleClaims = httpContextAccessor.HttpContext?.User.ClaimRoles();
         if (userRoleClaims == null)
             throw new AuthorizationException("You are not authenticated.");
 
         var isNotMatchedAUserRoleClaimWithRequestRoles = 
             string.IsNullOrEmpty(userRoleClaims.FirstOrDefault(urc => 
-                urc == GeneralOperationClaims.Admin || request.Roles.Any(role => role == urc)));
+                urc == GeneralOperationClaims.Admin || roles.Any(role => role == urc)));
         
         if (isNotMatchedAUserRoleClaimWithRequestRoles)
             throw new AuthorizationException("You are not authorized.");
-
+        
         return await next();
     }
 }

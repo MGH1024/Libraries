@@ -1,17 +1,18 @@
-﻿using Application.Features.Users.Extensions;
+﻿using Application.Features.Users.Constants;
+using Application.Features.Users.Extensions;
 using Domain;
 using AutoMapper;
 using MGH.Core.Domain.Buses.Commands;
 using Application.Features.Users.Rules;
 using Application.Services.AuthService;
 using MGH.Core.Application.Pipelines.Authorization;
-using MGH.Core.Infrastructure.Securities.Security.Constants;
 using MGH.Core.Persistence.Models.Filters.GetModels;
 using MGH.Core.Infrastructure.Securities.Security.Hashing;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
 
 namespace Application.Features.Users.Commands.UpdateFromAuth;
 
+[Roles(UsersOperationClaims.UpdateUsers)]
 public class UpdateUserFromAuthCommand(
     int id,
     string firstName,
@@ -19,7 +20,7 @@ public class UpdateUserFromAuthCommand(
     string password,
     string confirmPassword,
     string oldPassword)
-    : ICommand<UpdatedUserFromAuthResponse>, ISecuredRequest
+    : ICommand<UpdatedUserFromAuthResponse>
 {
     public int Id { get; set; } = id;
     public string FirstName { get; set; } = firstName;
@@ -27,8 +28,6 @@ public class UpdateUserFromAuthCommand(
     public string Password { get; set; } = password;
     public string ConfirmPassword { get; set; } = confirmPassword;
     public string OldPassword { get; set; } = oldPassword;
-
-    public string[] Roles => new[] { GeneralOperationClaims.UpdateUsers };
 
     public class UpdateUserFromAuthCommandHandler(
         IUow uow,

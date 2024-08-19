@@ -2,6 +2,7 @@ using MGH.Core.Application.Responses;
 
 namespace Application.Features.Users.Queries.GetById;
 
+
 public class GetByIdUserResponse(int id, string firstName, string lastName, string email, bool status)
     : IResponse
 {

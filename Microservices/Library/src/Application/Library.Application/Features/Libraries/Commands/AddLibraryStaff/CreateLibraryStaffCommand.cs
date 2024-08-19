@@ -1,12 +1,15 @@
-﻿using Domain;
+﻿using Application.Features.Libraries.Constants;
+using Domain;
 using MediatR;
 using MGH.Core.Domain.Buses.Commands;
 using Application.Features.Libraries.Rules;
 using Domain.Entities.Libraries.ValueObjects;
 using Application.Features.Libraries.Extensions;
+using MGH.Core.Application.Pipelines.Authorization;
 
 namespace Application.Features.Libraries.Commands.AddLibraryStaff;
 
+[Roles(LibraryOperationClaims.AddStaff)]
 public class CreateLibraryStaffCommand : ICommand<Unit>
 {
     public string Name { get; set; }
