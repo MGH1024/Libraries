@@ -95,7 +95,7 @@ public class RefreshTokenRepository(LibraryDbContext libraryDbContext) : IRefres
         CancellationToken cancellationToken)
     {
         var queryable = Query();
-        queryable.Where(r =>
+        var refreshTokens = queryable.Where(r =>
             r.UserId == userId
             && r.Revoked == null
             && r.Expires >= DateTime.UtcNow
@@ -106,8 +106,9 @@ public class RefreshTokenRepository(LibraryDbContext libraryDbContext) : IRefres
 
     public IEnumerable<RefreshTkn> DeleteRange(IEnumerable<RefreshTkn> entities, bool permanent = false)
     {
-        SetEntitiesAsDeletedAsync(entities, permanent);
-        return entities;
+        var refreshTkns = entities as RefreshTkn[] ?? entities.ToArray();
+        _ = SetEntitiesAsDeletedAsync(refreshTkns, permanent);
+        return refreshTkns;
     }
 
     private async Task SetEntitiesAsDeletedAsync(IEnumerable<RefreshTkn> entities, bool permanent)

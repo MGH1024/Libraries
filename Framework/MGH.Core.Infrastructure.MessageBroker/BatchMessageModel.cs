@@ -1,12 +1,7 @@
 namespace MGH.Core.Infrastructure.MessageBroker;
 
-public class BatchMessageModel<T>
+public class BatchMessageModel<T>(BaseMessage baseMessage)
 {
-    public BatchMessageModel()
-    {
-        Items = new List<T>();
-    }
-
-    public BaseMessage BaseMessage { get; set; }
-    public List<T> Items { get; set; }
+    public BaseMessage BaseMessage { get; set; } = baseMessage;
+    public List<T> Items { get; set; } = new();
 }

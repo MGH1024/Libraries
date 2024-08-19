@@ -1,5 +1,4 @@
 using Application.Features.Auth.Constants;
-using Application.Features.Users.Constants;
 using Domain;
 using MGH.Core.Application.Rules;
 using MGH.Core.CrossCutting.Exceptions.Types;
@@ -13,7 +12,7 @@ public class UserBusinessRules(IUow uow) : BaseBusinessRules
 {
     public Task UserShouldBeExistsWhenSelected(User user)
     {
-        if (user == null)
+        if (user is null)
             throw new BusinessException(AuthMessages.UserDontExists);
         return Task.CompletedTask;
     }

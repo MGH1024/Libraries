@@ -1,9 +1,9 @@
 ﻿namespace MGH.Core.Infrastructure.MessageBroker;
 
-public class BaseMessage
+public class BaseMessage(string routingKey, string exchangeName, string exchangeType, string queueName)
 {
-    public string RoutingKey { get; set; }
-    public string ExchangeName { get; set; }
-    public string ExchangeType { get; set; }
-    public string QueueName { get; set; }
+    public string RoutingKey { get; set; } = routingKey;
+    public string ExchangeName { get; set; } = exchangeName;
+    public string ExchangeType { get; set; } = exchangeType;
+    public string QueueName { get; set; } = queueName;
 }

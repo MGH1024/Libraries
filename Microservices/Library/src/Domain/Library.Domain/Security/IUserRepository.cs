@@ -1,5 +1,4 @@
-﻿using System.Linq.Expressions;
-using MGH.Core.Infrastructure.Securities.Security.Entities;
+﻿using MGH.Core.Infrastructure.Securities.Security.Entities;
 using MGH.Core.Persistence.Models.Filters.GetModels;
 using MGH.Core.Persistence.Models.Paging;
 
