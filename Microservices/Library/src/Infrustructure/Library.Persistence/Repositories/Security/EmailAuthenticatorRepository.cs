@@ -28,7 +28,8 @@ public class EmailAuthenticatorRepository(LibraryDbContext libraryDbContext) : I
         return await queryable.FirstOrDefaultAsync(getBaseModel.Predicate, getBaseModel.CancellationToken);
     }
 
-    public async Task<IPaginate<EmailAuthenticator>> GetListAsync(GetListAsyncModel<EmailAuthenticator> getListAsyncModel)
+    public async Task<IPaginate<EmailAuthenticator>> GetListAsync(
+        GetListAsyncModel<EmailAuthenticator> getListAsyncModel)
     {
         IQueryable<EmailAuthenticator> queryable = Query();
         if (!getListAsyncModel.EnableTracking)
@@ -41,11 +42,14 @@ public class EmailAuthenticatorRepository(LibraryDbContext libraryDbContext) : I
             queryable = queryable.Where(getListAsyncModel.Predicate);
         if (getListAsyncModel.OrderBy != null)
             return await getListAsyncModel.OrderBy(queryable)
-                .ToPaginateAsync(getListAsyncModel.Index, getListAsyncModel.Size, from: 0, getListAsyncModel.CancellationToken);
-        return await queryable.ToPaginateAsync(getListAsyncModel.Index, getListAsyncModel.Size, from: 0, getListAsyncModel.CancellationToken);
+                .ToPaginateAsync(getListAsyncModel.Index, getListAsyncModel.Size, from: 0,
+                    getListAsyncModel.CancellationToken);
+        return await queryable.ToPaginateAsync(getListAsyncModel.Index, getListAsyncModel.Size, from: 0,
+            getListAsyncModel.CancellationToken);
     }
 
-    public async Task<IPaginate<EmailAuthenticator>> GetDynamicListAsync(GetDynamicListAsyncModel<EmailAuthenticator> dynamicGet)
+    public async Task<IPaginate<EmailAuthenticator>> GetDynamicListAsync(
+        GetDynamicListAsyncModel<EmailAuthenticator> dynamicGet)
     {
         IQueryable<EmailAuthenticator> queryable = Query().ToDynamic(dynamicGet.Dynamic);
         if (!dynamicGet.EnableTracking)
@@ -56,7 +60,8 @@ public class EmailAuthenticatorRepository(LibraryDbContext libraryDbContext) : I
             queryable = queryable.IgnoreQueryFilters();
         if (dynamicGet.Predicate != null)
             queryable = queryable.Where(dynamicGet.Predicate);
-        return await queryable.ToPaginateAsync(dynamicGet.Index, dynamicGet.Size, from: 0, dynamicGet.CancellationToken);
+        return await queryable.ToPaginateAsync(dynamicGet.Index, dynamicGet.Size, from: 0,
+            dynamicGet.CancellationToken);
     }
 
     public async Task<EmailAuthenticator> AddAsync(EmailAuthenticator entity, CancellationToken cancellationToken)
@@ -64,10 +69,10 @@ public class EmailAuthenticatorRepository(LibraryDbContext libraryDbContext) : I
         await libraryDbContext.AddAsync(entity, cancellationToken);
         return entity;
     }
-    
-    public async Task<EmailAuthenticator> UpdateAsync(EmailAuthenticator entity,CancellationToken  cancellationToken)
+
+    public async Task<EmailAuthenticator> UpdateAsync(EmailAuthenticator entity, CancellationToken cancellationToken)
     {
-        libraryDbContext.Update(entity);
+        await Task.Run(() => libraryDbContext.Update(entity), cancellationToken);
         return entity;
     }
 

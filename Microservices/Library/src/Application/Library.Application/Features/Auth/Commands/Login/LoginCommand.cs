@@ -53,10 +53,10 @@ public class LoginCommandHandler(
                 cancellationToken);
         }
 
-        var createdAccessToken = await authService.CreateAccessToken(user, cancellationToken);
+        var createdAccessToken = await authService.CreateAccessTokenAsync(user, cancellationToken);
 
         var createdRefreshTkn = await authService.CreateRefreshToken(user, request.IpAddress, cancellationToken);
-        var addedRefreshTkn = await authService.AddRefreshToken(createdRefreshTkn, cancellationToken);
+        var addedRefreshTkn = await authService.AddRefreshTokenAsync(createdRefreshTkn, cancellationToken);
         await authService.DeleteOldRefreshTokens(user.Id, cancellationToken);
 
         loggedResponse.AccessToken = createdAccessToken;

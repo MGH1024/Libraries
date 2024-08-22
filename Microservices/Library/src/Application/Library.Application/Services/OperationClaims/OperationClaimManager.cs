@@ -40,9 +40,11 @@ public class OperationClaimManager(IUow uow, OperationClaimBusinessRules operati
         return updatedOperationClaim;
     }
 
-    public async Task<OperationClaim> DeleteAsync(OperationClaim operationClaim, bool permanent = false)
+    public async Task<OperationClaim> DeleteAsync(OperationClaim operationClaim, bool permanent = false,
+        CancellationToken cancellationToken = default)
     {
-        var deletedOperationClaim = await uow.OperationClaim.DeleteAsync(operationClaim);
+        var deletedOperationClaim =
+            await uow.OperationClaim.DeleteAsync(operationClaim, cancellationToken: cancellationToken);
         return deletedOperationClaim;
     }
 }

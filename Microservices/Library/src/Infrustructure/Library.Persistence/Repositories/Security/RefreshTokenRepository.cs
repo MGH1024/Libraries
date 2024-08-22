@@ -67,9 +67,10 @@ public class RefreshTokenRepository(LibraryDbContext libraryDbContext) : IRefres
         return entity;
     }
 
-    public async Task<RefreshTkn> DeleteAsync(RefreshTkn entity, bool permanent = false)
+    public async Task<RefreshTkn> DeleteAsync(RefreshTkn entity, bool permanent = false,
+        CancellationToken cancellationToken = default)
     {
-        await SetEntityAsDeletedAsync(entity, permanent);
+        await SetEntityAsDeletedAsync(entity, permanent, cancellationToken);
         return entity;
     }
 
@@ -85,9 +86,9 @@ public class RefreshTokenRepository(LibraryDbContext libraryDbContext) : IRefres
         return await queryable.AnyAsync(@base.CancellationToken);
     }
 
-    public RefreshTkn Update(RefreshTkn entity, CancellationToken cancellationToken)
+    public async Task<RefreshTkn> UpdateAsync(RefreshTkn entity, CancellationToken cancellationToken)
     {
-        libraryDbContext.Update(entity);
+        await Task.Run(() => libraryDbContext.Update(entity), cancellationToken);
         return entity;
     }
 
@@ -104,25 +105,27 @@ public class RefreshTokenRepository(LibraryDbContext libraryDbContext) : IRefres
         return await queryable.ToListAsync(cancellationToken);
     }
 
-    public IEnumerable<RefreshTkn> DeleteRange(IEnumerable<RefreshTkn> entities, bool permanent = false)
+    public async Task<IEnumerable<RefreshTkn>> DeleteRangeAsync(IEnumerable<RefreshTkn> entities,
+        bool permanent = false, CancellationToken cancellationToken = default)
     {
-        var refreshTkns = entities as RefreshTkn[] ?? entities.ToArray();
-        _ = SetEntitiesAsDeletedAsync(refreshTkns, permanent);
-        return refreshTkns;
+        var tokensArray = entities as List<RefreshTkn> ?? entities.ToList();
+        await SetEntitiesAsDeletedAsync(tokensArray, permanent, cancellationToken);
+        return tokensArray;
     }
 
-    private async Task SetEntitiesAsDeletedAsync(IEnumerable<RefreshTkn> entities, bool permanent)
+    private async Task SetEntitiesAsDeletedAsync(IEnumerable<RefreshTkn> entities, bool permanent,
+        CancellationToken cancellationToken)
     {
         foreach (var entity in entities)
-            await SetEntityAsDeletedAsync(entity, permanent);
+            await SetEntityAsDeletedAsync(entity, permanent, cancellationToken);
     }
 
-    private async Task SetEntityAsDeletedAsync(RefreshTkn entity, bool permanent)
+    private async Task SetEntityAsDeletedAsync(RefreshTkn entity, bool permanent, CancellationToken cancellationToken)
     {
         if (!permanent)
         {
             CheckHasEntityHaveOneToOneRelation(entity);
-            await SetEntityAsSoftDeletedAsync(entity);
+            await SetEntityAsSoftDeletedAsync(entity, cancellationToken);
         }
         else
         {
@@ -149,7 +152,7 @@ public class RefreshTokenRepository(LibraryDbContext libraryDbContext) : IRefres
             );
     }
 
-    private async Task SetEntityAsSoftDeletedAsync(IAuditAbleEntity entity)
+    private async Task SetEntityAsSoftDeletedAsync(IAuditAbleEntity entity, CancellationToken cancellationToken)
     {
         if (entity.DeletedAt.HasValue)
             return;
@@ -177,11 +180,11 @@ public class RefreshTokenRepository(LibraryDbContext libraryDbContext) : IRefres
                 {
                     IQueryable query = libraryDbContext.Entry(entity).Collection(navigation.PropertyInfo.Name).Query();
                     navValue = await GetRelationLoaderQuery(query,
-                        navigationPropertyType: navigation.PropertyInfo.GetType()).ToListAsync();
+                        navigationPropertyType: navigation.PropertyInfo.GetType()).ToListAsync(cancellationToken);
                 }
 
                 foreach (IAuditAbleEntity navValueItem in (IEnumerable)navValue)
-                    await SetEntityAsSoftDeletedAsync(navValueItem);
+                    await SetEntityAsSoftDeletedAsync(navValueItem, cancellationToken);
             }
             else
             {
@@ -195,7 +198,7 @@ public class RefreshTokenRepository(LibraryDbContext libraryDbContext) : IRefres
                         continue;
                 }
 
-                await SetEntityAsSoftDeletedAsync((IAuditAbleEntity)navValue);
+                await SetEntityAsSoftDeletedAsync((IAuditAbleEntity)navValue, cancellationToken);
             }
         }
 

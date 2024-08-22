@@ -17,26 +17,26 @@ public class DeleteOperationClaimCommand : ICommand<DeletedOperationClaimRespons
 }
 
 public class DeleteOperationClaimCommandHandler(
-        IUow uow,
-        IMapper mapper,
-        OperationClaimBusinessRules operationClaimBusinessRules)
-        : ICommandHandler<DeleteOperationClaimCommand, DeletedOperationClaimResponse>
+    IUow uow,
+    IMapper mapper,
+    OperationClaimBusinessRules operationClaimBusinessRules)
+    : ICommandHandler<DeleteOperationClaimCommand, DeletedOperationClaimResponse>
+{
+    public async Task<DeletedOperationClaimResponse> Handle(DeleteOperationClaimCommand request,
+        CancellationToken cancellationToken)
     {
-        public async Task<DeletedOperationClaimResponse> Handle(DeleteOperationClaimCommand request,
-            CancellationToken cancellationToken)
-        {
-            var operationClaim = await uow.OperationClaim.GetAsync(
-                new GetModel<OperationClaim>
-                {
-                    Predicate = oc => oc.Id == request.Id,
-                    Include = q => q.Include(oc => oc.UserOperationClaims),
-                    CancellationToken = cancellationToken
-                });
+        var operationClaim = await uow.OperationClaim.GetAsync(
+            new GetModel<OperationClaim>
+            {
+                Predicate = oc => oc.Id == request.Id,
+                Include = q => q.Include(oc => oc.UserOperationClaims),
+                CancellationToken = cancellationToken
+            });
 
-            await operationClaimBusinessRules.OperationClaimShouldExistWhenSelected(operationClaim);
+        await operationClaimBusinessRules.OperationClaimShouldExistWhenSelected(operationClaim);
 
-            await uow.OperationClaim.DeleteAsync(entity: operationClaim!);
+        await uow.OperationClaim.DeleteAsync(entity: operationClaim!, cancellationToken: cancellationToken);
 
-            return mapper.Map<DeletedOperationClaimResponse>(operationClaim);
-        }
+        return mapper.Map<DeletedOperationClaimResponse>(operationClaim);
     }
+}

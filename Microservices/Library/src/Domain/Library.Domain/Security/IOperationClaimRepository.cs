@@ -15,7 +15,10 @@ public interface IOperationClaimRepository
         GetDynamicListAsyncModel<OperationClaim> dynamicListAsyncModel);
 
     Task<OperationClaim> AddAsync(OperationClaim entity, CancellationToken cancellationToken);
-    Task<OperationClaim> DeleteAsync(OperationClaim entity, bool permanent = false);
-    Task<OperationClaim> UpdateAsync(OperationClaim entity,CancellationToken  cancellationToken);
-    Task<bool> AnyAsync(Base<OperationClaim> @base ,CancellationToken cancellationToken);
+
+    Task<OperationClaim> DeleteAsync(OperationClaim entity, bool permanent = false,
+        CancellationToken cancellationToken = default);
+
+    Task<OperationClaim> UpdateAsync(OperationClaim entity, CancellationToken cancellationToken);
+    Task<bool> AnyAsync(Base<OperationClaim> @base, CancellationToken cancellationToken);
 }

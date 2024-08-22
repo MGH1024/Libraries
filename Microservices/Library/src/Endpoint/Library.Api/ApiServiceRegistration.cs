@@ -10,8 +10,6 @@ using MGH.Core.Infrastructure.Securities.Security.JWT;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.IdentityModel.Tokens;
-using Persistence.BackgroundJobs;
-using Quartz;
 
 namespace Api;
 
@@ -21,10 +19,10 @@ public static class ApiServiceRegistration
         IHostBuilder hostBuilder)
     {
         AddLogger(configuration, hostBuilder);
+        services.AddOptions(configuration);
         services.AddSwagger(configuration);
         services.AddCors();
         services.AddBaseMvc();
-        services.AddQuartzJob();
         services.AddMemoryCache();
         services.AddHttpContextAccessor();
         services.AddEndpointsApiExplorer();
@@ -45,6 +43,13 @@ public static class ApiServiceRegistration
         app.UseExceptionMiddleWare();
         app.Run();
     }
+
+    private static void AddOptions(this IServiceCollection services,IConfiguration configuration)
+    {
+        services.Configure<TokenOptions>(option =>
+            configuration.GetSection(nameof(TokenOptions)).Bind(option));
+    }
+    
     private static void AddJwt(this IServiceCollection services, IConfiguration configuration)
     {
         var tokenOptions =
@@ -102,25 +107,6 @@ public static class ApiServiceRegistration
             });
 
         services.AddHttpContextAccessor();
-    }
-
-    private static void AddQuartzJob(this IServiceCollection services)
-    {
-        services.AddQuartz(config =>
-        {
-            var jobKey = new JobKey(nameof(ProcessOutboxMessagesJob));
-
-            config.AddJob<ProcessOutboxMessagesJob>(jobKey)
-                .AddTrigger(
-                    trigger =>
-                        trigger.ForJob(jobKey)
-                            .WithSimpleSchedule(
-                                schedule =>
-                                    schedule.WithIntervalInSeconds(5)
-                                        .RepeatForever()));
-            config.UseMicrosoftDependencyInjectionJobFactory();
-        });
-        //services.AddQuartzHostedService();
     }
 
     private static void AddSwagger(this IServiceCollection services, IConfiguration configuration)

@@ -54,7 +54,7 @@ public class UpdateUserFromAuthCommand(
             var updatedUser = await uow.User.UpdateAsync(user!, cancellationToken);
 
             var response = mapper.Map<UpdatedUserFromAuthResponse>(updatedUser);
-            response.AccessToken = await authService.CreateAccessToken(user!, cancellationToken);
+            response.AccessToken = await authService.CreateAccessTokenAsync(user!, cancellationToken);
             return response;
         }
     }

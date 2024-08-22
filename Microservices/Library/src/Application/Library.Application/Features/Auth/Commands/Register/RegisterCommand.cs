@@ -42,7 +42,7 @@ public class RegisterCommandHandler(
 
         await uow.CompleteAsync(cancellationToken);
 
-        var createdAccessToken = await authService.CreateAccessToken(createdUser, cancellationToken);
+        var createdAccessToken = await authService.CreateAccessTokenAsync(createdUser, cancellationToken);
         return new RegisteredResponse
         {
             AccessToken = createdAccessToken,

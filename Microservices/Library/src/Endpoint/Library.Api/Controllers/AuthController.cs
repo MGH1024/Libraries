@@ -47,7 +47,11 @@ public class AuthController : AppController
     public async Task<IActionResult> Register([FromBody] UserForRegisterDto userForRegisterDto,
         CancellationToken cancellationToken)
     {
-        var registerCommand = new RegisterCommand { UserForRegisterDto = userForRegisterDto, IpAddress = IpAddress() };
+        var registerCommand = new RegisterCommand
+        {
+            UserForRegisterDto = userForRegisterDto,
+            IpAddress = IpAddress()
+        };
         var result = await _sender.Send(registerCommand, cancellationToken);
         SetRefreshTokenToCookie(result.RefreshTkn);
         return Created(uri: "", result.AccessToken);
@@ -56,9 +60,12 @@ public class AuthController : AppController
     [HttpGet("RefreshToken")]
     public async Task<IActionResult> RefreshToken(CancellationToken cancellationToken)
     {
-        RefreshTokenCommand refreshTokenCommand = new()
-            { RefreshToken = GetRefreshTokenFromCookies(), IpAddress = IpAddress() };
-        RefreshedTokensResponse result = await _sender.Send(refreshTokenCommand, cancellationToken);
+        var refreshTokenCommand = new RefreshTokenCommand
+        {
+            RefreshToken = GetRefreshTokenFromCookies(),
+            IpAddress = IpAddress()
+        };
+        var result = await _sender.Send(refreshTokenCommand, cancellationToken);
         SetRefreshTokenToCookie(result.RefreshTkn);
         return Created(uri: "", result.AccessToken);
     }
@@ -68,9 +75,12 @@ public class AuthController : AppController
         [FromBody(EmptyBodyBehavior = EmptyBodyBehavior.Allow)]
         string refreshToken, CancellationToken cancellationToken)
     {
-        RevokeTokenCommand revokeTokenCommand = new()
-            { Token = refreshToken ?? GetRefreshTokenFromCookies(), IpAddress = IpAddress() };
-        RevokedTokenResponse result = await _sender.Send(revokeTokenCommand, cancellationToken);
+        var revokeTokenCommand = new RevokeTokenCommand()
+        {
+            Token = refreshToken ?? GetRefreshTokenFromCookies(),
+            IpAddress = IpAddress()
+        };
+        var result = await _sender.Send(revokeTokenCommand, cancellationToken);
         return Ok(result);
     }
 
@@ -123,7 +133,7 @@ public class AuthController : AppController
 
     private void SetRefreshTokenToCookie(RefreshTkn refreshToken)
     {
-        CookieOptions cookieOptions = new() { HttpOnly = true, Expires = DateTime.UtcNow.AddDays(7) };
+        var cookieOptions = new CookieOptions() { HttpOnly = true, Expires = DateTime.UtcNow.AddDays(7) };
         Response.Cookies.Append(key: "refreshToken", refreshToken.Token, cookieOptions);
     }
 }

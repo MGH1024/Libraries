@@ -13,7 +13,7 @@ namespace Persistence.Repositories.Security;
 
 public class UserRepository(LibraryDbContext libraryDbContext) : IUserRepository
 {
-  public IQueryable<User> Query() => libraryDbContext.Set<User>();
+    public IQueryable<User> Query() => libraryDbContext.Set<User>();
 
     public async Task<User> GetAsync(GetModel<User> getBaseModel)
     {
@@ -40,8 +40,10 @@ public class UserRepository(LibraryDbContext libraryDbContext) : IUserRepository
             queryable = queryable.Where(getListAsyncModel.Predicate);
         if (getListAsyncModel.OrderBy != null)
             return await getListAsyncModel.OrderBy(queryable)
-                .ToPaginateAsync(getListAsyncModel.Index, getListAsyncModel.Size, from: 0, getListAsyncModel.CancellationToken);
-        return await queryable.ToPaginateAsync(getListAsyncModel.Index, getListAsyncModel.Size, from: 0, getListAsyncModel.CancellationToken);
+                .ToPaginateAsync(getListAsyncModel.Index, getListAsyncModel.Size, from: 0,
+                    getListAsyncModel.CancellationToken);
+        return await queryable.ToPaginateAsync(getListAsyncModel.Index, getListAsyncModel.Size, from: 0,
+            getListAsyncModel.CancellationToken);
     }
 
     public async Task<IPaginate<User>> GetDynamicListAsync(GetDynamicListAsyncModel<User> dynamicGet)
@@ -55,7 +57,8 @@ public class UserRepository(LibraryDbContext libraryDbContext) : IUserRepository
             queryable = queryable.IgnoreQueryFilters();
         if (dynamicGet.Predicate != null)
             queryable = queryable.Where(dynamicGet.Predicate);
-        return await queryable.ToPaginateAsync(dynamicGet.Index, dynamicGet.Size, from: 0, dynamicGet.CancellationToken);
+        return await queryable.ToPaginateAsync(dynamicGet.Index, dynamicGet.Size, from: 0,
+            dynamicGet.CancellationToken);
     }
 
     public async Task<User> AddAsync(User entity, CancellationToken cancellationToken)
@@ -81,10 +84,10 @@ public class UserRepository(LibraryDbContext libraryDbContext) : IUserRepository
             queryable = queryable.Where(@base.Predicate);
         return await queryable.AnyAsync(@base.CancellationToken);
     }
-    
-    public async Task<User> UpdateAsync(User entity,CancellationToken  cancellationToken)
+
+    public async Task<User> UpdateAsync(User entity, CancellationToken cancellationToken)
     {
-        libraryDbContext.Update(entity);
+        await Task.Run(() => libraryDbContext.Update(entity), cancellationToken);
         return entity;
     }
 

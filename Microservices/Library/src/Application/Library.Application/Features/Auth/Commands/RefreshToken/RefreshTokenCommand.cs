@@ -1,6 +1,7 @@
 ﻿using Application.Features.Auth.Rules;
 using Application.Services.AuthService;
 using Application.Services.UsersService;
+using Domain;
 using MGH.Core.Domain.Buses.Commands;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
 using MGH.Core.Persistence.Models.Filters.GetModels;
@@ -20,6 +21,7 @@ public class RefreshTokenCommand(string refreshToken, string ipAddress) : IComma
 public class RefreshTokenCommandHandler(
     IAuthService authService,
     IUserService userService,
+    IUow uow,
     AuthBusinessRules authBusinessRules)
     : ICommandHandler<RefreshTokenCommand, RefreshedTokensResponse>
 {
@@ -54,10 +56,10 @@ public class RefreshTokenCommandHandler(
                 request.IpAddress, cancellationToken
             );
         var addedRefreshTkn =
-            await authService.AddRefreshToken(newRefreshTkn, cancellationToken);
+            await authService.AddRefreshTokenAsync(newRefreshTkn, cancellationToken);
         await authService.DeleteOldRefreshTokens(refreshToken.UserId, cancellationToken);
-
-        var createdAccessToken = await authService.CreateAccessToken(user!, cancellationToken);
+        await uow.CompleteAsync(cancellationToken);
+        var createdAccessToken = await authService.CreateAccessTokenAsync(user!, cancellationToken);
 
         var refreshedTokensResponse = new RefreshedTokensResponse
             { AccessToken = createdAccessToken, RefreshTkn = addedRefreshTkn };

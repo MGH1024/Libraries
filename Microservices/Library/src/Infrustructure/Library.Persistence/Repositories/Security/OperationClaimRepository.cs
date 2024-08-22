@@ -3,7 +3,6 @@ using Domain.Security;
 using MGH.Core.Domain.Entity.Base;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
 using MGH.Core.Persistence.Extensions;
-using MGH.Core.Persistence.Models.Filters;
 using MGH.Core.Persistence.Models.Filters.GetModels;
 using MGH.Core.Persistence.Models.Paging;
 using Microsoft.EntityFrameworkCore;
@@ -41,11 +40,14 @@ public class OperationClaimRepository(LibraryDbContext libraryDbContext) : IOper
             queryable = queryable.Where(getListAsyncModel.Predicate);
         if (getListAsyncModel.OrderBy != null)
             return await getListAsyncModel.OrderBy(queryable)
-                .ToPaginateAsync(getListAsyncModel.Index, getListAsyncModel.Size, from: 0, getListAsyncModel.CancellationToken);
-        return await queryable.ToPaginateAsync(getListAsyncModel.Index, getListAsyncModel.Size, from: 0, getListAsyncModel.CancellationToken);
+                .ToPaginateAsync(getListAsyncModel.Index, getListAsyncModel.Size, from: 0,
+                    getListAsyncModel.CancellationToken);
+        return await queryable.ToPaginateAsync(getListAsyncModel.Index, getListAsyncModel.Size, from: 0,
+            getListAsyncModel.CancellationToken);
     }
 
-    public async Task<IPaginate<OperationClaim>> GetDynamicListAsync(GetDynamicListAsyncModel<OperationClaim> dynamicGet)
+    public async Task<IPaginate<OperationClaim>> GetDynamicListAsync(
+        GetDynamicListAsyncModel<OperationClaim> dynamicGet)
     {
         IQueryable<OperationClaim> queryable = Query().ToDynamic(dynamicGet.Dynamic);
         if (!dynamicGet.EnableTracking)
@@ -56,7 +58,8 @@ public class OperationClaimRepository(LibraryDbContext libraryDbContext) : IOper
             queryable = queryable.IgnoreQueryFilters();
         if (dynamicGet.Predicate != null)
             queryable = queryable.Where(dynamicGet.Predicate);
-        return await queryable.ToPaginateAsync(dynamicGet.Index, dynamicGet.Size, from: 0, dynamicGet.CancellationToken);
+        return await queryable.ToPaginateAsync(dynamicGet.Index, dynamicGet.Size, from: 0,
+            dynamicGet.CancellationToken);
     }
 
     public async Task<OperationClaim> AddAsync(OperationClaim entity, CancellationToken cancellationToken)
@@ -65,19 +68,20 @@ public class OperationClaimRepository(LibraryDbContext libraryDbContext) : IOper
         return entity;
     }
 
-    public async Task<OperationClaim> DeleteAsync(OperationClaim entity, bool permanent = false)
+    public async Task<OperationClaim> DeleteAsync(OperationClaim entity, bool permanent = false,
+        CancellationToken cancellationToken=default)
     {
-        await SetEntityAsDeletedAsync(entity, permanent);
+        await SetEntityAsDeletedAsync(entity, permanent,cancellationToken);
         return entity;
     }
-    
-    public async Task<OperationClaim> UpdateAsync(OperationClaim entity,CancellationToken  cancellationToken)
+
+    public async Task<OperationClaim> UpdateAsync(OperationClaim entity, CancellationToken cancellationToken)
     {
-        libraryDbContext.Update(entity);
+        await Task.Run(() => libraryDbContext.Update(entity), cancellationToken);
         return entity;
     }
-    
-    public async Task<bool> AnyAsync(Base<OperationClaim> @base , CancellationToken cancellationToken)
+
+    public async Task<bool> AnyAsync(Base<OperationClaim> @base, CancellationToken cancellationToken)
     {
         IQueryable<OperationClaim> queryable = Query();
         if (@base.EnableTracking)
@@ -89,12 +93,12 @@ public class OperationClaimRepository(LibraryDbContext libraryDbContext) : IOper
         return await queryable.AnyAsync(@base.CancellationToken);
     }
 
-    private async Task SetEntityAsDeletedAsync(OperationClaim entity, bool permanent)
+    private async Task SetEntityAsDeletedAsync(OperationClaim entity, bool permanent,CancellationToken cancellationToken)
     {
         if (!permanent)
         {
             CheckHasEntityHaveOneToOneRelation(entity);
-            await SetEntityAsSoftDeletedAsync(entity);
+            await SetEntityAsSoftDeletedAsync(entity,cancellationToken);
         }
         else
         {
@@ -121,7 +125,7 @@ public class OperationClaimRepository(LibraryDbContext libraryDbContext) : IOper
             );
     }
 
-    private async Task SetEntityAsSoftDeletedAsync(IAuditAbleEntity entity)
+    private async Task SetEntityAsSoftDeletedAsync(IAuditAbleEntity entity,CancellationToken cancellationToken)
     {
         if (entity.DeletedAt.HasValue)
             return;
@@ -149,11 +153,11 @@ public class OperationClaimRepository(LibraryDbContext libraryDbContext) : IOper
                 {
                     IQueryable query = libraryDbContext.Entry(entity).Collection(navigation.PropertyInfo.Name).Query();
                     navValue = await GetRelationLoaderQuery(query,
-                        navigationPropertyType: navigation.PropertyInfo.GetType()).ToListAsync();
+                        navigationPropertyType: navigation.PropertyInfo.GetType()).ToListAsync(cancellationToken);
                 }
 
                 foreach (IAuditAbleEntity navValueItem in (IEnumerable)navValue)
-                    await SetEntityAsSoftDeletedAsync(navValueItem);
+                    await SetEntityAsSoftDeletedAsync(navValueItem,cancellationToken);
             }
             else
             {
@@ -162,12 +166,12 @@ public class OperationClaimRepository(LibraryDbContext libraryDbContext) : IOper
                     IQueryable query = libraryDbContext.Entry(entity).Reference(navigation.PropertyInfo.Name).Query();
                     navValue = await GetRelationLoaderQuery(query,
                             navigationPropertyType: navigation.PropertyInfo.GetType())
-                        .FirstOrDefaultAsync();
+                        .FirstOrDefaultAsync(cancellationToken);
                     if (navValue == null)
                         continue;
                 }
 
-                await SetEntityAsSoftDeletedAsync((IAuditAbleEntity)navValue);
+                await SetEntityAsSoftDeletedAsync((IAuditAbleEntity)navValue,cancellationToken);
             }
         }
 

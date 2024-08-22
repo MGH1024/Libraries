@@ -3,7 +3,6 @@ using Domain.Security;
 using MGH.Core.Domain.Entity.Base;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
 using MGH.Core.Persistence.Extensions;
-using MGH.Core.Persistence.Models.Filters;
 using MGH.Core.Persistence.Models.Filters.GetModels;
 using MGH.Core.Persistence.Models.Paging;
 using Microsoft.EntityFrameworkCore;
@@ -14,7 +13,7 @@ namespace Persistence.Repositories.Security;
 
 public class OtpAuthenticatorRepository(LibraryDbContext libraryDbContext) : IOtpAuthenticatorRepository
 {
-   public IQueryable<OtpAuthenticator> Query() => libraryDbContext.Set<OtpAuthenticator>();
+    public IQueryable<OtpAuthenticator> Query() => libraryDbContext.Set<OtpAuthenticator>();
 
     public async Task<OtpAuthenticator> GetAsync(GetModel<OtpAuthenticator> getBaseModel)
     {
@@ -41,11 +40,14 @@ public class OtpAuthenticatorRepository(LibraryDbContext libraryDbContext) : IOt
             queryable = queryable.Where(getListAsyncModel.Predicate);
         if (getListAsyncModel.OrderBy != null)
             return await getListAsyncModel.OrderBy(queryable)
-                .ToPaginateAsync(getListAsyncModel.Index, getListAsyncModel.Size, from: 0, getListAsyncModel.CancellationToken);
-        return await queryable.ToPaginateAsync(getListAsyncModel.Index, getListAsyncModel.Size, from: 0, getListAsyncModel.CancellationToken);
+                .ToPaginateAsync(getListAsyncModel.Index, getListAsyncModel.Size, from: 0,
+                    getListAsyncModel.CancellationToken);
+        return await queryable.ToPaginateAsync(getListAsyncModel.Index, getListAsyncModel.Size, from: 0,
+            getListAsyncModel.CancellationToken);
     }
 
-    public async Task<IPaginate<OtpAuthenticator>> GetDynamicListAsync(GetDynamicListAsyncModel<OtpAuthenticator> dynamicGet)
+    public async Task<IPaginate<OtpAuthenticator>> GetDynamicListAsync(
+        GetDynamicListAsyncModel<OtpAuthenticator> dynamicGet)
     {
         IQueryable<OtpAuthenticator> queryable = Query().ToDynamic(dynamicGet.Dynamic);
         if (!dynamicGet.EnableTracking)
@@ -56,7 +58,8 @@ public class OtpAuthenticatorRepository(LibraryDbContext libraryDbContext) : IOt
             queryable = queryable.IgnoreQueryFilters();
         if (dynamicGet.Predicate != null)
             queryable = queryable.Where(dynamicGet.Predicate);
-        return await queryable.ToPaginateAsync(dynamicGet.Index, dynamicGet.Size, from: 0, dynamicGet.CancellationToken);
+        return await queryable.ToPaginateAsync(dynamicGet.Index, dynamicGet.Size, from: 0,
+            dynamicGet.CancellationToken);
     }
 
     public async Task<OtpAuthenticator> AddAsync(OtpAuthenticator entity, CancellationToken cancellationToken)
@@ -65,24 +68,26 @@ public class OtpAuthenticatorRepository(LibraryDbContext libraryDbContext) : IOt
         return entity;
     }
 
-    public async Task<OtpAuthenticator> DeleteAsync(OtpAuthenticator entity, bool permanent = false)
+    public async Task<OtpAuthenticator> DeleteAsync(OtpAuthenticator entity, bool permanent = false,
+        CancellationToken cancellationToken = default)
     {
-        await SetEntityAsDeletedAsync(entity, permanent);
-        return entity;
-    }
-    
-    public async Task<OtpAuthenticator> UpdateAsync(OtpAuthenticator entity,CancellationToken  cancellationToken)
-    {
-        libraryDbContext.Update(entity);
+        await SetEntityAsDeletedAsync(entity, permanent, cancellationToken);
         return entity;
     }
 
-    private async Task SetEntityAsDeletedAsync(OtpAuthenticator entity, bool permanent)
+    public async Task<OtpAuthenticator> UpdateAsync(OtpAuthenticator entity, CancellationToken cancellationToken)
+    {
+        await Task.Run(() => libraryDbContext.Update(entity), cancellationToken);
+        return entity;
+    }
+
+    private async Task SetEntityAsDeletedAsync(OtpAuthenticator entity, bool permanent,
+        CancellationToken cancellationToken)
     {
         if (!permanent)
         {
             CheckHasEntityHaveOneToOneRelation(entity);
-            await SetEntityAsSoftDeletedAsync(entity);
+            await SetEntityAsSoftDeletedAsync(entity, cancellationToken);
         }
         else
         {
@@ -109,7 +114,7 @@ public class OtpAuthenticatorRepository(LibraryDbContext libraryDbContext) : IOt
             );
     }
 
-    private async Task SetEntityAsSoftDeletedAsync(IAuditAbleEntity entity)
+    private async Task SetEntityAsSoftDeletedAsync(IAuditAbleEntity entity, CancellationToken cancellationToken)
     {
         if (entity.DeletedAt.HasValue)
             return;
@@ -137,11 +142,11 @@ public class OtpAuthenticatorRepository(LibraryDbContext libraryDbContext) : IOt
                 {
                     IQueryable query = libraryDbContext.Entry(entity).Collection(navigation.PropertyInfo.Name).Query();
                     navValue = await GetRelationLoaderQuery(query,
-                        navigationPropertyType: navigation.PropertyInfo.GetType()).ToListAsync();
+                        navigationPropertyType: navigation.PropertyInfo.GetType()).ToListAsync(cancellationToken);
                 }
 
                 foreach (IAuditAbleEntity navValueItem in (IEnumerable)navValue)
-                    await SetEntityAsSoftDeletedAsync(navValueItem);
+                    await SetEntityAsSoftDeletedAsync(navValueItem, cancellationToken);
             }
             else
             {
@@ -150,12 +155,12 @@ public class OtpAuthenticatorRepository(LibraryDbContext libraryDbContext) : IOt
                     IQueryable query = libraryDbContext.Entry(entity).Reference(navigation.PropertyInfo.Name).Query();
                     navValue = await GetRelationLoaderQuery(query,
                             navigationPropertyType: navigation.PropertyInfo.GetType())
-                        .FirstOrDefaultAsync();
+                        .FirstOrDefaultAsync(cancellationToken);
                     if (navValue == null)
                         continue;
                 }
 
-                await SetEntityAsSoftDeletedAsync((IAuditAbleEntity)navValue);
+                await SetEntityAsSoftDeletedAsync((IAuditAbleEntity)navValue, cancellationToken);
             }
         }
 

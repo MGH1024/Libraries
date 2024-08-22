@@ -11,13 +11,18 @@ public interface IRefreshTokenRepository
 
     Task<IPaginate<RefreshTkn>> GetListAsync(GetListAsyncModel<RefreshTkn> getListAsyncModel);
 
-    Task<IPaginate<RefreshTkn>> GetDynamicListAsync(
-        GetDynamicListAsyncModel<RefreshTkn> dynamicListAsyncModel);
+    Task<IPaginate<RefreshTkn>> GetDynamicListAsync(GetDynamicListAsyncModel<RefreshTkn> dynamicListAsyncModel);
 
-    Task<RefreshTkn> AddAsync(RefreshTkn entity, CancellationToken cancellationToken);
-    Task<RefreshTkn> DeleteAsync(RefreshTkn entity, bool permanent = false);
-    IEnumerable<RefreshTkn> DeleteRange(IEnumerable<RefreshTkn> entity, bool permanent = false);
     Task<bool> AnyAsync(Base<RefreshTkn> @base);
-    RefreshTkn Update(RefreshTkn entity,CancellationToken  cancellationToken);
+    
+    Task<RefreshTkn> AddAsync(RefreshTkn entity, CancellationToken cancellationToken);
+    
+    Task<RefreshTkn> DeleteAsync(RefreshTkn entity, bool permanent = false,CancellationToken cancellationToken=default);
+    
+    Task<IEnumerable<RefreshTkn>> DeleteRangeAsync(IEnumerable<RefreshTkn> entity, bool permanent = false,
+        CancellationToken cancellationToken=default);
+    
+    Task<RefreshTkn> UpdateAsync(RefreshTkn entity, CancellationToken cancellationToken);
+    
     Task<IEnumerable<RefreshTkn>> GetRefreshTokenByUserId(int userId,int refreshTokenTtl, CancellationToken cancellationToken);
 }
