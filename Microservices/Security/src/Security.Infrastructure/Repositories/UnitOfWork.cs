@@ -7,7 +7,7 @@ using Persistence.Repositories.Security;
 
 namespace Persistence.Repositories;
 
-public class UnitOfWork(LibraryDbContext context, IDateTime dateTime) : IUow
+public class UnitOfWork(SecurityDbContext context, IDateTime dateTime) : IUow
 {
     private IDbContextTransaction _transaction;
     private EmailAuthenticatorRepository _emailAuthenticatorRepository;

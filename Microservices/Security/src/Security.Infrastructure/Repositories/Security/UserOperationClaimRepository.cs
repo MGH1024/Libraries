@@ -12,9 +12,9 @@ using Persistence.Contexts;
 
 namespace Persistence.Repositories.Security;
 
-public class UserOperationClaimRepository(LibraryDbContext libraryDbContext) : IUserOperationClaimRepository
+public class UserOperationClaimRepository(SecurityDbContext securityDbContext) : IUserOperationClaimRepository
 {
-    public IQueryable<UserOperationClaim> Query() => libraryDbContext.Set<UserOperationClaim>();
+    public IQueryable<UserOperationClaim> Query() => securityDbContext.Set<UserOperationClaim>();
 
     public async Task<UserOperationClaim> GetAsync(GetModel<UserOperationClaim> getBaseModel)
     {
@@ -66,7 +66,7 @@ public class UserOperationClaimRepository(LibraryDbContext libraryDbContext) : I
 
     public async Task<UserOperationClaim> AddAsync(UserOperationClaim entity, CancellationToken cancellationToken)
     {
-        await libraryDbContext.AddAsync(entity, cancellationToken);
+        await securityDbContext.AddAsync(entity, cancellationToken);
         return entity;
     }
 
@@ -112,14 +112,14 @@ public class UserOperationClaimRepository(LibraryDbContext libraryDbContext) : I
         }
         else
         {
-            libraryDbContext.Remove(entity);
+            securityDbContext.Remove(entity);
         }
     }
 
     private void CheckHasEntityHaveOneToOneRelation(UserOperationClaim entity)
     {
         bool hasEntityHaveOneToOneRelation =
-            libraryDbContext
+            securityDbContext
                 .Entry(entity)
                 .Metadata.GetForeignKeys()
                 .All(
@@ -141,7 +141,7 @@ public class UserOperationClaimRepository(LibraryDbContext libraryDbContext) : I
             return;
         entity.DeletedAt = DateTime.UtcNow;
 
-        var navigations = libraryDbContext
+        var navigations = securityDbContext
             .Entry(entity)
             .Metadata.GetNavigations()
             .Where(x => x is
@@ -161,7 +161,7 @@ public class UserOperationClaimRepository(LibraryDbContext libraryDbContext) : I
             {
                 if (navValue == null)
                 {
-                    IQueryable query = libraryDbContext.Entry(entity).Collection(navigation.PropertyInfo.Name).Query();
+                    IQueryable query = securityDbContext.Entry(entity).Collection(navigation.PropertyInfo.Name).Query();
                     navValue = await GetRelationLoaderQuery(query,
                         navigationPropertyType: navigation.PropertyInfo.GetType()).ToListAsync();
                 }
@@ -173,7 +173,7 @@ public class UserOperationClaimRepository(LibraryDbContext libraryDbContext) : I
             {
                 if (navValue == null)
                 {
-                    IQueryable query = libraryDbContext.Entry(entity).Reference(navigation.PropertyInfo.Name).Query();
+                    IQueryable query = securityDbContext.Entry(entity).Reference(navigation.PropertyInfo.Name).Query();
                     navValue = await GetRelationLoaderQuery(query,
                             navigationPropertyType: navigation.PropertyInfo.GetType())
                         .FirstOrDefaultAsync();
@@ -185,7 +185,7 @@ public class UserOperationClaimRepository(LibraryDbContext libraryDbContext) : I
             }
         }
 
-        libraryDbContext.Update(entity);
+        securityDbContext.Update(entity);
     }
 
     private IQueryable<object> GetRelationLoaderQuery(IQueryable query, Type navigationPropertyType)

@@ -44,7 +44,7 @@ public static class InfrastructureServiceRegistration
             .Get<DatabaseConnection>()
             .SqlConnection;
 
-        services.AddDbContext<LibraryDbContext>(options =>
+        services.AddDbContext<SecurityDbContext>(options =>
                 options.UseSqlServer(sqlConfig, a =>
                     {
                         a.EnableRetryOnFailure();
@@ -74,7 +74,7 @@ public static class InfrastructureServiceRegistration
         #endregion
 
 
-        services.AddDbContext<LibraryDbContext>(options => options.UseInMemoryDatabase("LibraryDbContext-InMemory"));
+        services.AddDbContext<SecurityDbContext>(options => options.UseInMemoryDatabase("LibraryDbContext-InMemory"));
         services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         services.AddScoped<IEmailAuthenticatorRepository, EmailAuthenticatorRepository>();
         services.AddScoped<IOperationClaimRepository, OperationClaimRepository>();

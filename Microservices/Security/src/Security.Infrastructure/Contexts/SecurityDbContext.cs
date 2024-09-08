@@ -5,12 +5,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.Contexts;
 
-public class LibraryDbContext(DbContextOptions<LibraryDbContext> options, IDateTime dateTime)
+public class SecurityDbContext(DbContextOptions<SecurityDbContext> options, IDateTime dateTime)
     : DbContext(options)
 {
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(LibraryDbContext).Assembly);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(SecurityDbContext).Assembly);
         base.OnModelCreating(modelBuilder);
     }
 

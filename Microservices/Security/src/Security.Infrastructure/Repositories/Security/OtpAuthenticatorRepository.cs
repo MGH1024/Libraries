@@ -11,9 +11,9 @@ using Persistence.Contexts;
 
 namespace Persistence.Repositories.Security;
 
-public class OtpAuthenticatorRepository(LibraryDbContext libraryDbContext) : IOtpAuthenticatorRepository
+public class OtpAuthenticatorRepository(SecurityDbContext securityDbContext) : IOtpAuthenticatorRepository
 {
-    public IQueryable<OtpAuthenticator> Query() => libraryDbContext.Set<OtpAuthenticator>();
+    public IQueryable<OtpAuthenticator> Query() => securityDbContext.Set<OtpAuthenticator>();
 
     public async Task<OtpAuthenticator> GetAsync(GetModel<OtpAuthenticator> getBaseModel)
     {
@@ -64,7 +64,7 @@ public class OtpAuthenticatorRepository(LibraryDbContext libraryDbContext) : IOt
 
     public async Task<OtpAuthenticator> AddAsync(OtpAuthenticator entity, CancellationToken cancellationToken)
     {
-        await libraryDbContext.AddAsync(entity, cancellationToken);
+        await securityDbContext.AddAsync(entity, cancellationToken);
         return entity;
     }
 
@@ -77,7 +77,7 @@ public class OtpAuthenticatorRepository(LibraryDbContext libraryDbContext) : IOt
 
     public async Task<OtpAuthenticator> UpdateAsync(OtpAuthenticator entity, CancellationToken cancellationToken)
     {
-        await Task.Run(() => libraryDbContext.Update(entity), cancellationToken);
+        await Task.Run(() => securityDbContext.Update(entity), cancellationToken);
         return entity;
     }
 
@@ -91,14 +91,14 @@ public class OtpAuthenticatorRepository(LibraryDbContext libraryDbContext) : IOt
         }
         else
         {
-            libraryDbContext.Remove(entity);
+            securityDbContext.Remove(entity);
         }
     }
 
     private void CheckHasEntityHaveOneToOneRelation(OtpAuthenticator entity)
     {
         bool hasEntityHaveOneToOneRelation =
-            libraryDbContext
+            securityDbContext
                 .Entry(entity)
                 .Metadata.GetForeignKeys()
                 .All(
@@ -120,7 +120,7 @@ public class OtpAuthenticatorRepository(LibraryDbContext libraryDbContext) : IOt
             return;
         entity.DeletedAt = DateTime.UtcNow;
 
-        var navigations = libraryDbContext
+        var navigations = securityDbContext
             .Entry(entity)
             .Metadata.GetNavigations()
             .Where(x => x is
@@ -140,7 +140,7 @@ public class OtpAuthenticatorRepository(LibraryDbContext libraryDbContext) : IOt
             {
                 if (navValue == null)
                 {
-                    IQueryable query = libraryDbContext.Entry(entity).Collection(navigation.PropertyInfo.Name).Query();
+                    IQueryable query = securityDbContext.Entry(entity).Collection(navigation.PropertyInfo.Name).Query();
                     navValue = await GetRelationLoaderQuery(query,
                         navigationPropertyType: navigation.PropertyInfo.GetType()).ToListAsync(cancellationToken);
                 }
@@ -152,7 +152,7 @@ public class OtpAuthenticatorRepository(LibraryDbContext libraryDbContext) : IOt
             {
                 if (navValue == null)
                 {
-                    IQueryable query = libraryDbContext.Entry(entity).Reference(navigation.PropertyInfo.Name).Query();
+                    IQueryable query = securityDbContext.Entry(entity).Reference(navigation.PropertyInfo.Name).Query();
                     navValue = await GetRelationLoaderQuery(query,
                             navigationPropertyType: navigation.PropertyInfo.GetType())
                         .FirstOrDefaultAsync(cancellationToken);
@@ -164,7 +164,7 @@ public class OtpAuthenticatorRepository(LibraryDbContext libraryDbContext) : IOt
             }
         }
 
-        libraryDbContext.Update(entity);
+        securityDbContext.Update(entity);
     }
 
     private IQueryable<object> GetRelationLoaderQuery(IQueryable query, Type navigationPropertyType)

@@ -11,7 +11,7 @@ using Persistence.Contexts;
 
 namespace Persistence.Migrations
 {
-    [DbContext(typeof(LibraryDbContext))]
+    [DbContext(typeof(SecurityDbContext))]
     [Migration("20240815091015_Initial")]
     partial class Initial
     {

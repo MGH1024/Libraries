@@ -11,9 +11,9 @@ using Persistence.Contexts;
 
 namespace Persistence.Repositories.Security;
 
-public class OperationClaimRepository(LibraryDbContext libraryDbContext) : IOperationClaimRepository
+public class OperationClaimRepository(SecurityDbContext securityDbContext) : IOperationClaimRepository
 {
-    public IQueryable<OperationClaim> Query() => libraryDbContext.Set<OperationClaim>();
+    public IQueryable<OperationClaim> Query() => securityDbContext.Set<OperationClaim>();
 
     public async Task<OperationClaim> GetAsync(GetModel<OperationClaim> getBaseModel)
     {
@@ -64,7 +64,7 @@ public class OperationClaimRepository(LibraryDbContext libraryDbContext) : IOper
 
     public async Task<OperationClaim> AddAsync(OperationClaim entity, CancellationToken cancellationToken)
     {
-        await libraryDbContext.AddAsync(entity, cancellationToken);
+        await securityDbContext.AddAsync(entity, cancellationToken);
         return entity;
     }
 
@@ -77,7 +77,7 @@ public class OperationClaimRepository(LibraryDbContext libraryDbContext) : IOper
 
     public async Task<OperationClaim> UpdateAsync(OperationClaim entity, CancellationToken cancellationToken)
     {
-        await Task.Run(() => libraryDbContext.Update(entity), cancellationToken);
+        await Task.Run(() => securityDbContext.Update(entity), cancellationToken);
         return entity;
     }
 
@@ -102,14 +102,14 @@ public class OperationClaimRepository(LibraryDbContext libraryDbContext) : IOper
         }
         else
         {
-            libraryDbContext.Remove(entity);
+            securityDbContext.Remove(entity);
         }
     }
 
     private void CheckHasEntityHaveOneToOneRelation(OperationClaim entity)
     {
         bool hasEntityHaveOneToOneRelation =
-            libraryDbContext
+            securityDbContext
                 .Entry(entity)
                 .Metadata.GetForeignKeys()
                 .All(
@@ -131,7 +131,7 @@ public class OperationClaimRepository(LibraryDbContext libraryDbContext) : IOper
             return;
         entity.DeletedAt = DateTime.UtcNow;
 
-        var navigations = libraryDbContext
+        var navigations = securityDbContext
             .Entry(entity)
             .Metadata.GetNavigations()
             .Where(x => x is
@@ -151,7 +151,7 @@ public class OperationClaimRepository(LibraryDbContext libraryDbContext) : IOper
             {
                 if (navValue == null)
                 {
-                    IQueryable query = libraryDbContext.Entry(entity).Collection(navigation.PropertyInfo.Name).Query();
+                    IQueryable query = securityDbContext.Entry(entity).Collection(navigation.PropertyInfo.Name).Query();
                     navValue = await GetRelationLoaderQuery(query,
                         navigationPropertyType: navigation.PropertyInfo.GetType()).ToListAsync(cancellationToken);
                 }
@@ -163,7 +163,7 @@ public class OperationClaimRepository(LibraryDbContext libraryDbContext) : IOper
             {
                 if (navValue == null)
                 {
-                    IQueryable query = libraryDbContext.Entry(entity).Reference(navigation.PropertyInfo.Name).Query();
+                    IQueryable query = securityDbContext.Entry(entity).Reference(navigation.PropertyInfo.Name).Query();
                     navValue = await GetRelationLoaderQuery(query,
                             navigationPropertyType: navigation.PropertyInfo.GetType())
                         .FirstOrDefaultAsync(cancellationToken);
@@ -175,7 +175,7 @@ public class OperationClaimRepository(LibraryDbContext libraryDbContext) : IOper
             }
         }
 
-        libraryDbContext.Update(entity);
+        securityDbContext.Update(entity);
     }
 
     private IQueryable<object> GetRelationLoaderQuery(IQueryable query, Type navigationPropertyType)

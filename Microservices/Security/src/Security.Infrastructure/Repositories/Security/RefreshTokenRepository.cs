@@ -11,9 +11,9 @@ using Persistence.Contexts;
 
 namespace Persistence.Repositories.Security;
 
-public class RefreshTokenRepository(LibraryDbContext libraryDbContext) : IRefreshTokenRepository
+public class RefreshTokenRepository(SecurityDbContext securityDbContext) : IRefreshTokenRepository
 {
-    public IQueryable<RefreshTkn> Query() => libraryDbContext.Set<RefreshTkn>();
+    public IQueryable<RefreshTkn> Query() => securityDbContext.Set<RefreshTkn>();
 
     public async Task<RefreshTkn> GetAsync(GetModel<RefreshTkn> getBaseModel)
     {
@@ -63,7 +63,7 @@ public class RefreshTokenRepository(LibraryDbContext libraryDbContext) : IRefres
 
     public async Task<RefreshTkn> AddAsync(RefreshTkn entity, CancellationToken cancellationToken)
     {
-        await libraryDbContext.AddAsync(entity, cancellationToken);
+        await securityDbContext.AddAsync(entity, cancellationToken);
         return entity;
     }
 
@@ -88,7 +88,7 @@ public class RefreshTokenRepository(LibraryDbContext libraryDbContext) : IRefres
 
     public async Task<RefreshTkn> UpdateAsync(RefreshTkn entity, CancellationToken cancellationToken)
     {
-        await Task.Run(() => libraryDbContext.Update(entity), cancellationToken);
+        await Task.Run(() => securityDbContext.Update(entity), cancellationToken);
         return entity;
     }
 
@@ -129,14 +129,14 @@ public class RefreshTokenRepository(LibraryDbContext libraryDbContext) : IRefres
         }
         else
         {
-            libraryDbContext.Remove(entity);
+            securityDbContext.Remove(entity);
         }
     }
 
     private void CheckHasEntityHaveOneToOneRelation(RefreshTkn entity)
     {
         bool hasEntityHaveOneToOneRelation =
-            libraryDbContext
+            securityDbContext
                 .Entry(entity)
                 .Metadata.GetForeignKeys()
                 .All(
@@ -158,7 +158,7 @@ public class RefreshTokenRepository(LibraryDbContext libraryDbContext) : IRefres
             return;
         entity.DeletedAt = DateTime.UtcNow;
 
-        var navigations = libraryDbContext
+        var navigations = securityDbContext
             .Entry(entity)
             .Metadata.GetNavigations()
             .Where(x => x is
@@ -178,7 +178,7 @@ public class RefreshTokenRepository(LibraryDbContext libraryDbContext) : IRefres
             {
                 if (navValue == null)
                 {
-                    IQueryable query = libraryDbContext.Entry(entity).Collection(navigation.PropertyInfo.Name).Query();
+                    IQueryable query = securityDbContext.Entry(entity).Collection(navigation.PropertyInfo.Name).Query();
                     navValue = await GetRelationLoaderQuery(query,
                         navigationPropertyType: navigation.PropertyInfo.GetType()).ToListAsync(cancellationToken);
                 }
@@ -190,7 +190,7 @@ public class RefreshTokenRepository(LibraryDbContext libraryDbContext) : IRefres
             {
                 if (navValue == null)
                 {
-                    IQueryable query = libraryDbContext.Entry(entity).Reference(navigation.PropertyInfo.Name).Query();
+                    IQueryable query = securityDbContext.Entry(entity).Reference(navigation.PropertyInfo.Name).Query();
                     navValue = await GetRelationLoaderQuery(query,
                             navigationPropertyType: navigation.PropertyInfo.GetType())
                         .FirstOrDefaultAsync();
@@ -202,7 +202,7 @@ public class RefreshTokenRepository(LibraryDbContext libraryDbContext) : IRefres
             }
         }
 
-        libraryDbContext.Update(entity);
+        securityDbContext.Update(entity);
     }
 
     private IQueryable<object> GetRelationLoaderQuery(IQueryable query, Type navigationPropertyType)
