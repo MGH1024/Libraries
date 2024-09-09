@@ -3,6 +3,7 @@ using Application.Services.AuthenticatorService;
 using Application.Services.UsersService;
 using MimeKit;
 using System.Web;
+using Application.Models;
 using Domain;
 using MGH.Core.Domain.Buses.Commands;
 using MGH.Core.Infrastructure.Mail.Base;
@@ -10,15 +11,15 @@ using MGH.Core.Infrastructure.Mail.MailKitImplementations.Models;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
 using MGH.Core.Infrastructure.Securities.Security.Enums;
 using MGH.Core.Persistence.Models.Filters.GetModels;
+using Microsoft.Extensions.Options;
 
 namespace Application.Features.Auth.Commands.EnableEmailAuthenticator;
 
-public class EnableEmailAuthenticatorCommand(int userId, string verifyEmailUrlPrefix) : ICommand
+public class EnableEmailAuthenticatorCommand(int userId) : ICommand
 {
     public int UserId { get; set; } = userId;
-    public string VerifyEmailUrlPrefix { get; set; } = verifyEmailUrlPrefix;
 
-    public EnableEmailAuthenticatorCommand() : this(0, string.Empty)
+    public EnableEmailAuthenticatorCommand() : this(0)
     {
     }
 }
@@ -28,7 +29,8 @@ public class EnableEmailAuthenticatorCommandHandler(
     IUow uow,
     IMailService mailService,
     AuthBusinessRules authBusinessRules,
-    IAuthenticatorService authenticatorService)
+    IAuthenticatorService authenticatorService,
+    IOptions<ApiConfiguration> options)
     : ICommandHandler<EnableEmailAuthenticatorCommand>
 {
     public async Task Handle(EnableEmailAuthenticatorCommand request, CancellationToken cancellationToken)
@@ -52,9 +54,10 @@ public class EnableEmailAuthenticatorCommandHandler(
             new Mail
             {
                 ToList = toEmailList,
-                Subject = "Verify Your Email - NArchitecture",
+                Subject = "Verify Your Email - MGH",
                 TextBody =
-                    $"Click on the link to verify your email: {request.VerifyEmailUrlPrefix}?ActivationKey={HttpUtility.UrlEncode(addedEmailAuthenticator.ActivationKey)}"
+                    $"Click on the link to verify your email: {options.Value.ApiDomain}/Auth/VerifyEmailAuthenticator" +
+                    $"?ActivationKey={HttpUtility.UrlEncode(addedEmailAuthenticator.ActivationKey)}"
             }
         );
     }

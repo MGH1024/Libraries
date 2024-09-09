@@ -41,7 +41,7 @@ public class AuthBusinessRules(IUow uow) : BaseBusinessRules
 
     public Task UserShouldBeExistsWhenSelected(User user)
     {
-        if (user == null)
+        if (user is null)
             throw new BusinessException(AuthMessages.UserDontExists);
         return Task.CompletedTask;
     }

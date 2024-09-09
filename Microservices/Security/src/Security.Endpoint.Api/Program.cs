@@ -1,4 +1,5 @@
 using Api;
+using Api.Extensions;
 using Application.Extensions;
 using Persistence;
 

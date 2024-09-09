@@ -1,9 +1,9 @@
 ﻿using MGH.Core.Domain.Buses.Queries;
-using MGH.Core.Persistence.Models.Paging;
-using MGH.Core.Persistence.Models.Filters.GetModels;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
+using MGH.Core.Persistence.Models.Filters.GetModels;
+using MGH.Core.Persistence.Models.Paging;
 
-namespace Domain.Security;
+namespace Domain.Entities.Security;
 
 public interface IUserOperationClaimRepository : IQuery<UserOperationClaim>
 {

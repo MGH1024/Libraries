@@ -1,5 +1,5 @@
 using Application.Features.UserOperationClaims.Constants;
-using Domain.Security;
+using Domain.Entities.Security;
 using MGH.Core.Application.Rules;
 using MGH.Core.CrossCutting.Exceptions.Types;
 using MGH.Core.Infrastructure.Securities.Security.Entities;

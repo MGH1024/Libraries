@@ -1,5 +1,5 @@
 ﻿using Application.Features.UserOperationClaims.Rules;
-using Domain.Security;
+using Domain.Entities.Security;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
 using MGH.Core.Persistence.Models.Filters.GetModels;
 using MGH.Core.Persistence.Models.Paging;

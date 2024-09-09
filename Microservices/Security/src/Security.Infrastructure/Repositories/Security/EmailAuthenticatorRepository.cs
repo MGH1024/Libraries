@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-using Domain.Security;
+using Domain.Entities.Security;
 using MGH.Core.Domain.Entity.Base;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
 using MGH.Core.Persistence.Extensions;

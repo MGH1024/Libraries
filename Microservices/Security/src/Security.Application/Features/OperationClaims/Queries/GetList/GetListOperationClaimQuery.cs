@@ -1,6 +1,6 @@
 using Application.Features.OperationClaims.Constants;
 using AutoMapper;
-using Domain.Security;
+using Domain.Entities.Security;
 using MediatR;
 using MGH.Core.Application.Pipelines.Authorization;
 using MGH.Core.Application.Requests;

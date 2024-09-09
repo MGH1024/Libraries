@@ -1,16 +1,17 @@
 ﻿using Application.Features.Auth.Rules;
 using Domain;
+using MGH.Core.Application.DTOs.Security;
 using MGH.Core.Domain.Buses.Commands;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
 using MGH.Core.Persistence.Models.Filters.GetModels;
 
 namespace Application.Features.Auth.Commands.VerifyEmailAuthenticator;
 
-public class VerifyEmailAuthenticatorCommand(string activationKey) : ICommand
+public class VerifyEmailAuthenticatorCommand(VerifyEmailAuthenticatorDto verifyEmailAuthenticatorDto) : ICommand
 {
-    public string ActivationKey { get; set; } = activationKey;
+    public VerifyEmailAuthenticatorDto VerifyEmailAuthenticatorDto { get; set; } = verifyEmailAuthenticatorDto;
 
-    public VerifyEmailAuthenticatorCommand() : this(string.Empty)
+    public VerifyEmailAuthenticatorCommand() : this(null!)
     {
     }
 }
@@ -25,7 +26,7 @@ public class VerifyEmailAuthenticatorCommandHandler(
         var emailAuthenticator = await uow.EmailAuthenticator.GetAsync(
             new GetModel<EmailAuthenticator>
             {
-                Predicate = e => e.ActivationKey == request.ActivationKey,
+                Predicate = e => e.ActivationKey == request.VerifyEmailAuthenticatorDto.ActivationKey,
                 CancellationToken = cancellationToken
             }
         );

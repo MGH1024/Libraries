@@ -82,7 +82,7 @@ public class AuthenticatorManager(
             new Mail
             {
                 ToList = toEmailList,
-                Subject = "Authenticator Code - NArchitecture",
+                Subject = "Authenticator Code - MGH",
                 TextBody = $"Enter your authenticator code: {authenticatorCode}"
             }
         );

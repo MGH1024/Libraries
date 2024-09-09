@@ -1,135 +1,138 @@
 ﻿using MediatR;
-using Application.Features.Auth.Commands.EnableEmailAuthenticator;
-using Application.Features.Auth.Commands.EnableOtpAuthenticator;
-using Application.Features.Auth.Commands.Login;
-using Application.Features.Auth.Commands.RefreshToken;
-using Application.Features.Auth.Commands.Register;
-using Application.Features.Auth.Commands.RevokeToken;
-using Application.Features.Auth.Commands.VerifyEmailAuthenticator;
-using Application.Features.Auth.Commands.VerifyOtpAuthenticator;
-using MGH.Core.Application.DTOs.Security;
-using MGH.Core.Infrastructure.Securities.Security.Entities;
+using Api.Extensions;
 using Microsoft.AspNetCore.Mvc;
+using MGH.Core.Application.DTOs.Security;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using MGH.Core.Infrastructure.Securities.Security.Entities;
 
 namespace Api.Controllers;
 
 [ApiController]
 [Route("{culture:CultureRouteConstraint}/api/[Controller]")]
-public class AuthController : AppController
+public class AuthController(ISender sender) : AppController(sender)
 {
-    private readonly WebApiConfiguration _configuration;
-    private readonly ISender _sender;
-
-    public AuthController(IConfiguration configuration, ISender sender) : base(sender)
-    {
-        _sender = sender;
-        const string configurationSection = "WebAPIConfiguration";
-        _configuration =
-            configuration.GetSection(configurationSection).Get<WebApiConfiguration>()
-            ?? throw new NullReferenceException($"\"{configurationSection}\" section cannot found in configuration.");
-    }
-
+    /// <summary>
+    /// login 
+    /// </summary>
+    /// <param name="userForLoginDto"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpPost("Login")]
-    public async Task<IActionResult> Login([FromBody] UserForLoginDto userForLoginDto,
-        CancellationToken cancellationToken)
+    public async Task<IActionResult> Login([FromBody] UserForLoginDto userForLoginDto, CancellationToken cancellationToken)
     {
-        var loginCommand = new LoginCommand { UserForLoginDto = userForLoginDto, IpAddress = IpAddress() };
-        var result = await _sender.Send(loginCommand, cancellationToken);
+        var loginCommand = userForLoginDto.ToLoginCommand(IpAddress());
 
+        var result = await Sender.Send(loginCommand, cancellationToken);
         if (result.RefreshTkn is not null)
             SetRefreshTokenToCookie(result.RefreshTkn);
 
         return Ok(result.ToHttpResponse());
     }
 
+    /// <summary>
+    /// register new user
+    /// </summary>
+    /// <param name="userForRegisterDto"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpPost("Register")]
-    public async Task<IActionResult> Register([FromBody] UserForRegisterDto userForRegisterDto,
-        CancellationToken cancellationToken)
+    public async Task<IActionResult> Register([FromBody] UserForRegisterDto userForRegisterDto, CancellationToken cancellationToken)
     {
-        var registerCommand = new RegisterCommand
-        {
-            UserForRegisterDto = userForRegisterDto,
-            IpAddress = IpAddress()
-        };
-        var result = await _sender.Send(registerCommand, cancellationToken);
+        var registerCommand = userForRegisterDto.ToRegisterCommand(IpAddress());
+
+        var result = await Sender.Send(registerCommand, cancellationToken);
         SetRefreshTokenToCookie(result.RefreshTkn);
         return Created(uri: "", result.AccessToken);
     }
 
+    /// <summary>
+    /// get refresh token and set in the cookie
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpGet("RefreshToken")]
     public async Task<IActionResult> RefreshToken(CancellationToken cancellationToken)
     {
-        var refreshTokenCommand = new RefreshTokenCommand
-        {
-            RefreshToken = GetRefreshTokenFromCookies(),
-            IpAddress = IpAddress()
-        };
-        var result = await _sender.Send(refreshTokenCommand, cancellationToken);
+        var refreshTokenCommand = ApiMapper.ToRefreshTokenCommand(GetRefreshTokenFromCookies(), IpAddress());
+        var result = await Sender.Send(refreshTokenCommand, cancellationToken);
         SetRefreshTokenToCookie(result.RefreshTkn);
         return Created(uri: "", result.AccessToken);
     }
 
+    /// <summary>
+    /// revoke token
+    /// </summary>
+    /// <param name="refreshToken"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpPut("RevokeToken")]
-    public async Task<IActionResult> RevokeToken(
-        [FromBody(EmptyBodyBehavior = EmptyBodyBehavior.Allow)]
-        string refreshToken, CancellationToken cancellationToken)
+    public async Task<IActionResult> RevokeToken([FromBody(EmptyBodyBehavior = EmptyBodyBehavior.Allow)] string refreshToken,
+        CancellationToken cancellationToken)
     {
-        var revokeTokenCommand = new RevokeTokenCommand()
-        {
-            Token = refreshToken ?? GetRefreshTokenFromCookies(),
-            IpAddress = IpAddress()
-        };
-        var result = await _sender.Send(revokeTokenCommand, cancellationToken);
+        var token = refreshToken ?? GetRefreshTokenFromCookies();
+        var revokeTokenCommand = token.ToRevokeTokenCommand(IpAddress());
+
+        var result = await Sender.Send(revokeTokenCommand, cancellationToken);
         return Ok(result);
     }
 
+    /// <summary>
+    /// enable email authenticator
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpGet("EnableEmailAuthenticator")]
     public async Task<IActionResult> EnableEmailAuthenticator(CancellationToken cancellationToken)
     {
-        EnableEmailAuthenticatorCommand enableEmailAuthenticatorCommand =
-            new()
-            {
-                UserId = GetUserIdFromRequest(),
-                VerifyEmailUrlPrefix = $"{_configuration.ApiDomain}/Auth/VerifyEmailAuthenticator"
-            };
-        await _sender.Send(enableEmailAuthenticatorCommand, cancellationToken);
-
+        var enableEmailAuthenticatorCommand = ApiMapper.ToEnableEmailAuthenticatorCommand(GetUserIdFromRequest());
+        await Sender.Send(enableEmailAuthenticatorCommand, cancellationToken);
         return Ok();
     }
 
+    /// <summary>
+    /// enable otp authenticator
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpGet("EnableOtpAuthenticator")]
     public async Task<IActionResult> EnableOtpAuthenticator(CancellationToken cancellationToken)
     {
-        EnableOtpAuthenticatorCommand enableOtpAuthenticatorCommand = new() { UserId = GetUserIdFromRequest() };
-        EnabledOtpAuthenticatorResponse result = await _sender.Send(enableOtpAuthenticatorCommand, cancellationToken);
-
+        var enableOtpAuthenticatorCommand = ApiMapper.ToEnableOtpAuthenticatorCommand(GetUserIdFromRequest());
+        var result = await Sender.Send(enableOtpAuthenticatorCommand, cancellationToken);
         return Ok(result);
     }
 
+    /// <summary>
+    /// verify email authenticator
+    /// </summary>
+    /// <param name="verifyEmailAuthenticatorDto"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpGet("VerifyEmailAuthenticator")]
-    public async Task<IActionResult> VerifyEmailAuthenticator(
-        [FromQuery] VerifyEmailAuthenticatorCommand verifyEmailAuthenticatorCommand,
+    public async Task<IActionResult> VerifyEmailAuthenticator([FromQuery] VerifyEmailAuthenticatorDto verifyEmailAuthenticatorDto,
         CancellationToken cancellationToken)
     {
-        await _sender.Send(verifyEmailAuthenticatorCommand, cancellationToken);
+        var verifyEmailAuthenticatorCommand = verifyEmailAuthenticatorDto.ToVerifyEmailAuthenticatorCommand();
+        await Sender.Send(verifyEmailAuthenticatorCommand, cancellationToken);
         return Ok();
     }
 
+    /// <summary>
+    /// verify otp authenticator
+    /// </summary>
+    /// <param name="authenticatorCode"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpPost("VerifyOtpAuthenticator")]
-    public async Task<IActionResult> VerifyOtpAuthenticator([FromBody] string authenticatorCode,
-        CancellationToken cancellationToken)
+    public async Task<IActionResult> VerifyOtpAuthenticator([FromBody] string authenticatorCode, CancellationToken cancellationToken)
     {
-        VerifyOtpAuthenticatorCommand verifyEmailAuthenticatorCommand =
-            new() { UserId = GetUserIdFromRequest(), ActivationCode = authenticatorCode };
-
-        await _sender.Send(verifyEmailAuthenticatorCommand, cancellationToken);
+        var verifyEmailAuthenticatorCommand = authenticatorCode.ToVerifyOtpAuthenticatorCommand(GetUserIdFromRequest());
+        await Sender.Send(verifyEmailAuthenticatorCommand, cancellationToken);
         return Ok();
     }
 
-    private string GetRefreshTokenFromCookies() =>
-        Request.Cookies["refreshToken"] ??
-        throw new ArgumentException("Refresh token is not found in request cookies.");
+    private string GetRefreshTokenFromCookies() => Request.Cookies["refreshToken"] ??
+                                                   throw new ArgumentException("Refresh token is not found in request cookies.");
 
     private void SetRefreshTokenToCookie(RefreshTkn refreshToken)
     {

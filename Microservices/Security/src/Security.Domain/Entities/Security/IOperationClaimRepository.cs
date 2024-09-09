@@ -1,9 +1,8 @@
 ﻿using MGH.Core.Infrastructure.Securities.Security.Entities;
-using MGH.Core.Persistence.Models.Filters;
 using MGH.Core.Persistence.Models.Filters.GetModels;
 using MGH.Core.Persistence.Models.Paging;
 
-namespace Domain.Security;
+namespace Domain.Entities.Security;
 
 public interface IOperationClaimRepository
 {

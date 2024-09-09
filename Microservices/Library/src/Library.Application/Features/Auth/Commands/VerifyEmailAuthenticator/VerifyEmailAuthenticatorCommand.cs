@@ -22,8 +22,7 @@ public class VerifyEmailAuthenticatorCommandHandler(
 {
     public async Task Handle(VerifyEmailAuthenticatorCommand request, CancellationToken cancellationToken)
     {
-        var emailAuthenticator = await uow.EmailAuthenticator.GetAsync(
-            new GetModel<EmailAuthenticator>
+        var emailAuthenticator = await uow.EmailAuthenticator.GetAsync(new GetModel<EmailAuthenticator>
             {
                 Predicate = e => e.ActivationKey == request.ActivationKey,
                 CancellationToken = cancellationToken

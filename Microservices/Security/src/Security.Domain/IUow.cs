@@ -1,4 +1,4 @@
-﻿using Domain.Security;
+﻿using Domain.Entities.Security;
 using MGH.Core.Persistence.Base;
 
 namespace Domain;

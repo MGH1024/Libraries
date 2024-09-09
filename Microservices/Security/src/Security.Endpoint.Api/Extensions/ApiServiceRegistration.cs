@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
+using Application.Models;
 using MGH.Core.CrossCutting.Exceptions;
 using MGH.Core.CrossCutting.Localizations.ModelBinders;
 using MGH.Core.CrossCutting.Logging;
@@ -8,10 +8,11 @@ using MGH.Core.Endpoint.Swagger.Swagger.Models;
 using MGH.Core.Infrastructure.Securities.Security.Encryption;
 using MGH.Core.Infrastructure.Securities.Security.JWT;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Api;
+namespace Api.Extensions;
 
 public static class ApiServiceRegistration
 {
@@ -44,12 +45,15 @@ public static class ApiServiceRegistration
         app.Run();
     }
 
-    private static void AddOptions(this IServiceCollection services,IConfiguration configuration)
+    private static void AddOptions(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<TokenOptions>(option =>
             configuration.GetSection(nameof(TokenOptions)).Bind(option));
+
+        services.Configure<ApiConfiguration>(option =>
+            configuration.GetSection(nameof(ApiConfiguration)).Bind(option));
     }
-    
+
     private static void AddJwt(this IServiceCollection services, IConfiguration configuration)
     {
         var tokenOptions =

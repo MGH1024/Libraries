@@ -26,7 +26,10 @@ public class EnableOtpAuthenticatorCommandHandler(
     )
     {
         var user = await userService.GetAsync(new GetModel<User>()
-            { Predicate = u => u.Id == request.UserId, CancellationToken = cancellationToken });
+        {
+            Predicate = u => u.Id == request.UserId,
+            CancellationToken = cancellationToken
+        });
         await authBusinessRules.UserShouldBeExistsWhenSelected(user);
         await authBusinessRules.UserShouldNotBeHaveAuthenticator(user!);
 
@@ -37,18 +40,15 @@ public class EnableOtpAuthenticatorCommandHandler(
         });
         await authBusinessRules.OtpAuthenticatorThatVerifiedShouldNotBeExists(doesExistOtpAuthenticator);
         if (doesExistOtpAuthenticator is not null)
-            await uow.OtpAuthenticator.DeleteAsync(doesExistOtpAuthenticator);
+            await uow.OtpAuthenticator.DeleteAsync(doesExistOtpAuthenticator, false, cancellationToken);
 
-        OtpAuthenticator newOtpAuthenticator =
-            await authenticatorService.CreateOtpAuthenticator(user!, cancellationToken);
-        OtpAuthenticator addedOtpAuthenticator =
-            await uow.OtpAuthenticator.AddAsync(newOtpAuthenticator, cancellationToken);
+        var newOtpAuthenticator = await authenticatorService.CreateOtpAuthenticator(user!, cancellationToken);
+        var addedOtpAuthenticator = await uow.OtpAuthenticator.AddAsync(newOtpAuthenticator, cancellationToken);
 
-        EnabledOtpAuthenticatorResponse enabledOtpAuthenticatorDto =
-            new()
-            {
-                SecretKey = await authenticatorService.ConvertSecretKeyToString(addedOtpAuthenticator.SecretKey)
-            };
+        var enabledOtpAuthenticatorDto = new EnabledOtpAuthenticatorResponse
+        {
+            SecretKey = await authenticatorService.ConvertSecretKeyToString(addedOtpAuthenticator.SecretKey)
+        };
         return enabledOtpAuthenticatorDto;
     }
 }
