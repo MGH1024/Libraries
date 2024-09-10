@@ -23,18 +23,10 @@ public class UpdateUserOperationClaimCommandHandler(
     UserOperationClaimBusinessRules userOperationClaimBusinessRules)
     : ICommandHandler<UpdateUserOperationClaimCommand, UpdatedUserOperationClaimResponse>
 {
-    public async Task<UpdatedUserOperationClaimResponse> Handle(
-        UpdateUserOperationClaimCommand request,
-        CancellationToken cancellationToken
-    )
+    public async Task<UpdatedUserOperationClaimResponse> Handle(UpdateUserOperationClaimCommand request, CancellationToken cancellationToken)
     {
-        var userOperationClaim = await uow.UserOperationClaim.GetAsync(
-            new GetModel<UserOperationClaim>
-            {
-                Predicate = uoc => uoc.Id == request.Id,
-                EnableTracking = false,
-                CancellationToken = cancellationToken
-            });
+        var getUserModel = mapper.Map<GetModel<UserOperationClaim>>(request, opt => opt.Items["CancellationToken"] = cancellationToken);
+        var userOperationClaim = await uow.UserOperationClaim.GetAsync(getUserModel);
         await userOperationClaimBusinessRules.UserOperationClaimShouldExistWhenSelected(userOperationClaim);
         await userOperationClaimBusinessRules.UserShouldNotHasOperationClaimAlreadyWhenUpdated(
             request.Id,
@@ -42,9 +34,7 @@ public class UpdateUserOperationClaimCommandHandler(
             request.OperationClaimId
         );
         var mappedUserOperationClaim = mapper.Map(request, destination: userOperationClaim!);
-        var updatedUserOperationClaim =
-            await uow.UserOperationClaim.UpdateAsync(mappedUserOperationClaim, cancellationToken);
-        var updatedUserOperationClaimDto = mapper.Map<UpdatedUserOperationClaimResponse>(updatedUserOperationClaim);
-        return updatedUserOperationClaimDto;
+        var updatedUserOperationClaim = await uow.UserOperationClaim.UpdateAsync(mappedUserOperationClaim, cancellationToken);
+        return mapper.Map<UpdatedUserOperationClaimResponse>(updatedUserOperationClaim);
     }
 }

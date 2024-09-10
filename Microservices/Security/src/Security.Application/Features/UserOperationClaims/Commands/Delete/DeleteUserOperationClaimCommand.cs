@@ -21,23 +21,12 @@ public class DeleteUserOperationClaimCommandHandler(
     UserOperationClaimBusinessRules userOperationClaimBusinessRules)
     : ICommandHandler<DeleteUserOperationClaimCommand, DeletedUserOperationClaimResponse>
 {
-    public async Task<DeletedUserOperationClaimResponse> Handle(
-        DeleteUserOperationClaimCommand request,
-        CancellationToken cancellationToken
-    )
+    public async Task<DeletedUserOperationClaimResponse> Handle(DeleteUserOperationClaimCommand request, CancellationToken cancellationToken)
     {
-        var userOperationClaim = await uow.UserOperationClaim.GetAsync(
-            new GetModel<UserOperationClaim>
-            {
-                Predicate = uoc => uoc.Id == request.Id,
-                CancellationToken = cancellationToken
-            });
+        var getUserModel = mapper.Map<GetModel<UserOperationClaim>>(request, opt => opt.Items["CancellationToken"] = cancellationToken);
+        var userOperationClaim = await uow.UserOperationClaim.GetAsync(getUserModel);
         await userOperationClaimBusinessRules.UserOperationClaimShouldExistWhenSelected(userOperationClaim);
-
         await uow.UserOperationClaim.DeleteAsync(userOperationClaim!);
-
-        DeletedUserOperationClaimResponse response =
-            mapper.Map<DeletedUserOperationClaimResponse>(userOperationClaim);
-        return response;
+        return mapper.Map<DeletedUserOperationClaimResponse>(userOperationClaim);
     }
 }

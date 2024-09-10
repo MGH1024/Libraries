@@ -12,40 +12,38 @@ public class UserOperationClaimBusinessRules(IUserOperationClaimRepository userO
 {
     public Task UserOperationClaimShouldExistWhenSelected(UserOperationClaim userOperationClaim)
     {
-        if (userOperationClaim == null)
+        if (userOperationClaim is null)
             throw new BusinessException(UserOperationClaimsMessages.UserOperationClaimNotExists);
         return Task.CompletedTask;
     }
 
     public async Task UserOperationClaimIdShouldExistWhenSelected(int id)
     {
-        var doesExist = await userOperationClaimRepository.AnyAsync(
-            new GetModel<UserOperationClaim> { Predicate = b => b.Id == id });
+        var doesExist = await userOperationClaimRepository.AnyAsync(new GetModel<UserOperationClaim> { Predicate = b => b.Id == id });
         if (!doesExist)
             throw new BusinessException(UserOperationClaimsMessages.UserOperationClaimNotExists);
     }
 
     public Task UserOperationClaimShouldNotExistWhenSelected(UserOperationClaim userOperationClaim)
     {
-        if (userOperationClaim != null)
+        if (userOperationClaim is not null)
             throw new BusinessException(UserOperationClaimsMessages.UserOperationClaimAlreadyExists);
         return Task.CompletedTask;
     }
 
     public async Task UserShouldNotHasOperationClaimAlreadyWhenInsert(int userId, int operationClaimId)
     {
-        var doesExist =
-            await userOperationClaimRepository.AnyAsync(new Base<UserOperationClaim>
-            {
-                Predicate = u => u.UserId == userId && u.OperationClaimId == operationClaimId
-            });
+        var doesExist = await userOperationClaimRepository.AnyAsync(new Base<UserOperationClaim>
+        {
+            Predicate = u => u.UserId == userId && u.OperationClaimId == operationClaimId
+        });
         if (doesExist)
             throw new BusinessException(UserOperationClaimsMessages.UserOperationClaimAlreadyExists);
     }
 
     public async Task UserShouldNotHasOperationClaimAlreadyWhenUpdated(int id, int userId, int operationClaimId)
     {
-        bool doesExist = await userOperationClaimRepository.AnyAsync(
+        var doesExist = await userOperationClaimRepository.AnyAsync(
             new Base<UserOperationClaim>
             {
                 Predicate = uoc => uoc.Id == id && uoc.UserId == userId && uoc.OperationClaimId == operationClaimId

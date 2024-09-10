@@ -19,11 +19,9 @@ public class DeleteOperationClaimCommand : ICommand<DeletedOperationClaimRespons
 public class DeleteOperationClaimCommandHandler(
     IUow uow,
     IMapper mapper,
-    OperationClaimBusinessRules operationClaimBusinessRules)
-    : ICommandHandler<DeleteOperationClaimCommand, DeletedOperationClaimResponse>
+    OperationClaimBusinessRules operationClaimBusinessRules) : ICommandHandler<DeleteOperationClaimCommand, DeletedOperationClaimResponse>
 {
-    public async Task<DeletedOperationClaimResponse> Handle(DeleteOperationClaimCommand request,
-        CancellationToken cancellationToken)
+    public async Task<DeletedOperationClaimResponse> Handle(DeleteOperationClaimCommand request, CancellationToken cancellationToken)
     {
         var operationClaim = await uow.OperationClaim.GetAsync(
             new GetModel<OperationClaim>
@@ -34,7 +32,6 @@ public class DeleteOperationClaimCommandHandler(
             });
 
         await operationClaimBusinessRules.OperationClaimShouldExistWhenSelected(operationClaim);
-
         await uow.OperationClaim.DeleteAsync(entity: operationClaim!, cancellationToken: cancellationToken);
 
         return mapper.Map<DeletedOperationClaimResponse>(operationClaim);

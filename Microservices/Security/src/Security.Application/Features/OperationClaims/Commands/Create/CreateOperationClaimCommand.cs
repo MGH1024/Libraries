@@ -24,15 +24,13 @@ public class CreateOperationClaimCommandHandler(
     OperationClaimBusinessRules operationClaimBusinessRules)
     : ICommandHandler<CreateOperationClaimCommand, CreatedOperationClaimResponse>
 {
-    public async Task<CreatedOperationClaimResponse> Handle(CreateOperationClaimCommand request,
-        CancellationToken cancellationToken)
+    public async Task<CreatedOperationClaimResponse> Handle(CreateOperationClaimCommand request, CancellationToken cancellationToken)
     {
         await operationClaimBusinessRules.OperationClaimNameShouldNotExistWhenCreating(request.Name, cancellationToken);
         var mappedOperationClaim = mapper.Map<OperationClaim>(request);
 
         var createdOperationClaim = await operationClaimRepository.AddAsync(mappedOperationClaim, cancellationToken);
 
-        var response = mapper.Map<CreatedOperationClaimResponse>(createdOperationClaim);
-        return response;
+        return mapper.Map<CreatedOperationClaimResponse>(createdOperationClaim);
     }
 }

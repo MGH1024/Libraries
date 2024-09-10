@@ -1,4 +1,5 @@
 using Application.Features.OperationClaims.Constants;
+using AutoMapper;
 using Domain;
 using MGH.Core.Application.Rules;
 using MGH.Core.CrossCutting.Exceptions.Types;
@@ -7,17 +8,18 @@ using MGH.Core.Persistence.Models.Filters.GetModels;
 
 namespace Application.Features.OperationClaims.Rules;
 
-public class OperationClaimBusinessRules(IUow uow) : BaseBusinessRules
+public class OperationClaimBusinessRules(IUow uow, IMapper mapper) : BaseBusinessRules
 {
     public Task OperationClaimShouldExistWhenSelected(OperationClaim operationClaim)
     {
-        if (operationClaim == null)
+        if (operationClaim is null)
             throw new BusinessException(OperationClaimsMessages.NotExists);
         return Task.CompletedTask;
     }
 
     public async Task OperationClaimIdShouldExistWhenSelected(int id, CancellationToken cancellationToken)
     {
+        //todo
         bool doesExist = await uow.OperationClaim.AnyAsync(
             new Base<OperationClaim>
             {

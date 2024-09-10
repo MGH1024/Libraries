@@ -26,23 +26,16 @@ public class UpdateOperationClaimCommandHandler(
     OperationClaimBusinessRules operationClaimBusinessRules)
     : ICommandHandler<UpdateOperationClaimCommand, UpdatedOperationClaimResponse>
 {
-    public async Task<UpdatedOperationClaimResponse> Handle(UpdateOperationClaimCommand request,
-        CancellationToken cancellationToken)
+    public async Task<UpdatedOperationClaimResponse> Handle(UpdateOperationClaimCommand request, CancellationToken cancellationToken)
     {
-        var operationClaim = await uow.OperationClaim.GetAsync(
-            new GetModel<OperationClaim>
-            {
-                Predicate = oc => oc.Id == request.Id,
-                CancellationToken = cancellationToken
-            });
+        var getUserModel = mapper.Map<GetModel<OperationClaim>>(request, opt => opt.Items["CancellationToken"] = cancellationToken);
+        var operationClaim = await uow.OperationClaim.GetAsync(getUserModel);
         await operationClaimBusinessRules.OperationClaimShouldExistWhenSelected(operationClaim);
-        await operationClaimBusinessRules.OperationClaimNameShouldNotExistWhenUpdating(request.Id, request.Name,
-            cancellationToken);
+
+        await operationClaimBusinessRules.OperationClaimNameShouldNotExistWhenUpdating(request.Id, request.Name, cancellationToken);
         var mappedOperationClaim = mapper.Map(request, destination: operationClaim!);
 
-        var updatedOperationClaim =
-            await uow.OperationClaim.UpdateAsync(mappedOperationClaim, cancellationToken);
-
+        var updatedOperationClaim = await uow.OperationClaim.UpdateAsync(mappedOperationClaim, cancellationToken);
         return mapper.Map<UpdatedOperationClaimResponse>(updatedOperationClaim);
     }
 }

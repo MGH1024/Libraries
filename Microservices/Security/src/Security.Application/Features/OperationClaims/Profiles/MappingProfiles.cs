@@ -1,3 +1,5 @@
+using System.Linq.Expressions;
+using Application.Features.Auth.Commands.Login;
 using Application.Features.OperationClaims.Commands.Create;
 using Application.Features.OperationClaims.Commands.Delete;
 using Application.Features.OperationClaims.Commands.Update;
@@ -6,6 +8,7 @@ using Application.Features.OperationClaims.Queries.GetList;
 using AutoMapper;
 using MGH.Core.Application.Responses;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
+using MGH.Core.Persistence.Models.Filters.GetModels;
 using MGH.Core.Persistence.Models.Paging;
 
 namespace Application.Features.OperationClaims.Profiles;
@@ -23,5 +26,10 @@ public class MappingProfiles : Profile
         CreateMap<OperationClaim, GetByIdOperationClaimResponse>().ReverseMap();
         CreateMap<OperationClaim, GetListOperationClaimListItemDto>().ReverseMap();
         CreateMap<IPaginate<OperationClaim>, GetListResponse<GetListOperationClaimListItemDto>>().ReverseMap();
+        
+        CreateMap<DeleteOperationClaimCommand, GetModel<OperationClaim>>()
+            .ForMember(dest => dest.Predicate, opt => opt.MapFrom(src => (Expression<Func<OperationClaim, bool>>)(u => u.Id == src.Id)))
+            .ForMember(dest => dest.CancellationToken, opt
+                => opt.MapFrom<CancellationTokenResolver<DeleteOperationClaimCommand, GetModel<OperationClaim>>>()).ReverseMap();
     }
 }
