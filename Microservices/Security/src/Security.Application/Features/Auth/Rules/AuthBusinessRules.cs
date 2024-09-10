@@ -1,4 +1,5 @@
 using Application.Features.Auth.Constants;
+using AutoMapper;
 using Domain;
 using MGH.Core.Application.Rules;
 using MGH.Core.CrossCutting.Exceptions.Types;
@@ -9,19 +10,19 @@ using MGH.Core.Persistence.Models.Filters.GetModels;
 
 namespace Application.Features.Auth.Rules;
 
-public class AuthBusinessRules(IUow uow) : BaseBusinessRules
+public class AuthBusinessRules(IUow uow, IMapper mapper) : BaseBusinessRules
 {
     public Task EmailAuthenticatorShouldBeExists(EmailAuthenticator emailAuthenticator)
     {
         if (emailAuthenticator is null)
-            throw new BusinessException(AuthMessages.EmailAuthenticatorDontExists);
+            throw new BusinessException(AuthMessages.EmailAuthenticatorDoesNotExists);
         return Task.CompletedTask;
     }
 
     public Task OtpAuthenticatorShouldBeExists(OtpAuthenticator otpAuthenticator)
     {
         if (otpAuthenticator is null)
-            throw new BusinessException(AuthMessages.OtpAuthenticatorDontExists);
+            throw new BusinessException(AuthMessages.OtpAuthenticatorDoesNotExists);
         return Task.CompletedTask;
     }
 
@@ -35,14 +36,14 @@ public class AuthBusinessRules(IUow uow) : BaseBusinessRules
     public Task EmailAuthenticatorActivationKeyShouldBeExists(EmailAuthenticator emailAuthenticator)
     {
         if (emailAuthenticator.ActivationKey is null)
-            throw new BusinessException(AuthMessages.EmailActivationKeyDontExists);
+            throw new BusinessException(AuthMessages.EmailActivationKeyDoesNotExists);
         return Task.CompletedTask;
     }
 
     public Task UserShouldBeExistsWhenSelected(User user)
     {
         if (user == null)
-            throw new BusinessException(AuthMessages.UserDontExists);
+            throw new BusinessException(AuthMessages.UserDoesNotExists);
         return Task.CompletedTask;
     }
 
@@ -56,7 +57,7 @@ public class AuthBusinessRules(IUow uow) : BaseBusinessRules
     public Task RefreshTokenShouldBeExists(RefreshTkn refreshTkn)
     {
         if (refreshTkn == null)
-            throw new BusinessException(AuthMessages.RefreshDontExists);
+            throw new BusinessException(AuthMessages.RefreshDoesNotExists);
         return Task.CompletedTask;
     }
 
@@ -69,23 +70,18 @@ public class AuthBusinessRules(IUow uow) : BaseBusinessRules
 
     public async Task UserEmailShouldBeNotExists(string email)
     {
-        bool doesExists = await uow.User.AnyAsync(new Base<User>
-        {
-            Predicate = u => u.Email == email,
-            EnableTracking = false
-        });
+        var baseGetUser = mapper.Map<Base<User>>(email);
+        var doesExists = await uow.User.AnyAsync(baseGetUser);
         if (doesExists)
             throw new BusinessException(AuthMessages.UserMailAlreadyExists);
     }
 
     public async Task UserPasswordShouldBeMatch(int id, string password)
     {
-        var user = await uow.User.GetAsync(new GetModel<User>
-        {
-            Predicate = u => u.Id == id, EnableTracking = false
-        });
+        var userGetModel = mapper.Map<GetModel<User>>(id);
+        var user = await uow.User.GetAsync(userGetModel);
         await UserShouldBeExistsWhenSelected(user);
         if (!HashingHelper.VerifyPasswordHash(password, user!.PasswordHash, user.PasswordSalt))
-            throw new BusinessException(AuthMessages.PasswordDontMatch);
+            throw new BusinessException(AuthMessages.PasswordDoesNotMatch);
     }
 }

@@ -13,7 +13,7 @@ public class UserBusinessRules(IUow uow) : BaseBusinessRules
     public Task UserShouldBeExistsWhenSelected(User user)
     {
         if (user is null)
-            throw new BusinessException(AuthMessages.UserDontExists);
+            throw new BusinessException(AuthMessages.UserDoesNotExists);
         return Task.CompletedTask;
     }
 
@@ -21,13 +21,13 @@ public class UserBusinessRules(IUow uow) : BaseBusinessRules
     {
         var doesExist = await uow.User.AnyAsync(id.ToGetBaseUser());
         if (doesExist)
-            throw new BusinessException(AuthMessages.UserDontExists);
+            throw new BusinessException(AuthMessages.UserDoesNotExists);
     }
 
     public Task UserPasswordShouldBeMatched(User user, string password)
     {
         if (!HashingHelper.VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
-            throw new BusinessException(AuthMessages.PasswordDontMatch);
+            throw new BusinessException(AuthMessages.PasswordDoesNotMatch);
         return Task.CompletedTask;
     }
 

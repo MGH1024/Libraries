@@ -1,9 +1,4 @@
 ﻿using System.Reflection;
-using Application.Services.AuthenticatorService;
-using Application.Services.AuthService;
-using Application.Services.OperationClaims;
-using Application.Services.UserOperationClaims;
-using Application.Services.UsersService;
 using FluentValidation;
 using MGH.Core.Application.Pipelines.Authorization;
 using MGH.Core.Application.Pipelines.Caching;
@@ -37,11 +32,6 @@ public static class ApplicationServiceRegistration
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         services.AddSubClassesOfType(Assembly.GetExecutingAssembly(), typeof(BaseBusinessRules));
         services.AddSingleton<IElasticSearch, ElasticSearchService>();
-        services.AddScoped<IAuthenticatorService, AuthenticatorManager>();
-        services.AddScoped<IAuthService, AuthManager>();
-        services.AddScoped<IOperationClaimService, OperationClaimManager>();
-        services.AddScoped<IUserOperationClaimService, UserUserOperationClaimManager>();
-        services.AddScoped<IUserService, UserManager>();
         services.AddScoped<IMailService, MailKitMailService>();
 
         return services;

@@ -4,7 +4,6 @@ using Domain;
 using Domain.Entities.Libraries;
 using Domain.Entities.Libraries.Factories;
 using Domain.Entities.Libraries.Policies;
-using Domain.Security;
 using MGH.Core.CrossCutting.Localizations.RouteConstraints;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Base;
@@ -32,7 +31,6 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Nest;
 using Persistence.Contexts;
 using Persistence.Repositories;
-using Persistence.Repositories.Security;
 using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace Persistence;
@@ -81,12 +79,6 @@ public static class InfrastructureServiceRegistration
         services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         services.AddScoped<ILibraryRepository, LibraryRepository>();
         services.AddScoped<IOutBoxRepository, OutBoxRepository>();
-        services.AddScoped<IEmailAuthenticatorRepository, EmailAuthenticatorRepository>();
-        services.AddScoped<IOperationClaimRepository, OperationClaimRepository>();
-        services.AddScoped<IOtpAuthenticatorRepository, OtpAuthenticatorRepository>();
-        services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
-        services.AddScoped<IUserOperationClaimRepository, UserOperationClaimRepository>();
-        services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUow, UnitOfWork>();
         services.AddScoped<ILibraryFactory, LibraryFactory>();
         services.AddScoped<ILibraryPolicy, DistrictPolicy>();
