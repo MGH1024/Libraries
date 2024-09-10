@@ -10,6 +10,5 @@ public class LoginResponse : IResponse
     public MGH.Core.Infrastructure.Securities.Security.Entities.RefreshTkn RefreshTkn { get; set; }
     public AuthenticatorType RequiredAuthenticatorType { get; set; }
 
-    public LoginHttpResponse ToHttpResponse() =>
-        new() { AccessToken = AccessToken, RequiredAuthenticatorType = RequiredAuthenticatorType };
+    public LoginHttpResponse ToHttpResponse() => new() { AccessToken = AccessToken, RequiredAuthenticatorType = RequiredAuthenticatorType };
 }

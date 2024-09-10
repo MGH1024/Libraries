@@ -1,20 +1,14 @@
 ﻿using Application.Features.Auth.Rules;
 using Application.Services.AuthenticatorService;
 using Application.Services.UsersService;
-using MimeKit;
-using System.Web;
 using Application.Features.Auth.Extensions;
-using Application.Models;
 using AutoMapper;
 using Domain;
 using MGH.Core.Domain.Buses.Commands;
 using MGH.Core.Infrastructure.Mail.Base;
-using MGH.Core.Infrastructure.Mail.MailKitImplementations.Models;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
 using MGH.Core.Infrastructure.Securities.Security.Enums;
 using MGH.Core.Persistence.Models.Filters.GetModels;
-using Microsoft.Extensions.Options;
-using Nest;
 
 namespace Application.Features.Auth.Commands.EnableEmailAuthenticator;
 
@@ -39,11 +33,12 @@ public class EnableEmailAuthenticatorCommandHandler(
 {
     public async Task Handle(EnableEmailAuthenticatorCommand request, CancellationToken cancellationToken)
     {
-        var getModelUser = mapper.Map<GetModel<User>>(request);
-        var user = await userService.GetAsync(getModelUser);
+        var getUserModel = mapper.Map<GetModel<User>>(request, opt =>
+            opt.Items["CancellationToken"] = cancellationToken);
+        var user = await userService.GetAsync(getUserModel);
+        
         await authBusinessRules.UserShouldBeExistsWhenSelected(user);
         await authBusinessRules.UserShouldNotBeHaveAuthenticator(user!);
-
         user!.AuthenticatorType = AuthenticatorType.Email;
         await userService.UpdateAsync(user, cancellationToken);
 

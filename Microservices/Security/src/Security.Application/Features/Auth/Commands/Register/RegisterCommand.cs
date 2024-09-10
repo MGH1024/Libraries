@@ -36,8 +36,7 @@ public class RegisterCommandHandler(
 
         var createdUser = await uow.User.AddAsync(newUser, cancellationToken);
 
-        var createdRefreshTkn =
-            await authService.CreateRefreshToken(createdUser, request.IpAddress, cancellationToken);
+        var createdRefreshTkn = await authService.CreateRefreshToken(createdUser, request.IpAddress, cancellationToken);
         newUser.RefreshTokens.Add(createdRefreshTkn);
 
         await uow.CompleteAsync(cancellationToken);

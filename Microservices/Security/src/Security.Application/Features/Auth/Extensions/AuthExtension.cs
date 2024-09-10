@@ -5,7 +5,6 @@ using MGH.Core.Infrastructure.Mail.MailKitImplementations.Models;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
 using MGH.Core.Infrastructure.Securities.Security.Hashing;
 using MimeKit;
-using Nest;
 
 namespace Application.Features.Auth.Extensions;
 

@@ -20,7 +20,7 @@ public class UnitOfWork(SecurityDbContext context, IDateTime dateTime) : IUow
 
     public IEmailAuthenticatorRepository EmailAuthenticator =>
         _emailAuthenticatorRepository ??= new EmailAuthenticatorRepository(context);
-    
+
 
     public IOperationClaimRepository OperationClaim =>
         _operationClaimRepository ??= new OperationClaimRepository(context);

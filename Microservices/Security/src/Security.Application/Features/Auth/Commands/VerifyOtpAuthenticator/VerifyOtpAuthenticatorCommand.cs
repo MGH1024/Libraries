@@ -1,6 +1,7 @@
 ﻿using Application.Features.Auth.Rules;
 using Application.Services.AuthenticatorService;
 using Application.Services.UsersService;
+using AutoMapper;
 using Domain;
 using MGH.Core.Domain.Buses.Commands;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
@@ -23,23 +24,21 @@ public class VerifyOtpAuthenticatorCommandHandler(
     IUow uow,
     AuthBusinessRules authBusinessRules,
     IUserService userService,
+    IMapper mapper,
     IAuthenticatorService authenticatorService)
     : ICommandHandler<VerifyOtpAuthenticatorCommand>
 {
     public async Task Handle(VerifyOtpAuthenticatorCommand request, CancellationToken cancellationToken)
     {
-        var otpAuthenticator = await uow.OtpAuthenticator.GetAsync(new GetModel<OtpAuthenticator>
-        {
-            Predicate = e => e.UserId == request.UserId,
-            CancellationToken = cancellationToken
-        });
+        var getOtpAuthenticatorModel = mapper.Map<GetModel<OtpAuthenticator>>(request, opt => opt.Items["CancellationToken"] = cancellationToken);
+        var otpAuthenticator = await uow.OtpAuthenticator.GetAsync(getOtpAuthenticatorModel);
+
         await authBusinessRules.OtpAuthenticatorShouldBeExists(otpAuthenticator);
-        var user = await userService.GetAsync(new GetModel<User>
-        {
-            Predicate = u => u.Id == request.UserId,
-            CancellationToken = cancellationToken
-        });
+        var getUserModel = mapper.Map<GetModel<User>>(request, opt => opt.Items["CancellationToken"] = cancellationToken);
+
+        var user = await userService.GetAsync(getUserModel);
         await authBusinessRules.UserShouldBeExistsWhenSelected(user);
+
         otpAuthenticator!.IsVerified = true;
         user!.AuthenticatorType = AuthenticatorType.Otp;
         await authenticatorService.VerifyAuthenticatorCode(user, request.ActivationCode, cancellationToken);

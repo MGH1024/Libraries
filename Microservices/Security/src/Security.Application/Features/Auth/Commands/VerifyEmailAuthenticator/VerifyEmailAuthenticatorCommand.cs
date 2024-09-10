@@ -1,4 +1,5 @@
 ﻿using Application.Features.Auth.Rules;
+using AutoMapper;
 using Domain;
 using MGH.Core.Application.DTOs.Security;
 using MGH.Core.Domain.Buses.Commands;
@@ -18,18 +19,16 @@ public class VerifyEmailAuthenticatorCommand(VerifyEmailAuthenticatorDto verifyE
 
 public class VerifyEmailAuthenticatorCommandHandler(
     IUow uow,
+    IMapper mapper,
     AuthBusinessRules authBusinessRules)
     : ICommandHandler<VerifyEmailAuthenticatorCommand>
 {
     public async Task Handle(VerifyEmailAuthenticatorCommand request, CancellationToken cancellationToken)
     {
-        var emailAuthenticator = await uow.EmailAuthenticator.GetAsync(
-            new GetModel<EmailAuthenticator>
-            {
-                Predicate = e => e.ActivationKey == request.VerifyEmailAuthenticatorDto.ActivationKey,
-                CancellationToken = cancellationToken
-            }
-        );
+        var getUserModel = mapper.Map<GetModel<EmailAuthenticator>>(request, opt =>
+            opt.Items["CancellationToken"] = cancellationToken);
+        var emailAuthenticator = await uow.EmailAuthenticator.GetAsync(getUserModel);
+
         await authBusinessRules.EmailAuthenticatorShouldBeExists(emailAuthenticator);
         await authBusinessRules.EmailAuthenticatorActivationKeyShouldBeExists(emailAuthenticator!);
 
