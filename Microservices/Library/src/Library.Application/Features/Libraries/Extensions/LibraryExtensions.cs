@@ -103,13 +103,13 @@ public static class LibraryExtensions
         };
     }
 
-    public static GetDynamicListAsyncModel<Library> ToGetDynamicListAsyncModel(this GetLibraryListQuery request,
+    public static GetDynamicListModelAsync<Library> ToGetDynamicListAsyncModel(this GetLibraryListQuery request,
         CancellationToken cancellationToken)
     {
         var dyn = new DynamicQuery();
         dyn.Filter = new Filter("Name", "contains", "par", "and", null);
         dyn.Sort = null;
-        return new GetDynamicListAsyncModel<Library>()
+        return new GetDynamicListModelAsync<Library>()
         {
             Dynamic = dyn,
             CancellationToken = cancellationToken

@@ -28,7 +28,7 @@ public class GetListUserOperationClaimQuery(PageRequest pageRequest)
         )
         {
             var userOperationClaims = await uow.UserOperationClaim.GetListAsync(
-                new GetListAsyncModel<UserOperationClaim>
+                new GetListModelAsync<UserOperationClaim>
                 {
                     Index = request.PageRequest.PageIndex,
                     Size = request.PageRequest.PageSize

@@ -25,7 +25,7 @@ public class MappingProfiles : Profile
 
         CreateMap<User, RegisterCommand>().ReverseMap();
 
-        CreateMap<string, Base<User>>()
+        CreateMap<string, GetBaseModel<User>>()
             .ForMember(dest => dest.Predicate, opt => opt.MapFrom(src => (Expression<Func<User, bool>>)(u => u.Email == src)))
             .ForMember(dest => dest.EnableTracking, opt => opt.MapFrom(src => false))
             .ForMember(dest => dest.WithDeleted, opt => opt.Ignore())

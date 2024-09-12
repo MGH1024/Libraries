@@ -18,7 +18,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="MGH.Core.Domain" Version="2.0.1"/>
-        <PackageReference Include="MGH.Core.Persistence" Version="2.0.2"/>
+        <PackageReference Include="MGH.Core.Domain" Version="2.0.5"/>
+        <PackageReference Include="MGH.Core.Persistence" Version="2.0.7"/>
     </ItemGroup>
 </Project>

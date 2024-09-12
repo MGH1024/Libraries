@@ -7,7 +7,7 @@ namespace Application.Services.OperationClaims;
 public interface IOperationClaimService
 {
     Task<OperationClaim> GetAsync(GetModel<OperationClaim> getModel);
-    Task<IPaginate<OperationClaim>> GetListAsync(GetListAsyncModel<OperationClaim> getListAsyncModel);
+    Task<IPaginate<OperationClaim>> GetListAsync(GetListModelAsync<OperationClaim> getListAsyncModel);
     Task<OperationClaim> AddAsync(OperationClaim operationClaim, CancellationToken cancellationToken);
     Task<OperationClaim> UpdateAsync(OperationClaim operationClaim, CancellationToken cancellationToken);
 

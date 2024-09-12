@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-using Domain.Entities.Security;
+using Domain.Repositories;
 using MGH.Core.Domain.Entity.Base;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
 using MGH.Core.Persistence.Extensions;
@@ -27,7 +27,7 @@ public class OtpAuthenticatorRepository(SecurityDbContext securityDbContext) : I
         return await queryable.FirstOrDefaultAsync(getBaseModel.Predicate, getBaseModel.CancellationToken);
     }
 
-    public async Task<IPaginate<OtpAuthenticator>> GetListAsync(GetListAsyncModel<OtpAuthenticator> getListAsyncModel)
+    public async Task<IPaginate<OtpAuthenticator>> GetListAsync(GetListModelAsync<OtpAuthenticator> getListAsyncModel)
     {
         IQueryable<OtpAuthenticator> queryable = Query();
         if (!getListAsyncModel.EnableTracking)
@@ -47,7 +47,7 @@ public class OtpAuthenticatorRepository(SecurityDbContext securityDbContext) : I
     }
 
     public async Task<IPaginate<OtpAuthenticator>> GetDynamicListAsync(
-        GetDynamicListAsyncModel<OtpAuthenticator> dynamicGet)
+        GetDynamicListModelAsync<OtpAuthenticator> dynamicGet)
     {
         IQueryable<OtpAuthenticator> queryable = Query().ToDynamic(dynamicGet.Dynamic);
         if (!dynamicGet.EnableTracking)

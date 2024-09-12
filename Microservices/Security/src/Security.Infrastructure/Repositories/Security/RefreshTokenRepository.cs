@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-using Domain.Entities.Security;
+using Domain.Repositories;
 using MGH.Core.Domain.Entity.Base;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
 using MGH.Core.Persistence.Extensions;
@@ -27,7 +27,7 @@ public class RefreshTokenRepository(SecurityDbContext securityDbContext) : IRefr
         return await queryable.FirstOrDefaultAsync(getBaseModel.Predicate, getBaseModel.CancellationToken);
     }
 
-    public async Task<IPaginate<RefreshTkn>> GetListAsync(GetListAsyncModel<RefreshTkn> getListAsyncModel)
+    public async Task<IPaginate<RefreshTkn>> GetListAsync(GetListModelAsync<RefreshTkn> getListAsyncModel)
     {
         IQueryable<RefreshTkn> queryable = Query();
         if (!getListAsyncModel.EnableTracking)
@@ -46,7 +46,7 @@ public class RefreshTokenRepository(SecurityDbContext securityDbContext) : IRefr
             getListAsyncModel.CancellationToken);
     }
 
-    public async Task<IPaginate<RefreshTkn>> GetDynamicListAsync(GetDynamicListAsyncModel<RefreshTkn> dynamicGet)
+    public async Task<IPaginate<RefreshTkn>> GetDynamicListAsync(GetDynamicListModelAsync<RefreshTkn> dynamicGet)
     {
         IQueryable<RefreshTkn> queryable = Query().ToDynamic(dynamicGet.Dynamic);
         if (!dynamicGet.EnableTracking)
@@ -74,7 +74,7 @@ public class RefreshTokenRepository(SecurityDbContext securityDbContext) : IRefr
         return entity;
     }
 
-    public async Task<bool> AnyAsync(Base<RefreshTkn> @base)
+    public async Task<bool> AnyAsync(GetBaseModel<RefreshTkn> @base)
     {
         IQueryable<RefreshTkn> queryable = Query();
         if (@base.EnableTracking)

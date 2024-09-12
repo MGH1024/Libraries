@@ -1,16 +1,10 @@
 ﻿using MGH.Core.Domain.Outboxes;
-using MGH.Core.Persistence.Models.Filters.GetModels;
-using MGH.Core.Persistence.Models.Paging;
-
+using MGH.Core.Persistence.Base.Repository;
 
 namespace Domain.Entities.Libraries;
 
-public interface IOutBoxRepository 
+public interface IOutBoxRepository : IRepository<OutboxMessage, Guid>
 {
-    Task<OutboxMessage> GetAsync(GetModel<OutboxMessage> getBaseModel);
-    
-    Task<IPaginate<OutboxMessage>> GetListAsync(GetListAsyncModel<OutboxMessage> getListAsyncModel);
-
     OutboxMessage Update(OutboxMessage entity);
     void Update(IEnumerable<Guid> idList);
 }

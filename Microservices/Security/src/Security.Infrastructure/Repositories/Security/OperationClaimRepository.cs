@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-using Domain.Entities.Security;
+using Domain.Repositories;
 using MGH.Core.Domain.Entity.Base;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
 using MGH.Core.Persistence.Extensions;
@@ -27,7 +27,7 @@ public class OperationClaimRepository(SecurityDbContext securityDbContext) : IOp
         return await queryable.FirstOrDefaultAsync(getBaseModel.Predicate, getBaseModel.CancellationToken);
     }
 
-    public async Task<IPaginate<OperationClaim>> GetListAsync(GetListAsyncModel<OperationClaim> getListAsyncModel)
+    public async Task<IPaginate<OperationClaim>> GetListAsync(GetListModelAsync<OperationClaim> getListAsyncModel)
     {
         IQueryable<OperationClaim> queryable = Query();
         if (!getListAsyncModel.EnableTracking)
@@ -47,7 +47,7 @@ public class OperationClaimRepository(SecurityDbContext securityDbContext) : IOp
     }
 
     public async Task<IPaginate<OperationClaim>> GetDynamicListAsync(
-        GetDynamicListAsyncModel<OperationClaim> dynamicGet)
+        GetDynamicListModelAsync<OperationClaim> dynamicGet)
     {
         IQueryable<OperationClaim> queryable = Query().ToDynamic(dynamicGet.Dynamic);
         if (!dynamicGet.EnableTracking)
@@ -68,8 +68,7 @@ public class OperationClaimRepository(SecurityDbContext securityDbContext) : IOp
         return entity;
     }
 
-    public async Task<OperationClaim> DeleteAsync(OperationClaim entity, bool permanent = false,
-        CancellationToken cancellationToken=default)
+    public async Task<OperationClaim> DeleteAsync(OperationClaim entity, bool permanent = false,CancellationToken cancellationToken=default)
     {
         await SetEntityAsDeletedAsync(entity, permanent,cancellationToken);
         return entity;
@@ -81,7 +80,7 @@ public class OperationClaimRepository(SecurityDbContext securityDbContext) : IOp
         return entity;
     }
 
-    public async Task<bool> AnyAsync(Base<OperationClaim> @base, CancellationToken cancellationToken)
+    public async Task<bool> AnyAsync(GetBaseModel<OperationClaim> @base, CancellationToken cancellationToken)
     {
         IQueryable<OperationClaim> queryable = Query();
         if (@base.EnableTracking)

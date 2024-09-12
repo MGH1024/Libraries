@@ -29,7 +29,7 @@ public class CreateUserCommandHandler(IMapper mapper, UserBusinessRules userBusi
 {
     public async Task<CreatedUserResponse> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
-        await userBusinessRules.UserEmailShouldNotExistsWhenInsert(request.Email);
+        await userBusinessRules.UserEmailShouldNotExistsWhenInsert(request.Email,cancellationToken);
         var user = mapper.Map<User>(request);
 
         var hashingHelperModel = HashingHelper.CreatePasswordHash(request.Password);

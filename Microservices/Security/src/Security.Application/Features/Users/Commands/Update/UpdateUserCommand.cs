@@ -50,7 +50,7 @@ public class UpdateUserCommandHandler(
         var user = await uow.User.GetAsync(getUserModel);
 
         await userBusinessRules.UserShouldBeExistsWhenSelected(user);
-        await userBusinessRules.UserEmailShouldNotExistsWhenUpdate(user!.Id, user.Email);
+        await userBusinessRules.UserEmailShouldNotExistsWhenUpdate(user!.Id, user.Email,cancellationToken);
 
         user = mapper.Map(request, user);
         var hashingHelperModel = HashingHelper.CreatePasswordHash(request.Password);

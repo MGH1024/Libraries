@@ -2,16 +2,15 @@
 using MGH.Core.Persistence.Models.Filters.GetModels;
 using MGH.Core.Persistence.Models.Paging;
 
-namespace Domain.Entities.Security;
+namespace Domain.Repositories;
 
 public interface IOperationClaimRepository
 {
     Task<OperationClaim> GetAsync(GetModel<OperationClaim> getBaseModel);
 
-    Task<IPaginate<OperationClaim>> GetListAsync(GetListAsyncModel<OperationClaim> getListAsyncModel);
+    Task<IPaginate<OperationClaim>> GetListAsync(GetListModelAsync<OperationClaim> getListAsyncModel);
 
-    Task<IPaginate<OperationClaim>> GetDynamicListAsync(
-        GetDynamicListAsyncModel<OperationClaim> dynamicListAsyncModel);
+    Task<IPaginate<OperationClaim>> GetDynamicListAsync(GetDynamicListModelAsync<OperationClaim> dynamicListAsyncModel);
 
     Task<OperationClaim> AddAsync(OperationClaim entity, CancellationToken cancellationToken);
 
@@ -19,5 +18,5 @@ public interface IOperationClaimRepository
         CancellationToken cancellationToken = default);
 
     Task<OperationClaim> UpdateAsync(OperationClaim entity, CancellationToken cancellationToken);
-    Task<bool> AnyAsync(Base<OperationClaim> @base, CancellationToken cancellationToken);
+    Task<bool> AnyAsync(GetBaseModel<OperationClaim> @base, CancellationToken cancellationToken);
 }

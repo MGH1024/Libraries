@@ -30,9 +30,9 @@ public static class OutboxExtensions
         };
     }
 
-    public static GetListAsyncModel<OutboxMessage> ToGetListAsyncMode(this GetOutboxListQuery query,CancellationToken cancellationToken)
+    public static GetListModelAsync<OutboxMessage> ToGetListAsyncMode(this GetOutboxListQuery query,CancellationToken cancellationToken)
     {
-        return new GetListAsyncModel<OutboxMessage>
+        return new GetListModelAsync<OutboxMessage>
         {
             Index = query.PageRequest.PageIndex,
             Size = query.PageRequest.PageSize,

@@ -17,9 +17,9 @@ public class UserBusinessRules(IUow uow) : BaseBusinessRules
         return Task.CompletedTask;
     }
 
-    public async Task UserIdShouldBeExistsWhenSelected(int id)
+    public async Task UserIdShouldBeExistsWhenSelected(int id,CancellationToken cancellationToken)
     {
-        var doesExist = await uow.User.AnyAsync(id.ToGetBaseUser());
+        var doesExist = await uow.User.AnyAsync(id.ToGetBaseUser(),cancellationToken);
         if (doesExist)
             throw new BusinessException(AuthMessages.UserDoesNotExists);
     }
@@ -31,16 +31,16 @@ public class UserBusinessRules(IUow uow) : BaseBusinessRules
         return Task.CompletedTask;
     }
 
-    public async Task UserEmailShouldNotExistsWhenInsert(string email)
+    public async Task UserEmailShouldNotExistsWhenInsert(string email,CancellationToken cancellationToken)
     {
-        var doesExists = await uow.User.AnyAsync(email.ToGetBaseUser());
+        var doesExists = await uow.User.AnyAsync(email.ToGetBaseUser(), cancellationToken);
         if (doesExists)
             throw new BusinessException(AuthMessages.UserMailAlreadyExists);
     }
 
-    public async Task UserEmailShouldNotExistsWhenUpdate(int id, string email)
+    public async Task UserEmailShouldNotExistsWhenUpdate(int id, string email,CancellationToken cancellationToken)
     {
-        var doesExists = await uow.User.AnyAsync(email.ToGetBaseUser(id));
+        var doesExists = await uow.User.AnyAsync(email.ToGetBaseUser(id),cancellationToken);
         if (doesExists)
             throw new BusinessException(AuthMessages.UserMailAlreadyExists);
     }

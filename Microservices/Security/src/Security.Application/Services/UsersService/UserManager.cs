@@ -1,13 +1,12 @@
 ﻿using Application.Features.Users.Rules;
-using Domain.Entities.Security;
+using Domain.Repositories;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
 using MGH.Core.Persistence.Models.Filters.GetModels;
 using MGH.Core.Persistence.Models.Paging;
 
 namespace Application.Services.UsersService;
 
-public class UserManager(IUserRepository userRepository, UserBusinessRules userBusinessRules)
-    : IUserService
+public class UserManager(IUserRepository userRepository, UserBusinessRules userBusinessRules) : IUserService
 {
     public async Task<User> GetAsync( GetModel<User> getModel)
     {
@@ -15,7 +14,7 @@ public class UserManager(IUserRepository userRepository, UserBusinessRules userB
         return user;
     }
 
-    public async Task<IPaginate<User>> GetListAsync( GetListAsyncModel<User> model)
+    public async Task<IPaginate<User>> GetListAsync( GetListModelAsync<User> model)
     {
         var userList = await userRepository.GetListAsync(model);
         return userList;
@@ -23,14 +22,14 @@ public class UserManager(IUserRepository userRepository, UserBusinessRules userB
 
     public async Task<User> AddAsync(User user, CancellationToken cancellationToken)
     {
-        await userBusinessRules.UserEmailShouldNotExistsWhenInsert(user.Email);
+        await userBusinessRules.UserEmailShouldNotExistsWhenInsert(user.Email,cancellationToken);
         var addedUser = await userRepository.AddAsync(user, cancellationToken);
         return addedUser;
     }
 
     public async Task<User> UpdateAsync(User user, CancellationToken cancellationToken)
     {
-        await userBusinessRules.UserEmailShouldNotExistsWhenUpdate(user.Id, user.Email);
+        await userBusinessRules.UserEmailShouldNotExistsWhenUpdate(user.Id, user.Email,cancellationToken);
         var updatedUser = await userRepository.UpdateAsync(user, cancellationToken);
         return updatedUser;
     }

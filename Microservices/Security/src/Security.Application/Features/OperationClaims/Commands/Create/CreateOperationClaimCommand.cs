@@ -1,7 +1,7 @@
 ﻿using Application.Features.OperationClaims.Constants;
 using Application.Features.OperationClaims.Rules;
 using AutoMapper;
-using Domain.Entities.Security;
+using Domain.Repositories;
 using MGH.Core.Application.Pipelines.Authorization;
 using MGH.Core.Domain.Buses.Commands;
 using MGH.Core.Infrastructure.Securities.Security.Entities;

@@ -68,10 +68,10 @@ public class AuthBusinessRules(IUow uow, IMapper mapper) : BaseBusinessRules
         return Task.CompletedTask;
     }
 
-    public async Task UserEmailShouldBeNotExists(string email)
+    public async Task UserEmailShouldBeNotExists(string email,CancellationToken cancellationToken)
     {
-        var baseGetUser = mapper.Map<Base<User>>(email);
-        var doesExists = await uow.User.AnyAsync(baseGetUser);
+        var baseGetUser = mapper.Map<GetBaseModel<User>>(email);
+        var doesExists = await uow.User.AnyAsync(baseGetUser,cancellationToken);
         if (doesExists)
             throw new BusinessException(AuthMessages.UserMailAlreadyExists);
     }

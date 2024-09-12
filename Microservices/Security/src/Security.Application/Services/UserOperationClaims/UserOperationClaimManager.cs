@@ -1,5 +1,5 @@
 ﻿using Application.Features.UserOperationClaims.Rules;
-using Domain.Entities.Security;
+using Domain.Repositories;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
 using MGH.Core.Persistence.Models.Filters.GetModels;
 using MGH.Core.Persistence.Models.Paging;
@@ -20,7 +20,7 @@ public class UserUserOperationClaimManager(
     }
 
     public async Task<IPaginate<UserOperationClaim>> GetListAsync(
-        GetListAsyncModel<UserOperationClaim> getListAsyncModel)
+        GetListModelAsync<UserOperationClaim> getListAsyncModel)
     {
         var userUserOperationClaimList =
             await userUserOperationClaimRepository.GetListAsync(getListAsyncModel);

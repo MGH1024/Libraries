@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-using Domain.Entities.Security;
+using Domain.Repositories;
 using MGH.Core.Domain.Entity.Base;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
 using MGH.Core.Persistence.Extensions;
@@ -28,8 +28,7 @@ public class UserOperationClaimRepository(SecurityDbContext securityDbContext) :
         return await queryable.FirstOrDefaultAsync(getBaseModel.Predicate, getBaseModel.CancellationToken);
     }
 
-    public async Task<IPaginate<UserOperationClaim>> GetListAsync(
-        GetListAsyncModel<UserOperationClaim> getListAsyncModel)
+    public async Task<IPaginate<UserOperationClaim>> GetListAsync(GetListModelAsync<UserOperationClaim> getListAsyncModel)
     {
         IQueryable<UserOperationClaim> queryable = Query();
         if (!getListAsyncModel.EnableTracking)
@@ -49,7 +48,7 @@ public class UserOperationClaimRepository(SecurityDbContext securityDbContext) :
     }
 
     public async Task<IPaginate<UserOperationClaim>> GetDynamicListAsync(
-        GetDynamicListAsyncModel<UserOperationClaim> dynamicGet)
+        GetDynamicListModelAsync<UserOperationClaim> dynamicGet)
     {
         IQueryable<UserOperationClaim> queryable = Query().ToDynamic(dynamicGet.Dynamic);
         if (!dynamicGet.EnableTracking)
@@ -76,7 +75,7 @@ public class UserOperationClaimRepository(SecurityDbContext securityDbContext) :
         return entity;
     }
 
-    public async Task<bool> AnyAsync(Base<UserOperationClaim> @base)
+    public async Task<bool> AnyAsync(GetBaseModel<UserOperationClaim> @base)
     {
         IQueryable<UserOperationClaim> queryable = Query();
         if (@base.EnableTracking)

@@ -7,27 +7,27 @@ namespace Application.Features.Users.Extensions;
 
 public static class UserExtension
 {
-    public static Base<User> ToGetBaseUser(this int id)
+    public static GetBaseModel<User> ToGetBaseUser(this int id)
     {
-        return new Base<User>
+        return new GetBaseModel<User>
         {
             Predicate = u => u.Id == id,
             EnableTracking = false,
         };
     }
 
-    public static Base<User> ToGetBaseUser(this string email)
+    public static GetBaseModel<User> ToGetBaseUser(this string email)
     {
-        return new Base<User>
+        return new GetBaseModel<User>
         {
             Predicate = u => u.Email == email,
             EnableTracking = false
         };
     }
 
-    public static Base<User> ToGetBaseUser(this string email, int id)
+    public static GetBaseModel<User> ToGetBaseUser(this string email, int id)
     {
-        return new Base<User>
+        return new GetBaseModel<User>
         {
             Predicate = u => u.Id != id && u.Email == email,
             EnableTracking = false
@@ -40,10 +40,10 @@ public static class UserExtension
         user.PasswordSalt = hashingHelperModel.PasswordSalt;
     }
 
-    public static GetListAsyncModel<User> ToGetListAsyncModel(this GetListUserQuery getListUserQuery,
+    public static GetListModelAsync<User> ToGetListAsyncModel(this GetListUserQuery getListUserQuery,
         CancellationToken cancellationToken)
     {
-        return new GetListAsyncModel<User>
+        return new GetListModelAsync<User>
         {
             Index = getListUserQuery.PageRequest.PageIndex,
             Size = getListUserQuery.PageRequest.PageSize,

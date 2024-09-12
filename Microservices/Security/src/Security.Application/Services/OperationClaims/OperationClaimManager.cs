@@ -15,7 +15,7 @@ public class OperationClaimManager(IUow uow, OperationClaimBusinessRules operati
         return operationClaim;
     }
 
-    public async Task<IPaginate<OperationClaim>> GetListAsync(GetListAsyncModel<OperationClaim> getListAsyncModel)
+    public async Task<IPaginate<OperationClaim>> GetListAsync(GetListModelAsync<OperationClaim> getListAsyncModel)
     {
         var operationClaimList = await uow.OperationClaim.GetListAsync(getListAsyncModel);
         return operationClaimList;

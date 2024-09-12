@@ -1,6 +1,4 @@
-﻿
-
-using MGH.Core.Domain.Entity.Base;
+﻿using MGH.Core.Domain.Entity.Base;
 
 namespace MGH.Core.Infrastructure.Securities.Security.Entities;
 

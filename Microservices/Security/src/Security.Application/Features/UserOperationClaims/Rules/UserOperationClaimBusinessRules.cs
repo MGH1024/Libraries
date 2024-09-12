@@ -1,5 +1,5 @@
 using Application.Features.UserOperationClaims.Constants;
-using Domain.Entities.Security;
+using Domain.Repositories;
 using MGH.Core.Application.Rules;
 using MGH.Core.CrossCutting.Exceptions.Types;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
@@ -33,7 +33,7 @@ public class UserOperationClaimBusinessRules(IUserOperationClaimRepository userO
 
     public async Task UserShouldNotHasOperationClaimAlreadyWhenInsert(int userId, int operationClaimId)
     {
-        var doesExist = await userOperationClaimRepository.AnyAsync(new Base<UserOperationClaim>
+        var doesExist = await userOperationClaimRepository.AnyAsync(new GetBaseModel<UserOperationClaim>
         {
             Predicate = u => u.UserId == userId && u.OperationClaimId == operationClaimId
         });
@@ -44,7 +44,7 @@ public class UserOperationClaimBusinessRules(IUserOperationClaimRepository userO
     public async Task UserShouldNotHasOperationClaimAlreadyWhenUpdated(int id, int userId, int operationClaimId)
     {
         var doesExist = await userOperationClaimRepository.AnyAsync(
-            new Base<UserOperationClaim>
+            new GetBaseModel<UserOperationClaim>
             {
                 Predicate = uoc => uoc.Id == id && uoc.UserId == userId && uoc.OperationClaimId == operationClaimId
             });

@@ -1,5 +1,5 @@
 ﻿using Domain;
-using Domain.Entities.Security;
+using Domain.Repositories;
 using MGH.Core.Infrastructure.Public;
 using Microsoft.EntityFrameworkCore.Storage;
 using Persistence.Contexts;

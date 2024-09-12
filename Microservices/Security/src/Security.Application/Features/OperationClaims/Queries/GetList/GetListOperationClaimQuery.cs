@@ -1,6 +1,6 @@
 using Application.Features.OperationClaims.Constants;
 using AutoMapper;
-using Domain.Entities.Security;
+using Domain.Repositories;
 using MediatR;
 using MGH.Core.Application.Pipelines.Authorization;
 using MGH.Core.Application.Requests;
@@ -31,7 +31,7 @@ public class GetListOperationClaimQueryHandler(IOperationClaimRepository operati
     )
     {
         IPaginate<OperationClaim> operationClaims = await operationClaimRepository.GetListAsync(
-            new GetListAsyncModel<OperationClaim>
+            new GetListModelAsync<OperationClaim>
             {
                 Index = request.PageRequest.PageIndex,
                 Size = request.PageRequest.PageSize,

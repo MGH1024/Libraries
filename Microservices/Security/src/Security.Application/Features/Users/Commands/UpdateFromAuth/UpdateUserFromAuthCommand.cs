@@ -45,7 +45,7 @@ public class UpdateUserFromAuthCommand(
 
             await userBusinessRules.UserShouldBeExistsWhenSelected(user);
             await userBusinessRules.UserPasswordShouldBeMatched(user: user!, request.Password);
-            await userBusinessRules.UserEmailShouldNotExistsWhenUpdate(user!.Id, user.Email);
+            await userBusinessRules.UserEmailShouldNotExistsWhenUpdate(user!.Id, user.Email,cancellationToken);
 
             user = mapper.Map(request, user);
             var hashingHelperModel = HashingHelper.CreatePasswordHash(request.Password);

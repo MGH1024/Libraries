@@ -1,9 +1,8 @@
 ﻿using System.Collections;
-using Domain.Entities.Security;
+using Domain.Repositories;
 using MGH.Core.Domain.Entity.Base;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
 using MGH.Core.Persistence.Extensions;
-using MGH.Core.Persistence.Models.Filters;
 using MGH.Core.Persistence.Models.Filters.GetModels;
 using MGH.Core.Persistence.Models.Paging;
 using Microsoft.EntityFrameworkCore;
@@ -28,8 +27,7 @@ public class EmailAuthenticatorRepository(SecurityDbContext securityDbContext) :
         return await queryable.FirstOrDefaultAsync(getBaseModel.Predicate, getBaseModel.CancellationToken);
     }
 
-    public async Task<IPaginate<EmailAuthenticator>> GetListAsync(
-        GetListAsyncModel<EmailAuthenticator> getListAsyncModel)
+    public async Task<IPaginate<EmailAuthenticator>> GetListAsync(GetListModelAsync<EmailAuthenticator> getListAsyncModel)
     {
         IQueryable<EmailAuthenticator> queryable = Query();
         if (!getListAsyncModel.EnableTracking)
@@ -48,8 +46,7 @@ public class EmailAuthenticatorRepository(SecurityDbContext securityDbContext) :
             getListAsyncModel.CancellationToken);
     }
 
-    public async Task<IPaginate<EmailAuthenticator>> GetDynamicListAsync(
-        GetDynamicListAsyncModel<EmailAuthenticator> dynamicGet)
+    public async Task<IPaginate<EmailAuthenticator>> GetDynamicListAsync(GetDynamicListModelAsync<EmailAuthenticator> dynamicGet)
     {
         IQueryable<EmailAuthenticator> queryable = Query().ToDynamic(dynamicGet.Dynamic);
         if (!dynamicGet.EnableTracking)

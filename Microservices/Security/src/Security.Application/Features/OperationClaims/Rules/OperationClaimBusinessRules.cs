@@ -21,7 +21,7 @@ public class OperationClaimBusinessRules(IUow uow, IMapper mapper) : BaseBusines
     {
         //todo
         bool doesExist = await uow.OperationClaim.AnyAsync(
-            new Base<OperationClaim>
+            new GetBaseModel<OperationClaim>
             {
                 Predicate = b => b.Id == id,
                 CancellationToken = cancellationToken
@@ -32,7 +32,7 @@ public class OperationClaimBusinessRules(IUow uow, IMapper mapper) : BaseBusines
 
     public async Task OperationClaimNameShouldNotExistWhenCreating(string name, CancellationToken cancellationToken)
     {
-        var doesExist = await uow.OperationClaim.AnyAsync(new Base<OperationClaim>
+        var doesExist = await uow.OperationClaim.AnyAsync(new GetBaseModel<OperationClaim>
         {
             Predicate = b => b.Name == name,
             CancellationToken = cancellationToken
@@ -46,7 +46,7 @@ public class OperationClaimBusinessRules(IUow uow, IMapper mapper) : BaseBusines
     {
         bool doesExist =
             await uow.OperationClaim.AnyAsync(
-                new Base<OperationClaim>
+                new GetBaseModel<OperationClaim>
                 {
                     Predicate = b => b.Id != id && b.Name == name,
                     EnableTracking = false

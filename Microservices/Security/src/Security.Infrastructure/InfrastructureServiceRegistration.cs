@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using System.Reflection;
 using Domain;
-using Domain.Entities.Security;
+using Domain.Repositories;
 using MGH.Core.CrossCutting.Localizations.RouteConstraints;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Base;

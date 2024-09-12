@@ -29,7 +29,7 @@ public class RegisterCommandHandler(
 {
     public async Task<RegisteredResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
-        await authBusinessRules.UserEmailShouldBeNotExists(request.UserForRegisterDto.Email);
+        await authBusinessRules.UserEmailShouldBeNotExists(request.UserForRegisterDto.Email,cancellationToken);
         var newUser = mapper.Map<User>(request);
         var hashingHelperModel = HashingHelper.CreatePasswordHash(request.UserForRegisterDto.Password);
         newUser.SetHashPassword(hashingHelperModel);
