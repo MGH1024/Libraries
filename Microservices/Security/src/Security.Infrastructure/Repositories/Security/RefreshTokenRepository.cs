@@ -1,96 +1,18 @@
 ﻿using System.Collections;
 using Domain.Repositories;
 using MGH.Core.Domain.Entity.Base;
-using MGH.Core.Infrastructure.Securities.Security.Entities;
-using MGH.Core.Persistence.Extensions;
-using MGH.Core.Persistence.Models.Filters.GetModels;
-using MGH.Core.Persistence.Models.Paging;
+using MGH.Core.Persistence.Base.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Persistence.Contexts;
+using MGH.Core.Infrastructure.Securities.Security.Entities;
 
 namespace Persistence.Repositories.Security;
 
-public class RefreshTokenRepository(SecurityDbContext securityDbContext) : IRefreshTokenRepository
+public class RefreshTokenRepository(SecurityDbContext securityDbContext) : Repository<RefreshTkn, int>(securityDbContext), IRefreshTokenRepository
 {
     public IQueryable<RefreshTkn> Query() => securityDbContext.Set<RefreshTkn>();
 
-    public async Task<RefreshTkn> GetAsync(GetModel<RefreshTkn> getBaseModel)
-    {
-        var queryable = Query();
-        if (!getBaseModel.EnableTracking)
-            queryable = queryable.AsNoTracking();
-        if (getBaseModel.Include != null)
-            queryable = getBaseModel.Include(queryable);
-        if (getBaseModel.WithDeleted)
-            queryable = queryable.IgnoreQueryFilters();
-        return await queryable.FirstOrDefaultAsync(getBaseModel.Predicate, getBaseModel.CancellationToken);
-    }
-
-    public async Task<IPaginate<RefreshTkn>> GetListAsync(GetListModelAsync<RefreshTkn> getListAsyncModel)
-    {
-        IQueryable<RefreshTkn> queryable = Query();
-        if (!getListAsyncModel.EnableTracking)
-            queryable = queryable.AsNoTracking();
-        if (getListAsyncModel.Include != null)
-            queryable = getListAsyncModel.Include(queryable);
-        if (getListAsyncModel.WithDeleted)
-            queryable = queryable.IgnoreQueryFilters();
-        if (getListAsyncModel.Predicate != null)
-            queryable = queryable.Where(getListAsyncModel.Predicate);
-        if (getListAsyncModel.OrderBy != null)
-            return await getListAsyncModel.OrderBy(queryable)
-                .ToPaginateAsync(getListAsyncModel.Index, getListAsyncModel.Size, from: 0,
-                    getListAsyncModel.CancellationToken);
-        return await queryable.ToPaginateAsync(getListAsyncModel.Index, getListAsyncModel.Size, from: 0,
-            getListAsyncModel.CancellationToken);
-    }
-
-    public async Task<IPaginate<RefreshTkn>> GetDynamicListAsync(GetDynamicListModelAsync<RefreshTkn> dynamicGet)
-    {
-        IQueryable<RefreshTkn> queryable = Query().ToDynamic(dynamicGet.Dynamic);
-        if (!dynamicGet.EnableTracking)
-            queryable = queryable.AsNoTracking();
-        if (dynamicGet.Include != null)
-            queryable = dynamicGet.Include(queryable);
-        if (dynamicGet.WithDeleted)
-            queryable = queryable.IgnoreQueryFilters();
-        if (dynamicGet.Predicate != null)
-            queryable = queryable.Where(dynamicGet.Predicate);
-        return await queryable.ToPaginateAsync(dynamicGet.Index, dynamicGet.Size, from: 0,
-            dynamicGet.CancellationToken);
-    }
-
-    public async Task<RefreshTkn> AddAsync(RefreshTkn entity, CancellationToken cancellationToken)
-    {
-        await securityDbContext.AddAsync(entity, cancellationToken);
-        return entity;
-    }
-
-    public async Task<RefreshTkn> DeleteAsync(RefreshTkn entity, bool permanent = false,
-        CancellationToken cancellationToken = default)
-    {
-        await SetEntityAsDeletedAsync(entity, permanent, cancellationToken);
-        return entity;
-    }
-
-    public async Task<bool> AnyAsync(GetBaseModel<RefreshTkn> @base)
-    {
-        IQueryable<RefreshTkn> queryable = Query();
-        if (@base.EnableTracking)
-            queryable = queryable.AsNoTracking();
-        if (@base.WithDeleted)
-            queryable = queryable.IgnoreQueryFilters();
-        if (@base.Predicate != null)
-            queryable = queryable.Where(@base.Predicate);
-        return await queryable.AnyAsync(@base.CancellationToken);
-    }
-
-    public async Task<RefreshTkn> UpdateAsync(RefreshTkn entity, CancellationToken cancellationToken)
-    {
-        await Task.Run(() => securityDbContext.Update(entity), cancellationToken);
-        return entity;
-    }
 
     public async Task<IEnumerable<RefreshTkn>> GetRefreshTokenByUserId(int userId, int refreshTokenTtl,
         CancellationToken cancellationToken)
@@ -105,12 +27,12 @@ public class RefreshTokenRepository(SecurityDbContext securityDbContext) : IRefr
         return await queryable.ToListAsync(cancellationToken);
     }
 
-    public async Task<IEnumerable<RefreshTkn>> DeleteRangeAsync(IEnumerable<RefreshTkn> entities,
-        bool permanent = false, CancellationToken cancellationToken = default)
+    public async Task DeleteRangeAsync(IEnumerable<RefreshTkn> entities, bool permanent = false)
     {
-        var tokensArray = entities as List<RefreshTkn> ?? entities.ToList();
-        await SetEntitiesAsDeletedAsync(tokensArray, permanent, cancellationToken);
-        return tokensArray;
+        foreach (var refreshTkn in entities)
+        {
+            await this.DeleteAsync(refreshTkn, false);
+        }
     }
 
     private async Task SetEntitiesAsDeletedAsync(IEnumerable<RefreshTkn> entities, bool permanent,

@@ -3,7 +3,6 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence.Contexts;
 
@@ -12,11 +11,9 @@ using Persistence.Contexts;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(SecurityDbContext))]
-    [Migration("20240815091015_Initial")]
-    partial class Initial
+    partial class SecurityDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -24,115 +21,6 @@ namespace Persistence.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("Domain.Entities.Libraries.Library", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasMaxLength(3)
-                        .IsUnicode(true)
-                        .HasColumnType("nvarchar(3)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GetDate()");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)")
-                        .HasDefaultValue("user");
-
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("DeletedBy")
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
-
-                    b.Property<int>("District")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Location")
-                        .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<DateTime>("RegistrationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
-
-                    b.Property<int>("Version")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Libraries", "library");
-                });
-
-            modelBuilder.Entity("MGH.Core.Domain.Aggregate.DomainEvent", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("LibraryId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LibraryId");
-
-                    b.ToTable("DomainEvent");
-                });
-
-            modelBuilder.Entity("MGH.Core.Domain.Outboxes.OutboxMessage", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasMaxLength(4096)
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Error")
-                        .HasMaxLength(512)
-                        .HasColumnType("nvarchar(512)");
-
-                    b.Property<DateTime?>("ProcessedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("OutBox", "library");
-                });
 
             modelBuilder.Entity("MGH.Core.Infrastructure.Securities.Security.Entities.EmailAuthenticator", b =>
                 {
@@ -553,8 +441,8 @@ namespace Persistence.Migrations
                             Email = "admin@admin.com",
                             FirstName = "Admin",
                             LastName = "Admin",
-                            PasswordHash = new byte[] { 106, 152, 6, 15, 72, 82, 64, 248, 91, 31, 167, 140, 219, 118, 68, 225, 215, 32, 152, 118, 38, 151, 12, 53, 93, 69, 188, 183, 64, 247, 58, 191, 220, 3, 142, 207, 121, 58, 180, 252, 186, 100, 219, 13, 96, 9, 158, 157, 168, 21, 47, 39, 165, 166, 160, 251, 183, 173, 43, 200, 8, 42, 9, 235 },
-                            PasswordSalt = new byte[] { 168, 93, 5, 79, 72, 137, 225, 39, 175, 238, 136, 16, 36, 253, 9, 55, 198, 95, 105, 28, 150, 115, 38, 187, 227, 4, 20, 161, 12, 99, 94, 128, 139, 161, 168, 63, 57, 47, 188, 47, 89, 203, 78, 24, 142, 224, 228, 161, 173, 43, 251, 190, 38, 130, 84, 228, 243, 172, 16, 49, 244, 171, 243, 168, 4, 34, 171, 150, 4, 211, 10, 6, 38, 9, 97, 179, 133, 103, 155, 140, 36, 153, 255, 239, 175, 211, 36, 168, 172, 135, 36, 183, 80, 218, 116, 181, 189, 58, 27, 211, 148, 88, 160, 164, 71, 240, 144, 118, 9, 25, 47, 217, 14, 126, 136, 4, 55, 87, 151, 53, 237, 140, 143, 232, 23, 232, 141, 11 }
+                            PasswordHash = new byte[] { 177, 106, 57, 34, 128, 225, 92, 47, 88, 167, 199, 104, 97, 232, 162, 154, 178, 217, 104, 228, 27, 211, 139, 250, 214, 227, 57, 142, 251, 249, 153, 75, 31, 35, 187, 92, 141, 47, 117, 84, 27, 71, 164, 200, 9, 108, 47, 126, 17, 205, 168, 58, 230, 168, 9, 101, 249, 104, 73, 243, 137, 212, 91, 55 },
+                            PasswordSalt = new byte[] { 108, 71, 205, 155, 141, 4, 80, 116, 249, 57, 226, 232, 203, 175, 131, 194, 37, 75, 140, 207, 245, 240, 198, 146, 106, 116, 167, 111, 171, 149, 23, 141, 212, 231, 141, 19, 145, 195, 117, 18, 123, 132, 251, 31, 198, 232, 255, 242, 193, 114, 146, 82, 79, 51, 97, 254, 236, 255, 127, 245, 209, 213, 35, 228, 221, 238, 188, 240, 136, 206, 1, 156, 37, 172, 192, 237, 255, 103, 102, 223, 95, 1, 55, 6, 116, 155, 20, 9, 5, 230, 41, 166, 20, 138, 0, 157, 7, 81, 25, 15, 31, 145, 25, 205, 217, 212, 43, 91, 96, 111, 17, 209, 245, 109, 22, 195, 57, 41, 44, 221, 77, 194, 141, 49, 33, 48, 61, 88 }
                         });
                 });
 
@@ -617,52 +505,6 @@ namespace Persistence.Migrations
                             OperationClaimId = 1,
                             UserId = 1
                         });
-                });
-
-            modelBuilder.Entity("Domain.Entities.Libraries.Library", b =>
-                {
-                    b.OwnsMany("Domain.Entities.Libraries.ValueObjects.Staff", "LibraryStaves", b1 =>
-                        {
-                            b1.Property<Guid>("Id")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<Guid>("LibraryId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<string>("Name")
-                                .IsRequired()
-                                .HasMaxLength(128)
-                                .HasColumnType("nvarchar(128)");
-
-                            b1.Property<string>("NationalCode")
-                                .IsRequired()
-                                .HasMaxLength(30)
-                                .HasColumnType("nvarchar(30)");
-
-                            b1.Property<string>("Position")
-                                .IsRequired()
-                                .HasMaxLength(64)
-                                .HasColumnType("nvarchar(64)");
-
-                            b1.HasKey("Id");
-
-                            b1.HasIndex("LibraryId");
-
-                            b1.ToTable("Staves", "library");
-
-                            b1.WithOwner()
-                                .HasForeignKey("LibraryId");
-                        });
-
-                    b.Navigation("LibraryStaves");
-                });
-
-            modelBuilder.Entity("MGH.Core.Domain.Aggregate.DomainEvent", b =>
-                {
-                    b.HasOne("Domain.Entities.Libraries.Library", null)
-                        .WithMany("Events")
-                        .HasForeignKey("LibraryId");
                 });
 
             modelBuilder.Entity("MGH.Core.Infrastructure.Securities.Security.Entities.EmailAuthenticator", b =>
@@ -734,11 +576,6 @@ namespace Persistence.Migrations
                     b.Navigation("OperationClaim");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Libraries.Library", b =>
-                {
-                    b.Navigation("Events");
                 });
 
             modelBuilder.Entity("MGH.Core.Infrastructure.Securities.Security.Entities.OperationClaim", b =>

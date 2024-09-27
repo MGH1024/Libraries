@@ -1,5 +1,7 @@
 ﻿using MediatR;
 using Api.Extensions;
+using Application.Features.Auth.Commands.Login;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using MGH.Core.Application.DTOs.Security;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -9,7 +11,7 @@ namespace Api.Controllers;
 
 [ApiController]
 [Route("{culture:CultureRouteConstraint}/api/[Controller]")]
-public class AuthController(ISender sender) : AppController(sender)
+public class AuthController(ISender sender,IMapper mapper) : AppController(sender)
 {
     /// <summary>
     /// login 
@@ -20,12 +22,15 @@ public class AuthController(ISender sender) : AppController(sender)
     [HttpPost("Login")]
     public async Task<IActionResult> Login([FromBody] UserForLoginDto userForLoginDto, CancellationToken cancellationToken)
     {
-        var loginCommand = userForLoginDto.ToLoginCommand(IpAddress());
-
+        var loginCommand = mapper.Map<LoginCommand>(userForLoginDto, opt => { opt.Items["IpAddress"] = IpAddress(); });
+        
         var result = await Sender.Send(loginCommand, cancellationToken);
+        if (!result.IsSuccess)
+            return BadRequest("Failed to login");
+        
         if (result.RefreshTkn is not null)
             SetRefreshTokenToCookie(result.RefreshTkn);
-
+        
         return Ok(result.ToHttpResponse());
     }
 

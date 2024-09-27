@@ -31,7 +31,8 @@ public class UpdateUserOperationClaimCommandHandler(
         await userOperationClaimBusinessRules.UserShouldNotHasOperationClaimAlreadyWhenUpdated(
             request.Id,
             request.UserId,
-            request.OperationClaimId
+            request.OperationClaimId,
+            cancellationToken
         );
         var mappedUserOperationClaim = mapper.Map(request, destination: userOperationClaim!);
         var updatedUserOperationClaim = await uow.UserOperationClaim.UpdateAsync(mappedUserOperationClaim, cancellationToken);

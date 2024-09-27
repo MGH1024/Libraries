@@ -7,6 +7,7 @@ namespace Application.Services.UsersService;
 public interface IUserService
 {
     Task<User> GetAsync(GetModel<User> getModel);
+    Task<User> GetByEmailAsync(string email,CancellationToken cancellationToken);
     Task<IPaginate<User>> GetListAsync(GetListModelAsync<User> model);
     Task<User> AddAsync(User user,CancellationToken cancellationToken);
     Task<User> UpdateAsync(User user,CancellationToken cancellationToken);

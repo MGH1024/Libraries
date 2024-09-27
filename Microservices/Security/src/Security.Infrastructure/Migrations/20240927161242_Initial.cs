@@ -14,33 +14,6 @@ namespace Persistence.Migrations
             migrationBuilder.EnsureSchema(
                 name: "sec");
 
-            migrationBuilder.EnsureSchema(
-                name: "library");
-
-            migrationBuilder.CreateTable(
-                name: "Libraries",
-                schema: "library",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    Code = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
-                    Location = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-                    District = table.Column<int>(type: "int", nullable: false),
-                    RegistrationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Version = table.Column<int>(type: "int", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GetDate()"),
-                    CreatedBy = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false, defaultValue: "user"),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
-                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedBy = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Libraries", x => x.Id);
-                });
-
             migrationBuilder.CreateTable(
                 name: "OperationClaims",
                 schema: "sec",
@@ -59,23 +32,6 @@ namespace Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_OperationClaims", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "OutBox",
-                schema: "library",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Type = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    Content = table.Column<string>(type: "nvarchar(max)", maxLength: 4096, nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ProcessedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Error = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_OutBox", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -121,47 +77,6 @@ namespace Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "DomainEvent",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    LibraryId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_DomainEvent", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_DomainEvent_Libraries_LibraryId",
-                        column: x => x.LibraryId,
-                        principalSchema: "library",
-                        principalTable: "Libraries",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Staves",
-                schema: "library",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    Position = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-                    NationalCode = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    LibraryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Staves", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Staves_Libraries_LibraryId",
-                        column: x => x.LibraryId,
-                        principalSchema: "library",
-                        principalTable: "Libraries",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -336,18 +251,13 @@ namespace Persistence.Migrations
                 schema: "sec",
                 table: "Users",
                 columns: new[] { "Id", "AuthenticatorType", "DeletedAt", "DeletedBy", "Email", "FirstName", "LastName", "PasswordHash", "PasswordSalt", "UpdatedAt", "UpdatedBy" },
-                values: new object[] { 1, 0, null, null, "admin@admin.com", "Admin", "Admin", new byte[] { 106, 152, 6, 15, 72, 82, 64, 248, 91, 31, 167, 140, 219, 118, 68, 225, 215, 32, 152, 118, 38, 151, 12, 53, 93, 69, 188, 183, 64, 247, 58, 191, 220, 3, 142, 207, 121, 58, 180, 252, 186, 100, 219, 13, 96, 9, 158, 157, 168, 21, 47, 39, 165, 166, 160, 251, 183, 173, 43, 200, 8, 42, 9, 235 }, new byte[] { 168, 93, 5, 79, 72, 137, 225, 39, 175, 238, 136, 16, 36, 253, 9, 55, 198, 95, 105, 28, 150, 115, 38, 187, 227, 4, 20, 161, 12, 99, 94, 128, 139, 161, 168, 63, 57, 47, 188, 47, 89, 203, 78, 24, 142, 224, 228, 161, 173, 43, 251, 190, 38, 130, 84, 228, 243, 172, 16, 49, 244, 171, 243, 168, 4, 34, 171, 150, 4, 211, 10, 6, 38, 9, 97, 179, 133, 103, 155, 140, 36, 153, 255, 239, 175, 211, 36, 168, 172, 135, 36, 183, 80, 218, 116, 181, 189, 58, 27, 211, 148, 88, 160, 164, 71, 240, 144, 118, 9, 25, 47, 217, 14, 126, 136, 4, 55, 87, 151, 53, 237, 140, 143, 232, 23, 232, 141, 11 }, null, null });
+                values: new object[] { 1, 0, null, null, "admin@admin.com", "Admin", "Admin", new byte[] { 177, 106, 57, 34, 128, 225, 92, 47, 88, 167, 199, 104, 97, 232, 162, 154, 178, 217, 104, 228, 27, 211, 139, 250, 214, 227, 57, 142, 251, 249, 153, 75, 31, 35, 187, 92, 141, 47, 117, 84, 27, 71, 164, 200, 9, 108, 47, 126, 17, 205, 168, 58, 230, 168, 9, 101, 249, 104, 73, 243, 137, 212, 91, 55 }, new byte[] { 108, 71, 205, 155, 141, 4, 80, 116, 249, 57, 226, 232, 203, 175, 131, 194, 37, 75, 140, 207, 245, 240, 198, 146, 106, 116, 167, 111, 171, 149, 23, 141, 212, 231, 141, 19, 145, 195, 117, 18, 123, 132, 251, 31, 198, 232, 255, 242, 193, 114, 146, 82, 79, 51, 97, 254, 236, 255, 127, 245, 209, 213, 35, 228, 221, 238, 188, 240, 136, 206, 1, 156, 37, 172, 192, 237, 255, 103, 102, 223, 95, 1, 55, 6, 116, 155, 20, 9, 5, 230, 41, 166, 20, 138, 0, 157, 7, 81, 25, 15, 31, 145, 25, 205, 217, 212, 43, 91, 96, 111, 17, 209, 245, 109, 22, 195, 57, 41, 44, 221, 77, 194, 141, 49, 33, 48, 61, 88 }, null, null });
 
             migrationBuilder.InsertData(
                 schema: "sec",
                 table: "UserOperationClaims",
                 columns: new[] { "Id", "DeletedAt", "DeletedBy", "OperationClaimId", "UpdatedAt", "UpdatedBy", "UserId" },
                 values: new object[] { 1, null, null, 1, null, null, 1 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_DomainEvent_LibraryId",
-                table: "DomainEvent",
-                column: "LibraryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_EmailAuthenticator_UserId",
@@ -380,12 +290,6 @@ namespace Persistence.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Staves_LibraryId",
-                schema: "library",
-                table: "Staves",
-                column: "LibraryId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_UserOperationClaims_OperationClaimId",
                 schema: "sec",
                 table: "UserOperationClaims",
@@ -402,19 +306,12 @@ namespace Persistence.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "DomainEvent");
-
-            migrationBuilder.DropTable(
                 name: "EmailAuthenticator",
                 schema: "sec");
 
             migrationBuilder.DropTable(
                 name: "OtpAuthenticators",
                 schema: "sec");
-
-            migrationBuilder.DropTable(
-                name: "OutBox",
-                schema: "library");
 
             migrationBuilder.DropTable(
                 name: "PolicyOperationClaims",
@@ -425,20 +322,12 @@ namespace Persistence.Migrations
                 schema: "sec");
 
             migrationBuilder.DropTable(
-                name: "Staves",
-                schema: "library");
-
-            migrationBuilder.DropTable(
                 name: "UserOperationClaims",
                 schema: "sec");
 
             migrationBuilder.DropTable(
                 name: "Policies",
                 schema: "sec");
-
-            migrationBuilder.DropTable(
-                name: "Libraries",
-                schema: "library");
 
             migrationBuilder.DropTable(
                 name: "OperationClaims",

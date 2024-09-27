@@ -1,42 +1,44 @@
-﻿using Application.Features.Users.Rules;
-using Domain.Repositories;
-using MGH.Core.Infrastructure.Securities.Security.Entities;
-using MGH.Core.Persistence.Models.Filters.GetModels;
+﻿using Domain;
+using Application.Features.Users.Rules;
 using MGH.Core.Persistence.Models.Paging;
+using MGH.Core.Persistence.Models.Filters.GetModels;
+using MGH.Core.Infrastructure.Securities.Security.Entities;
 
 namespace Application.Services.UsersService;
 
-public class UserManager(IUserRepository userRepository, UserBusinessRules userBusinessRules) : IUserService
+public class UserManager(IUow uow, UserBusinessRules userBusinessRules) : IUserService
 {
-    public async Task<User> GetAsync( GetModel<User> getModel)
+    public async Task<User> GetAsync(GetModel<User> getModel)
     {
-        var user = await userRepository.GetAsync(getModel);
-        return user;
+        return await uow.User.GetAsync(getModel);
     }
 
-    public async Task<IPaginate<User>> GetListAsync( GetListModelAsync<User> model)
+    public async Task<User> GetByEmailAsync(string email, CancellationToken cancellationToken)
     {
-        var userList = await userRepository.GetListAsync(model);
-        return userList;
+        return await uow.User.GetByEmailAsync(email, cancellationToken);
+    }
+
+    public async Task<IPaginate<User>> GetListAsync(GetListModelAsync<User> model)
+    {
+        return await uow.User.GetListAsync(model);
     }
 
     public async Task<User> AddAsync(User user, CancellationToken cancellationToken)
     {
-        await userBusinessRules.UserEmailShouldNotExistsWhenInsert(user.Email,cancellationToken);
-        var addedUser = await userRepository.AddAsync(user, cancellationToken);
+        await userBusinessRules.UserEmailShouldNotExistsWhenInsert(user.Email, cancellationToken);
+        var addedUser = await uow.User.AddAsync(user, cancellationToken);
         return addedUser;
     }
 
     public async Task<User> UpdateAsync(User user, CancellationToken cancellationToken)
     {
-        await userBusinessRules.UserEmailShouldNotExistsWhenUpdate(user.Id, user.Email,cancellationToken);
-        var updatedUser = await userRepository.UpdateAsync(user, cancellationToken);
+        await userBusinessRules.UserEmailShouldNotExistsWhenUpdate(user.Id, user.Email, cancellationToken);
+        var updatedUser = await uow.User.UpdateAsync(user, cancellationToken);
         return updatedUser;
     }
 
     public async Task<User> DeleteAsync(User user, bool permanent = false)
     {
-        var deletedUser = await userRepository.DeleteAsync(user);
-        return deletedUser;
+        return await uow.User.DeleteAsync(user);
     }
 }

@@ -1,9 +1,9 @@
 ﻿using Domain;
+using Microsoft.Extensions.Options;
 using MGH.Core.Infrastructure.Public;
 using MGH.Core.Persistence.Models.Filters.GetModels;
 using MGH.Core.Infrastructure.Securities.Security.JWT;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
-using Microsoft.Extensions.Options;
 
 namespace Application.Services.AuthService;
 
@@ -11,8 +11,7 @@ public class AuthManager(
     IUow uow,
     ITokenHelper tokenHelper,
     IDateTime time,
-    IOptions<TokenOptions> options)
-    : IAuthService
+    IOptions<TokenOptions> options) : IAuthService
 {
     private readonly TokenOptions _tokenOptions = options.Value;
 
@@ -29,16 +28,13 @@ public class AuthManager(
 
     public async Task DeleteOldRefreshTokens(int userId, CancellationToken cancellationToken)
     {
-        var refreshTokens = await uow.RefreshToken.GetRefreshTokenByUserId(userId,
-            _tokenOptions.RefreshTokenTtl, cancellationToken);
-
-        await uow.RefreshToken.DeleteRangeAsync(refreshTokens, cancellationToken: cancellationToken);
+        var refreshTokens = await uow.RefreshToken.GetRefreshTokenByUserId(userId, _tokenOptions.RefreshTokenTtl, cancellationToken);
+        await uow.RefreshToken.DeleteRangeAsync(refreshTokens,false);
     }
 
     public async Task<RefreshTkn> GetRefreshTokenByToken(string token, CancellationToken cancellationToken)
     {
-        var refreshToken = await uow.RefreshToken.GetAsync(new GetModel<RefreshTkn>
-            { Predicate = r => r.Token == token });
+        var refreshToken = await uow.RefreshToken.GetAsync(new GetModel<RefreshTkn> { Predicate = r => r.Token == token });
         return refreshToken;
     }
 

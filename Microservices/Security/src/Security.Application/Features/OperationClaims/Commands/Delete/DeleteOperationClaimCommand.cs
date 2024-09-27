@@ -32,7 +32,7 @@ public class DeleteOperationClaimCommandHandler(
             });
 
         await operationClaimBusinessRules.OperationClaimShouldExistWhenSelected(operationClaim);
-        await uow.OperationClaim.DeleteAsync(entity: operationClaim!, cancellationToken: cancellationToken);
+        await uow.OperationClaim.DeleteAsync(entity: operationClaim!);
 
         return mapper.Map<DeletedOperationClaimResponse>(operationClaim);
     }

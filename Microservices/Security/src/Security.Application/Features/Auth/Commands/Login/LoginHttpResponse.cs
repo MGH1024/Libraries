@@ -5,6 +5,7 @@ namespace Application.Features.Auth.Commands.Login;
 
 public class LoginHttpResponse
 {
+    public bool IsSuccess { get; set; }
     public AccessToken AccessToken { get; set; }
     public AuthenticatorType? RequiredAuthenticatorType { get; set; }
 }

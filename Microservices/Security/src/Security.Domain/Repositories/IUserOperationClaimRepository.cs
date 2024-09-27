@@ -1,22 +1,16 @@
-﻿using MGH.Core.Domain.Buses.Queries;
+﻿using MGH.Core.Persistence.Base.Repository;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
-using MGH.Core.Persistence.Models.Filters.GetModels;
-using MGH.Core.Persistence.Models.Paging;
 
 namespace Domain.Repositories;
 
-public interface IUserOperationClaimRepository : IQuery<UserOperationClaim>
+public interface IUserOperationClaimRepository : IRepository<UserOperationClaim, int>
 {
-    Task<UserOperationClaim> GetAsync(GetModel<UserOperationClaim> getBaseModel);
-
-    Task<IPaginate<UserOperationClaim>> GetListAsync(GetListModelAsync<UserOperationClaim> getListAsyncModel);
-
-    Task<IPaginate<UserOperationClaim>> GetDynamicListAsync(
-        GetDynamicListModelAsync<UserOperationClaim> dynamicListAsyncModel);
-
-    Task<UserOperationClaim> AddAsync(UserOperationClaim entity, CancellationToken cancellationToken);
-    Task<UserOperationClaim> DeleteAsync(UserOperationClaim entity, bool permanent = false);
-    Task<bool> AnyAsync(GetBaseModel<UserOperationClaim> @base);
-    Task<UserOperationClaim> UpdateAsync(UserOperationClaim entity, CancellationToken cancellationToken);
     Task<IEnumerable<OperationClaim>> GetOperationClaim(User user,CancellationToken cancellationToken);
+    Task<IEnumerable<UserOperationClaim>> GetUserOperationClaims(int userId, CancellationToken cancellationToken);
+
+    Task<OperationClaim> GetOperationClaimByUserAndOperationClaim(int userId, int operationClaimId,
+        CancellationToken cancellationToken);
+    
+    Task<UserOperationClaim> GetOperationClaimByIdAndUserAndOperationClaim(int id,int userId, int operationClaimId,
+        CancellationToken cancellationToken);
 }

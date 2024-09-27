@@ -37,7 +37,7 @@ public class EnableOtpAuthenticatorCommandHandler(
         
         await authBusinessRules.OtpAuthenticatorThatVerifiedShouldNotBeExists(doesExistOtpAuthenticator);
         if (doesExistOtpAuthenticator is not null)
-            await uow.OtpAuthenticator.DeleteAsync(doesExistOtpAuthenticator,false,cancellationToken);
+            await uow.OtpAuthenticator.DeleteAsync(doesExistOtpAuthenticator,false);
 
         var newOtpAuthenticator = await authenticatorService.CreateOtpAuthenticator(user!, cancellationToken);
         var addedOtpAuthenticator = await uow.OtpAuthenticator.AddAsync(newOtpAuthenticator, cancellationToken);

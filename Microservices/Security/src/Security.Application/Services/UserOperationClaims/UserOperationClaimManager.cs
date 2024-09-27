@@ -32,7 +32,8 @@ public class UserUserOperationClaimManager(
     {
         await _userUserOperationClaimBusinessRules.UserShouldNotHasOperationClaimAlreadyWhenInsert(
             userUserOperationClaim.UserId,
-            userUserOperationClaim.OperationClaimId
+            userUserOperationClaim.OperationClaimId,
+            cancellationToken
         );
 
         var addedUserOperationClaim =
@@ -47,7 +48,8 @@ public class UserUserOperationClaimManager(
         await _userUserOperationClaimBusinessRules.UserShouldNotHasOperationClaimAlreadyWhenUpdated(
             userUserOperationClaim.Id,
             userUserOperationClaim.UserId,
-            userUserOperationClaim.OperationClaimId
+            userUserOperationClaim.OperationClaimId,
+            cancellationToken
         );
         var updatedUserOperationClaim =
             await userUserOperationClaimRepository.UpdateAsync(userUserOperationClaim, cancellationToken);

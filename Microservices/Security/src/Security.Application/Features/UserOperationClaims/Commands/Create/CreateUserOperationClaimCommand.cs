@@ -23,7 +23,8 @@ public class CreateUserOperationClaimCommandHandler(
 {
     public async Task<CreatedUserOperationClaimResponse> Handle(CreateUserOperationClaimCommand request, CancellationToken cancellationToken)
     {
-        await userOperationClaimBusinessRules.UserShouldNotHasOperationClaimAlreadyWhenInsert(request.UserId, request.OperationClaimId);
+        await userOperationClaimBusinessRules.UserShouldNotHasOperationClaimAlreadyWhenInsert(request.UserId, request.OperationClaimId,
+            cancellationToken);
         var mappedUserOperationClaim = mapper.Map<UserOperationClaim>(request);
 
         var createdUserOperationClaim = await uow.UserOperationClaim.AddAsync(mappedUserOperationClaim, cancellationToken);

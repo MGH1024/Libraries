@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Reflection;
+using System.Text.Json.Serialization;
 using Application.Models;
 using MGH.Core.CrossCutting.Exceptions;
 using MGH.Core.CrossCutting.Localizations.ModelBinders;
@@ -28,6 +29,7 @@ public static class ApiServiceRegistration
         services.AddHttpContextAccessor();
         services.AddEndpointsApiExplorer();
         services.AddJwt(configuration);
+        services.AddAutoMapper(Assembly.GetExecutingAssembly());
     }
 
 
