@@ -1,6 +1,5 @@
 ﻿
 using MGH.Core.Domain.Entity.Base;
-using MGH.Core.Infrastructure.Securities.Security.Enums;
 
 namespace MGH.Core.Infrastructure.Securities.Security.Entities;
 
@@ -11,12 +10,9 @@ public class User : AuditAbleEntity<int>
     public string Email { get; set; }
     public byte[] PasswordSalt { get; set; }
     public byte[] PasswordHash { get; set; }
-    public AuthenticatorType AuthenticatorType { get; set; }
 
     public virtual ICollection<UserOperationClaim> UserOperationClaims { get; set; } = null!;
     public virtual ICollection<RefreshTkn> RefreshTokens { get; set; } = null!;
-    public virtual ICollection<EmailAuthenticator> EmailAuthenticators { get; set; } = null!;
-    public virtual ICollection<OtpAuthenticator> OtpAuthenticators { get; set; } = null!;
 
     public User()
     {
@@ -33,8 +29,7 @@ public class User : AuditAbleEntity<int>
         string lastName,
         string email,
         byte[] passwordSalt,
-        byte[] passwordHash,
-        AuthenticatorType authenticatorType
+        byte[] passwordHash
     )
     {
         FirstName = firstName;
@@ -42,7 +37,6 @@ public class User : AuditAbleEntity<int>
         Email = email;
         PasswordSalt = passwordSalt;
         PasswordHash = passwordHash;
-        AuthenticatorType = authenticatorType;
     }
 
     public User(
@@ -52,8 +46,7 @@ public class User : AuditAbleEntity<int>
         string email,
         byte[] passwordSalt,
         byte[] passwordHash,
-        bool status,
-        AuthenticatorType authenticatorType
+        bool status
     )
         : base(id)
     {
@@ -62,6 +55,5 @@ public class User : AuditAbleEntity<int>
         Email = email;
         PasswordSalt = passwordSalt;
         PasswordHash = passwordHash;
-        AuthenticatorType = authenticatorType;
     }
 }

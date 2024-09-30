@@ -8,8 +8,6 @@ using MGH.Core.Application.Pipelines.Validation;
 using MGH.Core.Application.Rules;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Base;
-using MGH.Core.Infrastructure.Mail.Base;
-using MGH.Core.Infrastructure.Mail.MailKitImplementations;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Application.Extensions;
@@ -32,7 +30,6 @@ public static class ApplicationServiceRegistration
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         services.AddSubClassesOfType(Assembly.GetExecutingAssembly(), typeof(BaseBusinessRules));
         services.AddSingleton<IElasticSearch, ElasticSearchService>();
-        services.AddScoped<IMailService, MailKitMailService>();
 
         return services;
     }

@@ -4,7 +4,6 @@ using Domain;
 using MGH.Core.Application.Rules;
 using MGH.Core.CrossCutting.Exceptions.Types;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
-using MGH.Core.Infrastructure.Securities.Security.Enums;
 using MGH.Core.Infrastructure.Securities.Security.Hashing;
 using MGH.Core.Persistence.Models.Filters.GetModels;
 
@@ -12,45 +11,11 @@ namespace Application.Features.Auth.Rules;
 
 public class AuthBusinessRules(IUow uow, IMapper mapper) : BaseBusinessRules
 {
-    public Task EmailAuthenticatorShouldBeExists(EmailAuthenticator emailAuthenticator)
-    {
-        if (emailAuthenticator is null)
-            throw new BusinessException(AuthMessages.EmailAuthenticatorDoesNotExists);
-        return Task.CompletedTask;
-    }
-
-    public Task OtpAuthenticatorShouldBeExists(OtpAuthenticator otpAuthenticator)
-    {
-        if (otpAuthenticator is null)
-            throw new BusinessException(AuthMessages.OtpAuthenticatorDoesNotExists);
-        return Task.CompletedTask;
-    }
-
-    public Task OtpAuthenticatorThatVerifiedShouldNotBeExists(OtpAuthenticator otpAuthenticator)
-    {
-        if (otpAuthenticator is not null && otpAuthenticator.IsVerified)
-            throw new BusinessException(AuthMessages.AlreadyVerifiedOtpAuthenticatorIsExists);
-        return Task.CompletedTask;
-    }
-
-    public Task EmailAuthenticatorActivationKeyShouldBeExists(EmailAuthenticator emailAuthenticator)
-    {
-        if (emailAuthenticator.ActivationKey is null)
-            throw new BusinessException(AuthMessages.EmailActivationKeyDoesNotExists);
-        return Task.CompletedTask;
-    }
 
     public Task UserShouldBeExistsWhenSelected(User user)
     {
         if (user == null)
             throw new BusinessException(AuthMessages.UserDoesNotExists);
-        return Task.CompletedTask;
-    }
-
-    public Task UserShouldNotBeHaveAuthenticator(User user)
-    {
-        if (user.AuthenticatorType != AuthenticatorType.None)
-            throw new BusinessException(AuthMessages.UserHaveAlreadyAAuthenticator);
         return Task.CompletedTask;
     }
 

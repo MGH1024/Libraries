@@ -81,61 +81,6 @@ public class AuthController(ISender sender,IMapper mapper) : AppController(sende
         return Ok(result);
     }
 
-    /// <summary>
-    /// enable email authenticator
-    /// </summary>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-    [HttpGet("EnableEmailAuthenticator")]
-    public async Task<IActionResult> EnableEmailAuthenticator(CancellationToken cancellationToken)
-    {
-        var enableEmailAuthenticatorCommand = ApiMapper.ToEnableEmailAuthenticatorCommand(GetUserIdFromRequest());
-        await Sender.Send(enableEmailAuthenticatorCommand, cancellationToken);
-        return Ok();
-    }
-
-    /// <summary>
-    /// enable otp authenticator
-    /// </summary>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-    [HttpGet("EnableOtpAuthenticator")]
-    public async Task<IActionResult> EnableOtpAuthenticator(CancellationToken cancellationToken)
-    {
-        var enableOtpAuthenticatorCommand = ApiMapper.ToEnableOtpAuthenticatorCommand(GetUserIdFromRequest());
-        var result = await Sender.Send(enableOtpAuthenticatorCommand, cancellationToken);
-        return Ok(result);
-    }
-
-    /// <summary>
-    /// verify email authenticator
-    /// </summary>
-    /// <param name="verifyEmailAuthenticatorDto"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-    [HttpGet("VerifyEmailAuthenticator")]
-    public async Task<IActionResult> VerifyEmailAuthenticator([FromQuery] VerifyEmailAuthenticatorDto verifyEmailAuthenticatorDto,
-        CancellationToken cancellationToken)
-    {
-        var verifyEmailAuthenticatorCommand = verifyEmailAuthenticatorDto.ToVerifyEmailAuthenticatorCommand();
-        await Sender.Send(verifyEmailAuthenticatorCommand, cancellationToken);
-        return Ok();
-    }
-
-    /// <summary>
-    /// verify otp authenticator
-    /// </summary>
-    /// <param name="authenticatorCode"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-    [HttpPost("VerifyOtpAuthenticator")]
-    public async Task<IActionResult> VerifyOtpAuthenticator([FromBody] string authenticatorCode, CancellationToken cancellationToken)
-    {
-        var verifyEmailAuthenticatorCommand = authenticatorCode.ToVerifyOtpAuthenticatorCommand(GetUserIdFromRequest());
-        await Sender.Send(verifyEmailAuthenticatorCommand, cancellationToken);
-        return Ok();
-    }
-
     private string GetRefreshTokenFromCookies() => Request.Cookies["refreshToken"] ??
                                                    throw new ArgumentException("Refresh token is not found in request cookies.");
 

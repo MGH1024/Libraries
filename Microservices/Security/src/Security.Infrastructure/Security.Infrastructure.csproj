@@ -29,7 +29,6 @@
     <ItemGroup>
         <ProjectReference Include="..\Security.Application\Security.Application.csproj"/>
         <ProjectReference Include="..\Security.Domain\Security.Domain.csproj"/>
-        <ProjectReference Include="..\..\..\..\Framework\MGH.Core.Infrastructure.Mail\MGH.Core.Infrastructure.Mail.csproj"/>
         <ProjectReference Include="..\..\..\..\Framework\MGH.Core.Infrastructure.MessageBroker.RabbitMq\MGH.Core.Infrastructure.MessageBroker.RabbitMq.csproj"/>
         <ProjectReference Include="..\..\..\..\Framework\MGH.Core.Infrastructure.Securities\MGH.Core.Infrastructure.Securities.csproj"/>
         <ProjectReference Include="..\Security.Application\Security.Application.csproj"/>

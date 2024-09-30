@@ -6,7 +6,6 @@ public class UserForLoginDto(string email, string password) : IDto
 {
     public string Email { get; set; } = email;
     public string Password { get; set; } = password;
-    public string AuthenticatorCode { get; set; }
 
     public UserForLoginDto() : this(string.Empty, string.Empty)
     {

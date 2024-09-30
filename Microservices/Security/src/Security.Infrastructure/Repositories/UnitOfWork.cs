@@ -10,23 +10,16 @@ namespace Persistence.Repositories;
 public class UnitOfWork(SecurityDbContext context, IDateTime dateTime) : IUow
 {
     private IDbContextTransaction _transaction;
-    private EmailAuthenticatorRepository _emailAuthenticatorRepository;
     private OperationClaimRepository _operationClaimRepository;
-    private OtpAuthenticatorRepository _otpAuthenticatorRepository;
     private RefreshTokenRepository _refreshTokenRepository;
     private UserOperationClaimRepository _userOperationClaimRepository;
     private UserRepository _userRepository;
 
 
-    public IEmailAuthenticatorRepository EmailAuthenticator =>
-        _emailAuthenticatorRepository ??= new EmailAuthenticatorRepository(context);
-
-
+    
     public IOperationClaimRepository OperationClaim =>
         _operationClaimRepository ??= new OperationClaimRepository(context);
-
-    public IOtpAuthenticatorRepository OtpAuthenticator =>
-        _otpAuthenticatorRepository ??= new OtpAuthenticatorRepository(context);
+    
 
     public IRefreshTokenRepository RefreshToken =>
         _refreshTokenRepository ??= new RefreshTokenRepository(context);

@@ -8,7 +8,6 @@ public class MailSettings
     public string SenderEmail { get; set; }
     public string UserName { get; set; }
     public string Password { get; set; }
-    public bool AuthenticationRequired { get; set; }
     public string DkimPrivateKey { get; set; }
     public string DkimSelector { get; set; }
     public string DomainName { get; set; }
@@ -39,6 +38,5 @@ public class MailSettings
         SenderEmail = senderEmail;
         UserName = userName;
         Password = password;
-        AuthenticationRequired = authenticationRequired;
     }
 }
