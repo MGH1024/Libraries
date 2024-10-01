@@ -27,11 +27,7 @@ public class RevokeTokenCommandHandler(
         var refreshTkn = await authService.GetRefreshTokenByToken(request.Token, cancellationToken);
         await authBusinessRules.RefreshTokenShouldBeExists(refreshTkn);
         await authBusinessRules.RefreshTokenShouldBeActive(refreshTkn!);
-
-        await authService.RevokeRefreshTokenAsync(refreshTkn!, request.IpAddress, reason: "Revoked without replacement",
-            cancellationToken: cancellationToken);
-
-        var revokedTokenResponse = mapper.Map<RevokedTokenResponse>(refreshTkn);
-        return revokedTokenResponse;
+        await authService.RevokeRefreshTokenAsync(refreshTkn!, request.IpAddress, "Revoked without replacement", null, cancellationToken);
+        return mapper.Map<RevokedTokenResponse>(refreshTkn);
     }
 }

@@ -20,8 +20,7 @@ public class DeleteUserCommandHandler(IMapper mapper, IUow uow, UserBusinessRule
 {
     public async Task<DeletedUserResponse> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
     {
-        var getUserModel = mapper.Map<GetModel<User>>(request, opt =>
-            opt.Items["CancellationToken"] = cancellationToken);
+        var getUserModel = mapper.Map<GetModel<User>>(request, opt => opt.Items["CancellationToken"] = cancellationToken);
         var user = await uow.User.GetAsync(getUserModel);
 
         await userBusinessRules.UserShouldBeExistsWhenSelected(user);

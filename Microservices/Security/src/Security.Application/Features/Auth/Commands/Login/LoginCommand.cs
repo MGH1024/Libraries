@@ -25,7 +25,7 @@ public class LoginCommandHandler(
     {
         var user = await userRepository.GetByEmailAsync(request.UserForLoginDto.Email, cancellationToken);
         await authBusinessRules.UserShouldBeExistsWhenSelected(user);
-        await authBusinessRules.UserPasswordShouldBeMatch(user!.Id, request.UserForLoginDto.Password);
+        await authBusinessRules.UserPasswordShouldBeMatch(user!.Id, request.UserForLoginDto.Password,cancellationToken);
 
         var createdAccessToken = await authService.CreateAccessTokenAsync(user, cancellationToken);
         var createdRefreshTkn = await authService.CreateRefreshToken(user, request.IpAddress, cancellationToken);
