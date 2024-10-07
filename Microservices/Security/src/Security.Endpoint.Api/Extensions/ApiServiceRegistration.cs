@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using System.Text.Json.Serialization;
 using Application.Models;
+using Asp.Versioning;
 using MGH.Core.CrossCutting.Exceptions;
 using MGH.Core.CrossCutting.Localizations.ModelBinders;
 using MGH.Core.CrossCutting.Logging;
@@ -24,6 +25,7 @@ public static class ApiServiceRegistration
         services.AddOptions(configuration);
         services.AddSwagger(configuration);
         services.AddCors();
+        services.AddVersioning();
         services.AddBaseMvc();
         services.AddMemoryCache();
         services.AddHttpContextAccessor();
@@ -54,6 +56,25 @@ public static class ApiServiceRegistration
 
         services.Configure<ApiConfiguration>(option =>
             configuration.GetSection(nameof(ApiConfiguration)).Bind(option));
+    }
+
+    private static void AddVersioning(this IServiceCollection services)
+    {
+        services.AddApiVersioning(options =>
+            {
+                options.DefaultApiVersion = new ApiVersion(1,2);
+                options.ReportApiVersions = true;
+                options.AssumeDefaultVersionWhenUnspecified = true; 
+                options.ApiVersionReader = ApiVersionReader.Combine(
+                    new UrlSegmentApiVersionReader(),
+                    new HeaderApiVersionReader("X-Api-Version"));
+            })
+            .AddMvc() // This is needed for controllers
+            .AddApiExplorer(options =>
+            {
+                options.GroupNameFormat = "'v'V";
+                options.SubstituteApiVersionInUrl = true;
+            });
     }
 
     private static void AddJwt(this IServiceCollection services, IConfiguration configuration)

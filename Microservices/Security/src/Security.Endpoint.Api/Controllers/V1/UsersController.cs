@@ -1,19 +1,21 @@
-﻿using MediatR;
-using AutoMapper;
-using Api.Extensions;
-using Microsoft.AspNetCore.Mvc;
-using MGH.Core.Application.Requests;
+﻿using Api.Extensions;
 using Application.Features.Users.Commands.Create;
 using Application.Features.Users.Commands.Delete;
 using Application.Features.Users.Commands.Update;
+using Application.Features.Users.Commands.UpdateFromAuth;
 using Application.Features.Users.Queries.GetById;
 using Application.Features.Users.Queries.GetList;
-using Application.Features.Users.Commands.UpdateFromAuth;
+using Asp.Versioning;
+using AutoMapper;
+using MediatR;
+using MGH.Core.Application.Requests;
+using Microsoft.AspNetCore.Mvc;
 
-namespace Api.Controllers;
+namespace Api.Controllers.V1;
 
-[ApiController]
-[Route("{culture:CultureRouteConstraint}/api/[Controller]")]
+[ApiController] 
+[ApiVersion(1)]
+[Route("{culture:CultureRouteConstraint}/api/v{v:apiVersion}/[Controller]")]
 public class UsersController(ISender sender, IMapper mapper) : AppController(sender)
 {
     [HttpGet("{Id}")]

@@ -3,15 +3,17 @@ using Application.Features.UserOperationClaims.Commands.Delete;
 using Application.Features.UserOperationClaims.Commands.Update;
 using Application.Features.UserOperationClaims.Queries.GetById;
 using Application.Features.UserOperationClaims.Queries.GetList;
+using Asp.Versioning;
 using MediatR;
 using MGH.Core.Application.Requests;
 using MGH.Core.Application.Responses;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Api.Controllers;
+namespace Api.Controllers.V1;
 
 [ApiController]
-[Route("{culture:CultureRouteConstraint}/api/[Controller]")]
+[ApiVersion(1)]
+[Route("{culture:CultureRouteConstraint}/api/v{v:apiVersion}/[Controller]")]
 public class UserOperationClaimsController(ISender sender) : AppController(sender)
 {
     [HttpGet("{Id}")]

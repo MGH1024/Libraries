@@ -1,16 +1,18 @@
-﻿using MediatR;
-using Api.Extensions;
+﻿using Api.Extensions;
 using Application.Features.Auth.Commands.Login;
+using Asp.Versioning;
 using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+using MediatR;
 using MGH.Core.Application.DTOs.Security;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace Api.Controllers;
+namespace Api.Controllers.V1;
 
 [ApiController]
-[Route("{culture:CultureRouteConstraint}/api/[Controller]")]
+[ApiVersion(1)]
+[Route("{culture:CultureRouteConstraint}/api/v{v:apiVersion}/[Controller]")]
 public class AuthController(ISender sender,IMapper mapper) : AppController(sender)
 {
     /// <summary>

@@ -2,7 +2,6 @@
 using MGH.Core.Infrastructure.Securities.Security.Extensions;
 using Microsoft.AspNetCore.Mvc;
 
-
 namespace Api.Controllers;
 
 public abstract class AppController(ISender sender) : ControllerBase
