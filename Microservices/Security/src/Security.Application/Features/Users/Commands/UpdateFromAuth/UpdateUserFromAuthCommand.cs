@@ -39,9 +39,7 @@ public class UpdateUserFromAuthCommand(
         public async Task<UpdatedUserFromAuthResponse> Handle(UpdateUserFromAuthCommand request,
             CancellationToken cancellationToken)
         {
-            var getUserModel = mapper.Map<GetModel<User>>(request, opt =>
-                opt.Items["CancellationToken"] = cancellationToken);
-            var user = await uow.User.GetAsync(getUserModel);
+            var user = await uow.User.GetAsync(request.Id,cancellationToken);
 
             await userBusinessRules.UserShouldBeExistsWhenSelected(user);
             await userBusinessRules.UserPasswordShouldBeMatched(user: user!, request.Password);

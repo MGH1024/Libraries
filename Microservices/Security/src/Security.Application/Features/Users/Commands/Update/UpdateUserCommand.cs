@@ -45,10 +45,7 @@ public class UpdateUserCommandHandler(
 {
     public async Task<UpdatedUserResponse> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
     {
-        var getUserModel = mapper.Map<GetModel<User>>(request, opt =>
-            opt.Items["CancellationToken"] = cancellationToken);
-        var user = await uow.User.GetAsync(getUserModel);
-
+        var user = await uow.User.GetAsync(request.Id,cancellationToken);
         await userBusinessRules.UserShouldBeExistsWhenSelected(user);
         await userBusinessRules.UserEmailShouldNotExistsWhenUpdate(user!.Id, user.Email,cancellationToken);
 

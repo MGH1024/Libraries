@@ -2,21 +2,22 @@
 using Application.Features.Auth.Commands.RefreshToken;
 using Application.Features.Auth.Commands.Register;
 using Application.Features.Auth.Commands.RevokeToken;
+using Application.Features.Users.Commands.UpdateFromAuth;
+using Application.Features.Users.Queries.GetById;
 using MGH.Core.Application.DTOs.Security;
 
 namespace Api.Extensions;
 
 public static class ApiMapper
 {
-    public static LoginCommand ToLoginCommand(this UserForLoginDto userForLoginDto, string ipAddress)
+    public static GetByIdUserQuery ToGetByIdUserQuery(this int userId)
     {
-        return new LoginCommand
+        return new GetByIdUserQuery
         {
-            UserForLoginDto = userForLoginDto,
-            IpAddress = ipAddress
+            Id = userId
         };
     }
-
+    
     public static RegisterCommand ToRegisterCommand(this UserForRegisterDto userForRegisterDto, string ipAddress)
     {
         return new RegisterCommand
@@ -35,7 +36,6 @@ public static class ApiMapper
         };
     }
 
-
     public static RevokeTokenCommand ToRevokeTokenCommand(this string refreshToken, string ipAddress)
     {
         return new RevokeTokenCommand
@@ -44,5 +44,9 @@ public static class ApiMapper
             IpAddress = ipAddress
         };
     }
-    
+
+    public static void AddUserId(this UpdateUserFromAuthCommand updateUserFromAuthCommand, int userId)
+    {
+        updateUserFromAuthCommand.Id = userId;
+    }
 }

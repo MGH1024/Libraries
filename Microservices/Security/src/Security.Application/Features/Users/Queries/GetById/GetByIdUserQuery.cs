@@ -23,9 +23,7 @@ public class GetByIdUserQueryHandler(
 {
     public async Task<GetByIdUserResponse> Handle(GetByIdUserQuery request, CancellationToken cancellationToken)
     {
-        var getUserModel = mapper.Map<GetModel<User>>(request, opt =>
-            opt.Items["CancellationToken"] = cancellationToken);
-        var user = await uow.User.GetAsync(getUserModel);
+        var user = await uow.User.GetAsync(request.Id,cancellationToken);
         await userBusinessRules.UserShouldBeExistsWhenSelected(user);
 
         var response = mapper.Map<GetByIdUserResponse>(user);
