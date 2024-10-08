@@ -20,11 +20,7 @@ public class RegisterCommand(UserForRegisterDto userForRegisterDto, string ipAdd
     }
 }
 
-public class RegisterCommandHandler(
-    IUow uow,
-    IAuthService authService,
-    AuthBusinessRules authBusinessRules,
-    IMapper mapper)
+public class RegisterCommandHandler(IUow uow, IAuthService authService, AuthBusinessRules authBusinessRules, IMapper mapper)
     : ICommandHandler<RegisterCommand, RegisteredResponse>
 {
     public async Task<RegisteredResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)

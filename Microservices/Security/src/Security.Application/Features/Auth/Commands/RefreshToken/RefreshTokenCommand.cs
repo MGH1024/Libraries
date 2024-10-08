@@ -5,7 +5,7 @@ using Application.Services.AuthService;
 
 namespace Application.Features.Auth.Commands.RefreshToken;
 
-public class RefreshTokenCommand(string refreshToken, string ipAddress) : ICommand<RefreshedTokensResponse>
+public class RefreshTokenCommand(string refreshToken, string ipAddress) : ICommand<RefreshTokenResponse>
 {
     public string RefreshToken { get; set; } = refreshToken;
     public string IpAddress { get; set; } = ipAddress;
@@ -15,13 +15,10 @@ public class RefreshTokenCommand(string refreshToken, string ipAddress) : IComma
     }
 }
 
-public class RefreshTokenCommandHandler(
-    IAuthService authService,
-    IUow uow,
-    AuthBusinessRules authBusinessRules)
-    : ICommandHandler<RefreshTokenCommand, RefreshedTokensResponse>
+public class RefreshTokenCommandHandler(IAuthService authService, IUow uow, AuthBusinessRules authBusinessRules) 
+    : ICommandHandler<RefreshTokenCommand, RefreshTokenResponse>
 {
-    public async Task<RefreshedTokensResponse> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
+    public async Task<RefreshTokenResponse> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
     {
         var refreshToken = await authService.GetRefreshTokenByToken(request.RefreshToken, cancellationToken);
         await authBusinessRules.RefreshTokenShouldBeExists(refreshToken);
@@ -42,6 +39,6 @@ public class RefreshTokenCommandHandler(
         await uow.CompleteAsync(cancellationToken);
         var createdAccessToken = await authService.CreateAccessTokenAsync(user!, cancellationToken);
 
-        return new RefreshedTokensResponse { AccessToken = createdAccessToken, RefreshTkn = addedRefreshTkn };
+        return new RefreshTokenResponse { AccessToken = createdAccessToken, RefreshTkn = addedRefreshTkn };
     }
 }
