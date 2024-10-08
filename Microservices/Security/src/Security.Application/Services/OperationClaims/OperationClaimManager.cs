@@ -6,8 +6,7 @@ using MGH.Core.Infrastructure.Securities.Security.Entities;
 
 namespace Application.Services.OperationClaims;
 
-public class OperationClaimManager(IUow uow, OperationClaimBusinessRules operationClaimBusinessRules)
-    : IOperationClaimService
+public class OperationClaimManager(IUow uow, OperationClaimBusinessRules operationClaimBusinessRules) : IOperationClaimService
 {
     public async Task<OperationClaim> GetAsync(GetModel<OperationClaim> getModel)
     {
@@ -23,27 +22,18 @@ public class OperationClaimManager(IUow uow, OperationClaimBusinessRules operati
 
     public async Task<OperationClaim> AddAsync(OperationClaim operationClaim, CancellationToken cancellationToken)
     {
-        await operationClaimBusinessRules.OperationClaimNameShouldNotExistWhenCreating(operationClaim.Name,
-            cancellationToken);
-        var addedOperationClaim = await uow.OperationClaim.AddAsync(operationClaim, cancellationToken);
-        return addedOperationClaim;
+        await operationClaimBusinessRules.OperationClaimNameShouldNotExistWhenCreating(operationClaim.Name, cancellationToken);
+        return await uow.OperationClaim.AddAsync(operationClaim, cancellationToken);
     }
 
     public async Task<OperationClaim> UpdateAsync(OperationClaim operationClaim, CancellationToken cancellationToken)
     {
-        await operationClaimBusinessRules.OperationClaimNameShouldNotExistWhenUpdating(operationClaim.Id,
-            operationClaim.Name, cancellationToken);
-
-        var updatedOperationClaim =
-            await uow.OperationClaim.UpdateAsync(operationClaim, cancellationToken);
-
-        return updatedOperationClaim;
+        await operationClaimBusinessRules.OperationClaimNameShouldNotExistWhenUpdating(operationClaim.Id, operationClaim.Name, cancellationToken);
+        return await uow.OperationClaim.UpdateAsync(operationClaim, cancellationToken);
     }
 
-    public async Task<OperationClaim> DeleteAsync(OperationClaim operationClaim, bool permanent = false,
-        CancellationToken cancellationToken = default)
+    public async Task<OperationClaim> DeleteAsync(OperationClaim operationClaim, bool permanent , CancellationToken cancellationToken )
     {
-        var deletedOperationClaim = await uow.OperationClaim.DeleteAsync(operationClaim,false);
-        return deletedOperationClaim;
+        return await uow.OperationClaim.DeleteAsync(operationClaim);
     }
 }

@@ -25,7 +25,7 @@ public class AuthManager(IUow uow, ITokenHelper tokenHelper, IDateTime time, IOp
     public async Task DeleteOldRefreshTokens(int userId, CancellationToken cancellationToken)
     {
         var refreshTokens = await uow.RefreshToken.GetRefreshTokenByUserId(userId, _tokenOptions.RefreshTokenTtl, cancellationToken);
-        await uow.RefreshToken.DeleteRangeAsync(refreshTokens, false);
+        await uow.RefreshToken.DeleteRangeAsync(refreshTokens);
     }
 
     public async Task<RefreshTkn> GetRefreshTokenByToken(string token, CancellationToken cancellationToken)

@@ -8,59 +8,42 @@ namespace Application.Services.UserOperationClaims;
 
 public class UserUserOperationClaimManager(
     IUserOperationClaimRepository userUserOperationClaimRepository,
-    UserOperationClaimBusinessRules userUserOperationClaimBusinessRules)
-    : IUserOperationClaimService
+    UserOperationClaimBusinessRules userOperationClaimBusinessRules) :
+    IUserOperationClaimService
 {
-    private readonly UserOperationClaimBusinessRules _userUserOperationClaimBusinessRules = userUserOperationClaimBusinessRules;
-
     public async Task<UserOperationClaim> GetAsync(GetModel<UserOperationClaim> getModel)
     {
-        var userUserOperationClaim = await userUserOperationClaimRepository.GetAsync(getModel);
-        return userUserOperationClaim;
+        return await userUserOperationClaimRepository.GetAsync(getModel);
     }
 
-    public async Task<IPaginate<UserOperationClaim>> GetListAsync(
-        GetListModelAsync<UserOperationClaim> getListAsyncModel)
+    public async Task<IPaginate<UserOperationClaim>> GetListAsync(GetListModelAsync<UserOperationClaim> getListAsyncModel)
     {
-        var userUserOperationClaimList =
-            await userUserOperationClaimRepository.GetListAsync(getListAsyncModel);
-        return userUserOperationClaimList;
+        return await userUserOperationClaimRepository.GetListAsync(getListAsyncModel);
     }
 
-    public async Task<UserOperationClaim> AddAsync(UserOperationClaim userUserOperationClaim,
-        CancellationToken cancellationToken)
+    public async Task<UserOperationClaim> AddAsync(UserOperationClaim userUserOperationClaim, CancellationToken cancellationToken)
     {
-        await _userUserOperationClaimBusinessRules.UserShouldNotHasOperationClaimAlreadyWhenInsert(
-            userUserOperationClaim.UserId,
-            userUserOperationClaim.OperationClaimId,
-            cancellationToken
-        );
-
-        var addedUserOperationClaim =
-            await userUserOperationClaimRepository.AddAsync(userUserOperationClaim, cancellationToken);
-
-        return addedUserOperationClaim;
+        await userOperationClaimBusinessRules
+            .UserShouldNotHasOperationClaimAlreadyWhenInsert(userUserOperationClaim.UserId, userUserOperationClaim.OperationClaimId,
+                cancellationToken);
+        return await userUserOperationClaimRepository.AddAsync(userUserOperationClaim, cancellationToken);
     }
 
     public async Task<UserOperationClaim> UpdateAsync(UserOperationClaim userUserOperationClaim,
         CancellationToken cancellationToken)
     {
-        await _userUserOperationClaimBusinessRules.UserShouldNotHasOperationClaimAlreadyWhenUpdated(
+        await userOperationClaimBusinessRules.UserShouldNotHasOperationClaimAlreadyWhenUpdated(
             userUserOperationClaim.Id,
             userUserOperationClaim.UserId,
             userUserOperationClaim.OperationClaimId,
             cancellationToken
         );
-        var updatedUserOperationClaim =
-            await userUserOperationClaimRepository.UpdateAsync(userUserOperationClaim, cancellationToken);
-        return updatedUserOperationClaim;
+        return await userUserOperationClaimRepository.UpdateAsync(userUserOperationClaim, cancellationToken);
     }
 
-    public async Task<UserOperationClaim> DeleteAsync(UserOperationClaim userUserOperationClaim,
-        CancellationToken cancellationToken, bool permanent = false)
+    public async Task<UserOperationClaim> DeleteAsync(UserOperationClaim userUserOperationClaim, CancellationToken cancellationToken,
+        bool permanent = false)
     {
-        var deletedUserOperationClaim =
-            await userUserOperationClaimRepository.DeleteAsync(userUserOperationClaim);
-        return deletedUserOperationClaim;
+        return await userUserOperationClaimRepository.DeleteAsync(userUserOperationClaim);
     }
 }

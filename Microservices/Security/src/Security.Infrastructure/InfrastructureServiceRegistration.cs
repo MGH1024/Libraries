@@ -10,7 +10,7 @@ using MGH.Core.Infrastructure.MessageBroker;
 using MGH.Core.Infrastructure.MessageBroker.RabbitMq;
 using MGH.Core.Infrastructure.MessageBroker.RabbitMq.Model;
 using MGH.Core.Infrastructure.Public;
-using MGH.Core.Infrastructure.Securities.Security.JWT;
+using MGH.Core.Infrastructure.Securities.Security;
 using MGH.Core.Persistence.Models.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -77,7 +77,7 @@ public static class InfrastructureServiceRegistration
         services.AddScoped<IUow, UnitOfWork>();
         services.AddTransient<IDateTime, DateTimeService>();
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
-        services.AddScoped<ITokenHelper, JwtHelper>();
+        services.AddSecurityServices();
         services.AddCulture();
         services.AddElasticSearch(configuration);
         services.AddRabbitMq(configuration);
@@ -134,17 +134,7 @@ public static class InfrastructureServiceRegistration
 
     private static void AddRabbitMq(this IServiceCollection services, IConfiguration configuration)
     {
-        const string configurationSection = "RabbitMQ";
-        var setting =
-            configuration.GetSection(configurationSection).Get<RabbitMq>()
-            ?? throw new NullReferenceException($"\"{configurationSection}\" " +
-                                                $"section cannot found in configuration.");
-
-        services.Configure<RabbitMq>(option =>
-            configuration.GetSection(nameof(RabbitMq)).Bind(option));
-
-
-        services.AddTransient(typeof(IMessageSender<>),
-            typeof(RabbitMqService<>));
+        services.Configure<RabbitMq>(option => configuration.GetSection(nameof(RabbitMq)).Bind(option));
+        services.AddTransient(typeof(IMessageSender<>), typeof(RabbitMqService<>));
     }
 }

@@ -12,7 +12,7 @@ using MGH.Core.Infrastructure.MessageBroker;
 using MGH.Core.Infrastructure.MessageBroker.RabbitMq;
 using MGH.Core.Infrastructure.MessageBroker.RabbitMq.Model;
 using MGH.Core.Infrastructure.Public;
-using MGH.Core.Infrastructure.Securities.Security.JWT;
+using MGH.Core.Infrastructure.Securities.Security;
 using MGH.Core.Persistence.Models.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -40,13 +40,13 @@ public static class InfrastructureServiceRegistration
             .SqlConnection;
 
         services.AddDbContext<LibraryDbContext>(options =>
-                options.UseSqlServer(sqlConfig, a =>
-                    {
-                        a.EnableRetryOnFailure();
-                        //a.MigrationsAssembly("Library.Api");
-                    })
-                    .AddInterceptors()
-                    .LogTo(Console.Write, LogLevel.Information));
+            options.UseSqlServer(sqlConfig, a =>
+                {
+                    a.EnableRetryOnFailure();
+                    //a.MigrationsAssembly("Library.Api");
+                })
+                .AddInterceptors()
+                .LogTo(Console.Write, LogLevel.Information));
 
 
         #region postgres
@@ -78,10 +78,10 @@ public static class InfrastructureServiceRegistration
         services.AddScoped<ILibraryPolicy, DistrictPolicy>();
         services.AddTransient<IDateTime, DateTimeService>();
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
-        services.AddScoped<ITokenHelper, JwtHelper>();
         services.AddCulture();
         services.AddElasticSearch(configuration);
         services.AddRabbitMq(configuration);
+        services.AddSecurityServices();
         return services;
     }
 
@@ -135,17 +135,7 @@ public static class InfrastructureServiceRegistration
 
     private static void AddRabbitMq(this IServiceCollection services, IConfiguration configuration)
     {
-        const string configurationSection = "RabbitMQ";
-        var setting =
-            configuration.GetSection(configurationSection).Get<RabbitMq>()
-            ?? throw new NullReferenceException($"\"{configurationSection}\" " +
-                                                $"section cannot found in configuration.");
-
-        services.Configure<RabbitMq>(option =>
-            configuration.GetSection(nameof(RabbitMq)).Bind(option));
-
-
-        services.AddTransient(typeof(IMessageSender<>),
-            typeof(RabbitMqService<>));
+        services.Configure<RabbitMq>(option => configuration.GetSection(nameof(RabbitMq)).Bind(option));
+        services.AddTransient(typeof(IMessageSender<>), typeof(RabbitMqService<>));
     }
 }
