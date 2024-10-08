@@ -7,7 +7,7 @@ using Persistence.Repositories.Security;
 
 namespace Persistence.Repositories;
 
-public class UnitOfWork(SecurityDbContext context, IDateTime dateTime) : IUow
+public class UnitOfWork(SecurityDbContext context) : IUow
 {
     private IDbContextTransaction _transaction;
     private OperationClaimRepository _operationClaimRepository;

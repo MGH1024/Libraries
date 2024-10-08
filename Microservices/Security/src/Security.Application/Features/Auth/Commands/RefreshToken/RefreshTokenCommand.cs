@@ -1,11 +1,7 @@
-﻿using Application.Features.Auth.Rules;
-using Application.Services.AuthService;
-using Application.Services.UsersService;
-using AutoMapper;
-using Domain;
+﻿using Domain;
 using MGH.Core.Domain.Buses.Commands;
-using MGH.Core.Infrastructure.Securities.Security.Entities;
-using MGH.Core.Persistence.Models.Filters.GetModels;
+using Application.Features.Auth.Rules;
+using Application.Services.AuthService;
 
 namespace Application.Features.Auth.Commands.RefreshToken;
 
@@ -21,9 +17,7 @@ public class RefreshTokenCommand(string refreshToken, string ipAddress) : IComma
 
 public class RefreshTokenCommandHandler(
     IAuthService authService,
-    IUserService userService,
     IUow uow,
-    IMapper mapper,
     AuthBusinessRules authBusinessRules)
     : ICommandHandler<RefreshTokenCommand, RefreshedTokensResponse>
 {

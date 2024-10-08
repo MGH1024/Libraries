@@ -1,5 +1,4 @@
 using Application.Features.Auth.Constants;
-using AutoMapper;
 using Domain;
 using MGH.Core.Application.Rules;
 using MGH.Core.CrossCutting.Exceptions.Types;
@@ -8,7 +7,7 @@ using MGH.Core.Infrastructure.Securities.Security.Hashing;
 
 namespace Application.Features.Auth.Rules;
 
-public class AuthBusinessRules(IUow uow, IMapper mapper) : BaseBusinessRules
+public class AuthBusinessRules(IUow uow) : BaseBusinessRules
 {
     public Task UserShouldBeExistsWhenSelected(User user)
     {

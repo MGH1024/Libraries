@@ -4,9 +4,9 @@ namespace MGH.Core.Infrastructure.Securities.Security.Extensions;
 
 public static class ClaimsPrincipalExtensions
 {
-    public static List<string> Claims(this ClaimsPrincipal claimsPrincipal, string claimType)
+    private static List<string> Claims(this ClaimsPrincipal claimsPrincipal, string claimType)
     {
-        var result = claimsPrincipal?.FindAll(claimType)?.Select(x => x.Value).ToList();
+        var result = claimsPrincipal?.FindAll(claimType).Select(x => x.Value).ToList();
         return result;
     }
 

@@ -19,7 +19,7 @@ public static class HashingHelper
     {
         using HMACSHA512 hmac = new(passwordSalt);
 
-        byte[] computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+        var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
 
         return computedHash.SequenceEqual(passwordHash);
     }

@@ -7,11 +7,7 @@ using MGH.Core.Infrastructure.Securities.Security.Entities;
 
 namespace Application.Services.AuthService;
 
-public class AuthManager(
-    IUow uow,
-    ITokenHelper tokenHelper,
-    IDateTime time,
-    IOptions<TokenOptions> options) : IAuthService
+public class AuthManager(IUow uow, ITokenHelper tokenHelper, IDateTime time, IOptions<TokenOptions> options) : IAuthService
 {
     private readonly TokenOptions _tokenOptions = options.Value;
 
@@ -29,7 +25,7 @@ public class AuthManager(
     public async Task DeleteOldRefreshTokens(int userId, CancellationToken cancellationToken)
     {
         var refreshTokens = await uow.RefreshToken.GetRefreshTokenByUserId(userId, _tokenOptions.RefreshTokenTtl, cancellationToken);
-        await uow.RefreshToken.DeleteRangeAsync(refreshTokens,false);
+        await uow.RefreshToken.DeleteRangeAsync(refreshTokens, false);
     }
 
     public async Task<RefreshTkn> GetRefreshTokenByToken(string token, CancellationToken cancellationToken)

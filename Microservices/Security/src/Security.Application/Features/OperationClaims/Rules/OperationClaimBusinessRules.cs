@@ -1,5 +1,4 @@
 using Application.Features.OperationClaims.Constants;
-using AutoMapper;
 using Domain;
 using MGH.Core.Application.Rules;
 using MGH.Core.CrossCutting.Exceptions.Types;
@@ -8,7 +7,7 @@ using MGH.Core.Persistence.Models.Filters.GetModels;
 
 namespace Application.Features.OperationClaims.Rules;
 
-public class OperationClaimBusinessRules(IUow uow, IMapper mapper) : BaseBusinessRules
+public class OperationClaimBusinessRules(IUow uow) : BaseBusinessRules
 {
     public Task OperationClaimShouldExistWhenSelected(OperationClaim operationClaim)
     {
