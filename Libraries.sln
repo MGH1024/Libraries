@@ -11,15 +11,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Library.Application", "Micr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Library.Infrastructure", "Microservices\Library\src\Library.Infrastructure\Library.Infrastructure.csproj", "{45B733BC-F438-48FE-9601-8A7665A30C61}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Library.Api", "Microservices\Library\src\Library.Endpoint.Api\Library.Endpoint.Api.csproj", "{59F9393C-EBB6-48D7-B894-DD408E83E7F9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Library.Endpoint.Api", "Microservices\Library\src\Library.Endpoint.Api\Library.Endpoint.Api.csproj", "{59F9393C-EBB6-48D7-B894-DD408E83E7F9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Microservices", "Microservices", "{D219B390-9D8C-4EF8-AE59-F0D47362F508}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Framework", "Framework", "{084E41B7-2029-4EB7-8CC3-EDBEE5C66534}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MGH.Core.Application", "Framework\MGH.Core.Application\MGH.Core.Application.csproj", "{B52AAC53-8D2E-45B1-A0C4-F6293379DF53}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MGH.Core.Application", "Framework\MGH.Core.Application\MGH.Core.Application.csproj", "{B52AAC53-8D2E-45B1-A0C4-F6293379DF53}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MGH.Core.CrossCutting", "Framework\MGH.Core.CrossCutting\MGH.Core.CrossCutting.csproj", "{BE2E5B6B-1DEC-4AD2-8649-2551E6EE4126}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MGH.Core.CrossCutting", "Framework\MGH.Core.CrossCutting\MGH.Core.CrossCutting.csproj", "{BE2E5B6B-1DEC-4AD2-8649-2551E6EE4126}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{C43F332F-A615-438C-8DAF-6DD04C84241A}"
 EndProject
@@ -31,31 +31,33 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker-compose", "docker-co
 		Microservices\docker-compose\RabbitMqCompose.yml = Microservices\docker-compose\RabbitMqCompose.yml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Library.Worker.Outbox", "Microservices\Library\src\Library.Endpoint.Worker.Outbox\Library.Endpoint.Worker.Outbox.csproj", "{AB963CB7-2BEC-4D64-AD22-C265FB2F2B7B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Library.Endpoint.Worker.Outbox", "Microservices\Library\src\Library.Endpoint.Worker.Outbox\Library.Endpoint.Worker.Outbox.csproj", "{AB963CB7-2BEC-4D64-AD22-C265FB2F2B7B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MGH.Core.Infrastructure.ElasticSearch", "Framework\MGH.Core.Infrastructure.ElasticSearch\MGH.Core.Infrastructure.ElasticSearch.csproj", "{8A4C2639-27C3-4115-9C10-AC1893ED936C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MGH.Core.Infrastructure.ElasticSearch", "Framework\MGH.Core.Infrastructure.ElasticSearch\MGH.Core.Infrastructure.ElasticSearch.csproj", "{8A4C2639-27C3-4115-9C10-AC1893ED936C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MGH.Core.Infrastructure.MessageBroker.RabbitMq", "Framework\MGH.Core.Infrastructure.MessageBroker.RabbitMq\MGH.Core.Infrastructure.MessageBroker.RabbitMq.csproj", "{DE3DB833-9224-481F-B758-52447CA4CDFB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MGH.Core.Infrastructure.MessageBroker.RabbitMq", "Framework\MGH.Core.Infrastructure.MessageBroker.RabbitMq\MGH.Core.Infrastructure.MessageBroker.RabbitMq.csproj", "{DE3DB833-9224-481F-B758-52447CA4CDFB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MGH.Core.Infrastructure.MessageBroker", "Framework\MGH.Core.Infrastructure.MessageBroker\MGH.Core.Infrastructure.MessageBroker.csproj", "{DD61CDA4-5177-42AF-920F-AD1307FBF0B1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MGH.Core.Infrastructure.MessageBroker", "Framework\MGH.Core.Infrastructure.MessageBroker\MGH.Core.Infrastructure.MessageBroker.csproj", "{DD61CDA4-5177-42AF-920F-AD1307FBF0B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MGH.Core.Infrastructure.Securities", "Framework\MGH.Core.Infrastructure.Securities\MGH.Core.Infrastructure.Securities.csproj", "{50A58174-DBD1-4186-B086-06921C8F7917}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MGH.Core.Infrastructure.Securities", "Framework\MGH.Core.Infrastructure.Securities\MGH.Core.Infrastructure.Securities.csproj", "{50A58174-DBD1-4186-B086-06921C8F7917}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MGH.Core.CrossCutting.Logging", "Framework\MGH.Core.CrossCutting.Logging\MGH.Core.CrossCutting.Logging.csproj", "{4B933F1B-2FE4-442D-A77D-7BFBE2752091}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MGH.Core.CrossCutting.Logging", "Framework\MGH.Core.CrossCutting.Logging\MGH.Core.CrossCutting.Logging.csproj", "{4B933F1B-2FE4-442D-A77D-7BFBE2752091}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Library.Test", "Microservices\Library\src\Library.Test\Library.Test.csproj", "{99299A61-65F6-4C18-87E4-91931A9C5B92}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Library.Test", "Microservices\Library\src\Library.Test\Library.Test.csproj", "{99299A61-65F6-4C18-87E4-91931A9C5B92}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Security", "Security", "{5F055678-C2FB-44FF-B72E-8403510D7F1F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security.Application", "Microservices\Security\src\Security.Application\Security.Application.csproj", "{41710727-04A3-4E73-AF27-8D7512C5593E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Security.Application", "Microservices\Security\src\Security.Application\Security.Application.csproj", "{41710727-04A3-4E73-AF27-8D7512C5593E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security.Domain", "Microservices\Security\src\Security.Domain\Security.Domain.csproj", "{9EB449A2-A1F0-4574-9349-C04BDCCA63BA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Security.Domain", "Microservices\Security\src\Security.Domain\Security.Domain.csproj", "{9EB449A2-A1F0-4574-9349-C04BDCCA63BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security.Endpoint.Api", "Microservices\Security\src\Security.Endpoint.Api\Security.Endpoint.Api.csproj", "{2AC07AA7-0C56-42A9-BBF4-C5AC3E440239}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Security.Endpoint.Api", "Microservices\Security\src\Security.Endpoint.Api\Security.Endpoint.Api.csproj", "{2AC07AA7-0C56-42A9-BBF4-C5AC3E440239}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security.Test", "Microservices\Security\src\Security.Test\Security.Test.csproj", "{929601C9-4BE3-4EC0-8443-FCA13BFF85F2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Security.Test", "Microservices\Security\src\Security.Test\Security.Test.csproj", "{929601C9-4BE3-4EC0-8443-FCA13BFF85F2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security.Infrastructure", "Microservices\Security\src\Security.Infrastructure\Security.Infrastructure.csproj", "{EA319677-A9EA-49F3-A4AC-803D401BCDC5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Security.Infrastructure", "Microservices\Security\src\Security.Infrastructure\Security.Infrastructure.csproj", "{EA319677-A9EA-49F3-A4AC-803D401BCDC5}"
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "security.front", "Microservices\Security\src\security.front\security.front.esproj", "{8BB03496-9AC2-4DDE-ADD2-12ECB724C9B7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -135,26 +137,32 @@ Global
 		{EA319677-A9EA-49F3-A4AC-803D401BCDC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EA319677-A9EA-49F3-A4AC-803D401BCDC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EA319677-A9EA-49F3-A4AC-803D401BCDC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8BB03496-9AC2-4DDE-ADD2-12ECB724C9B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BB03496-9AC2-4DDE-ADD2-12ECB724C9B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BB03496-9AC2-4DDE-ADD2-12ECB724C9B7}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{8BB03496-9AC2-4DDE-ADD2-12ECB724C9B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BB03496-9AC2-4DDE-ADD2-12ECB724C9B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8BB03496-9AC2-4DDE-ADD2-12ECB724C9B7}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{88C6BDD9-95BF-462A-9585-C5CB14B1EB4D} = {D219B390-9D8C-4EF8-AE59-F0D47362F508}
+		{AE95ED3D-FDAE-4F44-A1B0-7709C54A8428} = {C43F332F-A615-438C-8DAF-6DD04C84241A}
+		{BBCAA495-CF49-44E6-8C06-B0B8D8C5CECB} = {C43F332F-A615-438C-8DAF-6DD04C84241A}
+		{45B733BC-F438-48FE-9601-8A7665A30C61} = {C43F332F-A615-438C-8DAF-6DD04C84241A}
+		{59F9393C-EBB6-48D7-B894-DD408E83E7F9} = {C43F332F-A615-438C-8DAF-6DD04C84241A}
 		{B52AAC53-8D2E-45B1-A0C4-F6293379DF53} = {084E41B7-2029-4EB7-8CC3-EDBEE5C66534}
 		{BE2E5B6B-1DEC-4AD2-8649-2551E6EE4126} = {084E41B7-2029-4EB7-8CC3-EDBEE5C66534}
 		{C43F332F-A615-438C-8DAF-6DD04C84241A} = {88C6BDD9-95BF-462A-9585-C5CB14B1EB4D}
 		{784CF392-FAC9-410B-9DFE-28A624E78015} = {D219B390-9D8C-4EF8-AE59-F0D47362F508}
+		{AB963CB7-2BEC-4D64-AD22-C265FB2F2B7B} = {C43F332F-A615-438C-8DAF-6DD04C84241A}
 		{8A4C2639-27C3-4115-9C10-AC1893ED936C} = {084E41B7-2029-4EB7-8CC3-EDBEE5C66534}
 		{DE3DB833-9224-481F-B758-52447CA4CDFB} = {084E41B7-2029-4EB7-8CC3-EDBEE5C66534}
 		{DD61CDA4-5177-42AF-920F-AD1307FBF0B1} = {084E41B7-2029-4EB7-8CC3-EDBEE5C66534}
 		{50A58174-DBD1-4186-B086-06921C8F7917} = {084E41B7-2029-4EB7-8CC3-EDBEE5C66534}
 		{4B933F1B-2FE4-442D-A77D-7BFBE2752091} = {084E41B7-2029-4EB7-8CC3-EDBEE5C66534}
-		{BBCAA495-CF49-44E6-8C06-B0B8D8C5CECB} = {C43F332F-A615-438C-8DAF-6DD04C84241A}
-		{AE95ED3D-FDAE-4F44-A1B0-7709C54A8428} = {C43F332F-A615-438C-8DAF-6DD04C84241A}
-		{45B733BC-F438-48FE-9601-8A7665A30C61} = {C43F332F-A615-438C-8DAF-6DD04C84241A}
-		{AB963CB7-2BEC-4D64-AD22-C265FB2F2B7B} = {C43F332F-A615-438C-8DAF-6DD04C84241A}
-		{59F9393C-EBB6-48D7-B894-DD408E83E7F9} = {C43F332F-A615-438C-8DAF-6DD04C84241A}
 		{99299A61-65F6-4C18-87E4-91931A9C5B92} = {C43F332F-A615-438C-8DAF-6DD04C84241A}
 		{5F055678-C2FB-44FF-B72E-8403510D7F1F} = {D219B390-9D8C-4EF8-AE59-F0D47362F508}
 		{41710727-04A3-4E73-AF27-8D7512C5593E} = {5F055678-C2FB-44FF-B72E-8403510D7F1F}
@@ -162,6 +170,7 @@ Global
 		{2AC07AA7-0C56-42A9-BBF4-C5AC3E440239} = {5F055678-C2FB-44FF-B72E-8403510D7F1F}
 		{929601C9-4BE3-4EC0-8443-FCA13BFF85F2} = {5F055678-C2FB-44FF-B72E-8403510D7F1F}
 		{EA319677-A9EA-49F3-A4AC-803D401BCDC5} = {5F055678-C2FB-44FF-B72E-8403510D7F1F}
+		{8BB03496-9AC2-4DDE-ADD2-12ECB724C9B7} = {5F055678-C2FB-44FF-B72E-8403510D7F1F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {04EE5569-4196-47F2-A52B-CF1049C542F2}
