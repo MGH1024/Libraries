@@ -6,4 +6,5 @@ namespace Persistence.Repositories;
 
 public class LibraryRepository(LibraryDbContext libraryDbContext) :AggregateRepository<Library,Guid>,ILibraryRepository
 {
+    
 }

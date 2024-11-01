@@ -8,6 +8,9 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="AutoMapper" Version="12.0.1" />
+        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+        <PackageReference Include="MGH.Core.Infrastructure" Version="2.0.1" />
         <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2"/>
         <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.7"/>
@@ -27,11 +30,11 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Security.Application\Security.Application.csproj"/>
+        <ProjectReference Include="..\..\..\..\Framework\MGH.Core.Infrastructure.ElasticSearch\MGH.Core.Infrastructure.ElasticSearch.csproj" />
         <ProjectReference Include="..\Security.Domain\Security.Domain.csproj"/>
         <ProjectReference Include="..\..\..\..\Framework\MGH.Core.Infrastructure.MessageBroker.RabbitMq\MGH.Core.Infrastructure.MessageBroker.RabbitMq.csproj"/>
         <ProjectReference Include="..\..\..\..\Framework\MGH.Core.Infrastructure.Securities\MGH.Core.Infrastructure.Securities.csproj"/>
-        <ProjectReference Include="..\Security.Application\Security.Application.csproj"/>
+<!--        <ProjectReference Include="..\Security.Application\Security.Application.csproj"/>-->
     </ItemGroup>
 
 
