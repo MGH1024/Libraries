@@ -39,13 +39,13 @@ public static class InfrastructureServiceRegistration
             .SqlConnection;
 
         services.AddDbContext<SecurityDbContext>(options =>
-                options.UseSqlServer(sqlConfig, a =>
-                    {
-                        a.EnableRetryOnFailure();
-                        //a.MigrationsAssembly("Library.Api");
-                    })
-                    .AddInterceptors()
-                    .LogTo(Console.Write, LogLevel.Information));
+            options.UseSqlServer(sqlConfig, a =>
+                {
+                    a.EnableRetryOnFailure();
+                    //a.MigrationsAssembly("Library.Api");
+                })
+                .AddInterceptors()
+                .LogTo(Console.Write, LogLevel.Information));
 
 
         #region postgres
@@ -70,18 +70,24 @@ public static class InfrastructureServiceRegistration
 
         services.AddDbContext<SecurityDbContext>(options => options.UseInMemoryDatabase("LibraryDbContext-InMemory"));
         services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+        services.AddSecurityRepositories();
+        services.AddSecurityServices();
+        services.AddScoped<IUow, UnitOfWork>();
+        services.AddTransient<IDateTime, DateTimeService>();
+        services.AddAutoMapper(Assembly.GetExecutingAssembly());
+        services.AddCulture();
+        services.AddElasticSearch(configuration);
+        services.AddRabbitMq(configuration);
+        services.AddInfrastructureHealthChecks(configuration);
+        return services;
+    }
+
+    private static void AddSecurityRepositories(this IServiceCollection services)
+    {
         services.AddScoped<IOperationClaimRepository, OperationClaimRepository>();
         services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
         services.AddScoped<IUserOperationClaimRepository, UserOperationClaimRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
-        services.AddScoped<IUow, UnitOfWork>();
-        services.AddTransient<IDateTime, DateTimeService>();
-        services.AddAutoMapper(Assembly.GetExecutingAssembly());
-        services.AddSecurityServices();
-        services.AddCulture();
-        services.AddElasticSearch(configuration);
-        services.AddRabbitMq(configuration);
-        return services;
     }
 
     private static void AddCulture(this IServiceCollection services)
@@ -136,5 +142,38 @@ public static class InfrastructureServiceRegistration
     {
         services.Configure<RabbitMq>(option => configuration.GetSection(nameof(RabbitMq)).Bind(option));
         services.AddTransient(typeof(IMessageSender<>), typeof(RabbitMqService<>));
+    }
+
+    private static void AddInfrastructureHealthChecks(this IServiceCollection services, IConfiguration configuration)
+    {
+        var sqlConnectionString = configuration.GetSection(nameof(DatabaseConnection))
+                                      .GetValue<string>("SqlConnection") ??
+                                  throw new ArgumentNullException(nameof(DatabaseConnection.SqlConnection));
+
+        var rabbitMqConnectionString =
+            configuration.GetSection(nameof(RabbitMq))
+                .GetValue<RabbitMqConnection>(nameof(RabbitMq.DefaultConnection));
+
+        // var aa = configuration.GetSection(nameof(RabbitMq))
+        //     .GetValue<RabbitMq>(nameof(RabbitMq)).DefaultConnection.HostAddress;
+        //?? throw new ArgumentNullException(nameof(RabbitMq.DefaultConnection.HostAddress));
+        
+        
+        var rabbitMqConfig = configuration.GetSection("RabbitMq").Get<RabbitMq>();
+        var defaultConnection = rabbitMqConfig.DefaultConnection;
+
+        services.AddHealthChecks()
+            .AddSqlServer(sqlConnectionString)
+            .AddDbContextCheck<SecurityDbContext>()
+            .AddRabbitMQ(defaultConnection.HealthAddress);
+        
+        services.AddHealthChecksUI(setup =>
+            {
+                setup.SetEvaluationTimeInSeconds(10); // Set the evaluation time for health checks
+                setup.MaximumHistoryEntriesPerEndpoint(60); // Set maximum history of health checks
+                setup.SetApiMaxActiveRequests(1); // Set maximum API request concurrency
+                setup.AddHealthCheckEndpoint("Health Check API", "/api/health"); // Map your health check API
+            })
+            .AddInMemoryStorage();
     }
 }

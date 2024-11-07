@@ -13,4 +13,16 @@ public class RabbitMqConnection
     {
         get { return new Uri($"rabbitmq://{Username}:{Password}@{Host}:{Port}/{VirtualHost}"); }
     }
+    public Uri HealthAddress
+    {
+        get
+        {
+            var virtualHost = "";
+            if (!string.IsNullOrEmpty(VirtualHost) && VirtualHost != "/")
+                virtualHost = "/"+VirtualHost;
+        
+            return new Uri($"amqp://{Username}:{Password}@{Host}:{Port}{virtualHost}");
+        }
+    }
+
 }

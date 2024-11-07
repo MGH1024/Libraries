@@ -1,0 +1,101 @@
+﻿/* Customize the background color of the health check UI */
+body {
+    background-color: #f4f4f9;
+    font-family: Arial, sans-serif;
+    color: #333;
+}
+
+/* Customize the header style */
+header {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+}
+
+/* Style for health check status cards */
+.card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin: 15px;
+    padding: 20px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+/* Add green for healthy status */
+.card-healthy .card-header {
+    background-color: #28a745;
+}
+
+/* Add red for unhealthy status */
+.card-unhealthy .card-header {
+    background-color: #dc3545;
+}
+
+/* Add yellow for warning status */
+.card-warning .card-header {
+    background-color: #ffc107;
+}
+
+/* Style for the overall health check table */
+.table {
+    margin-top: 20px;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th, .table td {
+    padding: 12px 15px;
+    text-align: center;
+}
+
+.table th {
+    background-color: #007bff;
+    color: white;
+}
+
+.table td {
+    border: 1px solid #ddd;
+}
+
+/* Custom button style */
+button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Styling for the health status labels */
+.status-label {
+    font-weight: bold;
+    padding: 5px;
+    border-radius: 5px;
+    color: white;
+}
+
+.status-healthy {
+    background-color: #28a745;
+}
+
+.status-unhealthy {
+    background-color: #dc3545;
+}
+
+.status-warning {
+    background-color: #ffc107;
+}
