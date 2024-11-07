@@ -13,7 +13,7 @@ namespace Api.Controllers.V1;
 [ApiController]
 [ApiVersion(1)]
 [Route("{culture:CultureRouteConstraint}/api/v{v:apiVersion}/[Controller]")]
-public class AuthController(ISender sender,IMapper mapper) : AppController(sender)
+public class AuthController(ISender sender, IMapper mapper) : AppController(sender)
 {
     /// <summary>
     /// login 
@@ -22,17 +22,18 @@ public class AuthController(ISender sender,IMapper mapper) : AppController(sende
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpPost("Login")]
-    public async Task<IActionResult> Login([FromBody] UserForLoginDto userForLoginDto, CancellationToken cancellationToken)
+    public async Task<IActionResult> Login([FromBody] UserForLoginDto userForLoginDto,
+        CancellationToken cancellationToken)
     {
         var loginCommand = mapper.Map<LoginCommand>(userForLoginDto, opt => { opt.Items["IpAddress"] = IpAddress(); });
-        
+
         var result = await Sender.Send(loginCommand, cancellationToken);
         if (!result.IsSuccess)
             return BadRequest("Failed to login");
-        
+
         if (result.RefreshTkn is not null)
             SetRefreshTokenToCookie(result.RefreshTkn);
-        
+
         return Ok(result.ToHttpResponse());
     }
 
@@ -43,7 +44,8 @@ public class AuthController(ISender sender,IMapper mapper) : AppController(sende
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpPost("Register")]
-    public async Task<IActionResult> Register([FromBody] UserForRegisterDto userForRegisterDto, CancellationToken cancellationToken)
+    public async Task<IActionResult> Register([FromBody] UserForRegisterDto userForRegisterDto,
+        CancellationToken cancellationToken)
     {
         var registerCommand = userForRegisterDto.ToRegisterCommand(IpAddress());
 
@@ -73,7 +75,8 @@ public class AuthController(ISender sender,IMapper mapper) : AppController(sende
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpPut("RevokeToken")]
-    public async Task<IActionResult> RevokeToken([FromBody(EmptyBodyBehavior = EmptyBodyBehavior.Allow)] string refreshToken,
+    public async Task<IActionResult> RevokeToken(
+        [FromBody(EmptyBodyBehavior = EmptyBodyBehavior.Allow)] string refreshToken,
         CancellationToken cancellationToken)
     {
         var token = refreshToken ?? GetRefreshTokenFromCookies();
@@ -84,7 +87,8 @@ public class AuthController(ISender sender,IMapper mapper) : AppController(sende
     }
 
     private string GetRefreshTokenFromCookies() => Request.Cookies["refreshToken"] ??
-                                                   throw new ArgumentException("Refresh token is not found in request cookies.");
+                                                   throw new ArgumentException(
+                                                       "Refresh token is not found in request cookies.");
 
     private void SetRefreshTokenToCookie(RefreshTkn refreshToken)
     {
