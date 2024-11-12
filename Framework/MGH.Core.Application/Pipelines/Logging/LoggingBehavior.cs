@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
+
 namespace MGH.Core.Application.Pipelines.Logging;
 
 public class LoggingBehaviour<TRequest, TResponse>(ILogger<LoggingBehaviour<TRequest, TResponse>> logger)
@@ -26,4 +27,3 @@ public class LoggingBehaviour<TRequest, TResponse>(ILogger<LoggingBehaviour<TReq
         return response;
     }
 }
-

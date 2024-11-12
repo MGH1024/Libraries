@@ -12,4 +12,6 @@ public static class DatabaseTableName
     public const string UserOperationClaims = "UserOperationClaims";
     public const string Policy = "Policies";
     public const string PolicyOperationClaim = "PolicyOperationClaims";
+    
+    public const string LogEntry = "LogEntries";
 }

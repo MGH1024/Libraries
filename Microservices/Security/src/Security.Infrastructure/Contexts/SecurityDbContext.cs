@@ -29,4 +29,5 @@ public class SecurityDbContext(DbContextOptions<SecurityDbContext> options, IDat
     public DbSet<RefreshTkn> RefreshTokens { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
+    
 }
