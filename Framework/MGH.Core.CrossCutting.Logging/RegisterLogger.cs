@@ -11,7 +11,6 @@ public static class RegisterLogger
         and there is no need to explicitly add WriteTo.File and WriteTo.MsSqlServer in the code.***/
     public static void CreateLoggerByConfig(IConfiguration configuration,IHostBuilder host)
     {
-       var a = configuration.GetSection("Serilog:WriteTo");
         Log.Logger = new LoggerConfiguration()
             .ReadFrom.Configuration(configuration)
             .WriteTo.Async(wt => wt.Console())
