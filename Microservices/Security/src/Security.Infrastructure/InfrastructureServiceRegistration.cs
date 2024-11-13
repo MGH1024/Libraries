@@ -150,23 +150,14 @@ public static class InfrastructureServiceRegistration
                                       .GetValue<string>("SqlConnection") ??
                                   throw new ArgumentNullException(nameof(DatabaseConnection.SqlConnection));
 
-        var rabbitMqConnectionString =
-            configuration.GetSection(nameof(RabbitMq))
-                .GetValue<RabbitMqConnection>(nameof(RabbitMq.DefaultConnection));
-
-        // var aa = configuration.GetSection(nameof(RabbitMq))
-        //     .GetValue<RabbitMq>(nameof(RabbitMq)).DefaultConnection.HostAddress;
-        //?? throw new ArgumentNullException(nameof(RabbitMq.DefaultConnection.HostAddress));
-        
-        
-        var rabbitMqConfig = configuration.GetSection("RabbitMq").Get<RabbitMq>();
-        var defaultConnection = rabbitMqConfig.DefaultConnection;
+        var defaultConnection = configuration.GetSection("RabbitMq:DefaultConnection").Get<RabbitMqConnection>()
+                                ?? throw new ArgumentNullException(nameof(RabbitMq.DefaultConnection));
 
         services.AddHealthChecks()
             .AddSqlServer(sqlConnectionString)
             .AddDbContextCheck<SecurityDbContext>()
             .AddRabbitMQ(defaultConnection.HealthAddress);
-        
+
         services.AddHealthChecksUI(setup =>
             {
                 setup.SetEvaluationTimeInSeconds(10); // Set the evaluation time for health checks
