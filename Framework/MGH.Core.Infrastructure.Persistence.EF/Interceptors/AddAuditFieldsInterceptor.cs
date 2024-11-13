@@ -1,8 +1,8 @@
-﻿using MGH.Core.Infrastructure.Public;
-using MGH.Core.Persistence.Extensions;
+﻿using MGH.Core.Infrastructure.Persistence.EF.Extensions;
+using MGH.Core.Infrastructure.Public;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
-namespace MGH.Core.Persistence.Interceptors;
+namespace MGH.Core.Infrastructure.Persistence.EF.Interceptors;
 
 public class AddAuditFieldsInterceptor(IDateTime dateTime) : SaveChangesInterceptor
 {

@@ -1,9 +1,9 @@
 ﻿using System.Linq.Dynamic.Core;
 using System.Text;
 using MGH.Core.Domain.Aggregate;
-using MGH.Core.Persistence.Models.Filters;
+using MGH.Core.Infrastructure.Persistence.EF.Models.Filters;
 
-namespace MGH.Core.Persistence.Extensions;
+namespace MGH.Core.Infrastructure.Persistence.EF.Extensions;
 
 public static class QueryableDynamicFilterExtensions
 {

@@ -1,5 +1,5 @@
 ﻿using MGH.Core.Domain.Outboxes;
-using MGH.Core.Persistence.Base.Repository;
+using MGH.Core.Infrastructure.Persistence.EF.Base.Repository;
 
 namespace Domain.Entities.Libraries;
 

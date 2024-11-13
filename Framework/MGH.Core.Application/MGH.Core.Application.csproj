@@ -29,7 +29,7 @@
     <ItemGroup>
       <ProjectReference Include="..\MGH.Core.CrossCutting\MGH.Core.CrossCutting.csproj" />
       <ProjectReference Include="..\MGH.Core.Infrastructure.Securities\MGH.Core.Infrastructure.Securities.csproj" />
-      <ProjectReference Include="..\MGH.Core.Infrastructure.Persistence\MGH.Core.Infrastructure.Persistence.csproj" />
+      <ProjectReference Include="..\MGH.Core.Infrastructure.Persistence.EF\MGH.Core.Infrastructure.Persistence.EF.csproj" />
     </ItemGroup>
 
 </Project>

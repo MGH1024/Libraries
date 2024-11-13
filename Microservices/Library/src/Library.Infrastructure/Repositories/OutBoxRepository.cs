@@ -1,8 +1,8 @@
 ﻿using Persistence.Contexts;
 using Domain.Entities.Libraries;
 using MGH.Core.Infrastructure.Public;
-using MGH.Core.Persistence.Base.Repository;
 using MGH.Core.Domain.Outboxes;
+using MGH.Core.Infrastructure.Persistence.EF.Base.Repository;
 
 namespace Persistence.Repositories;
 

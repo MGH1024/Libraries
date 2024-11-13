@@ -1,4 +1,4 @@
-﻿namespace MGH.Core.Persistence.Base;
+﻿namespace MGH.Core.Infrastructure.Persistence.EF.Base;
 
 public interface IUnitOfWork
 {

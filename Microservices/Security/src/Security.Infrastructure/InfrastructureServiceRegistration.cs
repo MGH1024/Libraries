@@ -11,7 +11,6 @@ using MGH.Core.Infrastructure.MessageBroker.RabbitMq;
 using MGH.Core.Infrastructure.MessageBroker.RabbitMq.Model;
 using MGH.Core.Infrastructure.Public;
 using MGH.Core.Infrastructure.Securities.Security;
-using MGH.Core.Persistence.Models.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
@@ -26,6 +25,7 @@ using Persistence.Repositories;
 using Persistence.Repositories.Security;
 using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 using MGH.Core.Infrastructure.HealthCheck;
+using MGH.Core.Infrastructure.Persistence.EF.Models.Configuration;
 
 namespace Persistence;
 

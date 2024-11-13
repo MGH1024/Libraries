@@ -1,6 +1,6 @@
 ﻿using HealthChecks.UI.Client;
 using MGH.Core.Infrastructure.MessageBroker.RabbitMq.Model;
-using MGH.Core.Persistence.Models.Configuration;
+using MGH.Core.Infrastructure.Persistence.EF.Models.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.DependencyInjection;

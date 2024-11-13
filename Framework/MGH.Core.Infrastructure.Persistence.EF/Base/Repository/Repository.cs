@@ -1,29 +1,16 @@
 ﻿using System.Collections;
-using MGH.Core.Domain.Aggregate;
 using MGH.Core.Domain.Entity.Base;
-using MGH.Core.Persistence.Extensions;
-using MGH.Core.Persistence.Models.Paging;
+using MGH.Core.Infrastructure.Persistence.EF.Extensions;
+using MGH.Core.Infrastructure.Persistence.EF.Models.Filters.GetModels;
+using MGH.Core.Infrastructure.Persistence.EF.Models.Paging;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using MGH.Core.Persistence.Models.Filters.GetModels;
 
-namespace MGH.Core.Persistence.Base.Repository;
+namespace MGH.Core.Infrastructure.Persistence.EF.Base.Repository;
 
-public class AggregateRepository<TEntity, TKey> : IAggregateRepository<TEntity, TKey> where TEntity : AggregateRoot<TKey>
+public class Repository<TEntity, TKey>(DbContext dbContext) : IRepository<TEntity, TKey> where TEntity :AuditAbleEntity<TKey>
 {
-    private readonly DbContext _dbContext;
-
-    public AggregateRepository()
-    {
-    }
-
-    public AggregateRepository(DbContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
-
-
-    private IQueryable<TEntity> Query() => _dbContext.Set<TEntity>();
+    private IQueryable<TEntity> Query() => dbContext.Set<TEntity>();
 
     public async Task<TEntity> GetAsync(GetModel<TEntity> getBaseModel)
     {
@@ -37,9 +24,9 @@ public class AggregateRepository<TEntity, TKey> : IAggregateRepository<TEntity, 
         return await queryable.FirstOrDefaultAsync(getBaseModel.Predicate, getBaseModel.CancellationToken);
     }
 
-    public Task<TEntity> GetAsync(TKey id, CancellationToken cancellationToken)
+    public async Task<TEntity> GetAsync(TKey id, CancellationToken cancellationToken)
     {
-        return Query().Where(a => a.Id.Equals(id)).FirstOrDefaultAsync(cancellationToken);
+        return await dbContext.Set<TEntity>().FindAsync(id, cancellationToken);
     }
 
     public async Task<IPaginate<TEntity>> GetListAsync(GetListModelAsync<TEntity> getListAsyncModel)
@@ -88,8 +75,13 @@ public class AggregateRepository<TEntity, TKey> : IAggregateRepository<TEntity, 
 
     public async Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken)
     {
-        await _dbContext.AddAsync(entity, cancellationToken);
+        await dbContext.AddAsync(entity, cancellationToken);
         return entity;
+    }
+
+    public Task<TEntity> UpdateAsync(TEntity entity, CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
     }
 
     public async Task<TEntity> DeleteAsync(TEntity entity, bool permanent = false)
@@ -107,14 +99,14 @@ public class AggregateRepository<TEntity, TKey> : IAggregateRepository<TEntity, 
         }
         else
         {
-            _dbContext.Remove(entity);
+            dbContext.Remove(entity);
         }
     }
 
     private void CheckHasEntityHaveOneToOneRelation(TEntity entity)
     {
         bool hasEntityHaveOneToOneRelation =
-            _dbContext
+            dbContext
                 .Entry(entity)
                 .Metadata.GetForeignKeys()
                 .All(
@@ -136,7 +128,7 @@ public class AggregateRepository<TEntity, TKey> : IAggregateRepository<TEntity, 
             return;
         entity.DeletedAt = DateTime.UtcNow;
 
-        var navigations = _dbContext
+        var navigations = dbContext
             .Entry(entity)
             .Metadata.GetNavigations()
             .Where(x => x is
@@ -156,7 +148,7 @@ public class AggregateRepository<TEntity, TKey> : IAggregateRepository<TEntity, 
             {
                 if (navValue == null)
                 {
-                    IQueryable query = _dbContext.Entry(entity).Collection(navigation.PropertyInfo.Name).Query();
+                    IQueryable query = dbContext.Entry(entity).Collection(navigation.PropertyInfo.Name).Query();
                     navValue = await GetRelationLoaderQuery(query,
                         navigationPropertyType: navigation.PropertyInfo.GetType()).ToListAsync();
                 }
@@ -168,7 +160,7 @@ public class AggregateRepository<TEntity, TKey> : IAggregateRepository<TEntity, 
             {
                 if (navValue == null)
                 {
-                    IQueryable query = _dbContext.Entry(entity).Reference(navigation.PropertyInfo.Name).Query();
+                    IQueryable query = dbContext.Entry(entity).Reference(navigation.PropertyInfo.Name).Query();
                     navValue = await GetRelationLoaderQuery(query,
                             navigationPropertyType: navigation.PropertyInfo.GetType())
                         .FirstOrDefaultAsync();
@@ -180,7 +172,7 @@ public class AggregateRepository<TEntity, TKey> : IAggregateRepository<TEntity, 
             }
         }
 
-        _dbContext.Update(entity);
+        dbContext.Update(entity);
     }
 
     private IQueryable<object> GetRelationLoaderQuery(IQueryable query, Type navigationPropertyType)

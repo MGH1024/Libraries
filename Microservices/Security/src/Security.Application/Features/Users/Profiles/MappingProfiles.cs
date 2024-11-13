@@ -8,9 +8,9 @@ using Application.Features.Users.Queries.GetById;
 using Application.Features.Users.Queries.GetList;
 using AutoMapper;
 using MGH.Core.Application.Responses;
+using MGH.Core.Infrastructure.Persistence.EF.Models.Filters.GetModels;
+using MGH.Core.Infrastructure.Persistence.EF.Models.Paging;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
-using MGH.Core.Persistence.Models.Filters.GetModels;
-using MGH.Core.Persistence.Models.Paging;
 
 namespace Application.Features.Users.Profiles;
 

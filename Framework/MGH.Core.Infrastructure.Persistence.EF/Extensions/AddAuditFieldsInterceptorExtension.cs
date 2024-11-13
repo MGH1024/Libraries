@@ -1,12 +1,12 @@
 ﻿using System.Text.Json;
-using MGH.Core.Domain.Outboxes;
 using MGH.Core.Domain.Aggregate;
 using MGH.Core.Domain.Entity.Base;
+using MGH.Core.Domain.Outboxes;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
-namespace MGH.Core.Persistence.Extensions;
+namespace MGH.Core.Infrastructure.Persistence.EF.Extensions;
 
 public static class AddAuditFieldsInterceptorExtension
 {

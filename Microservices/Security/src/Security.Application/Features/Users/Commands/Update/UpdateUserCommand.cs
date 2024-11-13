@@ -7,7 +7,6 @@ using MGH.Core.Application.Pipelines.Authorization;
 using MGH.Core.Domain.Buses.Commands;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
 using MGH.Core.Infrastructure.Securities.Security.Hashing;
-using MGH.Core.Persistence.Models.Filters.GetModels;
 
 namespace Application.Features.Users.Commands.Update;
 

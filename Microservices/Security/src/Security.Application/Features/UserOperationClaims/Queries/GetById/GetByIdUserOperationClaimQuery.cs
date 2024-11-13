@@ -2,8 +2,8 @@ using Application.Features.UserOperationClaims.Rules;
 using AutoMapper;
 using Domain;
 using MediatR;
+using MGH.Core.Infrastructure.Persistence.EF.Models.Filters.GetModels;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
-using MGH.Core.Persistence.Models.Filters.GetModels;
 
 namespace Application.Features.UserOperationClaims.Queries.GetById;
 

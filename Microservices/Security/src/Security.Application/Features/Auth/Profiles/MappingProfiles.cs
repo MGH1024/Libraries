@@ -2,8 +2,8 @@ using System.Linq.Expressions;
 using Application.Features.Auth.Commands.Register;
 using Application.Features.Auth.Commands.RevokeToken;
 using AutoMapper;
+using MGH.Core.Infrastructure.Persistence.EF.Models.Filters.GetModels;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
-using MGH.Core.Persistence.Models.Filters.GetModels;
 
 namespace Application.Features.Auth.Profiles;
 

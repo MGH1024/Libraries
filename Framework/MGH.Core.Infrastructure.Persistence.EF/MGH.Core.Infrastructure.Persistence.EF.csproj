@@ -15,7 +15,6 @@
         <Title>MGH.Core.Persisence</Title>
         <Authors>MGH</Authors>
         <Description>it's a package for manage Core Repositories</Description>
-        <RootNamespace>MGH.Core.Persistence</RootNamespace>
     </PropertyGroup>
     
     <ItemGroup>

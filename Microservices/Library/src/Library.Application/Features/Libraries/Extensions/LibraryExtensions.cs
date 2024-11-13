@@ -6,9 +6,9 @@ using Application.Features.Libraries.Commands.RemoveLibraryStaff;
 using Application.Features.Libraries.Queries.GetList;
 using Domain.Entities.Libraries;
 using MGH.Core.Application.Responses;
-using MGH.Core.Persistence.Models.Filters;
-using MGH.Core.Persistence.Models.Filters.GetModels;
-using MGH.Core.Persistence.Models.Paging;
+using MGH.Core.Infrastructure.Persistence.EF.Models.Filters;
+using MGH.Core.Infrastructure.Persistence.EF.Models.Filters.GetModels;
+using MGH.Core.Infrastructure.Persistence.EF.Models.Paging;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Libraries.Extensions;

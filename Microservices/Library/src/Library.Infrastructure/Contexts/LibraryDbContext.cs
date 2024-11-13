@@ -1,7 +1,7 @@
 ﻿using Domain.Entities.Libraries;
 using MGH.Core.Domain.Outboxes;
+using MGH.Core.Infrastructure.Persistence.EF.Interceptors;
 using MGH.Core.Infrastructure.Public;
-using MGH.Core.Persistence.Interceptors;
 using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.Contexts;

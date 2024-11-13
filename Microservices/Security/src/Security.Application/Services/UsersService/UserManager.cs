@@ -1,7 +1,7 @@
 ﻿using Domain;
 using Application.Features.Users.Rules;
-using MGH.Core.Persistence.Models.Paging;
-using MGH.Core.Persistence.Models.Filters.GetModels;
+using MGH.Core.Infrastructure.Persistence.EF.Models.Filters.GetModels;
+using MGH.Core.Infrastructure.Persistence.EF.Models.Paging;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
 
 namespace Application.Services.UsersService;

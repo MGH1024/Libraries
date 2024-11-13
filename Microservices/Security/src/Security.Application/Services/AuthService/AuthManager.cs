@@ -1,7 +1,7 @@
 ﻿using Domain;
+using MGH.Core.Infrastructure.Persistence.EF.Models.Filters.GetModels;
 using Microsoft.Extensions.Options;
 using MGH.Core.Infrastructure.Public;
-using MGH.Core.Persistence.Models.Filters.GetModels;
 using MGH.Core.Infrastructure.Securities.Security.JWT;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
 

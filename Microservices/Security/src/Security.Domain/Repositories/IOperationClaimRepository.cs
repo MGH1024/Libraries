@@ -1,7 +1,5 @@
-﻿using MGH.Core.Infrastructure.Securities.Security.Entities;
-using MGH.Core.Persistence.Base.Repository;
-using MGH.Core.Persistence.Models.Filters.GetModels;
-using MGH.Core.Persistence.Models.Paging;
+﻿using MGH.Core.Infrastructure.Persistence.EF.Base.Repository;
+using MGH.Core.Infrastructure.Securities.Security.Entities;
 
 namespace Domain.Repositories;
 

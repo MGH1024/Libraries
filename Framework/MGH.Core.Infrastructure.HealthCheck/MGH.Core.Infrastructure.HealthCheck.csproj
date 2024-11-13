@@ -22,7 +22,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\MGH.Core.Infrastructure.MessageBroker.RabbitMq\MGH.Core.Infrastructure.MessageBroker.RabbitMq.csproj"/>
-        <ProjectReference Include="..\MGH.Core.Infrastructure.Persistence\MGH.Core.Infrastructure.Persistence.csproj"/>
+        <ProjectReference Include="..\MGH.Core.Infrastructure.Persistence.EF\MGH.Core.Infrastructure.Persistence.EF.csproj" />
     </ItemGroup>
 
 </Project>

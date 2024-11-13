@@ -57,7 +57,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Security.Test", "Microservi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Security.Infrastructure", "Microservices\Security\src\Security.Infrastructure\Security.Infrastructure.csproj", "{EA319677-A9EA-49F3-A4AC-803D401BCDC5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MGH.Core.Infrastructure.Persistence", "Framework\MGH.Core.Infrastructure.Persistence\MGH.Core.Infrastructure.Persistence.csproj", "{606E09AB-05A0-4A16-9E6B-554541BE3ED9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MGH.Core.Infrastructure.Persistence.EF", "Framework\MGH.Core.Infrastructure.Persistence.EF\MGH.Core.Infrastructure.Persistence.EF.csproj", "{606E09AB-05A0-4A16-9E6B-554541BE3ED9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MGH.Core.Domain", "Framework\MGH.Core.Domain\MGH.Core.Domain.csproj", "{906FF993-AFEB-4B6B-9705-07B5534B5C82}"
 EndProject

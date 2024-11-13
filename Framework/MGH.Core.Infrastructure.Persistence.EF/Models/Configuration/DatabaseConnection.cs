@@ -1,4 +1,4 @@
-﻿namespace MGH.Core.Persistence.Models.Configuration;
+﻿namespace MGH.Core.Infrastructure.Persistence.EF.Models.Configuration;
 
 public class DatabaseConnection
 {

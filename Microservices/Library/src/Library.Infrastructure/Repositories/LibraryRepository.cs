@@ -1,5 +1,5 @@
 ﻿using Domain.Entities.Libraries;
-using MGH.Core.Persistence.Base.Repository;
+using MGH.Core.Infrastructure.Persistence.EF.Base.Repository;
 using Persistence.Contexts;
 
 namespace Persistence.Repositories;

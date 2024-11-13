@@ -1,4 +1,4 @@
-﻿namespace MGH.Core.Persistence.Models.Filters.GetModels;
+﻿namespace MGH.Core.Infrastructure.Persistence.EF.Models.Filters.GetModels;
 
 public class GetListModelAsync<TEntity> :GetModel<TEntity>
 {

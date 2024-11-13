@@ -1,7 +1,7 @@
-﻿using MGH.Core.Persistence.Models.Paging;
+﻿using MGH.Core.Infrastructure.Persistence.EF.Models.Paging;
 using Microsoft.EntityFrameworkCore;
 
-namespace MGH.Core.Persistence.Extensions;
+namespace MGH.Core.Infrastructure.Persistence.EF.Extensions;
 
 public static class QueryablePaginateExtensions
 {

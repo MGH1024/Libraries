@@ -1,7 +1,7 @@
 ﻿using Application.Features.Users.Queries.GetList;
+using MGH.Core.Infrastructure.Persistence.EF.Models.Filters.GetModels;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
 using MGH.Core.Infrastructure.Securities.Security.Hashing;
-using MGH.Core.Persistence.Models.Filters.GetModels;
 
 namespace Application.Features.Users.Extensions;
 

@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using Domain.Repositories;
 using MGH.Core.Domain.Entity.Base;
-using MGH.Core.Persistence.Base.Repository;
+using MGH.Core.Infrastructure.Persistence.EF.Base.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Persistence.Contexts;
