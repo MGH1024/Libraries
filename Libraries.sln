@@ -69,6 +69,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MGH.Core.Infrastruture.Http
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MGH.Core.Infrastructure.Persistence.Dapper", "Framework\MGH.Core.Infrastructure.Persistence.Dapper\MGH.Core.Infrastructure.Persistence.Dapper.csproj", "{E72AD29C-722C-4006-A5D1-6B2C69EF1997}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MGH.Core.Infrastructure.HealthCheck", "Framework\MGH.Core.Infrastructure.HealthCheck\MGH.Core.Infrastructure.HealthCheck.csproj", "{8EADBBAD-A960-4028-A989-4DFBB633F022}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -171,6 +173,10 @@ Global
 		{E72AD29C-722C-4006-A5D1-6B2C69EF1997}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E72AD29C-722C-4006-A5D1-6B2C69EF1997}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E72AD29C-722C-4006-A5D1-6B2C69EF1997}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8EADBBAD-A960-4028-A989-4DFBB633F022}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8EADBBAD-A960-4028-A989-4DFBB633F022}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8EADBBAD-A960-4028-A989-4DFBB633F022}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8EADBBAD-A960-4028-A989-4DFBB633F022}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -204,6 +210,7 @@ Global
 		{075FF53A-CF15-40F7-B487-694594065F22} = {084E41B7-2029-4EB7-8CC3-EDBEE5C66534}
 		{78D1A88F-FFF8-4EBD-8098-6DE16609C6A4} = {084E41B7-2029-4EB7-8CC3-EDBEE5C66534}
 		{E72AD29C-722C-4006-A5D1-6B2C69EF1997} = {084E41B7-2029-4EB7-8CC3-EDBEE5C66534}
+		{8EADBBAD-A960-4028-A989-4DFBB633F022} = {084E41B7-2029-4EB7-8CC3-EDBEE5C66534}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {04EE5569-4196-47F2-A52B-CF1049C542F2}

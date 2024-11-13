@@ -25,6 +25,7 @@ using Persistence.Contexts;
 using Persistence.Repositories;
 using Persistence.Repositories.Security;
 using LogLevel = Microsoft.Extensions.Logging.LogLevel;
+using MGH.Core.Infrastructure.HealthCheck;
 
 namespace Persistence;
 
@@ -78,7 +79,7 @@ public static class InfrastructureServiceRegistration
         services.AddCulture();
         services.AddElasticSearch(configuration);
         services.AddRabbitMq(configuration);
-        services.AddInfrastructureHealthChecks(configuration);
+        services.AddInfrastructureHealthChecks<SecurityDbContext>(configuration);
         return services;
     }
 
@@ -142,29 +143,5 @@ public static class InfrastructureServiceRegistration
     {
         services.Configure<RabbitMq>(option => configuration.GetSection(nameof(RabbitMq)).Bind(option));
         services.AddTransient(typeof(IMessageSender<>), typeof(RabbitMqService<>));
-    }
-
-    private static void AddInfrastructureHealthChecks(this IServiceCollection services, IConfiguration configuration)
-    {
-        var sqlConnectionString = configuration.GetSection(nameof(DatabaseConnection))
-                                      .GetValue<string>("SqlConnection") ??
-                                  throw new ArgumentNullException(nameof(DatabaseConnection.SqlConnection));
-
-        var defaultConnection = configuration.GetSection("RabbitMq:DefaultConnection").Get<RabbitMqConnection>()
-                                ?? throw new ArgumentNullException(nameof(RabbitMq.DefaultConnection));
-
-        services.AddHealthChecks()
-            .AddSqlServer(sqlConnectionString)
-            .AddDbContextCheck<SecurityDbContext>()
-            .AddRabbitMQ(defaultConnection.HealthAddress);
-
-        services.AddHealthChecksUI(setup =>
-            {
-                setup.SetEvaluationTimeInSeconds(10); // Set the evaluation time for health checks
-                setup.MaximumHistoryEntriesPerEndpoint(60); // Set maximum history of health checks
-                setup.SetApiMaxActiveRequests(1); // Set maximum API request concurrency
-                setup.AddHealthCheckEndpoint("Health Check API", "/api/health"); // Map your health check API
-            })
-            .AddInMemoryStorage();
     }
 }

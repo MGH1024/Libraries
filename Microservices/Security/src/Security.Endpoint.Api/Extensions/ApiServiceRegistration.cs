@@ -2,7 +2,6 @@
 using System.Text.Json.Serialization;
 using Application.Models;
 using Asp.Versioning;
-using HealthChecks.UI.Client;
 using MGH.Core.CrossCutting.Exceptions;
 using MGH.Core.CrossCutting.Localizations.ModelBinders;
 using MGH.Core.CrossCutting.Logging;
@@ -11,10 +10,10 @@ using MGH.Core.Endpoint.Swagger.Swagger.Models;
 using MGH.Core.Infrastructure.Securities.Security.Encryption;
 using MGH.Core.Infrastructure.Securities.Security.JWT;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.IdentityModel.Tokens;
+using MGH.Core.Infrastructure.HealthCheck;
 
 namespace Api.Extensions;
 
@@ -52,22 +51,7 @@ public static class ApiServiceRegistration
         app.AddHealthCheck();
         app.Run();
     }
-
-    private static void AddHealthCheck(this WebApplication app)
-    {
-        app.MapHealthChecks("/api/health", new HealthCheckOptions()
-        {
-            Predicate = _ => true,
-            ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-        });
-        app.UseHealthChecksUI(options => 
-        {
-            options.UIPath = "/health-ui"; 
-            options.AddCustomStylesheet("./HealthCheck/custom.css");
-        });
-
-        app.UseStaticFiles();
-    }
+    
 
     private static void AddOptions(this IServiceCollection services, IConfiguration configuration)
     {
