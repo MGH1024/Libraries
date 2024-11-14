@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace MGH.Core.Infrastructure.Persistence.EF.Interceptors;
 
-public class AddAuditFieldsInterceptor(IDateTime dateTime) : SaveChangesInterceptor
+public class AuditFieldsInterceptor(IDateTime dateTime,string currentUserName) : SaveChangesInterceptor
 {
     public override ValueTask<InterceptionResult<int>> SavingChangesAsync(DbContextEventData eventData,
         InterceptionResult<int> result, CancellationToken cancellationToken = default)
     {
         var now = dateTime.IranNow;
-        var userName = "admin";
+        var userName = currentUserName ?? string.Empty;
         var dbContext = eventData.Context;
         if (dbContext is null)
             return base.SavingChangesAsync(eventData, result, cancellationToken);
@@ -19,10 +19,8 @@ public class AddAuditFieldsInterceptor(IDateTime dateTime) : SaveChangesIntercep
             return base.SavingChangesAsync(eventData, result, cancellationToken);
         
         eventData.SetAuditEntries( now, userName);
-        eventData.SetOutbox( dbContext);
+        eventData.SetOutbox(dbContext);
 
         return base.SavingChangesAsync(eventData, result, cancellationToken);
     }
-
-    
 }

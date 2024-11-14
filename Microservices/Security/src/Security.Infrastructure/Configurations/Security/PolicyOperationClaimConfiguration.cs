@@ -33,7 +33,7 @@ public class PolicyOperationClaimConfiguration : IEntityTypeConfiguration<Policy
             .IsRequired(false);
 
         builder.Property(a => a.CreatedBy)
-            .HasDefaultValue("user");
+            .HasDefaultValue("admin_seed");
 
         builder.Property(a => a.CreatedAt)
             .HasDefaultValueSql("GetDate()");

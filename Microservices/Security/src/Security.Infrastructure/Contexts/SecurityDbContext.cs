@@ -1,11 +1,15 @@
 ﻿using MGH.Core.Infrastructure.Persistence.EF.Interceptors;
 using MGH.Core.Infrastructure.Public;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.Contexts;
 
-public class SecurityDbContext(DbContextOptions<SecurityDbContext> options, IDateTime dateTime)
+public class SecurityDbContext(
+    DbContextOptions<SecurityDbContext> options,
+    IDateTime dateTime,
+    IHttpContextAccessor httpContextAccessor)
     : DbContext(options)
 {
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -22,12 +26,12 @@ public class SecurityDbContext(DbContextOptions<SecurityDbContext> options, IDat
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.AddInterceptors(new AddAuditFieldsInterceptor(dateTime));
+        var currentUserName = httpContextAccessor.HttpContext?.User.Identity?.Name;
+        optionsBuilder.AddInterceptors(new AuditFieldsInterceptor(dateTime, currentUserName));
     }
-    
+
     public DbSet<OperationClaim> OperationClaims { get; set; }
     public DbSet<RefreshTkn> RefreshTokens { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
-    
 }

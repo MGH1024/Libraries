@@ -41,7 +41,7 @@ public class RefreshTokenConfiguration : IEntityTypeConfiguration<RefreshTkn>
             .IsRequired(false);
 
         builder.Property(a => a.CreatedBy)
-            .HasDefaultValue("user");
+            .HasDefaultValue("admin_seed");
 
         builder.Property(a => a.CreatedAt)
             .HasDefaultValueSql("GetDate()");
