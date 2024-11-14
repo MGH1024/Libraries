@@ -2,9 +2,11 @@
 using MGH.Core.Domain.Aggregate;
 using MGH.Core.Domain.Entity.Base;
 using MGH.Core.Domain.Outboxes;
+using MGH.Core.Infrastructure.Cache.Redis.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace MGH.Core.Infrastructure.Persistence.EF.Extensions;
 
@@ -59,15 +61,31 @@ public static class AddAuditFieldsInterceptorExtension
             var entityType = item.Context.Model.FindEntityType(item.Entity.GetType());
             if (entityType is null)
                 continue;
-
+            
             if (item.State == EntityState.Added)
                 item.AttachAddedState(now, userName);
-
-
+            
             if (item.State == EntityState.Modified)
                 item.AttachModifiedState(now, userName);
-
-
+            
+            if (item.State == EntityState.Deleted)
+                item.AttachDeletedState(now, userName);
+        }
+    }
+    
+    public static void RemoveRedisCache(this DbContextEventData eventData, DateTime now, string userName)
+    {
+        var modifiedEntries = eventData.Context?.ChangeTracker.Entries<IAuditAbleEntity>().ToList();
+        if (modifiedEntries == null) return;
+        foreach (var item in modifiedEntries)
+        {
+            var entityType = item.Context.Model.FindEntityType(item.Entity.GetType());
+            if (entityType is null)
+                continue;
+            
+            if (item.State == EntityState.Modified)
+                item.AttachModifiedState(now, userName);
+            
             if (item.State == EntityState.Deleted)
                 item.AttachDeletedState(now, userName);
         }

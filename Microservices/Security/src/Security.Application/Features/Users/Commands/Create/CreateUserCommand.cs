@@ -5,6 +5,7 @@ using Application.Features.Users.Rules;
 using AutoMapper;
 using Domain;
 using MGH.Core.Application.Pipelines.Authorization;
+using MGH.Core.Application.Pipelines.Caching;
 using MGH.Core.Domain.Buses.Commands;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
 using MGH.Core.Infrastructure.Securities.Security.Hashing;
@@ -12,7 +13,8 @@ using MGH.Core.Infrastructure.Securities.Security.Hashing;
 namespace Application.Features.Users.Commands.Create;
 
 [Roles(UsersOperationClaims.AddUsers)]
-public class CreateUserCommand(string firstName, string lastName, string email, string password) : ICommand<CreatedUserResponse>
+public class CreateUserCommand(string firstName, string lastName, string email, string password)
+    : ICommand<CreatedUserResponse>
 {
     public string FirstName { get; set; } = firstName;
     public string LastName { get; set; } = lastName;
@@ -29,7 +31,7 @@ public class CreateUserCommandHandler(IMapper mapper, UserBusinessRules userBusi
 {
     public async Task<CreatedUserResponse> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
-        await userBusinessRules.UserEmailShouldNotExistsWhenInsert(request.Email,cancellationToken);
+        await userBusinessRules.UserEmailShouldNotExistsWhenInsert(request.Email, cancellationToken);
         var user = mapper.Map<User>(request);
 
         var hashingHelperModel = HashingHelper.CreatePasswordHash(request.Password);

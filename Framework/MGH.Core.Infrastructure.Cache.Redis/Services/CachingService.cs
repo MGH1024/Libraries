@@ -4,48 +4,48 @@ using StackExchange.Redis;
 
 namespace MGH.Core.Infrastructure.Cache.Redis.Services;
 
-public class CachingService<T>(IConnectionMultiplexer redis) : ICachingService<T>
+public class CachingService<T>(IConnectionMultiplexer connectionMultiplexer) : ICachingService<T>
 {
     public T Get(string key)
     {
-        var database = redis.GetDatabase(SelectDbByKeyName(key));
+        var database = connectionMultiplexer.GetDatabase(SelectDbByKeyName(key));
         var result = database.StringGet(key);
         return result.HasValue ? JsonSerializer.Deserialize<T>(result!) : default;
     }
 
     public async Task<T> GetAsync(string key)
     {
-        var database = redis.GetDatabase(SelectDbByKeyName(key));
+        var database = connectionMultiplexer.GetDatabase(SelectDbByKeyName(key));
         var redisValue = await database.StringGetAsync(key);
         return redisValue.HasValue ? JsonSerializer.Deserialize<T>(redisValue!) : default;
     }
 
     public IEnumerable<T> GetList(string key)
     {
-        var database = redis.GetDatabase(SelectDbByKeyName(key));
+        var database = connectionMultiplexer.GetDatabase(SelectDbByKeyName(key));
         var resultValue = database.StringGet(key);
         return resultValue.HasValue ? JsonSerializer.Deserialize<IEnumerable<T>>(resultValue) : default;
     }
 
     public async Task<IEnumerable<T>> GetListAsync(string key)
     {
-        var database = redis.GetDatabase(SelectDbByKeyName(key));
+        var database = connectionMultiplexer.GetDatabase(SelectDbByKeyName(key));
         var redisValue = await database.StringGetAsync(key);
         return redisValue.HasValue ? JsonSerializer.Deserialize<IEnumerable<T>>(redisValue) : default;
     }
 
     public void Remove(string key)
     {
-        var database = redis.GetDatabase(SelectDbByKeyName(key));
+        var database = connectionMultiplexer.GetDatabase(SelectDbByKeyName(key));
         database.KeyDelete(key);
     }
 
     public void RemoveByDb(int dbNumber)
     {
-        var endPointArray = redis.GetEndPoints();
+        var endPointArray = connectionMultiplexer.GetEndPoints();
         foreach (var item in endPointArray)
         {
-            var server = redis.GetServer(item);
+            var server = connectionMultiplexer.GetServer(item);
             var redisKeys = server.Keys(dbNumber, pattern: "*").ToArray();
             foreach (var current in redisKeys)
                 Remove(current, dbNumber);
@@ -57,7 +57,7 @@ public class CachingService<T>(IConnectionMultiplexer redis) : ICachingService<T
         var endpoints = GetRedisEndPoint();
         foreach (var endpoint in endpoints)
         {
-            var server = redis.GetServer(endpoint);
+            var server = connectionMultiplexer.GetServer(endpoint);
             server.FlushAllDatabases();
         }
     }
@@ -67,13 +67,13 @@ public class CachingService<T>(IConnectionMultiplexer redis) : ICachingService<T
         var endpoints = GetRedisEndPoint();
         foreach (var endpoint in endpoints)
         {
-            var servers = redis.GetServer(endpoint);
+            var servers = connectionMultiplexer.GetServer(endpoint);
             var dbNumber = SelectDbByKeyName(pattern);
             var keys = servers.Keys(dbNumber, pattern + "*").ToArray();
             foreach (var key in keys)
             {
-                var redis1 = redis.GetDatabase(dbNumber);
-                redis1.KeyDelete(key);
+                var database = connectionMultiplexer.GetDatabase(dbNumber);
+                database.KeyDelete(key);
             }
         }
     }
@@ -82,8 +82,8 @@ public class CachingService<T>(IConnectionMultiplexer redis) : ICachingService<T
     {
         var cacheObj = JsonSerializer.Serialize(obj);
         var ts = new TimeSpan(0, time, 0);
-        var redis1 = redis.GetDatabase(SelectDbByKeyName(key));
-        redis1.StringSet(key, cacheObj, ts);
+        var database = connectionMultiplexer.GetDatabase(SelectDbByKeyName(key));
+        database.StringSet(key, cacheObj, ts);
     }
 
     public async Task SetAsync(string key, object obj, int time = 3)
@@ -91,13 +91,13 @@ public class CachingService<T>(IConnectionMultiplexer redis) : ICachingService<T
         var cacheObj = JsonSerializer.Serialize(obj);
         var ts = new TimeSpan(0, time, 0);
 
-        var database = redis.GetDatabase(SelectDbByKeyName(key));
+        var database = connectionMultiplexer.GetDatabase(SelectDbByKeyName(key));
         await database.StringSetAsync(key, cacheObj, ts);
     }
     
     public bool Exists(string key)
     {
-        var database = redis.GetDatabase(SelectDbByKeyName(key));
+        var database = connectionMultiplexer.GetDatabase(SelectDbByKeyName(key));
         return database.KeyExists(key);
     }
 
@@ -120,13 +120,13 @@ public class CachingService<T>(IConnectionMultiplexer redis) : ICachingService<T
 
     private EndPoint[] GetRedisEndPoint()
     {
-        var endpoints = redis.GetEndPoints(true);
+        var endpoints = connectionMultiplexer.GetEndPoints(true);
         return endpoints;
     }
     
     private void Remove(string key, int dbNumber)
     {
-        var database = redis.GetDatabase(dbNumber);
+        var database = connectionMultiplexer.GetDatabase(dbNumber);
         database.KeyDelete(key);
     }
 }

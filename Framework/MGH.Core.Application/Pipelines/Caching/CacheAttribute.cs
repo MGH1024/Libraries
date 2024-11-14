@@ -4,4 +4,5 @@
 public class CacheAttribute : Attribute
 {
     public int CacheDuration { get; set; }
+    public string EntityName { get; set; }
 }

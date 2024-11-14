@@ -5,11 +5,12 @@ using Application.Features.Users.Rules;
 using Application.Features.Users.Constants;
 using MGH.Core.Application.Pipelines.Caching;
 using MGH.Core.Application.Pipelines.Authorization;
+using MGH.Core.Infrastructure.Securities.Security.Entities;
 
 namespace Application.Features.Users.Queries.GetById;
 
 [Roles(UsersOperationClaims.GetUsers)]
-[Cache(CacheDuration = 3)]
+[Cache(CacheDuration = 5, EntityName = nameof(User))]
 public class GetByIdUserQuery : IRequest<GetByIdUserResponse>
 {
     public int Id { get; set; }
