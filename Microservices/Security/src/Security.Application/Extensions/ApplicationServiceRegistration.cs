@@ -12,13 +12,16 @@ using MGH.Core.Application.Pipelines.Validation;
 using MGH.Core.Application.Rules;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Base;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MGH.Core.Infrastructure.Cache.Redis;
 
 namespace Application.Extensions;
 
 public static class ApplicationServiceRegistration
 {
-    public static IServiceCollection AddApplicationServices(this IServiceCollection services)
+    public static IServiceCollection AddApplicationServices(this IServiceCollection services,IConfiguration 
+        configuration)
     {
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
         services.AddMediatRAndBehaviors();
@@ -29,7 +32,7 @@ public static class ApplicationServiceRegistration
         services.AddScoped<IOperationClaimService, OperationClaimManager>();
         services.AddScoped<IUserOperationClaimService, UserUserOperationClaimManager>();
         services.AddScoped<IUserService, UserManager>();
-
+        services.AddRedis(configuration);
         return services;
     }
 
@@ -57,4 +60,6 @@ public static class ApplicationServiceRegistration
             else
                 addWithLifeCycle(services, type);
     }
+    
+    
 }

@@ -71,6 +71,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MGH.Core.Infrastructure.Per
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MGH.Core.Infrastructure.HealthCheck", "Framework\MGH.Core.Infrastructure.HealthCheck\MGH.Core.Infrastructure.HealthCheck.csproj", "{8EADBBAD-A960-4028-A989-4DFBB633F022}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MGH.Core.Infrastructure.Cache.Redis", "Framework\MGH.Core.Infrastructure.Cache.Redis\MGH.Core.Infrastructure.Cache.Redis.csproj", "{DE6DADEB-3F94-49F6-A116-F7D8E134D779}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -177,6 +179,10 @@ Global
 		{8EADBBAD-A960-4028-A989-4DFBB633F022}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8EADBBAD-A960-4028-A989-4DFBB633F022}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8EADBBAD-A960-4028-A989-4DFBB633F022}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE6DADEB-3F94-49F6-A116-F7D8E134D779}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE6DADEB-3F94-49F6-A116-F7D8E134D779}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE6DADEB-3F94-49F6-A116-F7D8E134D779}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE6DADEB-3F94-49F6-A116-F7D8E134D779}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -211,6 +217,7 @@ Global
 		{78D1A88F-FFF8-4EBD-8098-6DE16609C6A4} = {084E41B7-2029-4EB7-8CC3-EDBEE5C66534}
 		{E72AD29C-722C-4006-A5D1-6B2C69EF1997} = {084E41B7-2029-4EB7-8CC3-EDBEE5C66534}
 		{8EADBBAD-A960-4028-A989-4DFBB633F022} = {084E41B7-2029-4EB7-8CC3-EDBEE5C66534}
+		{DE6DADEB-3F94-49F6-A116-F7D8E134D779} = {084E41B7-2029-4EB7-8CC3-EDBEE5C66534}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {04EE5569-4196-47F2-A52B-CF1049C542F2}

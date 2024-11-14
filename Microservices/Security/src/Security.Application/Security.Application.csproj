@@ -22,6 +22,7 @@
 
     <ItemGroup>
      <ProjectReference Include="..\..\..\..\Framework\MGH.Core.Application\MGH.Core.Application.csproj" />
+     <ProjectReference Include="..\..\..\..\Framework\MGH.Core.Infrastructure.Cache.Redis\MGH.Core.Infrastructure.Cache.Redis.csproj" />
       <ProjectReference Include="..\..\..\..\Framework\MGH.Core.Infrastructure.ElasticSearch\MGH.Core.Infrastructure.ElasticSearch.csproj" />
       <ProjectReference Include="..\Security.Domain\Security.Domain.csproj" />
     </ItemGroup>
