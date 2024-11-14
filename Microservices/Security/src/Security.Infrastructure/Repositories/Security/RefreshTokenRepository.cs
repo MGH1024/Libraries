@@ -9,7 +9,8 @@ using MGH.Core.Infrastructure.Securities.Security.Entities;
 
 namespace Persistence.Repositories.Security;
 
-public class RefreshTokenRepository(SecurityDbContext securityDbContext) : Repository<RefreshTkn, int>(securityDbContext), IRefreshTokenRepository
+public class RefreshTokenRepository(SecurityDbContext securityDbContext)
+    : Repository<RefreshTkn, int>(securityDbContext), IRefreshTokenRepository
 {
     public IQueryable<RefreshTkn> Query() => securityDbContext.Set<RefreshTkn>();
 

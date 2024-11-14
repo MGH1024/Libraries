@@ -126,7 +126,7 @@ public class Repository<TEntity, TKey>(DbContext dbContext) : IRepository<TEntit
     {
         if (entity.DeletedAt.HasValue)
             return;
-        entity.DeletedAt = DateTime.UtcNow;
+        entity.DeletedAt =DateTime.UtcNow;
 
         var navigations = dbContext
             .Entry(entity)

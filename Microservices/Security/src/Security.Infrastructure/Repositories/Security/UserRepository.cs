@@ -6,11 +6,13 @@ using Persistence.Contexts;
 
 namespace Persistence.Repositories.Security;
 
-public class UserRepository(SecurityDbContext securityDbContext) :Repository<User,int>(securityDbContext), IUserRepository
+public class UserRepository(SecurityDbContext securityDbContext) : Repository<User, int>(securityDbContext), 
+    IUserRepository
 {
     public IQueryable<User> Query() => securityDbContext.Set<User>();
-    public async Task<User> GetByEmailAsync(string email,CancellationToken cancellationToken)
+
+    public async Task<User> GetByEmailAsync(string email, CancellationToken cancellationToken)
     {
-        return await Query().Where(a=>a.Email == email).FirstOrDefaultAsync(cancellationToken);
+        return await Query().Where(a => a.Email == email).FirstOrDefaultAsync(cancellationToken);
     }
 }
