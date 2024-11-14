@@ -44,7 +44,6 @@ public static class ApplicationServiceRegistration
             configuration.AddOpenBehavior(typeof(CachingBehavior<,>));
             configuration.AddOpenBehavior(typeof(LoggingBehaviour<,>));
             configuration.AddOpenBehavior(typeof(AuthorizationBehavior<,>));
-            configuration.AddOpenBehavior(typeof(CacheRemovingBehavior<,>));
             configuration.AddOpenBehavior(typeof(TransactionScopeBehavior<,>));
             configuration.AddOpenBehavior(typeof(RequestValidationBehavior<,>));
         });

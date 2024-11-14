@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
+using MGH.Core.Infrastructure.Cache.Redis.Models;
 
 namespace MGH.Core.Infrastructure.HealthCheck;
 
@@ -21,10 +22,16 @@ public static class RegisterHealthCheck
         var defaultConnection = configuration.GetSection("RabbitMq:DefaultConnection").Get<RabbitMqConnection>()
                                 ?? throw new ArgumentNullException(nameof(RabbitMq.DefaultConnection));
 
+        var redisConnection = configuration.GetSection("RedisConnections:DefaultConfiguration")
+                                  .Get<RedisConfiguration>()
+                              ?? throw new ArgumentNullException(nameof(RedisConnections.DefaultConfiguration));
+
+
         services.AddHealthChecks()
             .AddSqlServer(sqlConnectionString)
             .AddDbContextCheck<T>()
-            .AddRabbitMQ(defaultConnection.HealthAddress);
+            .AddRabbitMQ(defaultConnection.HealthAddress)
+            .AddRedis(redisConnection.Configuration,name:nameof(RedisConnections.DefaultConfiguration));
 
         services.AddHealthChecksUI(setup =>
             {

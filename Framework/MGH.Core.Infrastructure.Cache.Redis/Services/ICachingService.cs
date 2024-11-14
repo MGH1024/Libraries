@@ -1,6 +1,6 @@
 ﻿namespace MGH.Core.Infrastructure.Cache.Redis.Services;
 
-public interface ICachingService<T> where T : class
+public interface ICachingService<T> 
 {
     T Get(string key);
     Task<T> GetAsync(string key);
