@@ -13,5 +13,5 @@ public static class DatabaseTableName
     public const string Policy = "Policies";
     public const string PolicyOperationClaim = "PolicyOperationClaims";
     
-    public const string LogEntry = "LogEntries";
+    public const string AuditLog = "AuditLogs";
 }

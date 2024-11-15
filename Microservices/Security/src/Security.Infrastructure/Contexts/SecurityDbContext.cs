@@ -31,9 +31,10 @@ public class SecurityDbContext(
     {
         var currentUserName = httpContextAccessor.HttpContext?.User.Identity?.Name;
         optionsBuilder.AddInterceptors(
-            new AuditFieldsInterceptor(dateTime, currentUserName),
             new OutBoxInterceptor(),
-            new RemoveCacheInterceptor(cachingService));
+            new RemoveCacheInterceptor(cachingService),
+            new AuditFieldsInterceptor(dateTime, currentUserName),
+            new AuditEntityInterceptor(dateTime, currentUserName));
     }
 
     public DbSet<OperationClaim> OperationClaims { get; set; }
