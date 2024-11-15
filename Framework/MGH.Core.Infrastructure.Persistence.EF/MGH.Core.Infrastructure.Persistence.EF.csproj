@@ -27,5 +27,11 @@
         <ProjectReference Include="..\MGH.Core.Infrastructure.Cache.Redis\MGH.Core.Infrastructure.Cache.Redis.csproj" />
         <ProjectReference Include="..\MGH.Core.Infrastructure\MGH.Core.Infrastructure.csproj"/>
     </ItemGroup>
+    
+    <ItemGroup>
+      <Reference Include="Microsoft.AspNetCore.Http.Abstractions">
+        <HintPath>..\..\..\..\..\..\Program Files\dotnet\shared\Microsoft.AspNetCore.App\8.0.10\Microsoft.AspNetCore.Http.Abstractions.dll</HintPath>
+      </Reference>
+    </ItemGroup>
 
 </Project>

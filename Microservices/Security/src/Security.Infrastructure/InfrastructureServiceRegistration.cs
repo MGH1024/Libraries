@@ -25,6 +25,7 @@ using Persistence.Repositories;
 using Persistence.Repositories.Security;
 using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 using MGH.Core.Infrastructure.HealthCheck;
+using MGH.Core.Infrastructure.Persistence.EF.Interceptors;
 using MGH.Core.Infrastructure.Persistence.EF.Models.Configuration;
 
 namespace Persistence;
@@ -34,41 +35,8 @@ public static class InfrastructureServiceRegistration
     public static IServiceCollection AddInfrastructuresServices(this IServiceCollection services,
         IConfiguration configuration)
     {
-        var sqlConfig = configuration
-            .GetSection(nameof(DatabaseConnection))
-            .Get<DatabaseConnection>()
-            .SqlConnection;
-
-        services.AddDbContext<SecurityDbContext>(options =>
-            options.UseSqlServer(sqlConfig, a =>
-                {
-                    a.EnableRetryOnFailure();
-                    //a.MigrationsAssembly("Library.Api");
-                })
-                .AddInterceptors()
-                .LogTo(Console.Write, LogLevel.Information));
-
-
-        #region postgres
-
-        // AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
-        // var postgresConfig = configuration
-        //     .GetSection(nameof(DatabaseConnection))
-        //     .Get<DatabaseConnection>()
-        //     .PostgresConnection;
-        // services
-        //     .AddDbContext<LibraryDbContext>(options =>
-        //         options.UseNpgsql(postgresConfig, a =>
-        //             {
-        //                 a.EnableRetryOnFailure();
-        //                 //a.MigrationsAssembly("Library.Api");
-        //             })
-        //             .AddInterceptors()
-        //             .LogTo(Console.Write, LogLevel.Information));
-
-        #endregion
-
-
+        services.RegisterInterceptors();
+        services.AddDbContextSqlServer(configuration);
         services.AddDbContext<SecurityDbContext>(options => options.UseInMemoryDatabase("LibraryDbContext-InMemory"));
         services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         services.AddSecurityRepositories();
@@ -81,6 +49,51 @@ public static class InfrastructureServiceRegistration
         services.AddRabbitMq(configuration);
         services.AddInfrastructureHealthChecks<SecurityDbContext>(configuration);
         return services;
+    }
+
+    private static void RegisterInterceptors(this IServiceCollection services)
+    {
+        services.AddSingleton<OutBoxInterceptor>();
+        services.AddSingleton<AuditFieldsInterceptor>();
+        services.AddSingleton<RemoveCacheInterceptor>();
+        services.AddSingleton<AuditEntityInterceptor>();
+    }
+
+    private static void AddDbContextSqlServer(this IServiceCollection services, IConfiguration configuration)
+    {
+        var sqlConfig = configuration
+            .GetSection(nameof(DatabaseConnection))
+            .Get<DatabaseConnection>()
+            .SqlConnection;
+
+        services.AddDbContext<SecurityDbContext>((sp, options) =>
+        {
+            options.UseSqlServer(sqlConfig, a => { a.EnableRetryOnFailure(); })
+                .AddInterceptors(
+                    sp.GetRequiredService<OutBoxInterceptor>(),
+                    sp.GetRequiredService<AuditFieldsInterceptor>(),
+                    sp.GetRequiredService<RemoveCacheInterceptor>(),
+                    sp.GetRequiredService<AuditEntityInterceptor>())
+                .LogTo(Console.Write, LogLevel.Information);
+        });
+    }
+
+    private static void AddDbContextPostgres(this IServiceCollection services, IConfiguration configuration)
+    {
+        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+        var postgresConfig = configuration
+            .GetSection(nameof(DatabaseConnection))
+            .Get<DatabaseConnection>()
+            .PostgresConnection;
+        services
+            .AddDbContext<SecurityDbContext>(options =>
+                options.UseNpgsql(postgresConfig, a =>
+                    {
+                        a.EnableRetryOnFailure();
+                        //a.MigrationsAssembly("Library.Api");
+                    })
+                    .AddInterceptors()
+                    .LogTo(Console.Write, LogLevel.Information));
     }
 
     private static void AddSecurityRepositories(this IServiceCollection services)

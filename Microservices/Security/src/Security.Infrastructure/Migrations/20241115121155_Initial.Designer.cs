@@ -12,7 +12,7 @@ using Persistence.Contexts;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(SecurityDbContext))]
-    [Migration("20241112213851_Initial")]
+    [Migration("20241115121155_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -24,6 +24,43 @@ namespace Persistence.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("MGH.Core.Domain.Entity.Logs.AuditLog", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Action")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
+
+                    b.Property<string>("AfterData")
+                        .HasMaxLength(4096)
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BeforeData")
+                        .HasMaxLength(4096)
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TableName")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AuditLogs", "log");
+                });
 
             modelBuilder.Entity("MGH.Core.Infrastructure.Securities.Security.Entities.OperationClaim", b =>
                 {
@@ -44,7 +81,7 @@ namespace Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)")
-                        .HasDefaultValue("user");
+                        .HasDefaultValue("admin_seed");
 
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
@@ -98,7 +135,7 @@ namespace Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)")
-                        .HasDefaultValue("user");
+                        .HasDefaultValue("admin_seed");
 
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
@@ -142,7 +179,7 @@ namespace Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)")
-                        .HasDefaultValue("user");
+                        .HasDefaultValue("admin_seed");
 
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
@@ -192,7 +229,7 @@ namespace Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)")
-                        .HasDefaultValue("user");
+                        .HasDefaultValue("admin_seed");
 
                     b.Property<string>("CreatedByIp")
                         .IsRequired()
@@ -273,7 +310,7 @@ namespace Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)")
-                        .HasDefaultValue("user");
+                        .HasDefaultValue("admin_seed");
 
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
@@ -329,8 +366,8 @@ namespace Persistence.Migrations
                             Email = "admin@admin.com",
                             FirstName = "Admin",
                             LastName = "Admin",
-                            PasswordHash = new byte[] { 141, 217, 199, 83, 55, 111, 234, 184, 132, 246, 253, 120, 134, 55, 147, 44, 90, 74, 69, 166, 8, 87, 42, 224, 115, 145, 138, 63, 108, 207, 111, 177, 141, 76, 15, 80, 210, 168, 173, 6, 190, 212, 93, 229, 10, 93, 231, 85, 47, 22, 22, 136, 21, 144, 5, 189, 183, 107, 200, 55, 80, 222, 110, 219 },
-                            PasswordSalt = new byte[] { 108, 222, 212, 105, 74, 97, 216, 194, 192, 253, 116, 98, 173, 212, 212, 47, 188, 254, 72, 249, 240, 90, 50, 71, 11, 35, 70, 25, 19, 199, 144, 220, 125, 250, 179, 225, 252, 150, 21, 85, 171, 149, 249, 154, 0, 237, 225, 9, 242, 158, 135, 92, 115, 6, 43, 184, 230, 177, 132, 63, 57, 11, 50, 116, 154, 221, 107, 209, 27, 111, 53, 114, 56, 36, 83, 197, 37, 246, 132, 49, 166, 20, 105, 230, 59, 168, 218, 32, 201, 76, 51, 64, 8, 17, 234, 109, 56, 177, 155, 243, 36, 0, 127, 209, 238, 194, 204, 120, 84, 158, 177, 242, 208, 150, 204, 131, 111, 53, 20, 144, 96, 170, 112, 48, 13, 221, 93, 251 }
+                            PasswordHash = new byte[] { 154, 94, 129, 69, 244, 170, 155, 161, 210, 103, 27, 190, 180, 103, 25, 19, 26, 224, 166, 5, 135, 166, 12, 149, 139, 180, 153, 201, 6, 186, 14, 231, 247, 78, 123, 185, 107, 86, 166, 225, 151, 119, 26, 153, 99, 96, 49, 120, 243, 54, 166, 51, 115, 138, 59, 169, 177, 65, 76, 111, 58, 73, 206, 194 },
+                            PasswordSalt = new byte[] { 248, 148, 234, 246, 55, 124, 32, 97, 220, 71, 172, 209, 63, 28, 149, 219, 85, 182, 94, 120, 104, 130, 193, 213, 175, 50, 91, 251, 184, 166, 13, 207, 6, 98, 49, 196, 250, 204, 52, 30, 115, 197, 46, 34, 245, 11, 73, 105, 56, 187, 189, 195, 226, 161, 80, 161, 201, 37, 191, 109, 113, 103, 180, 240, 30, 22, 154, 172, 201, 124, 117, 229, 82, 184, 26, 25, 45, 2, 30, 14, 33, 147, 8, 230, 62, 149, 93, 165, 62, 64, 121, 184, 17, 121, 131, 167, 139, 38, 104, 7, 164, 119, 235, 36, 140, 63, 183, 252, 83, 52, 253, 29, 212, 10, 67, 227, 78, 189, 237, 242, 55, 230, 109, 219, 180, 69, 56, 121 }
                         });
                 });
 
@@ -353,7 +390,7 @@ namespace Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)")
-                        .HasDefaultValue("user");
+                        .HasDefaultValue("admin_seed");
 
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
