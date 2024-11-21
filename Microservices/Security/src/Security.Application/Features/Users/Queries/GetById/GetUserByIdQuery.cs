@@ -1,7 +1,7 @@
 using Domain;
 using MediatR;
 using AutoMapper;
-using Application.Features.Users.Rules;
+using Application.Services.UsersService;
 using Application.Features.Users.Constants;
 using MGH.Core.Application.Pipelines.Caching;
 using MGH.Core.Application.Pipelines.Authorization;
@@ -11,23 +11,23 @@ namespace Application.Features.Users.Queries.GetById;
 
 [Roles(UsersOperationClaims.GetUsers)]
 [Cache(CacheDuration = 5, EntityName = nameof(User))]
-public class GetByIdUserQuery : IRequest<GetByIdUserResponse>
+public class GetUserByIdQuery : IRequest<GetUserByIdResponse>
 {
     public int Id { get; set; }
 }
 
-public class GetByIdUserQueryHandler(
+public class GetUserByIdQueryHandler(
     IUow uow,
     IMapper mapper,
-    UserBusinessRules userBusinessRules)
-    : IRequestHandler<GetByIdUserQuery, GetByIdUserResponse>
+    IUserBusinessRules userBusinessRules)
+    : IRequestHandler<GetUserByIdQuery, GetUserByIdResponse>
 {
-    public async Task<GetByIdUserResponse> Handle(GetByIdUserQuery request, CancellationToken cancellationToken)
+    public async Task<GetUserByIdResponse> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
     {
         var user = await uow.User.GetAsync(request.Id, cancellationToken);
         await userBusinessRules.UserShouldBeExistsWhenSelected(user);
 
-        var response = mapper.Map<GetByIdUserResponse>(user);
+        var response = mapper.Map<GetUserByIdResponse>(user);
         return response;
     }
 }

@@ -19,10 +19,10 @@ namespace Api.Controllers.V1;
 public class UsersController(ISender sender, IMapper mapper) : AppController(sender)
 {
     [HttpGet("{Id}")]
-    public async Task<IActionResult> GetById([FromRoute] GetByIdUserQuery getByIdUserQuery,
+    public async Task<IActionResult> GetById([FromRoute] GetUserByIdQuery getUserByIdQuery,
         CancellationToken cancellationToken)
     {
-        var result = await Sender.Send(getByIdUserQuery, cancellationToken);
+        var result = await Sender.Send(getUserByIdQuery, cancellationToken);
         return Ok(result);
     }
 

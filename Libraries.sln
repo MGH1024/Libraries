@@ -52,7 +52,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Security.Domain", "Microser
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Security.Endpoint.Api", "Microservices\Security\src\Security.Endpoint.Api\Security.Endpoint.Api.csproj", "{2AC07AA7-0C56-42A9-BBF4-C5AC3E440239}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Security.Test", "Microservices\Security\src\Security.Test\Security.Test.csproj", "{929601C9-4BE3-4EC0-8443-FCA13BFF85F2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Security.Test.Application", "Microservices\Security\src\Security.Test.Application\Security.Test.Application.csproj", "{929601C9-4BE3-4EC0-8443-FCA13BFF85F2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Security.Infrastructure", "Microservices\Security\src\Security.Infrastructure\Security.Infrastructure.csproj", "{EA319677-A9EA-49F3-A4AC-803D401BCDC5}"
 EndProject

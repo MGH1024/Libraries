@@ -3,7 +3,7 @@ using MGH.Core.Application.Responses;
 namespace Application.Features.Users.Queries.GetById;
 
 
-public class GetByIdUserResponse(int id, string firstName, string lastName, string email, bool status)
+public class GetUserByIdResponse(int id, string firstName, string lastName, string email, bool status)
     : IResponse
 {
     public int Id { get; set; } = id;
@@ -12,7 +12,7 @@ public class GetByIdUserResponse(int id, string firstName, string lastName, stri
     public string Email { get; set; } = email;
     public bool Status { get; set; } = status;
 
-    public GetByIdUserResponse() : this(0, string.Empty, string.Empty, string.Empty, false)
+    public GetUserByIdResponse() : this(0, string.Empty, string.Empty, string.Empty, false)
     {
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Application.Features.Users.Rules;
 using Application.Services.AuthService;
 using Application.Services.OperationClaims;
 using Application.Services.UserOperationClaims;
@@ -32,6 +33,7 @@ public static class ApplicationServiceRegistration
         services.AddScoped<IOperationClaimService, OperationClaimManager>();
         services.AddScoped<IUserOperationClaimService, UserUserOperationClaimManager>();
         services.AddScoped<IUserService, UserManager>();
+        services.AddScoped<IUserBusinessRules, UserBusinessRules>();
         services.AddRedis(configuration);
         return services;
     }

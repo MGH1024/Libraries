@@ -10,9 +10,9 @@ namespace Api.Extensions;
 
 public static class ApiMapper
 {
-    public static GetByIdUserQuery ToGetByIdUserQuery(this int userId)
+    public static GetUserByIdQuery ToGetByIdUserQuery(this int userId)
     {
-        return new GetByIdUserQuery
+        return new GetUserByIdQuery
         {
             Id = userId
         };

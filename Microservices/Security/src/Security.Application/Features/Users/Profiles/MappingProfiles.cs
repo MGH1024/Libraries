@@ -26,7 +26,7 @@ public class MappingProfiles : Profile
         CreateMap<User, UpdatedUserFromAuthResponse>().ReverseMap();
         CreateMap<User, DeleteUserCommand>().ReverseMap();
         CreateMap<User, DeletedUserResponse>().ReverseMap();
-        CreateMap<User, GetByIdUserResponse>().ReverseMap();
+        CreateMap<User, GetUserByIdResponse>().ReverseMap();
         CreateMap<User, GetListUserListItemDto>().ReverseMap();
         CreateMap<IPaginate<User>, GetListResponse<GetListUserListItemDto>>().ReverseMap();
 
@@ -50,11 +50,11 @@ public class MappingProfiles : Profile
             .ForMember(dest => dest.CancellationToken, opt
                 => opt.MapFrom<CancellationTokenResolver<UpdateUserFromAuthCommand, GetModel<User>>>()).ReverseMap();
         
-        CreateMap<GetByIdUserQuery, GetModel<User>>()
+        CreateMap<GetUserByIdQuery, GetModel<User>>()
             .ForMember(dest => dest.Predicate, opt
                 => opt.MapFrom(src => (Expression<Func<User, bool>>)(u => u.Id == src.Id)))
             .ForMember(dest => dest.CancellationToken, opt
-                => opt.MapFrom<CancellationTokenResolver<GetByIdUserQuery, GetModel<User>>>()).ReverseMap();
+                => opt.MapFrom<CancellationTokenResolver<GetUserByIdQuery, GetModel<User>>>()).ReverseMap();
         
     }
 }
