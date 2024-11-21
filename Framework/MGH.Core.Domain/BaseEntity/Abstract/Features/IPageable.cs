@@ -1,4 +1,4 @@
-﻿namespace MGH.Core.Domain.Entity.Features;
+﻿namespace MGH.Core.Domain.BaseEntity.Abstract.Features;
 
 public interface IPageable
 {

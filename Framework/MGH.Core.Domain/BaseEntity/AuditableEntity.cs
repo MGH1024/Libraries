@@ -1,4 +1,6 @@
-﻿namespace MGH.Core.Domain.Entity.Base;
+﻿using MGH.Core.Domain.BaseEntity.Abstract;
+
+namespace MGH.Core.Domain.BaseEntity;
 
 public class AuditAbleEntity<TId>(TId id) : IEntity<TId>, IAuditAbleEntity
 {

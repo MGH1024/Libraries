@@ -1,5 +1,6 @@
 ﻿using System.Collections;
-using MGH.Core.Domain.Entity.Base;
+using MGH.Core.Domain.BaseEntity;
+using MGH.Core.Domain.BaseEntity.Abstract;
 using MGH.Core.Infrastructure.Persistence.EF.Extensions;
 using MGH.Core.Infrastructure.Persistence.EF.Models.Filters.GetModels;
 using MGH.Core.Infrastructure.Persistence.EF.Models.Paging;

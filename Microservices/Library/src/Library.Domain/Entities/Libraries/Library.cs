@@ -1,9 +1,9 @@
-﻿using MGH.Core.Domain.Aggregate;
-using Domain.Entities.Libraries.Guards;
+﻿using Domain.Entities.Libraries.Guards;
 using Domain.Entities.Libraries.Events;
 using Domain.Entities.Libraries.Constant;
 using Domain.Entities.Libraries.Exceptions;
 using Domain.Entities.Libraries.ValueObjects;
+using MGH.Core.Domain.BaseEntity;
 
 namespace Domain.Entities.Libraries;
 
@@ -22,8 +22,7 @@ public class Library : AggregateRoot<Guid>
     {
     }
 
-    public Library(string name, string code, string location,
-        District district, DateTime registrationDate)
+    public Library(string name, string code, string location,District district, DateTime registrationDate)
     {
         CodeGuard.CheckCodeLength(code);
         CodeGuard.CheckCodeIsNotString(code);
@@ -94,8 +93,8 @@ public class Library : AggregateRoot<Guid>
         => _staves.Exists(a => a.NationalCode.Equals(nationalCode));
 
 
-    private void SetLibraryPropertiesForEdit(string name, string code, string location,
-        District district, DateTime registrationDate)
+    private void SetLibraryPropertiesForEdit(string name, string code, string location, District district, 
+        DateTime registrationDate)
     {
         Name = name;
         Code = code;

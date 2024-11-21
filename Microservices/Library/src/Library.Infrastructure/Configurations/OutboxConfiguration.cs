@@ -1,7 +1,7 @@
 ﻿using Domain.Entities.Libraries;
 using Domain.Entities.Libraries.Constant;
 using Domain.Entities.Libraries.ValueObjects;
-using MGH.Core.Domain.Outboxes;
+using MGH.Core.Domain.Entity.Outboxes;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;

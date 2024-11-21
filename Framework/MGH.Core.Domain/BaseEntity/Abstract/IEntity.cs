@@ -1,4 +1,4 @@
-﻿namespace MGH.Core.Domain.Entity.Base;
+﻿namespace MGH.Core.Domain.BaseEntity.Abstract;
 
 public interface IEntity<out T> 
 {

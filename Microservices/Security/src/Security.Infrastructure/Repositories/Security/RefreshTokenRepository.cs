@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using Domain.Repositories;
-using MGH.Core.Domain.Entity.Base;
+using MGH.Core.Domain.BaseEntity.Abstract;
 using MGH.Core.Infrastructure.Persistence.EF.Base.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;

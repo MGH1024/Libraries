@@ -1,7 +1,6 @@
 ﻿using System.Text.Json;
-using MGH.Core.Domain.Aggregate;
-using MGH.Core.Domain.Entity.Base;
-using MGH.Core.Domain.Outboxes;
+using MGH.Core.Domain.BaseEntity.Abstract;
+using MGH.Core.Domain.Entity.Outboxes;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Diagnostics;

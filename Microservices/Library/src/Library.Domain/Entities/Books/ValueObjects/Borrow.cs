@@ -1,4 +1,4 @@
-﻿using MGH.Core.Domain.Aggregate;
+﻿using MGH.Core.Domain.BaseEntity;
 
 namespace Domain.Entities.Books.ValueObjects;
 

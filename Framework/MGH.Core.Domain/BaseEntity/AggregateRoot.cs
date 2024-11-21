@@ -1,40 +1,26 @@
-﻿using MGH.Core.Domain.Entity.Base;
+﻿using MGH.Core.Domain.BaseEntity.Abstract;
 
-namespace MGH.Core.Domain.Aggregate;
+namespace MGH.Core.Domain.BaseEntity;
 
-public interface IAggregateRoot
-{
-    IEnumerable<DomainEvent> Events { get; }
-    void ClearEvents();
-}
 
 public abstract class AggregateRoot<T> : BaseEntity<T>, IAuditAbleEntity, IAggregateRoot
 {
-    public int Version { get; set; }
-    private bool _versionIncremented;
+    public int Version { get; private set; }
 
-    public IEnumerable<DomainEvent> Events => _events;
     private readonly List<DomainEvent> _events = new();
+    public IReadOnlyCollection<DomainEvent> Events => _events.AsReadOnly();
 
     protected void AddEvent(DomainEvent @event)
     {
-        if (!_events.Any() && !_versionIncremented)
-        {
-            Version++;
-            _versionIncremented = true;
-        }
-
         _events.Add(@event);
+        IncrementVersion();
     }
 
     public void ClearEvents() => _events.Clear();
 
-    protected void IncrementVersion()
+    private void IncrementVersion()
     {
-        if (_versionIncremented)
-            return;
         Version++;
-        _versionIncremented = true;
     }
 
     public DateTime CreatedAt { get; set; }

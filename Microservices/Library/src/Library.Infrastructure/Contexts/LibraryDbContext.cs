@@ -1,5 +1,5 @@
 ﻿using Domain.Entities.Libraries;
-using MGH.Core.Domain.Outboxes;
+using MGH.Core.Domain.Entity.Outboxes;
 using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.Contexts;

@@ -1,6 +1,6 @@
-using MGH.Core.Domain.Entity.Base;
+using MGH.Core.Domain.BaseEntity;
 
-namespace MGH.Core.Domain.Outboxes;
+namespace MGH.Core.Domain.Entity.Outboxes;
 
 public class OutboxMessage : AuditAbleEntity<Guid>
 {

@@ -1,4 +1,4 @@
-using MGH.Core.Domain.Aggregate;
+using MGH.Core.Domain.BaseEntity;
 using MGH.Core.Domain.Buses.Commands;
 
 namespace Domain.Entities.Libraries.Events;

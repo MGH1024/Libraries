@@ -1,6 +1,6 @@
 ﻿using Domain.Entities.Books.Exceptions;
 using Domain.Entities.Books.ValueObjects;
-using MGH.Core.Domain.Aggregate;
+using MGH.Core.Domain.BaseEntity;
 
 namespace Domain.Entities.Books;
 
