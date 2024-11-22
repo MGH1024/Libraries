@@ -26,7 +26,6 @@ COPY ["Microservices/Security/src/Security.Infrastructure/Security.Infrastructur
 COPY ["Framework/MGH.Core.Endpoint.Swagger/MGH.Core.Endpoint.Swagger.csproj", "Framework/MGH.Core.Endpoint.Swagger/"]
 RUN dotnet restore "Microservices/Security/src/Security.Endpoint.Api/Security.Endpoint.Api.csproj"
 COPY . .
-RUN ls -al 
 WORKDIR "/src/Microservices/Security/src/Security.Endpoint.Api"
 RUN dotnet build "Security.Endpoint.Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
 FROM build AS publish

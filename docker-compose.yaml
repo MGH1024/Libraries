@@ -1,0 +1,100 @@
+﻿version: '3.8'
+
+services:
+  # .NET Core API
+  api:
+    image: sec-api:v2
+    build:
+      context: .
+      dockerfile: SecurityApiDockerfile
+    ports:
+      - "5278:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - DatabaseConnection__SqlConnection=Data Source=sqlserver;Initial Catalog=dbSecMicroservice;User ID=sa; Password=Abcde@12345;Integrated Security=false;MultipleActiveResultSets=true;TrustServerCertificate=True
+      - DatabaseConnection__PostgresConnection=User ID=postgres;Password=postgres;Host=localhost;Port=5432;Database=dbLibrary;Pooling=true;
+      - RedisConnections__DefaultConfiguration__Host=127.0.0.1
+      - RedisConnections__DefaultConfiguration__Password=123456
+      - RedisConnections__DefaultConfiguration__Port=6379
+      - RabbitMq__DefaultConnection__Host=localhost
+      - RabbitMq__DefaultConnection__Port=5672
+      - ElasticsearchConfig__ConnectionString=http://localhost:9200
+      - Serilog__WriteTo__0__Name=Console
+      - Serilog__WriteTo__1__Name=Elasticsearch
+      - Serilog__WriteTo__2__Name=MSSqlServer
+    depends_on:
+      - sqlserver
+      - postgres
+      - redis
+      - rabbitmq
+    networks:
+      - backend
+
+  # SQL Server
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Abcde@12345
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver-data:/var/opt/mssql
+    networks:
+      - backend
+
+  # PostgreSQL
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=dbLibrary
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - backend
+
+  # Redis
+  redis:
+    image: redis:latest
+    container_name: redis
+    environment:
+      - REDIS_PASSWORD=123456
+    ports:
+      - "6379:6379"
+    networks:
+      - backend
+    volumes:
+      - redis-data:/data
+
+  # RabbitMQ
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    ports:
+      - "5672:5672"
+      - "15672:15672" # Management UI
+    networks:
+      - backend
+
+volumes:
+  sqlserver-data:
+    driver: local
+  postgres-data:
+    driver: local
+  redis-data:
+    driver: local
+  elasticsearch-data:
+    driver: local
+
+networks:
+  backend:
+    driver: bridge
