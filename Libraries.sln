@@ -14,9 +14,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Library.Endpoint.Api", "Microservices\Library\src\Library.Endpoint.Api\Library.Endpoint.Api.csproj", "{59F9393C-EBB6-48D7-B894-DD408E83E7F9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Microservices", "Microservices", "{D219B390-9D8C-4EF8-AE59-F0D47362F508}"
-	ProjectSection(SolutionItems) = preProject
-		.dockerignore = .dockerignore
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Framework", "Framework", "{084E41B7-2029-4EB7-8CC3-EDBEE5C66534}"
 EndProject
@@ -74,6 +71,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MGH.Core.Infrastructure.HealthCheck", "Framework\MGH.Core.Infrastructure.HealthCheck\MGH.Core.Infrastructure.HealthCheck.csproj", "{8EADBBAD-A960-4028-A989-4DFBB633F022}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MGH.Core.Infrastructure.Cache.Redis", "Framework\MGH.Core.Infrastructure.Cache.Redis\MGH.Core.Infrastructure.Cache.Redis.csproj", "{DE6DADEB-3F94-49F6-A116-F7D8E134D779}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{EF6FD196-D50F-444F-85C9-6B0D9B357F59}"
+	ProjectSection(SolutionItems) = preProject
+		Microservices\Docker\infra-compose.yaml = Microservices\Docker\infra-compose.yaml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
