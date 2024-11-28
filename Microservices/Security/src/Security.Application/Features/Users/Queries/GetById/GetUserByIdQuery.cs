@@ -1,8 +1,8 @@
 using Domain;
 using MediatR;
 using AutoMapper;
-using Application.Services.UsersService;
 using Application.Features.Users.Constants;
+using Application.Features.Users.Rules;
 using MGH.Core.Application.Pipelines.Caching;
 using MGH.Core.Application.Pipelines.Authorization;
 using MGH.Core.Infrastructure.Securities.Security.Entities;

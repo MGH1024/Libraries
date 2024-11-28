@@ -1,12 +1,12 @@
-﻿using Domain;
-using Application.Features.Users.Rules;
+﻿using Application.Features.Users.Rules;
+using Domain;
 using MGH.Core.Infrastructure.Persistence.EF.Models.Filters.GetModels;
 using MGH.Core.Infrastructure.Persistence.EF.Models.Paging;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
 
-namespace Application.Services.UsersService;
+namespace Application.Features.Users.Services;
 
-public class UserManager(IUow uow, UserBusinessRules userBusinessRules) : IUserService
+public class UserManager(IUow uow, IUserBusinessRules userBusinessRules) : IUserService
 {
     public async Task<User> GetAsync(GetModel<User> getModel)
     {

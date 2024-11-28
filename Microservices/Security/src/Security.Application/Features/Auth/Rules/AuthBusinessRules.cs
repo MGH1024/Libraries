@@ -7,7 +7,7 @@ using MGH.Core.Infrastructure.Securities.Security.Hashing;
 
 namespace Application.Features.Auth.Rules;
 
-public class AuthBusinessRules(IUow uow) : BaseBusinessRules
+public class AuthBusinessRules(IUow uow) : BaseBusinessRules, IAuthBusinessRules
 {
     public Task UserShouldBeExistsWhenSelected(User user)
     {

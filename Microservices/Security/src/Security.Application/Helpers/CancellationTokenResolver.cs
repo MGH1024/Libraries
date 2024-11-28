@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 
-namespace Application;
+namespace Application.Helpers;
 
 public class CancellationTokenResolver<TSource, TDestination> : IValueResolver<TSource, TDestination, CancellationToken>
 {

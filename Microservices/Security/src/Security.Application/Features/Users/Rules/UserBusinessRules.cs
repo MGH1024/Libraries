@@ -5,7 +5,6 @@ using MGH.Core.CrossCutting.Exceptions.Types;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
 using MGH.Core.Infrastructure.Securities.Security.Hashing;
 using Application.Features.Users.Extensions;
-using Application.Services.UsersService;
 using Microsoft.Identity.Client;
 
 namespace Application.Features.Users.Rules;

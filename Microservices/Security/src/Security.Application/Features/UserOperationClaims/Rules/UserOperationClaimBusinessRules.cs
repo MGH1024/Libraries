@@ -6,7 +6,7 @@ using MGH.Core.Infrastructure.Securities.Security.Entities;
 
 namespace Application.Features.UserOperationClaims.Rules;
 
-public class UserOperationClaimBusinessRules(IUserOperationClaimRepository userOperationClaimRepository) : BaseBusinessRules
+public class UserOperationClaimBusinessRules(IUserOperationClaimRepository userOperationClaimRepository) : BaseBusinessRules, IUserOperationClaimBusinessRules
 {
     public Task UserOperationClaimShouldExistWhenSelected(UserOperationClaim userOperationClaim)
     {

@@ -1,11 +1,11 @@
 ﻿using Domain;
 using MGH.Core.Infrastructure.Persistence.EF.Models.Filters.GetModels;
-using Microsoft.Extensions.Options;
 using MGH.Core.Infrastructure.Public;
-using MGH.Core.Infrastructure.Securities.Security.JWT;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
+using MGH.Core.Infrastructure.Securities.Security.JWT;
+using Microsoft.Extensions.Options;
 
-namespace Application.Services.AuthService;
+namespace Application.Features.Auth.Services;
 
 public class AuthManager(IUow uow, ITokenHelper tokenHelper, IDateTime time, IOptions<TokenOptions> options) : IAuthService
 {
@@ -33,20 +33,6 @@ public class AuthManager(IUow uow, ITokenHelper tokenHelper, IDateTime time, IOp
         var refreshToken = await uow.RefreshToken.GetAsync(new GetModel<RefreshTkn> { Predicate = r => r.Token == token });
         return refreshToken;
     }
-
-    public async Task RevokeRefreshTokenAsync(
-        RefreshTkn refreshToken,
-        string reason = null,
-        string replacedByToken = null,
-        CancellationToken cancellationToken = default)
-    {
-        refreshToken.Revoked = time.IranNow;
-        refreshToken.ReasonRevoked = reason;
-        refreshToken.ReplacedByToken = replacedByToken;
-        await uow.RefreshToken.UpdateAsync(refreshToken, cancellationToken);
-    }
-
-
     public async Task<RefreshTkn> RotateRefreshToken(User user, RefreshTkn refreshTkn,
         CancellationToken cancellationToken)
     {
@@ -74,5 +60,17 @@ public class AuthManager(IUow uow, ITokenHelper tokenHelper, IDateTime time, IOp
     {
         var refreshToken = tokenHelper.CreateRefreshToken(user);
         return Task.FromResult(refreshToken);
+    }
+    
+    private async Task RevokeRefreshTokenAsync(
+        RefreshTkn refreshToken,
+        string reason = null,
+        string replacedByToken = null,
+        CancellationToken cancellationToken = default)
+    {
+        refreshToken.Revoked = time.IranNow;
+        refreshToken.ReasonRevoked = reason;
+        refreshToken.ReplacedByToken = replacedByToken;
+        await uow.RefreshToken.UpdateAsync(refreshToken, cancellationToken);
     }
 }

@@ -19,7 +19,7 @@ public class DeleteOperationClaimCommand : ICommand<DeletedOperationClaimRespons
 public class DeleteOperationClaimCommandHandler(
     IUow uow,
     IMapper mapper,
-    OperationClaimBusinessRules operationClaimBusinessRules) : ICommandHandler<DeleteOperationClaimCommand, DeletedOperationClaimResponse>
+    IOperationClaimBusinessRules operationClaimBusinessRules) : ICommandHandler<DeleteOperationClaimCommand, DeletedOperationClaimResponse>
 {
     public async Task<DeletedOperationClaimResponse> Handle(DeleteOperationClaimCommand request, CancellationToken cancellationToken)
     {

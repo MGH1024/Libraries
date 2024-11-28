@@ -1,8 +1,7 @@
-using MGH.Core.Application.Responses;
+using Nest;
+using IResponse = MGH.Core.Application.Responses.IResponse;
 
 namespace Application.Features.Users.Commands.Delete;
 
-public class DeletedUserResponse : IResponse
-{
-    public int Id { get; set; }
-}
+public record DeletedUserResponse(int Id) : IResponse;
+

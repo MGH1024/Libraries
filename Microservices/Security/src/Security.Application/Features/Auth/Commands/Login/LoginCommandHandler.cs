@@ -1,14 +1,14 @@
 ﻿using Domain;
 using MGH.Core.Domain.Buses.Commands;
 using Application.Features.Auth.Rules;
-using Application.Services.AuthService;
+using Application.Features.Auth.Services;
 
 namespace Application.Features.Auth.Commands.Login;
 
 public class LoginCommandHandler(
     IUow uow,
     IAuthService authService,
-    AuthBusinessRules authBusinessRules) : ICommandHandler<LoginCommand, LoginResponse>
+    IAuthBusinessRules authBusinessRules) : ICommandHandler<LoginCommand, LoginResponse>
 {
     public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
     {

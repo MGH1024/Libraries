@@ -12,7 +12,7 @@ public class ArchitecturalTests
     {
         // Arrange
         var assembly = typeof(Domain.Repositories.IUserRepository).Assembly;
-        var applicationAssembly = typeof(Application.Models.ApiConfiguration).Assembly.ToString();
+        var applicationAssembly = typeof(Application.Features.Users.Services.IUserService).Assembly.ToString();
         var infrastructureAssembly = typeof(Persistence.Contexts.SecurityDbContext).Assembly.ToString();
         var endpointAssembly = typeof(Api.Controllers.AppController).Assembly.ToString();
 
@@ -38,7 +38,7 @@ public class ArchitecturalTests
     public void Application_Should_Not_HaveDependencyOnOtherLayers()
     {
         // Arrange
-        var assembly = typeof(Application.Models.ApiConfiguration).Assembly;
+        var assembly = typeof(Application.Features.Users.Services.IUserService).Assembly;
         var infrastructureAssembly = typeof(Persistence.Contexts.SecurityDbContext).Assembly.ToString();
         var endpointAssembly = typeof(Api.Controllers.AppController).Assembly.ToString();
 

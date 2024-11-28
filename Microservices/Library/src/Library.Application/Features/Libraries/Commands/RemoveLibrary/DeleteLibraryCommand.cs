@@ -16,7 +16,7 @@ public class DeleteLibraryCommand : ICommand<Unit>
 }
 
 public class RemoveLibraryCommandHandler(IUow uow,
-    LibraryBusinessRules libraryBusinessRules)
+    ILibraryBusinessRules libraryBusinessRules)
     : ICommandHandler<DeleteLibraryCommand, Unit>
 {
     public async Task<Unit> Handle(DeleteLibraryCommand request, CancellationToken cancellationToken)

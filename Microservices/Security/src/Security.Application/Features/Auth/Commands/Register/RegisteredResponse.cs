@@ -4,14 +4,5 @@ using MGH.Core.Infrastructure.Securities.Security.Entities;
 
 namespace Application.Features.Auth.Commands.Register;
 
-public class RegisteredResponse(
-    AccessToken accessToken, RefreshTkn refreshTkn)
-    : IResponse
-{
-    public AccessToken AccessToken { get; set; } = accessToken;
-    public RefreshTkn RefreshTkn { get; set; } = refreshTkn;
+public record RegisteredResponse(AccessToken AccessToken, RefreshTkn RefreshTkn) : IResponse;
 
-    public RegisteredResponse() : this(null!, null!)
-    {
-    }
-}

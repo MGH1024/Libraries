@@ -5,7 +5,7 @@ using Application.Features.Users.Commands.UpdateFromAuth;
 using Application.Features.Users.Queries.GetById;
 using MGH.Core.Application.DTOs.Security;
 
-namespace Api.Extensions;
+namespace Api.Profiles;
 
 public static class ApiMapper
 {

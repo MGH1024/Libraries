@@ -7,7 +7,7 @@ using MGH.Core.Infrastructure.Securities.Security.Entities;
 
 namespace Application.Features.OperationClaims.Rules;
 
-public class OperationClaimBusinessRules(IUow uow) : BaseBusinessRules
+public class OperationClaimBusinessRules(IUow uow) : BaseBusinessRules, IOperationClaimBusinessRules
 {
     public Task OperationClaimShouldExistWhenSelected(OperationClaim operationClaim)
     {

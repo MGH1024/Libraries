@@ -1,4 +1,4 @@
-﻿using Application.Services.UsersService;
+﻿using Application.Features.Users.Rules;
 using AutoMapper;
 using Domain;
 using Moq;

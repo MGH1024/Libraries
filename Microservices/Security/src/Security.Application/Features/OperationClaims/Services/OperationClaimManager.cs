@@ -1,12 +1,12 @@
-﻿using Domain;
-using Application.Features.OperationClaims.Rules;
+﻿using Application.Features.OperationClaims.Rules;
+using Domain;
 using MGH.Core.Infrastructure.Persistence.EF.Models.Filters.GetModels;
 using MGH.Core.Infrastructure.Persistence.EF.Models.Paging;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
 
-namespace Application.Services.OperationClaims;
+namespace Application.Features.OperationClaims.Services;
 
-public class OperationClaimManager(IUow uow, OperationClaimBusinessRules operationClaimBusinessRules) : IOperationClaimService
+public class OperationClaimManager(IUow uow, IOperationClaimBusinessRules operationClaimBusinessRules) : IOperationClaimService
 {
     public async Task<OperationClaim> GetAsync(GetModel<OperationClaim> getModel)
     {

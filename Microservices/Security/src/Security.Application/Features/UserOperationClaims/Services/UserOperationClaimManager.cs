@@ -4,11 +4,11 @@ using MGH.Core.Infrastructure.Persistence.EF.Models.Filters.GetModels;
 using MGH.Core.Infrastructure.Persistence.EF.Models.Paging;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
 
-namespace Application.Services.UserOperationClaims;
+namespace Application.Features.UserOperationClaims.Services;
 
 public class UserUserOperationClaimManager(
     IUserOperationClaimRepository userUserOperationClaimRepository,
-    UserOperationClaimBusinessRules userOperationClaimBusinessRules) :
+    IUserOperationClaimBusinessRules userOperationClaimBusinessRules) :
     IUserOperationClaimService
 {
     public async Task<UserOperationClaim> GetAsync(GetModel<UserOperationClaim> getModel)

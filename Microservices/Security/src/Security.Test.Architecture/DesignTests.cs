@@ -9,7 +9,7 @@ public class DesignTests
     public void Handlers_Should_Not_HaveDependencyOnDomain()
     {
         // Arrange
-        var assembly = typeof(Application.Models.ApiConfiguration).Assembly;
+        var assembly = typeof(Application.Features.Users.Services.IUserService).Assembly;
 
         // Act
         var testResult =

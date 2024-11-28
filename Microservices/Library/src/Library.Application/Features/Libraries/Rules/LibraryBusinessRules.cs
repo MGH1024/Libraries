@@ -5,7 +5,7 @@ using MGH.Core.CrossCutting.Exceptions.Types;
 
 namespace Application.Features.Libraries.Rules;
 
-public  class LibraryBusinessRules(ILibraryRepository libraryRepository) : BaseBusinessRules
+public  class LibraryBusinessRules(ILibraryRepository libraryRepository) : BaseBusinessRules, ILibraryBusinessRules
 {
     public async Task LibraryCodeMustBeUnique(string code)
     {

@@ -2,7 +2,7 @@
 using AutoMapper;
 using MGH.Core.Domain.Buses.Commands;
 using Application.Features.Auth.Rules;
-using Application.Services.AuthService;
+using Application.Features.Auth.Services;
 using Application.Features.Users.Extensions;
 using MGH.Core.Infrastructure.Securities.Security.Hashing;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
@@ -12,7 +12,7 @@ namespace Application.Features.Auth.Commands.Register;
 public class RegisterCommandHandler(
     IUow uow,
     IAuthService authService,
-    AuthBusinessRules authBusinessRules,
+    IAuthBusinessRules authBusinessRules,
     IMapper mapper)
     : ICommandHandler<RegisterCommand, RegisteredResponse>
 {
@@ -31,10 +31,6 @@ public class RegisterCommandHandler(
         await uow.CompleteAsync(cancellationToken);
 
         var createdAccessToken = await authService.CreateAccessTokenAsync(createdUser, cancellationToken);
-        return new RegisteredResponse
-        {
-            AccessToken = createdAccessToken,
-            RefreshTkn = createdRefreshTkn
-        };
+        return new RegisteredResponse(createdAccessToken, createdRefreshTkn);
     }
 }

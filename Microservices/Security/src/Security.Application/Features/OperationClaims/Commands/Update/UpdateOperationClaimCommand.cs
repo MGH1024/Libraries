@@ -23,7 +23,7 @@ public class UpdateOperationClaimCommand(int id, string name) : ICommand<Updated
 public class UpdateOperationClaimCommandHandler(
     IUow uow,
     IMapper mapper,
-    OperationClaimBusinessRules operationClaimBusinessRules)
+    IOperationClaimBusinessRules operationClaimBusinessRules)
     : ICommandHandler<UpdateOperationClaimCommand, UpdatedOperationClaimResponse>
 {
     public async Task<UpdatedOperationClaimResponse> Handle(UpdateOperationClaimCommand request, CancellationToken cancellationToken)

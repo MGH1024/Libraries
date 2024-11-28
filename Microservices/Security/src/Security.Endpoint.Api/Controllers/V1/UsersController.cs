@@ -1,4 +1,4 @@
-﻿using Api.Extensions;
+﻿using Api.Profiles;
 using Application.Features.Users.Commands.Create;
 using Application.Features.Users.Commands.Delete;
 using Application.Features.Users.Commands.Update;

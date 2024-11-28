@@ -1,9 +1,5 @@
 ﻿using System.Reflection;
-using Application.Features.Users.Rules;
-using Application.Services.AuthService;
-using Application.Services.OperationClaims;
-using Application.Services.UserOperationClaims;
-using Application.Services.UsersService;
+using Application.Features.Libraries.Rules;
 using FluentValidation;
 using MGH.Core.Application.Pipelines.Authorization;
 using MGH.Core.Application.Pipelines.Caching;
@@ -13,33 +9,15 @@ using MGH.Core.Application.Pipelines.Validation;
 using MGH.Core.Application.Rules;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Base;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MGH.Core.Infrastructure.Cache.Redis;
 
-namespace Application.Extensions;
+namespace Application;
 
 public static class ApplicationServiceRegistration
 {
-    public static IServiceCollection AddApplicationServices(this IServiceCollection services,IConfiguration 
-        configuration)
+    public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
-        services.AddMediatRAndBehaviors();
-        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-        services.AddSubClassesOfType(Assembly.GetExecutingAssembly(), typeof(BaseBusinessRules));
-        services.AddSingleton<IElasticSearch, ElasticSearchService>();
-        services.AddScoped<IAuthService, AuthManager>();
-        services.AddScoped<IOperationClaimService, OperationClaimManager>();
-        services.AddScoped<IUserOperationClaimService, UserUserOperationClaimManager>();
-        services.AddScoped<IUserService, UserManager>();
-        services.AddScoped<IUserBusinessRules, UserBusinessRules>();
-        services.AddRedis(configuration);
-        return services;
-    }
-
-    private static void AddMediatRAndBehaviors(this IServiceCollection services)
-    {
         services.AddMediatR(configuration =>
         {
             configuration.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
@@ -49,6 +27,12 @@ public static class ApplicationServiceRegistration
             configuration.AddOpenBehavior(typeof(TransactionScopeBehavior<,>));
             configuration.AddOpenBehavior(typeof(RequestValidationBehavior<,>));
         });
+        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+        services.AddSubClassesOfType(Assembly.GetExecutingAssembly(), typeof(BaseBusinessRules));
+        services.AddSingleton<IElasticSearch, ElasticSearchService>();
+        services.AddSingleton<ILibraryBusinessRules, LibraryBusinessRules>();
+
+        return services;
     }
 
     private static void AddSubClassesOfType(this IServiceCollection services, Assembly assembly,
@@ -61,6 +45,4 @@ public static class ApplicationServiceRegistration
             else
                 addWithLifeCycle(services, type);
     }
-    
-    
 }

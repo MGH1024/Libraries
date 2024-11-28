@@ -21,7 +21,7 @@ public class CreateLibraryCommand : ICommand<Guid>
 public class CreateLibraryCommandHandler(
     ILibraryFactory libraryFactory,
     IUow uow,
-    LibraryBusinessRules libraryBusinessRules) : ICommandHandler<CreateLibraryCommand, Guid>
+    ILibraryBusinessRules libraryBusinessRules) : ICommandHandler<CreateLibraryCommand, Guid>
 {
     public async Task<Guid> Handle(CreateLibraryCommand command, CancellationToken cancellationToken)
     {

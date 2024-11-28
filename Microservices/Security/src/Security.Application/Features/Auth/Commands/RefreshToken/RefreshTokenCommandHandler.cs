@@ -1,16 +1,20 @@
-﻿using Application.Features.Auth.Rules;
-using Application.Services.AuthService;
-using Domain;
+﻿using Domain;
 using MGH.Core.Domain.Buses.Commands;
+using Application.Features.Auth.Rules;
+using Application.Features.Auth.Services;
+using MGH.Core.Infrastructure.Persistence.EF.Models.Filters.GetModels;
+using MGH.Core.Infrastructure.Securities.Security.Entities;
 
 namespace Application.Features.Auth.Commands.RefreshToken;
 
-public class RefreshTokenCommandHandler(IAuthService authService, IUow uow, AuthBusinessRules authBusinessRules) 
+public class RefreshTokenCommandHandler(IAuthService authService, IUow uow, IAuthBusinessRules authBusinessRules)
     : ICommandHandler<RefreshTokenCommand, RefreshTokenResponse>
 {
     public async Task<RefreshTokenResponse> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
     {
-        var refreshToken = await authService.GetRefreshTokenByToken(request.RefreshToken, cancellationToken);
+        var refreshToken = await uow.RefreshToken
+            .GetAsync(new GetModel<RefreshTkn> { Predicate = r => r.Token == request.RefreshToken });
+
         await authBusinessRules.RefreshTokenShouldBeExists(refreshToken);
 
         if (refreshToken!.Revoked != null)
@@ -18,8 +22,9 @@ public class RefreshTokenCommandHandler(IAuthService authService, IUow uow, Auth
             var reason = $"Attempted reuse of revoked ancestor token:" + $" {refreshToken.Token}";
             await authService.RevokeDescendantRefreshTokens(refreshToken, reason, cancellationToken);
         }
+
         await authBusinessRules.RefreshTokenShouldBeActive(refreshToken);
-        
+
         var user = await uow.User.GetAsync(refreshToken.UserId, cancellationToken);
         await authBusinessRules.UserShouldBeExistsWhenSelected(user);
 
@@ -29,6 +34,6 @@ public class RefreshTokenCommandHandler(IAuthService authService, IUow uow, Auth
         await uow.CompleteAsync(cancellationToken);
         var createdAccessToken = await authService.CreateAccessTokenAsync(user!, cancellationToken);
 
-        return new RefreshTokenResponse { AccessToken = createdAccessToken, RefreshTkn = addedRefreshTkn };
+        return new RefreshTokenResponse(createdAccessToken, addedRefreshTkn);
     }
 }

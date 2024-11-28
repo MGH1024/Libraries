@@ -14,7 +14,7 @@ public class GetByIdUserOperationClaimQuery : IRequest<GetByIdUserOperationClaim
     public class GetByIdUserOperationClaimQueryHandler(
         IUow uow,
         IMapper mapper,
-        UserOperationClaimBusinessRules userOperationClaimBusinessRules)
+        IUserOperationClaimBusinessRules userOperationClaimBusinessRules)
         : IRequestHandler<GetByIdUserOperationClaimQuery, GetByIdUserOperationClaimResponse>
     {
         public async Task<GetByIdUserOperationClaimResponse> Handle(

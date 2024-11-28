@@ -1,21 +1,20 @@
 ﻿using System.Reflection;
 using System.Text.Json.Serialization;
-using Application.Models;
 using Asp.Versioning;
 using MGH.Core.CrossCutting.Exceptions;
 using MGH.Core.CrossCutting.Localizations.ModelBinders;
 using MGH.Core.CrossCutting.Logging;
 using MGH.Core.Endpoint.Swagger.Swagger;
 using MGH.Core.Endpoint.Swagger.Swagger.Models;
+using MGH.Core.Infrastructure.HealthCheck;
 using MGH.Core.Infrastructure.Securities.Security.Encryption;
 using MGH.Core.Infrastructure.Securities.Security.JWT;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.IdentityModel.Tokens;
-using MGH.Core.Infrastructure.HealthCheck;
 
-namespace Api.Extensions;
+namespace Api;
 
 public static class ApiServiceRegistration
 {
@@ -57,9 +56,6 @@ public static class ApiServiceRegistration
     {
         services.Configure<TokenOptions>(option =>
             configuration.GetSection(nameof(TokenOptions)).Bind(option));
-
-        services.Configure<ApiConfiguration>(option =>
-            configuration.GetSection(nameof(ApiConfiguration)).Bind(option));
     }
 
     private static void AddVersioning(this IServiceCollection services)

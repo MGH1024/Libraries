@@ -1,8 +1,8 @@
-﻿using MediatR;
+﻿using Api.Profiles;
+using MediatR;
 using AutoMapper;
 using Quartz.Util;
 using Asp.Versioning;
-using Api.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using MGH.Core.Application.DTOs.Security;
 using Microsoft.AspNetCore.Mvc.ModelBinding;

@@ -21,7 +21,7 @@ public class UpdateLibraryWithStavesCommand : ICommand<Guid>
 }
 
 public class EditLibraryWithStavesCommandHandler(IUow uow,
-    LibraryBusinessRules libraryBusinessRules)
+    ILibraryBusinessRules libraryBusinessRules)
     : ICommandHandler<UpdateLibraryWithStavesCommand, Guid>
 {
     public async Task<Guid> Handle(UpdateLibraryWithStavesCommand request, CancellationToken cancellationToken)
