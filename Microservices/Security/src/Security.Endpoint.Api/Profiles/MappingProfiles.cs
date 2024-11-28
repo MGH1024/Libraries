@@ -11,9 +11,9 @@ public class MappingProfiles : Profile
     public MappingProfiles()
     {
         CreateMap<LoginCommandDto, LoginCommand>()
-            .ForCtorParam("userForLoginDto", opt => 
+            .ForCtorParam("LoginCommandDto", opt => 
                 opt.MapFrom(src => src));
-        
+
         CreateMap<PageRequest, GetListUserQuery>()
             .ForCtorParam("PageRequest", opt => opt.MapFrom(src => src));
     }

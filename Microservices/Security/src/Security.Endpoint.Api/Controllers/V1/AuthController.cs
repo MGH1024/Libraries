@@ -1,12 +1,12 @@
-﻿using Api.Extensions;
-using Application.Features.Auth.Commands.Login;
-using Asp.Versioning;
+﻿using MediatR;
 using AutoMapper;
-using MediatR;
-using MGH.Core.Application.DTOs.Security;
-using MGH.Core.Infrastructure.Securities.Security.Entities;
+using Quartz.Util;
+using Asp.Versioning;
+using Api.Extensions;
 using Microsoft.AspNetCore.Mvc;
+using MGH.Core.Application.DTOs.Security;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Application.Features.Auth.Commands.Login;
 
 namespace Api.Controllers.V1;
 
@@ -16,25 +16,28 @@ namespace Api.Controllers.V1;
 public class AuthController(ISender sender, IMapper mapper) : AppController(sender)
 {
     /// <summary>
-    /// login 
+    /// security api login 
     /// </summary>
     /// <param name="loginCommandDto"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpPost("Login")]
-    public async Task<IActionResult> Login([FromBody] LoginCommandDto loginCommandDto, CancellationToken cancellationToken)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(LoginResponse))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> Login([FromBody] LoginCommandDto loginCommandDto, CancellationToken
+        cancellationToken)
     {
-        var loginCommand = mapper.Map<LoginCommand>(loginCommandDto,
-            opt => { opt.Items["IpAddress"] = IpAddress(); });
+        var loginCommand = mapper.Map<LoginCommand>(loginCommandDto);
 
         var result = await Sender.Send(loginCommand, cancellationToken);
         if (!result.IsSuccess)
             return BadRequest("Failed to login");
 
-        if (result.RefreshTkn is not null)
-            SetRefreshTokenToCookie(result.RefreshTkn);
+        if (!result.RefreshToken.IsNullOrWhiteSpace())
+            SetRefreshTokenToCookie(result.RefreshToken,result.RefreshTokenExpiry);
 
-        return Ok(result.ToHttpResponse());
+        return Ok(result);
     }
 
     /// <summary>
@@ -50,7 +53,7 @@ public class AuthController(ISender sender, IMapper mapper) : AppController(send
         var registerCommand = userForRegisterDto.ToRegisterCommand(IpAddress());
 
         var result = await Sender.Send(registerCommand, cancellationToken);
-        SetRefreshTokenToCookie(result.RefreshTkn);
+        SetRefreshTokenToCookie(result.RefreshTkn.Token,result.RefreshTkn.Expires);
         return Created(uri: "", result.AccessToken);
     }
 
@@ -64,7 +67,7 @@ public class AuthController(ISender sender, IMapper mapper) : AppController(send
     {
         var refreshTokenCommand = ApiMapper.ToRefreshTokenCommand(GetRefreshTokenFromCookies());
         var result = await Sender.Send(refreshTokenCommand, cancellationToken);
-        SetRefreshTokenToCookie(result.RefreshTkn);
+        SetRefreshTokenToCookie(result.RefreshTkn.Token,result.RefreshTkn.Expires);
         return Created(uri: "", result.AccessToken);
     }
 
@@ -76,7 +79,8 @@ public class AuthController(ISender sender, IMapper mapper) : AppController(send
     /// <returns></returns>
     [HttpPut("RevokeToken")]
     public async Task<IActionResult> RevokeToken(
-        [FromBody(EmptyBodyBehavior = EmptyBodyBehavior.Allow)] string refreshToken,
+        [FromBody(EmptyBodyBehavior = EmptyBodyBehavior.Allow)]
+        string refreshToken,
         CancellationToken cancellationToken)
     {
         var token = refreshToken ?? GetRefreshTokenFromCookies();
@@ -90,9 +94,9 @@ public class AuthController(ISender sender, IMapper mapper) : AppController(send
                                                    throw new ArgumentException(
                                                        "Refresh token is not found in request cookies.");
 
-    private void SetRefreshTokenToCookie(RefreshTkn refreshToken)
+    private void SetRefreshTokenToCookie(string refreshToken, DateTime refreshTokenExpiry)
     {
-        var cookieOptions = new CookieOptions() { HttpOnly = true, Expires = DateTime.UtcNow.AddDays(7) };
-        Response.Cookies.Append(key: "refreshToken", refreshToken.Token, cookieOptions);
+        var cookieOptions = new CookieOptions() { HttpOnly = true, Expires = refreshTokenExpiry };
+        Response.Cookies.Append(key: "refreshToken", refreshToken, cookieOptions);
     }
 }

@@ -23,9 +23,11 @@ public class LoginCommandHandler(
 
         return new LoginResponse
         {
-            AccessToken = createdAccessToken,
-            RefreshTkn = addedRefreshTkn,
+            Token = createdAccessToken.Token,
+            RefreshToken = addedRefreshTkn.Token,
             IsSuccess = true,
+            TokenExpiry = createdAccessToken.Expiration,
+            RefreshTokenExpiry = addedRefreshTkn.Expires
         };
     }
 }

@@ -1,18 +1,10 @@
-﻿using MGH.Core.Application.Responses;
-using MGH.Core.Infrastructure.Securities.Security.JWT;
-using MGH.Core.Infrastructure.Securities.Security.Entities;
+﻿namespace Application.Features.Auth.Commands.Login;
 
-namespace Application.Features.Auth.Commands.Login;
-
-public class LoginResponse : IResponse
+public class LoginResponse
 {
-    public AccessToken AccessToken { get; set; }
-    public RefreshTkn RefreshTkn { get; set; }
+    public string Token { get; set; }
+    public DateTime TokenExpiry { get; set; }
+    public string RefreshToken { get; set; }
+    public DateTime RefreshTokenExpiry { get; set; }
     public bool IsSuccess { get; set; }
-
-    public LoginHttpResponse ToHttpResponse() => new()
-    {
-        AccessToken = AccessToken,
-        IsSuccess = IsSuccess
-    };
 }
