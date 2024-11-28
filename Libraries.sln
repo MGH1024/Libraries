@@ -63,6 +63,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MGH.Core.Infrastructure.Hea
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MGH.Core.Infrastructure.Cache.Redis", "Framework\MGH.Core.Infrastructure.Cache.Redis\MGH.Core.Infrastructure.Cache.Redis.csproj", "{DE6DADEB-3F94-49F6-A116-F7D8E134D779}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security.Test.Architecture", "Microservices\Security\src\Security.Test.Architecture\Security.Test.Architecture.csproj", "{A12CC87E-FFF9-488D-B8C2-426038E0BBA1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -173,6 +175,10 @@ Global
 		{DE6DADEB-3F94-49F6-A116-F7D8E134D779}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DE6DADEB-3F94-49F6-A116-F7D8E134D779}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DE6DADEB-3F94-49F6-A116-F7D8E134D779}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A12CC87E-FFF9-488D-B8C2-426038E0BBA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A12CC87E-FFF9-488D-B8C2-426038E0BBA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A12CC87E-FFF9-488D-B8C2-426038E0BBA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A12CC87E-FFF9-488D-B8C2-426038E0BBA1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -206,6 +212,7 @@ Global
 		{AB963CB7-2BEC-4D64-AD22-C265FB2F2B7B} = {88C6BDD9-95BF-462A-9585-C5CB14B1EB4D}
 		{45B733BC-F438-48FE-9601-8A7665A30C61} = {88C6BDD9-95BF-462A-9585-C5CB14B1EB4D}
 		{99299A61-65F6-4C18-87E4-91931A9C5B92} = {88C6BDD9-95BF-462A-9585-C5CB14B1EB4D}
+		{A12CC87E-FFF9-488D-B8C2-426038E0BBA1} = {5F055678-C2FB-44FF-B72E-8403510D7F1F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {04EE5569-4196-47F2-A52B-CF1049C542F2}

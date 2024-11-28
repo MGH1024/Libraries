@@ -1,7 +1,7 @@
-﻿using Application.Features.Auth.Rules;
-using Application.Services.AuthService;
-using AutoMapper;
+﻿using AutoMapper;
 using MGH.Core.Domain.Buses.Commands;
+using Application.Features.Auth.Rules;
+using Application.Services.AuthService;
 
 namespace Application.Features.Auth.Commands.RevokeToken;
 
@@ -16,7 +16,8 @@ public class RevokeTokenCommandHandler(
         var refreshTkn = await authService.GetRefreshTokenByToken(request.Token, cancellationToken);
         await authBusinessRules.RefreshTokenShouldBeExists(refreshTkn);
         await authBusinessRules.RefreshTokenShouldBeActive(refreshTkn!);
-        await authService.RevokeRefreshTokenAsync(refreshTkn!, "Revoked without replacement", null, cancellationToken);
+        await authService.RevokeRefreshTokenAsync(refreshTkn!, "Revoked without replacement", null, 
+            cancellationToken);
         return mapper.Map<RevokedTokenResponse>(refreshTkn);
     }
 }

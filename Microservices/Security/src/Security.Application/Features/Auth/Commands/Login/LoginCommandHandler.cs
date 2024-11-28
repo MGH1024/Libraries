@@ -1,18 +1,18 @@
-﻿using Application.Features.Auth.Rules;
-using Application.Services.AuthService;
-using Domain.Repositories;
+﻿using Domain;
 using MGH.Core.Domain.Buses.Commands;
+using Application.Features.Auth.Rules;
+using Application.Services.AuthService;
 
 namespace Application.Features.Auth.Commands.Login;
 
 public class LoginCommandHandler(
-    IUserRepository userRepository,
+    IUow uow,
     IAuthService authService,
     AuthBusinessRules authBusinessRules) : ICommandHandler<LoginCommand, LoginResponse>
 {
     public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
-        var user = await userRepository.GetByEmailAsync(request.LoginCommandDto.Email, cancellationToken);
+        var user = await uow.User.GetByEmailAsync(request.LoginCommandDto.Email, cancellationToken);
         await authBusinessRules.UserShouldBeExistsWhenSelected(user);
         await authBusinessRules.UserPasswordShouldBeMatch(user!.Id, request.LoginCommandDto.Password,cancellationToken);
 

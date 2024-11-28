@@ -1,11 +1,11 @@
-﻿using Application.Features.Auth.Rules;
-using Application.Features.Users.Extensions;
-using Application.Services.AuthService;
+﻿using Domain;
 using AutoMapper;
-using Domain;
 using MGH.Core.Domain.Buses.Commands;
-using MGH.Core.Infrastructure.Securities.Security.Entities;
+using Application.Features.Auth.Rules;
+using Application.Services.AuthService;
+using Application.Features.Users.Extensions;
 using MGH.Core.Infrastructure.Securities.Security.Hashing;
+using MGH.Core.Infrastructure.Securities.Security.Entities;
 
 namespace Application.Features.Auth.Commands.Register;
 

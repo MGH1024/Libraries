@@ -5,7 +5,6 @@ using Application.Features.Users.Rules;
 using AutoMapper;
 using Domain;
 using MGH.Core.Application.Pipelines.Authorization;
-using MGH.Core.Application.Pipelines.Caching;
 using MGH.Core.Domain.Buses.Commands;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
 using MGH.Core.Infrastructure.Securities.Security.Hashing;

@@ -7,7 +7,6 @@ using Application.Features.Users.Rules;
 using Application.Services.AuthService;
 using MGH.Core.Application.Pipelines.Authorization;
 using MGH.Core.Infrastructure.Securities.Security.Hashing;
-using MGH.Core.Infrastructure.Securities.Security.Entities;
 
 namespace Application.Features.Users.Commands.UpdateFromAuth;
 
