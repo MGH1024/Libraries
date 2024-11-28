@@ -10,9 +10,9 @@ public class MappingProfiles : Profile
 {
     public MappingProfiles()
     {
-        CreateMap<UserForLoginDto, LoginCommand>()
-            .ForCtorParam("userForLoginDto", opt => opt.MapFrom(src => src))
-            .ForCtorParam("ipAddress", opt => opt.MapFrom((src,context) => context.Items["IpAddress"]));
+        CreateMap<LoginCommandDto, LoginCommand>()
+            .ForCtorParam("userForLoginDto", opt => 
+                opt.MapFrom(src => src));
         
         CreateMap<PageRequest, GetListUserQuery>()
             .ForCtorParam("PageRequest", opt => opt.MapFrom(src => src));

@@ -36,29 +36,27 @@ public class AuthManager(IUow uow, ITokenHelper tokenHelper, IDateTime time, IOp
 
     public async Task RevokeRefreshTokenAsync(
         RefreshTkn refreshToken,
-        string ipAddress,
         string reason = null,
         string replacedByToken = null,
         CancellationToken cancellationToken = default)
     {
         refreshToken.Revoked = time.IranNow;
-        refreshToken.RevokedByIp = ipAddress;
         refreshToken.ReasonRevoked = reason;
         refreshToken.ReplacedByToken = replacedByToken;
         await uow.RefreshToken.UpdateAsync(refreshToken, cancellationToken);
     }
 
 
-    public async Task<RefreshTkn> RotateRefreshToken(User user, RefreshTkn refreshTkn, string ipAddress,
+    public async Task<RefreshTkn> RotateRefreshToken(User user, RefreshTkn refreshTkn,
         CancellationToken cancellationToken)
     {
-        var newRefreshTkn = tokenHelper.CreateRefreshToken(user, ipAddress);
-        await RevokeRefreshTokenAsync(refreshTkn, ipAddress, reason: "Replaced by new token",
+        var newRefreshTkn = tokenHelper.CreateRefreshToken(user);
+        await RevokeRefreshTokenAsync(refreshTkn, reason: "Replaced by new token",
             newRefreshTkn.Token, cancellationToken);
         return newRefreshTkn;
     }
 
-    public async Task RevokeDescendantRefreshTokens(RefreshTkn refreshTkn, string ipAddress, string reason,
+    public async Task RevokeDescendantRefreshTokens(RefreshTkn refreshTkn, string reason,
         CancellationToken cancellationToken)
     {
         var childToken = await uow.RefreshToken.GetAsync(new GetModel<RefreshTkn>
@@ -67,14 +65,14 @@ public class AuthManager(IUow uow, ITokenHelper tokenHelper, IDateTime time, IOp
         });
 
         if (childToken?.Revoked != null && childToken.Expires <= DateTime.UtcNow)
-            await RevokeRefreshTokenAsync(childToken, ipAddress, reason, childToken.Token, cancellationToken);
+            await RevokeRefreshTokenAsync(childToken, reason, childToken.Token, cancellationToken);
         else
-            await RevokeDescendantRefreshTokens(refreshTkn: childToken!, ipAddress, reason, cancellationToken);
+            await RevokeDescendantRefreshTokens(refreshTkn: childToken!, reason, cancellationToken);
     }
 
-    public Task<RefreshTkn> CreateRefreshToken(User user, string ipAddress, CancellationToken cancellationToken)
+    public Task<RefreshTkn> CreateRefreshToken(User user, CancellationToken cancellationToken)
     {
-        var refreshToken = tokenHelper.CreateRefreshToken(user, ipAddress);
+        var refreshToken = tokenHelper.CreateRefreshToken(user);
         return Task.FromResult(refreshToken);
     }
 }

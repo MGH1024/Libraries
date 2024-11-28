@@ -6,5 +6,5 @@ public interface ITokenHelper
 {
     AccessToken CreateToken(User user, IEnumerable<OperationClaim> operationClaims);
 
-    RefreshTkn CreateRefreshToken(User user, string ipAddress);
+    RefreshTkn CreateRefreshToken(User user);
 }

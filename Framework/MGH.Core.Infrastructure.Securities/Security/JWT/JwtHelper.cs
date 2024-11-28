@@ -26,14 +26,13 @@ public class JwtHelper(IOptions<TokenOptions> options) : ITokenHelper
         return new AccessToken { Token = token, Expiration = accessTokenExpiration };
     }
 
-    public RefreshTkn CreateRefreshToken(User user, string ipAddress)
+    public RefreshTkn CreateRefreshToken(User user)
     {
         return new RefreshTkn()
         {
             UserId = user.Id,
             Token = RandomRefreshToken(),
-            Expires = DateTime.UtcNow.AddDays(7),
-            CreatedByIp = ipAddress
+            Expires = DateTime.UtcNow.AddDays(7)
         };
     }
 

@@ -9,7 +9,7 @@ public class SecurityDbContextFactory : IDesignTimeDbContextFactory<SecurityDbCo
     {
         var optionsBuilder = new DbContextOptionsBuilder<SecurityDbContext>();
         optionsBuilder.UseSqlServer(
-            "Data Source=localhost,14333;Initial Catalog=dbSecMicroservice;User ID=sa; Password=Abcde@12345;Integrated Security=false;MultipleActiveResultSets=true;TrustServerCertificate=True");
+            "Data Source=localhost;Initial Catalog=dbSecMicroservice;User ID=sa; Password=Abcd@1234;Integrated Security=false;MultipleActiveResultSets=true;TrustServerCertificate=True");
 
         return new SecurityDbContext(optionsBuilder.Options);
     }

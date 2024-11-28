@@ -18,14 +18,14 @@ public class AuthController(ISender sender, IMapper mapper) : AppController(send
     /// <summary>
     /// login 
     /// </summary>
-    /// <param name="userForLoginDto"></param>
+    /// <param name="loginCommandDto"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpPost("Login")]
-    public async Task<IActionResult> Login([FromBody] UserForLoginDto userForLoginDto,
-        CancellationToken cancellationToken)
+    public async Task<IActionResult> Login([FromBody] LoginCommandDto loginCommandDto, CancellationToken cancellationToken)
     {
-        var loginCommand = mapper.Map<LoginCommand>(userForLoginDto, opt => { opt.Items["IpAddress"] = IpAddress(); });
+        var loginCommand = mapper.Map<LoginCommand>(loginCommandDto,
+            opt => { opt.Items["IpAddress"] = IpAddress(); });
 
         var result = await Sender.Send(loginCommand, cancellationToken);
         if (!result.IsSuccess)
@@ -62,7 +62,7 @@ public class AuthController(ISender sender, IMapper mapper) : AppController(send
     [HttpGet("RefreshToken")]
     public async Task<IActionResult> RefreshToken(CancellationToken cancellationToken)
     {
-        var refreshTokenCommand = ApiMapper.ToRefreshTokenCommand(GetRefreshTokenFromCookies(), IpAddress());
+        var refreshTokenCommand = ApiMapper.ToRefreshTokenCommand(GetRefreshTokenFromCookies());
         var result = await Sender.Send(refreshTokenCommand, cancellationToken);
         SetRefreshTokenToCookie(result.RefreshTkn);
         return Created(uri: "", result.AccessToken);
@@ -80,7 +80,7 @@ public class AuthController(ISender sender, IMapper mapper) : AppController(send
         CancellationToken cancellationToken)
     {
         var token = refreshToken ?? GetRefreshTokenFromCookies();
-        var revokeTokenCommand = token.ToRevokeTokenCommand(IpAddress());
+        var revokeTokenCommand = token.ToRevokeTokenCommand();
 
         var result = await Sender.Send(revokeTokenCommand, cancellationToken);
         return Ok(result);

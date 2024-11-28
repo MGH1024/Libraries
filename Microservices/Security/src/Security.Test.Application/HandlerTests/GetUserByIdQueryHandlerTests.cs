@@ -1,7 +1,8 @@
 using Application.Features.Users.Queries.GetById;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
 using Moq;
-using Security.Test.Factories;
+using Security.Test.Builders;
+using Security.Test.Builders.Handlers;
 using Security.Test.Fixtures;
 
 namespace Security.Test.HandlerTests;
@@ -13,7 +14,7 @@ public class GetUserByIdQueryHandlerTests(HandlerTestsFixture fixture) : IClassF
     public async Task Handle_ShouldReturnUserResponse_WhenUserExists(int userId)
     {
         // Arrange
-        var handler = HandlerFactories.GetUserByIdQueryHandlerFactory(fixture);
+        var handler = GetUserByIdBuilder.GetUserByIdQueryHandlerBuilder(fixture);
         var userEntity = new User { Id = userId, FirstName = "Test User" };
         var userResponse = new GetUserByIdResponse { Id = userId, FirstName = "Test User" };
         var request = new GetUserByIdQuery { Id = userId };
@@ -44,7 +45,7 @@ public class GetUserByIdQueryHandlerTests(HandlerTestsFixture fixture) : IClassF
     public async Task Handle_ShouldThrowException_WhenUserDoesNotExist(int userId)
     {
         // Arrange
-        var handler =HandlerFactories.GetUserByIdQueryHandlerFactory(fixture);
+        var handler =GetUserByIdBuilder.GetUserByIdQueryHandlerBuilder(fixture);
         User? userEntity = null;
 
         fixture.MockUnitOfWork.Setup(u => u.User.GetAsync(userId, It.IsAny<CancellationToken>()))

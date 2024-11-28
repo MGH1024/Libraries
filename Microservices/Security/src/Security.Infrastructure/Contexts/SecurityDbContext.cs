@@ -1,15 +1,11 @@
 ﻿using MGH.Core.Domain.Entity.Logs;
-using MGH.Core.Infrastructure.Cache.Redis.Services;
-using MGH.Core.Infrastructure.Persistence.EF.Interceptors;
-using MGH.Core.Infrastructure.Public;
-using MGH.Core.Infrastructure.Securities.Security.Entities;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+using MGH.Core.Infrastructure.Securities.Security.Entities;
 
 namespace Persistence.Contexts;
 
-public class SecurityDbContext(DbContextOptions<SecurityDbContext> options) : DbContext(options)
+public class SecurityDbContext(DbContextOptions<SecurityDbContext> options) : 
+    DbContext(options)
 {
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
