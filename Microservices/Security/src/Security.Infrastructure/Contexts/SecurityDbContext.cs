@@ -1,24 +1,77 @@
-﻿using MGH.Core.Domain.Entity.Logs;
+﻿using MGH.Core.Domain.BaseEntity;
+using MGH.Core.Domain.Entity.Logs;
 using Microsoft.EntityFrameworkCore;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
 
 namespace Persistence.Contexts;
 
-public class SecurityDbContext(DbContextOptions<SecurityDbContext> options) : 
+public class SecurityDbContext(DbContextOptions<SecurityDbContext> options) :
     DbContext(options)
 {
+    protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+    {
+        configurationBuilder.Properties<string>().HaveMaxLength(64);
+        base.ConfigureConventions(configurationBuilder);
+    }
+
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(SecurityDbContext).Assembly);
+        //ApplyAuditFieldConfiguration(modelBuilder);
         base.OnModelCreating(modelBuilder);
     }
 
-    protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+    private void ApplyAuditFieldConfiguration(ModelBuilder modelBuilder)
     {
-        configurationBuilder.Properties<string>().HaveMaxLength(128);
-        base.ConfigureConventions(configurationBuilder);
+        var auditEntityTypes = modelBuilder.Model.GetEntityTypes()
+            .Where(e => e.ClrType.IsSubclassOf(typeof(AuditAbleEntity<>)))
+            .ToList();
+
+        foreach (var entityType in auditEntityTypes)
+        {
+            modelBuilder.Entity(entityType.ClrType)
+                .Property("CreatedBy")
+                .IsRequired()
+                .HasDefaultValue("admin_seed")
+                .HasMaxLength(maxLength: 64);
+
+            modelBuilder.Entity(entityType.ClrType)
+                .Property("CreatedAt")
+                .HasDefaultValueSql("GETUTCDATE()")
+                .IsRequired();
+
+            modelBuilder.Entity(entityType.ClrType)
+                .Property("CreatedByIp")
+                .HasMaxLength(maxLength: 32)
+                .IsRequired();
+
+            modelBuilder.Entity(entityType.ClrType)
+                .Property("UpdatedBy")
+                .HasMaxLength(maxLength: 64);
+
+            modelBuilder.Entity(entityType.ClrType)
+                .Property("UpdatedAt")
+                .IsRequired(false);
+
+            modelBuilder.Entity(entityType.ClrType)
+                .Property("UpdatedByIp")
+                .HasMaxLength(maxLength: 32);
+
+            modelBuilder.Entity(entityType.ClrType)
+                .Property("DeletedBy")
+                .HasMaxLength(maxLength: 64);
+
+            modelBuilder.Entity(entityType.ClrType)
+                .Property("DeletedAt")
+                .IsRequired(false);
+
+            modelBuilder.Entity(entityType.ClrType)
+                .Property("DeletedByIp")
+                .HasMaxLength(maxLength: 32);
+        }
     }
-    
+
 
     public DbSet<OperationClaim> OperationClaims { get; set; }
     public DbSet<RefreshTkn> RefreshTokens { get; set; }

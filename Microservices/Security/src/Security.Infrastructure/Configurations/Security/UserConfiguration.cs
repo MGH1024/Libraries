@@ -13,41 +13,17 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.ToTable(DatabaseTableName.User, DatabaseSchema.SecuritySchema)
             .HasKey(ea => ea.Id);
         builder.Property(u => u.Id).HasColumnName("Id").IsRequired();
-        builder.Property(u => u.FirstName).HasColumnName("FirstName").IsRequired();
-        builder.Property(u => u.LastName).HasColumnName("LastName").IsRequired();
-        builder.Property(u => u.Email).HasColumnName("Email").IsRequired();
-        builder.Property(u => u.PasswordSalt).HasColumnName("PasswordSalt").IsRequired();
-        builder.Property(u => u.PasswordHash).HasColumnName("PasswordHash").IsRequired();
+        builder.Property(u => u.FirstName).IsRequired();
+        builder.Property(u => u.LastName).IsRequired();
+        builder.Property(u => u.Email).IsRequired();
+        builder.Property(u => u.PasswordSalt).IsRequired();
+        builder.Property(u => u.PasswordHash).IsRequired();
 
         builder.HasQueryFilter(u => !u.DeletedAt.HasValue);
 
         builder.HasMany(u => u.UserOperationClaims);
         builder.HasMany(u => u.RefreshTokens);
-
-        builder.Property(t => t.CreatedBy)
-            .IsRequired()
-            .HasMaxLength(maxLength: 64);
-
-        builder.Property(t => t.CreatedAt)
-            .IsRequired();
-
-        builder.Property(t => t.UpdatedBy)
-            .HasMaxLength(maxLength: 64);
-
-        builder.Property(t => t.UpdatedAt)
-            .IsRequired(false);
-
-        builder.Property(t => t.DeletedBy)
-            .HasMaxLength(maxLength: 64);
-
-        builder.Property(t => t.DeletedAt)
-            .IsRequired(false);
-
-        builder.Property(a => a.CreatedBy)
-            .HasDefaultValue("admin_seed");
-
-        builder.Property(a => a.CreatedAt)
-            .HasDefaultValueSql("GetDate()");
+        
         builder.HasData(GetSeeds());
     }
 
