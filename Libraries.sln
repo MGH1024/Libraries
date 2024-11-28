@@ -21,15 +21,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MGH.Core.Application", "Fra
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MGH.Core.CrossCutting", "Framework\MGH.Core.CrossCutting\MGH.Core.CrossCutting.csproj", "{BE2E5B6B-1DEC-4AD2-8649-2551E6EE4126}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker-compose", "docker-compose", "{784CF392-FAC9-410B-9DFE-28A624E78015}"
-	ProjectSection(SolutionItems) = preProject
-		Microservices\docker-compose\elk1.yaml = Microservices\docker-compose\elk1.yaml
-		Microservices\docker-compose\elk2.yaml = Microservices\docker-compose\elk2.yaml
-		Microservices\docker-compose\elk3.yaml = Microservices\docker-compose\elk3.yaml
-		Microservices\docker-compose\RabbitMqCompose.yml = Microservices\docker-compose\RabbitMqCompose.yml
-		Microservices\docker-compose\redis.yaml = Microservices\docker-compose\redis.yaml
-	EndProjectSection
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Library.Endpoint.Worker.Outbox", "Microservices\Library\src\Library.Endpoint.Worker.Outbox\Library.Endpoint.Worker.Outbox.csproj", "{AB963CB7-2BEC-4D64-AD22-C265FB2F2B7B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MGH.Core.Infrastructure.ElasticSearch", "Framework\MGH.Core.Infrastructure.ElasticSearch\MGH.Core.Infrastructure.ElasticSearch.csproj", "{8A4C2639-27C3-4115-9C10-AC1893ED936C}"
@@ -190,7 +181,6 @@ Global
 		{88C6BDD9-95BF-462A-9585-C5CB14B1EB4D} = {D219B390-9D8C-4EF8-AE59-F0D47362F508}
 		{B52AAC53-8D2E-45B1-A0C4-F6293379DF53} = {084E41B7-2029-4EB7-8CC3-EDBEE5C66534}
 		{BE2E5B6B-1DEC-4AD2-8649-2551E6EE4126} = {084E41B7-2029-4EB7-8CC3-EDBEE5C66534}
-		{784CF392-FAC9-410B-9DFE-28A624E78015} = {D219B390-9D8C-4EF8-AE59-F0D47362F508}
 		{8A4C2639-27C3-4115-9C10-AC1893ED936C} = {084E41B7-2029-4EB7-8CC3-EDBEE5C66534}
 		{DE3DB833-9224-481F-B758-52447CA4CDFB} = {084E41B7-2029-4EB7-8CC3-EDBEE5C66534}
 		{DD61CDA4-5177-42AF-920F-AD1307FBF0B1} = {084E41B7-2029-4EB7-8CC3-EDBEE5C66534}
