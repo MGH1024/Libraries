@@ -1,5 +1,5 @@
 using Api;
-using Application.Extensions;
+using Application;
 using Persistence;
 
 var builder = WebApplication.CreateBuilder(args);

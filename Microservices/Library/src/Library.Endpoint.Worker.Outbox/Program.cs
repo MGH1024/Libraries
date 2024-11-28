@@ -1,4 +1,4 @@
-using Application.Extensions;
+using Application;
 using Library.Endpoint.Worker.Outbox;
 using Persistence;
 
