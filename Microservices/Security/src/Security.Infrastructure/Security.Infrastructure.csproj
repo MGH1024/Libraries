@@ -4,24 +4,24 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>disable</Nullable>
-        <RootNamespace>Persistence</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
         
         <PackageReference Include="AutoMapper" Version="12.0.1" />
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
-        <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2"/>
-        <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.7"/>
-        <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.7"/>
+        <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
+        <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.7" />
+        <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.7" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.7">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.7"/>
-        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.4"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.7" />
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.4" />
+        <PackageReference Include="prometheus-net.AspNetCore" Version="8.2.1" />
         <PackageReference Include="Quartz" Version="3.12.0" />
         <PackageReference Include="SendGrid" Version="9.29.3" />
         <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.0.1" />
@@ -32,9 +32,9 @@
         <ProjectReference Include="..\..\..\..\Framework\MGH.Core.Infrastructure.ElasticSearch\MGH.Core.Infrastructure.ElasticSearch.csproj" />
         <ProjectReference Include="..\..\..\..\Framework\MGH.Core.Infrastructure.HealthCheck\MGH.Core.Infrastructure.HealthCheck.csproj" />
         <ProjectReference Include="..\..\..\..\Framework\MGH.Core.Infrastructure\MGH.Core.Infrastructure.csproj" />
-        <ProjectReference Include="..\Security.Domain\Security.Domain.csproj"/>
-        <ProjectReference Include="..\..\..\..\Framework\MGH.Core.Infrastructure.MessageBroker.RabbitMq\MGH.Core.Infrastructure.MessageBroker.RabbitMq.csproj"/>
-        <ProjectReference Include="..\..\..\..\Framework\MGH.Core.Infrastructure.Securities\MGH.Core.Infrastructure.Securities.csproj"/>
+        <ProjectReference Include="..\Security.Domain\Security.Domain.csproj" />
+        <ProjectReference Include="..\..\..\..\Framework\MGH.Core.Infrastructure.MessageBroker.RabbitMq\MGH.Core.Infrastructure.MessageBroker.RabbitMq.csproj" />
+        <ProjectReference Include="..\..\..\..\Framework\MGH.Core.Infrastructure.Securities\MGH.Core.Infrastructure.Securities.csproj" />
     </ItemGroup>
 
 

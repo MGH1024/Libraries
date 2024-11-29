@@ -2,9 +2,9 @@
 using MGH.Core.Infrastructure.Securities.Security.Hashing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Persistence.Configurations.Base;
+using Security.Infrastructure.Configurations.Base;
 
-namespace Persistence.Configurations.Security;
+namespace Security.Infrastructure.Configurations.Security;
 
 public class UserConfiguration : IEntityTypeConfiguration<User>
 {

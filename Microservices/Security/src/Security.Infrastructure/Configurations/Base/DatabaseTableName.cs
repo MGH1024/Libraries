@@ -1,4 +1,4 @@
-﻿namespace Persistence.Configurations.Base;
+﻿namespace Security.Infrastructure.Configurations.Base;
 
 public static class DatabaseTableName
 {

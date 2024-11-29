@@ -1,10 +1,10 @@
 ﻿using Domain.Repositories;
 using MGH.Core.Infrastructure.Persistence.EF.Base.Repository;
-using Persistence.Contexts;
-using Microsoft.EntityFrameworkCore;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
+using Microsoft.EntityFrameworkCore;
+using Security.Infrastructure.Contexts;
 
-namespace Persistence.Repositories.Security;
+namespace Security.Infrastructure.Repositories.Security;
 
 public class UserOperationClaimRepository(SecurityDbContext securityDbContext)
     : Repository<UserOperationClaim, int>(securityDbContext), IUserOperationClaimRepository

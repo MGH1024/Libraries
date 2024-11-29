@@ -1,6 +1,7 @@
 using Api;
 using Application;
 using Persistence;
+using Security.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 

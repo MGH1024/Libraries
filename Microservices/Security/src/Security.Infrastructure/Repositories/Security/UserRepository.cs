@@ -2,9 +2,9 @@
 using MGH.Core.Infrastructure.Persistence.EF.Base.Repository;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
 using Microsoft.EntityFrameworkCore;
-using Persistence.Contexts;
+using Security.Infrastructure.Contexts;
 
-namespace Persistence.Repositories.Security;
+namespace Security.Infrastructure.Repositories.Security;
 
 public class UserRepository(SecurityDbContext securityDbContext) : Repository<User, int>(securityDbContext), 
     IUserRepository

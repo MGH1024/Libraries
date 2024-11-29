@@ -1,11 +1,10 @@
 ﻿using Domain;
 using Domain.Repositories;
-using MGH.Core.Infrastructure.Public;
 using Microsoft.EntityFrameworkCore.Storage;
-using Persistence.Contexts;
-using Persistence.Repositories.Security;
+using Security.Infrastructure.Contexts;
+using Security.Infrastructure.Repositories.Security;
 
-namespace Persistence.Repositories;
+namespace Security.Infrastructure.Repositories;
 
 public class UnitOfWork(SecurityDbContext context) : IUow
 {

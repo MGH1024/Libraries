@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using Security.Infrastructure.Contexts;
 
 namespace Security.Test.Architecture;
 
@@ -13,7 +14,7 @@ public class ArchitecturalTests
         // Arrange
         var assembly = typeof(Domain.Repositories.IUserRepository).Assembly;
         var applicationAssembly = typeof(Application.Features.Users.Services.IUserService).Assembly.ToString();
-        var infrastructureAssembly = typeof(Persistence.Contexts.SecurityDbContext).Assembly.ToString();
+        var infrastructureAssembly = typeof(SecurityDbContext).Assembly.ToString();
         var endpointAssembly = typeof(Api.Controllers.AppController).Assembly.ToString();
 
         var otherProjectAssembly = new[]
@@ -39,7 +40,7 @@ public class ArchitecturalTests
     {
         // Arrange
         var assembly = typeof(Application.Features.Users.Services.IUserService).Assembly;
-        var infrastructureAssembly = typeof(Persistence.Contexts.SecurityDbContext).Assembly.ToString();
+        var infrastructureAssembly = typeof(SecurityDbContext).Assembly.ToString();
         var endpointAssembly = typeof(Api.Controllers.AppController).Assembly.ToString();
 
         var otherProjectAssembly = new[]
@@ -63,7 +64,7 @@ public class ArchitecturalTests
     public void Infrastructure_Should_Not_HaveDependencyOnOtherLayers()
     {
         // Arrange
-        var assembly = typeof(Persistence.Contexts.SecurityDbContext).Assembly;
+        var assembly = typeof(SecurityDbContext).Assembly;
         var endpointAssembly = typeof(Api.Controllers.AppController).Assembly.ToString();
 
         var otherProjectAssembly = new[]

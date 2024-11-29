@@ -1,9 +1,9 @@
 ﻿using Domain.Repositories;
 using MGH.Core.Infrastructure.Persistence.EF.Base.Repository;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
-using Persistence.Contexts;
+using Security.Infrastructure.Contexts;
 
-namespace Persistence.Repositories.Security;
+namespace Security.Infrastructure.Repositories.Security;
 
 public class OperationClaimRepository(SecurityDbContext securityDbContext) :
     Repository<OperationClaim, int>(securityDbContext),

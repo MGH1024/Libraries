@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
-namespace Persistence.Contexts;
+namespace Security.Infrastructure.Contexts;
 
 public class SecurityDbContextFactory : IDesignTimeDbContextFactory<SecurityDbContext>
 {

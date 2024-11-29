@@ -1,9 +1,9 @@
 ﻿using MGH.Core.Domain.BaseEntity;
 using MGH.Core.Domain.Entity.Logs;
-using Microsoft.EntityFrameworkCore;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
+using Microsoft.EntityFrameworkCore;
 
-namespace Persistence.Contexts;
+namespace Security.Infrastructure.Contexts;
 
 public class SecurityDbContext(DbContextOptions<SecurityDbContext> options) :
     DbContext(options)

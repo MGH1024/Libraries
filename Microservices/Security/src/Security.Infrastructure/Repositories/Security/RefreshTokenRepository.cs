@@ -2,12 +2,12 @@
 using Domain.Repositories;
 using MGH.Core.Domain.BaseEntity.Abstract;
 using MGH.Core.Infrastructure.Persistence.EF.Base.Repository;
+using MGH.Core.Infrastructure.Securities.Security.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Persistence.Contexts;
-using MGH.Core.Infrastructure.Securities.Security.Entities;
+using Security.Infrastructure.Contexts;
 
-namespace Persistence.Repositories.Security;
+namespace Security.Infrastructure.Repositories.Security;
 
 public class RefreshTokenRepository(SecurityDbContext securityDbContext)
     : Repository<RefreshTkn, int>(securityDbContext), IRefreshTokenRepository

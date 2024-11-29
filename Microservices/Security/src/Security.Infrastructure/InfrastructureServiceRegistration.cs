@@ -6,9 +6,12 @@ using MGH.Core.CrossCutting.Localizations.RouteConstraints;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Base;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Models;
+using MGH.Core.Infrastructure.HealthCheck;
 using MGH.Core.Infrastructure.MessageBroker;
 using MGH.Core.Infrastructure.MessageBroker.RabbitMq;
 using MGH.Core.Infrastructure.MessageBroker.RabbitMq.Model;
+using MGH.Core.Infrastructure.Persistence.EF.Interceptors;
+using MGH.Core.Infrastructure.Persistence.EF.Models.Configuration;
 using MGH.Core.Infrastructure.Public;
 using MGH.Core.Infrastructure.Securities.Security;
 using Microsoft.AspNetCore.Builder;
@@ -20,15 +23,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Nest;
-using Persistence.Contexts;
-using Persistence.Repositories;
-using Persistence.Repositories.Security;
+using Prometheus;
+using Security.Infrastructure.Contexts;
+using Security.Infrastructure.Repositories;
+using Security.Infrastructure.Repositories.Security;
 using LogLevel = Microsoft.Extensions.Logging.LogLevel;
-using MGH.Core.Infrastructure.HealthCheck;
-using MGH.Core.Infrastructure.Persistence.EF.Interceptors;
-using MGH.Core.Infrastructure.Persistence.EF.Models.Configuration;
 
-namespace Persistence;
+namespace Security.Infrastructure;
 
 public static class InfrastructureServiceRegistration
 {
@@ -47,6 +48,7 @@ public static class InfrastructureServiceRegistration
         services.AddCulture();
         services.AddElasticSearch(configuration);
         services.AddRabbitMq(configuration);
+        services.AddPrometheus(configuration);
         services.AddInfrastructureHealthChecks<SecurityDbContext>(configuration);
         return services;
     }
@@ -57,6 +59,17 @@ public static class InfrastructureServiceRegistration
         services.AddSingleton<AuditFieldsInterceptor>();
         services.AddSingleton<RemoveCacheInterceptor>();
         services.AddSingleton<AuditEntityInterceptor>();
+    }
+
+    private static void AddPrometheus(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.UseHttpClientMetrics(); 
+    }
+
+    public static void AddPrometheus(this WebApplication app)
+    {
+        app.UseMetricServer();
+        app.UseHttpMetrics();
     }
 
     private static void AddDbContextSqlServer(this IServiceCollection services, IConfiguration configuration)

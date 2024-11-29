@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.IdentityModel.Tokens;
+using Security.Infrastructure;
 
 namespace Api;
 
@@ -48,6 +49,7 @@ public static class ApiServiceRegistration
         app.UseExceptionMiddleWare();
         app.UseStaticFiles();
         app.AddHealthCheck();
+        app.AddPrometheus();
         app.Run();
     }
     
