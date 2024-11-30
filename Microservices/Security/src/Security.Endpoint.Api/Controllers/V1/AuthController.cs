@@ -6,6 +6,7 @@ using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Application.Features.Auth.Commands.Login;
+using Application.Features.Auth.Commands.RefreshToken;
 using Application.Features.Auth.Commands.RegisterUser;
 
 namespace Api.Controllers.V1;
@@ -64,13 +65,16 @@ public class AuthController(ISender sender, IMapper mapper) : AppController(send
     /// </summary>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [HttpGet("RefreshToken")]
     public async Task<IActionResult> RefreshToken(CancellationToken cancellationToken)
     {
-        var refreshTokenCommand = ApiMapper.ToRefreshTokenCommand(GetRefreshTokenFromCookies());
-        var result = await Sender.Send(refreshTokenCommand, cancellationToken);
-        SetRefreshTokenToCookie(result.RefreshTkn.Token, result.RefreshTkn.Expires);
-        return Created(uri: "", result.AccessToken);
+        var refreshTokenCommand = mapper.Map<RefreshTokenCommand>(GetRefreshTokenFromCookies());
+        var refreshTokenResponse = await Sender.Send(refreshTokenCommand, cancellationToken);
+        SetRefreshTokenToCookie(refreshTokenResponse.RefreshToken, refreshTokenResponse.RefreshTokenExpiry);
+        return Created(uri: "", refreshTokenResponse);
     }
 
     /// <summary>

@@ -14,11 +14,6 @@ public static class ApiMapper
             Id = userId
         };
     }
-    public static RefreshTokenCommand ToRefreshTokenCommand(string refreshToken)
-    {
-        return new RefreshTokenCommand(refreshToken);
-    }
-
     public static RevokeTokenCommand ToRevokeTokenCommand(this string refreshToken)
     {
         return new RevokeTokenCommand(refreshToken);
