@@ -20,7 +20,7 @@ public class RevokeTokenCommandHandler(
     public async Task<RevokedTokenResponse> Handle(RevokeTokenCommand request, CancellationToken cancellationToken)
     {
         var refreshTkn = await uow.RefreshToken
-            .GetAsync(new GetModel<RefreshTkn> { Predicate = r => r.Token == request.Token });
+            .GetAsync(new GetModel<MGH.Core.Infrastructure.Securities.Security.Entities.RefreshToken> { Predicate = r => r.Token == request.Token });
         
         await authBusinessRules.RefreshTokenShouldBeExists(refreshTkn);
         await authBusinessRules.RefreshTokenShouldBeActive(refreshTkn!);

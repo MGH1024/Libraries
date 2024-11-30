@@ -16,16 +16,16 @@ public class AuthBusinessRules(IUow uow) : BaseBusinessRules, IAuthBusinessRules
         return Task.CompletedTask;
     }
 
-    public Task RefreshTokenShouldBeExists(RefreshTkn refreshTkn)
+    public Task RefreshTokenShouldBeExists(RefreshToken refreshToken)
     {
-        if (refreshTkn == null)
+        if (refreshToken == null)
             throw new BusinessException(AuthMessages.RefreshDoesNotExists);
         return Task.CompletedTask;
     }
 
-    public Task RefreshTokenShouldBeActive(RefreshTkn refreshTkn)
+    public Task RefreshTokenShouldBeActive(RefreshToken refreshToken)
     {
-        if (refreshTkn.Revoked != null && DateTime.UtcNow >= refreshTkn.Expires)
+        if (refreshToken.Revoked != null && DateTime.UtcNow >= refreshToken.Expires)
             throw new BusinessException(AuthMessages.InvalidRefreshToken);
         return Task.CompletedTask;
     }

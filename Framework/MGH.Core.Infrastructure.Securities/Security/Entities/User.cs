@@ -12,7 +12,7 @@ public class User : AuditAbleEntity<int>
     public byte[] PasswordHash { get; set; }
 
     public virtual ICollection<UserOperationClaim> UserOperationClaims { get; set; } = null!;
-    public virtual ICollection<RefreshTkn> RefreshTokens { get; set; } = null!;
+    public virtual ICollection<RefreshToken> RefreshTokens { get; set; } = null!;
 
     public User()
     {
@@ -21,7 +21,7 @@ public class User : AuditAbleEntity<int>
         Email = string.Empty;
         PasswordHash = Array.Empty<byte>();
         PasswordSalt = Array.Empty<byte>();
-        RefreshTokens = new List<RefreshTkn>();
+        RefreshTokens = new List<RefreshToken>();
     }
 
     public User(

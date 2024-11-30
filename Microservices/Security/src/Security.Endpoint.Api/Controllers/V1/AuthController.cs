@@ -29,16 +29,16 @@ public class AuthController(ISender sender, IMapper mapper) : AppController(send
     public async Task<IActionResult> Login([FromBody] LoginCommandDto loginCommandDto, CancellationToken
         cancellationToken)
     {
-        var loginCommand = mapper.Map<LoginCommand>(loginCommandDto);
+        var command = mapper.Map<LoginCommand>(loginCommandDto);
 
-        var result = await Sender.Send(loginCommand, cancellationToken);
-        if (!result.IsSuccess)
+        var response = await Sender.Send(command, cancellationToken);
+        if (!response.IsSuccess)
             return BadRequest("Failed to login");
 
-        if (!result.RefreshToken.IsNullOrWhiteSpace())
-            SetRefreshTokenToCookie(result.RefreshToken, result.RefreshTokenExpiry);
+        if (!response.RefreshToken.IsNullOrWhiteSpace())
+            SetRefreshTokenToCookie(response.RefreshToken, response.RefreshTokenExpiry);
 
-        return Ok(result);
+        return Ok(response);
     }
 
     /// <summary>
@@ -47,17 +47,17 @@ public class AuthController(ISender sender, IMapper mapper) : AppController(send
     /// <param name="registerUserCommandDto"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status201Created,Type = typeof(RegisterUserCommandResponse))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [HttpPost("Register")]
     public async Task<IActionResult> Register([FromBody] RegisterUserCommandDto registerUserCommandDto,
         CancellationToken cancellationToken)
     {
-        var registerCommand = mapper.Map<RegisterUserCommand>(registerUserCommandDto);
-        var result = await Sender.Send(registerCommand, cancellationToken);
-        SetRefreshTokenToCookie(result.RefreshToken, result.RefreshTokenExpiry);
-        return Created(uri: "", result);
+        var command = mapper.Map<RegisterUserCommand>(registerUserCommandDto);
+        var response = await Sender.Send(command, cancellationToken);
+        SetRefreshTokenToCookie(response.RefreshToken, response.RefreshTokenExpiry);
+        return Created(uri: "", response);
     }
 
     /// <summary>
@@ -65,16 +65,16 @@ public class AuthController(ISender sender, IMapper mapper) : AppController(send
     /// </summary>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(RefreshTokenResponse))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [HttpGet("RefreshToken")]
     public async Task<IActionResult> RefreshToken(CancellationToken cancellationToken)
     {
-        var refreshTokenCommand = mapper.Map<RefreshTokenCommand>(GetRefreshTokenFromCookies());
-        var refreshTokenResponse = await Sender.Send(refreshTokenCommand, cancellationToken);
-        SetRefreshTokenToCookie(refreshTokenResponse.RefreshToken, refreshTokenResponse.RefreshTokenExpiry);
-        return Created(uri: "", refreshTokenResponse);
+        var command = mapper.Map<RefreshTokenCommand>(GetRefreshTokenFromCookies());
+        var response = await Sender.Send(command, cancellationToken);
+        SetRefreshTokenToCookie(response.RefreshToken, response.RefreshTokenExpiry);
+        return Created(uri: "", response);
     }
 
     /// <summary>
@@ -84,10 +84,8 @@ public class AuthController(ISender sender, IMapper mapper) : AppController(send
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpPut("RevokeToken")]
-    public async Task<IActionResult> RevokeToken(
-        [FromBody(EmptyBodyBehavior = EmptyBodyBehavior.Allow)]
-        string refreshToken,
-        CancellationToken cancellationToken)
+    public async Task<IActionResult> RevokeToken([FromBody(EmptyBodyBehavior = EmptyBodyBehavior.Allow)]
+        string refreshToken, CancellationToken cancellationToken)
     {
         var token = refreshToken ?? GetRefreshTokenFromCookies();
         var revokeTokenCommand = token.ToRevokeTokenCommand();

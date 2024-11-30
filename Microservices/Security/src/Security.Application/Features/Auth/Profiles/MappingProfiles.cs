@@ -11,7 +11,7 @@ public class MappingProfiles : Profile
 {
     public MappingProfiles()
     {
-        CreateMap<RefreshTkn, RevokedTokenResponse>().ReverseMap();
+        CreateMap<RefreshToken, RevokedTokenResponse>().ReverseMap();
 
         CreateMap<RegisterUserCommand, User>()
             .ForMember(d => d.Email, src =>

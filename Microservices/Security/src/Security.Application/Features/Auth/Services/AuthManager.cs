@@ -20,9 +20,9 @@ public class AuthManager(IUow uow, ITokenHelper tokenHelper, IDateTime time, IOp
         return tokenHelper.CreateToken(user, operationClaims);
     }
 
-    public async Task<RefreshTkn> AddRefreshTokenAsync(RefreshTkn refreshTkn, CancellationToken cancellationToken)
+    public async Task<RefreshToken> AddRefreshTokenAsync(RefreshToken refreshToken, CancellationToken cancellationToken)
     {
-        return await uow.RefreshToken.AddAsync(refreshTkn, cancellationToken);
+        return await uow.RefreshToken.AddAsync(refreshToken, cancellationToken);
     }
 
     public async Task DeleteOldRefreshTokens(int userId, CancellationToken cancellationToken)
@@ -32,34 +32,34 @@ public class AuthManager(IUow uow, ITokenHelper tokenHelper, IDateTime time, IOp
         await uow.RefreshToken.DeleteRangeAsync(refreshTokens);
     }
 
-    public async Task<RefreshTkn> GetRefreshTokenByToken(string token, CancellationToken cancellationToken)
+    public async Task<RefreshToken> GetRefreshTokenByToken(string token, CancellationToken cancellationToken)
     {
         var refreshToken =
-            await uow.RefreshToken.GetAsync(new GetModel<RefreshTkn> { Predicate = r => r.Token == token });
+            await uow.RefreshToken.GetAsync(new GetModel<RefreshToken> { Predicate = r => r.Token == token });
         return refreshToken;
     }
 
-    public async Task<RefreshTkn> RotateRefreshToken(User user, RefreshTkn refreshTkn,
+    public async Task<RefreshToken> RotateRefreshToken(User user, RefreshToken refreshToken,
         CancellationToken cancellationToken)
     {
         var newRefreshTkn = tokenHelper.CreateRefreshToken(user);
-        await RevokeRefreshTokenAsync(refreshTkn, reason: "Replaced by new token",
+        await RevokeRefreshTokenAsync(refreshToken, reason: "Replaced by new token",
             newRefreshTkn.Token, cancellationToken);
         return newRefreshTkn;
     }
 
-    public async Task RevokeDescendantRefreshTokens(RefreshTkn refreshTkn, string reason,
+    public async Task RevokeDescendantRefreshTokens(RefreshToken refreshToken, string reason,
         CancellationToken cancellationToken)
     {
-        var childToken = await uow.RefreshToken.GetAsync(new GetModel<RefreshTkn>
+        var childToken = await uow.RefreshToken.GetAsync(new GetModel<RefreshToken>
         {
-            Predicate = r => r.Token == refreshTkn.ReplacedByToken
+            Predicate = r => r.Token == refreshToken.ReplacedByToken
         });
 
         if (childToken?.Revoked != null && childToken.Expires <= DateTime.UtcNow)
             await RevokeRefreshTokenAsync(childToken, reason, childToken.Token, cancellationToken);
         else
-            await RevokeDescendantRefreshTokens(refreshTkn: childToken!, reason, cancellationToken);
+            await RevokeDescendantRefreshTokens(refreshToken: childToken!, reason, cancellationToken);
     }
 
     public void SetHashPassword(string password, User user)
@@ -67,14 +67,14 @@ public class AuthManager(IUow uow, ITokenHelper tokenHelper, IDateTime time, IOp
         var hashingHelperModel = HashingHelper.CreatePasswordHash(password);
         user.SetHashPassword(hashingHelperModel);
     }
-    public Task<RefreshTkn> CreateRefreshToken(User user)
+    public Task<RefreshToken> CreateRefreshToken(User user)
     {
         var refreshToken = tokenHelper.CreateRefreshToken(user);
         return Task.FromResult(refreshToken);
     }
 
     private async Task RevokeRefreshTokenAsync(
-        RefreshTkn refreshToken,
+        RefreshToken refreshToken,
         string reason = null,
         string replacedByToken = null,
         CancellationToken cancellationToken = default)

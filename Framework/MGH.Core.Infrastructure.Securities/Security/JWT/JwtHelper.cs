@@ -26,9 +26,9 @@ public class JwtHelper(IOptions<TokenOptions> options) : ITokenHelper
         return new AccessToken { Token = token, Expiration = accessTokenExpiration };
     }
 
-    public RefreshTkn CreateRefreshToken(User user)
+    public RefreshToken CreateRefreshToken(User user)
     {
-        return new RefreshTkn()
+        return new RefreshToken()
         {
             UserId = user.Id,
             Token = RandomRefreshToken(),

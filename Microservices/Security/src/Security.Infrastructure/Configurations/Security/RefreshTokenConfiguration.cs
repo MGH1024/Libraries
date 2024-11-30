@@ -5,9 +5,9 @@ using Security.Infrastructure.Configurations.Base;
 
 namespace Security.Infrastructure.Configurations.Security;
 
-public class RefreshTokenConfiguration : IEntityTypeConfiguration<RefreshTkn>
+public class RefreshTokenConfiguration : IEntityTypeConfiguration<RefreshToken>
 {
-    public void Configure(EntityTypeBuilder<RefreshTkn> builder)
+    public void Configure(EntityTypeBuilder<RefreshToken> builder)
     {
         builder.ToTable(DatabaseTableName.RefreshToken, DatabaseSchema.SecuritySchema).HasKey(ea => ea.Id);
 

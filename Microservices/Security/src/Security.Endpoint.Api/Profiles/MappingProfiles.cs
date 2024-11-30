@@ -15,17 +15,17 @@ public class MappingProfiles : Profile
             .ForCtorParam("LoginCommandDto", opt =>
                 opt.MapFrom(src => src));
 
-        CreateMap<RegisterUserCommandDto, RegisterUserCommand>()
-            .ForCtorParam("RegisterCommandDto", opt =>
-                opt.MapFrom(src => src));
-
         CreateMap<PageRequest, GetListUserQuery>()
             .ForCtorParam("PageRequest", opt =>
                 opt.MapFrom(src => src));
+
+
+        CreateMap<string, RefreshTokenCommand>()
+            .ForMember(d => d.RefreshToken, opt
+                => opt.MapFrom(src => src));
         
-        
-        CreateMap<string,RefreshTokenCommand>()
-            .ForMember(d=>d.RefreshToken,opt
-                =>opt.MapFrom(src=>src));
+        CreateMap<RegisterUserCommandDto, RegisterUserCommand>()
+            .ForCtorParam("RegisterUserCommandDto",opt
+                =>opt.MapFrom(src => src));
     }
 }

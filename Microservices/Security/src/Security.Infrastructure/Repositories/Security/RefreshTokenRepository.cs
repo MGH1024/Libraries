@@ -10,16 +10,16 @@ using MGH.Core.Infrastructure.Persistence.EF.Base.Repository;
 namespace Security.Infrastructure.Repositories.Security;
 
 public class RefreshTokenRepository(SecurityDbContext securityDbContext)
-    : Repository<RefreshTkn, int>(securityDbContext), IRefreshTokenRepository
+    : Repository<RefreshToken, int>(securityDbContext), IRefreshTokenRepository
 {
-    private IQueryable<RefreshTkn> Query() => securityDbContext.Set<RefreshTkn>();
+    private IQueryable<RefreshToken> Query() => securityDbContext.Set<RefreshToken>();
 
-    public async Task<RefreshTkn> GetByTokenAsync(string requestRefreshToken, CancellationToken cancellationToken)
+    public async Task<RefreshToken> GetByTokenAsync(string requestRefreshToken, CancellationToken cancellationToken)
     {
         return await Query().Where(a => a.Token == requestRefreshToken).FirstOrDefaultAsync(cancellationToken);
     }
 
-    public async Task<IEnumerable<RefreshTkn>> GetRefreshTokenByUserId(int userId, int refreshTokenTtl,
+    public async Task<IEnumerable<RefreshToken>> GetRefreshTokenByUserId(int userId, int refreshTokenTtl,
         CancellationToken cancellationToken)
     {
         var queryable = Query();
@@ -32,7 +32,7 @@ public class RefreshTokenRepository(SecurityDbContext securityDbContext)
         return refreshTokens;
     }
 
-    public async Task DeleteRangeAsync(IEnumerable<RefreshTkn> entities, bool permanent = false)
+    public async Task DeleteRangeAsync(IEnumerable<RefreshToken> entities, bool permanent = false)
     {
         foreach (var refreshTkn in entities)
         {
@@ -40,14 +40,14 @@ public class RefreshTokenRepository(SecurityDbContext securityDbContext)
         }
     }
 
-    private async Task SetEntitiesAsDeletedAsync(IEnumerable<RefreshTkn> entities, bool permanent,
+    private async Task SetEntitiesAsDeletedAsync(IEnumerable<RefreshToken> entities, bool permanent,
         CancellationToken cancellationToken)
     {
         foreach (var entity in entities)
             await SetEntityAsDeletedAsync(entity, permanent, cancellationToken);
     }
 
-    private async Task SetEntityAsDeletedAsync(RefreshTkn entity, bool permanent, CancellationToken cancellationToken)
+    private async Task SetEntityAsDeletedAsync(RefreshToken entity, bool permanent, CancellationToken cancellationToken)
     {
         if (!permanent)
         {
@@ -60,7 +60,7 @@ public class RefreshTokenRepository(SecurityDbContext securityDbContext)
         }
     }
 
-    private void CheckHasEntityHaveOneToOneRelation(RefreshTkn entity)
+    private void CheckHasEntityHaveOneToOneRelation(RefreshToken entity)
     {
         bool hasEntityHaveOneToOneRelation =
             securityDbContext

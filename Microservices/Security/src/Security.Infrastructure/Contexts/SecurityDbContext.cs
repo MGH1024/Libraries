@@ -74,7 +74,7 @@ public class SecurityDbContext(DbContextOptions<SecurityDbContext> options) :
 
 
     public DbSet<OperationClaim> OperationClaims { get; set; }
-    public DbSet<RefreshTkn> RefreshTokens { get; set; }
+    public DbSet<RefreshToken> RefreshTokens { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
     public DbSet<AuditLog> AuditLogs { get; set; }

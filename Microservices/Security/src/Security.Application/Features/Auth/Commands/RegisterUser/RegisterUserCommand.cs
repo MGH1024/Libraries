@@ -2,4 +2,5 @@
 
 namespace Application.Features.Auth.Commands.RegisterUser;
 
-public record RegisterUserCommand(RegisterUserCommandDto RegisterUserCommandDto) : ICommand<RegisterUserCommandResponse>;
+public record RegisterUserCommand(RegisterUserCommandDto RegisterUserCommandDto)
+    : ICommand<RegisterUserCommandResponse>;
