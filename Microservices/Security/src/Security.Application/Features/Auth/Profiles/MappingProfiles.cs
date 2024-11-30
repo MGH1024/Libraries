@@ -13,7 +13,14 @@ public class MappingProfiles : Profile
     {
         CreateMap<RefreshTkn, RevokedTokenResponse>().ReverseMap();
 
-        CreateMap<User, RegisterCommand>().ReverseMap();
+        CreateMap<RegisterCommand, User>()
+            .ForMember(d => d.Email, src =>
+                src.MapFrom(a => a.RegisterCommandDto.Email))
+            .ForMember(d => d.FirstName, src =>
+                src.MapFrom(a => a.RegisterCommandDto.FirstName))
+            .ForMember(d => d.LastName, src =>
+                src.MapFrom(a => a.RegisterCommandDto.LastName))
+            .ReverseMap();
 
         CreateMap<string, GetBaseModel<User>>()
             .ForMember(dest => dest.Predicate, opt => opt.MapFrom(src => (Expression<Func<User, bool>>)(u => u.Email == src)))

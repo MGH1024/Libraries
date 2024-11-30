@@ -35,7 +35,7 @@ public class AuthController(ISender sender, IMapper mapper) : AppController(send
             return BadRequest("Failed to login");
 
         if (!result.RefreshToken.IsNullOrWhiteSpace())
-            SetRefreshTokenToCookie(result.RefreshToken,result.RefreshTokenExpiry);
+            SetRefreshTokenToCookie(result.RefreshToken, result.RefreshTokenExpiry);
 
         return Ok(result);
     }
@@ -46,15 +46,17 @@ public class AuthController(ISender sender, IMapper mapper) : AppController(send
     /// <param name="registerCommandDto"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [HttpPost("Register")]
     public async Task<IActionResult> Register([FromBody] RegisterCommandDto registerCommandDto,
         CancellationToken cancellationToken)
     {
-        var registerCommand = registerCommandDto.ToRegisterCommand(IpAddress());
-
+        var registerCommand = mapper.Map<RegisterCommand>(registerCommandDto);
         var result = await Sender.Send(registerCommand, cancellationToken);
-        SetRefreshTokenToCookie(result.RefreshTkn.Token,result.RefreshTkn.Expires);
-        return Created(uri: "", result.AccessToken);
+        SetRefreshTokenToCookie(result.RefreshToken, result.RefreshTokenExpiry);
+        return Created(uri: "", result);
     }
 
     /// <summary>
@@ -67,7 +69,7 @@ public class AuthController(ISender sender, IMapper mapper) : AppController(send
     {
         var refreshTokenCommand = ApiMapper.ToRefreshTokenCommand(GetRefreshTokenFromCookies());
         var result = await Sender.Send(refreshTokenCommand, cancellationToken);
-        SetRefreshTokenToCookie(result.RefreshTkn.Token,result.RefreshTkn.Expires);
+        SetRefreshTokenToCookie(result.RefreshTkn.Token, result.RefreshTkn.Expires);
         return Created(uri: "", result.AccessToken);
     }
 

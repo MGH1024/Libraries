@@ -1,5 +1,4 @@
 using System.Linq.Expressions;
-using Application.Features.Auth.Commands.Login;
 using Application.Features.Users.Commands.Create;
 using Application.Features.Users.Commands.Delete;
 using Application.Features.Users.Commands.Update;
@@ -30,32 +29,31 @@ public class MappingProfiles : Profile
         CreateMap<User, GetUserByIdResponse>().ReverseMap();
         CreateMap<User, GetListUserListItemDto>().ReverseMap();
         CreateMap<IPaginate<User>, GetListResponse<GetListUserListItemDto>>().ReverseMap();
-
+        
         CreateMap<DeleteUserCommand, GetModel<User>>()
             .ForMember(dest => dest.Predicate, opt
                 => opt.MapFrom(src => (Expression<Func<User, bool>>)(u => u.Id == src.Id)))
             .ForMember(dest => dest.CancellationToken, opt
                 => opt.MapFrom<CancellationTokenResolver<DeleteUserCommand, GetModel<User>>>()).ReverseMap();
-            
-            
+
+
         CreateMap<UpdateUserCommand, GetModel<User>>()
             .ForMember(dest => dest.Predicate, opt
                 => opt.MapFrom(src => (Expression<Func<User, bool>>)(u => u.Id == src.Id)))
             .ForMember(dest => dest.CancellationToken, opt
                 => opt.MapFrom<CancellationTokenResolver<UpdateUserCommand, GetModel<User>>>()).ReverseMap();
-        
-        
+
+
         CreateMap<UpdateUserFromAuthCommand, GetModel<User>>()
             .ForMember(dest => dest.Predicate, opt
                 => opt.MapFrom(src => (Expression<Func<User, bool>>)(u => u.Id == src.Id)))
             .ForMember(dest => dest.CancellationToken, opt
                 => opt.MapFrom<CancellationTokenResolver<UpdateUserFromAuthCommand, GetModel<User>>>()).ReverseMap();
-        
+
         CreateMap<GetUserByIdQuery, GetModel<User>>()
             .ForMember(dest => dest.Predicate, opt
                 => opt.MapFrom(src => (Expression<Func<User, bool>>)(u => u.Id == src.Id)))
             .ForMember(dest => dest.CancellationToken, opt
                 => opt.MapFrom<CancellationTokenResolver<GetUserByIdQuery, GetModel<User>>>()).ReverseMap();
-        
     }
 }

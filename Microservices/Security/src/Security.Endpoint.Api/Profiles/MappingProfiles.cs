@@ -1,5 +1,6 @@
 using AutoMapper;
 using Application.Features.Auth.Commands.Login;
+using Application.Features.Auth.Commands.Register;
 using Application.Features.Users.Queries.GetList;
 using MGH.Core.Application.Requests;
 
@@ -11,6 +12,10 @@ public class MappingProfiles : Profile
     {
         CreateMap<LoginCommandDto, LoginCommand>()
             .ForCtorParam("LoginCommandDto", opt => 
+                opt.MapFrom(src => src));
+        
+        CreateMap<RegisterCommandDto, RegisterCommand>()
+            .ForCtorParam("RegisterCommandDto", opt => 
                 opt.MapFrom(src => src));
 
         CreateMap<PageRequest, GetListUserQuery>()

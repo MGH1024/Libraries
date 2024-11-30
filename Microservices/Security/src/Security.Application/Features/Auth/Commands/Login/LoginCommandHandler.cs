@@ -14,20 +14,15 @@ public class LoginCommandHandler(
     {
         var user = await uow.User.GetByEmailAsync(request.LoginCommandDto.Email, cancellationToken);
         await authBusinessRules.UserShouldBeExistsWhenSelected(user);
-        await authBusinessRules.UserPasswordShouldBeMatch(user!.Id, request.LoginCommandDto.Password,cancellationToken);
+        await authBusinessRules.UserPasswordShouldBeMatch(user!.Id, request.LoginCommandDto.Password,
+            cancellationToken);
 
         var createdAccessToken = await authService.CreateAccessTokenAsync(user, cancellationToken);
-        var createdRefreshTkn = await authService.CreateRefreshToken(user, cancellationToken);
+        var createdRefreshTkn = await authService.CreateRefreshToken(user);
         var addedRefreshTkn = await authService.AddRefreshTokenAsync(createdRefreshTkn, cancellationToken);
         await authService.DeleteOldRefreshTokens(user.Id, cancellationToken);
 
-        return new LoginResponse
-        {
-            Token = createdAccessToken.Token,
-            RefreshToken = addedRefreshTkn.Token,
-            IsSuccess = true,
-            TokenExpiry = createdAccessToken.Expiration,
-            RefreshTokenExpiry = addedRefreshTkn.Expires
-        };
+        return new LoginResponse(createdAccessToken.Token, createdAccessToken.Expiration, addedRefreshTkn.Token,
+            addedRefreshTkn.Expires, true);
     }
 }

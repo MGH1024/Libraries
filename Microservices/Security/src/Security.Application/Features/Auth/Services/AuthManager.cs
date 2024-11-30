@@ -1,13 +1,16 @@
 ﻿using Domain;
-using MGH.Core.Infrastructure.Persistence.EF.Models.Filters.GetModels;
-using MGH.Core.Infrastructure.Public;
-using MGH.Core.Infrastructure.Securities.Security.Entities;
-using MGH.Core.Infrastructure.Securities.Security.JWT;
 using Microsoft.Extensions.Options;
+using MGH.Core.Infrastructure.Public;
+using Application.Features.Users.Extensions;
+using MGH.Core.Infrastructure.Securities.Security.JWT;
+using MGH.Core.Infrastructure.Securities.Security.Hashing;
+using MGH.Core.Infrastructure.Securities.Security.Entities;
+using MGH.Core.Infrastructure.Persistence.EF.Models.Filters.GetModels;
 
 namespace Application.Features.Auth.Services;
 
-public class AuthManager(IUow uow, ITokenHelper tokenHelper, IDateTime time, IOptions<TokenOptions> options) : IAuthService
+public class AuthManager(IUow uow, ITokenHelper tokenHelper, IDateTime time, IOptions<TokenOptions> options)
+    : IAuthService
 {
     private readonly TokenOptions _tokenOptions = options.Value;
 
@@ -24,15 +27,18 @@ public class AuthManager(IUow uow, ITokenHelper tokenHelper, IDateTime time, IOp
 
     public async Task DeleteOldRefreshTokens(int userId, CancellationToken cancellationToken)
     {
-        var refreshTokens = await uow.RefreshToken.GetRefreshTokenByUserId(userId, _tokenOptions.RefreshTokenTtl, cancellationToken);
+        var refreshTokens =
+            await uow.RefreshToken.GetRefreshTokenByUserId(userId, _tokenOptions.RefreshTokenTtl, cancellationToken);
         await uow.RefreshToken.DeleteRangeAsync(refreshTokens);
     }
 
     public async Task<RefreshTkn> GetRefreshTokenByToken(string token, CancellationToken cancellationToken)
     {
-        var refreshToken = await uow.RefreshToken.GetAsync(new GetModel<RefreshTkn> { Predicate = r => r.Token == token });
+        var refreshToken =
+            await uow.RefreshToken.GetAsync(new GetModel<RefreshTkn> { Predicate = r => r.Token == token });
         return refreshToken;
     }
+
     public async Task<RefreshTkn> RotateRefreshToken(User user, RefreshTkn refreshTkn,
         CancellationToken cancellationToken)
     {
@@ -56,12 +62,17 @@ public class AuthManager(IUow uow, ITokenHelper tokenHelper, IDateTime time, IOp
             await RevokeDescendantRefreshTokens(refreshTkn: childToken!, reason, cancellationToken);
     }
 
-    public Task<RefreshTkn> CreateRefreshToken(User user, CancellationToken cancellationToken)
+    public void SetHashPassword(string password, User user)
+    {
+        var hashingHelperModel = HashingHelper.CreatePasswordHash(password);
+        user.SetHashPassword(hashingHelperModel);
+    }
+    public Task<RefreshTkn> CreateRefreshToken(User user)
     {
         var refreshToken = tokenHelper.CreateRefreshToken(user);
         return Task.FromResult(refreshToken);
     }
-    
+
     private async Task RevokeRefreshTokenAsync(
         RefreshTkn refreshToken,
         string reason = null,

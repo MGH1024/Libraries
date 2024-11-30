@@ -15,12 +15,6 @@ public static class ApiMapper
             Id = userId
         };
     }
-    
-    public static RegisterCommand ToRegisterCommand(this RegisterCommandDto registerCommandDto, string ipAddress)
-    {
-        return new RegisterCommand(registerCommandDto);
-    }
-
     public static RefreshTokenCommand ToRefreshTokenCommand(string refreshToken)
     {
         return new RefreshTokenCommand(refreshToken);
