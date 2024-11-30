@@ -1,5 +1,4 @@
-﻿using Application.Features.Auth.Commands.Register;
-using MGH.Core.Infrastructure.Securities.Security.Entities;
+﻿using MGH.Core.Infrastructure.Securities.Security.Entities;
 using MGH.Core.Infrastructure.Securities.Security.JWT;
 
 namespace Application.Features.Auth.Services;

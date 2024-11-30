@@ -1,5 +1,4 @@
 ﻿using Application.Features.Auth.Commands.RefreshToken;
-using Application.Features.Auth.Commands.Register;
 using Application.Features.Auth.Commands.RevokeToken;
 using Application.Features.Users.Commands.UpdateFromAuth;
 using Application.Features.Users.Queries.GetById;

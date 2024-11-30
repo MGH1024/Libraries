@@ -1,25 +1,25 @@
-﻿using Domain;
-using AutoMapper;
-using MGH.Core.Domain.Buses.Commands;
-using Application.Features.Auth.Rules;
+﻿using Application.Features.Auth.Rules;
 using Application.Features.Auth.Services;
+using AutoMapper;
+using Domain;
+using MGH.Core.Domain.Buses.Commands;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
 
-namespace Application.Features.Auth.Commands.Register;
+namespace Application.Features.Auth.Commands.RegisterUser;
 
-public class RegisterCommandHandler(
+public class RegisterUserCommandHandler(
     IUow uow,
     IAuthService authService,
     IAuthBusinessRules authBusinessRules,
     IMapper mapper)
-    : ICommandHandler<RegisterCommand, RegisteredResponse>
+    : ICommandHandler<RegisterUserCommand, RegisterUserCommandResponse>
 {
-    public async Task<RegisteredResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
+    public async Task<RegisterUserCommandResponse> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {
-        await authBusinessRules.UserEmailShouldBeNotExists(request.RegisterCommandDto.Email, cancellationToken);
+        await authBusinessRules.UserEmailShouldBeNotExists(request.RegisterUserCommandDto.Email, cancellationToken);
 
         var newUser = mapper.Map<User>(request);
-        authService.SetHashPassword(request.RegisterCommandDto.Password, newUser);
+        authService.SetHashPassword(request.RegisterUserCommandDto.Password, newUser);
 
         var createdUser = await uow.User.AddAsync(newUser, cancellationToken);
         var createdRefreshToken = await authService.CreateRefreshToken(createdUser);
@@ -28,7 +28,7 @@ public class RegisterCommandHandler(
         await uow.CompleteAsync(cancellationToken);
 
         var createdAccessToken = await authService.CreateAccessTokenAsync(createdUser, cancellationToken);
-        return new RegisteredResponse(createdAccessToken.Token, createdAccessToken.Expiration,
+        return new RegisterUserCommandResponse(createdAccessToken.Token, createdAccessToken.Expiration,
             createdRefreshToken.Token, createdRefreshToken.Expires);
     }
 }

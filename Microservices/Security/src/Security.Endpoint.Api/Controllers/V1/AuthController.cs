@@ -6,7 +6,7 @@ using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Application.Features.Auth.Commands.Login;
-using Application.Features.Auth.Commands.Register;
+using Application.Features.Auth.Commands.RegisterUser;
 
 namespace Api.Controllers.V1;
 
@@ -43,17 +43,17 @@ public class AuthController(ISender sender, IMapper mapper) : AppController(send
     /// <summary>
     /// register new user
     /// </summary>
-    /// <param name="registerCommandDto"></param>
+    /// <param name="registerUserCommandDto"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [HttpPost("Register")]
-    public async Task<IActionResult> Register([FromBody] RegisterCommandDto registerCommandDto,
+    public async Task<IActionResult> Register([FromBody] RegisterUserCommandDto registerUserCommandDto,
         CancellationToken cancellationToken)
     {
-        var registerCommand = mapper.Map<RegisterCommand>(registerCommandDto);
+        var registerCommand = mapper.Map<RegisterUserCommand>(registerUserCommandDto);
         var result = await Sender.Send(registerCommand, cancellationToken);
         SetRefreshTokenToCookie(result.RefreshToken, result.RefreshTokenExpiry);
         return Created(uri: "", result);

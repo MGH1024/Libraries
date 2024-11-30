@@ -1,5 +1,5 @@
 using System.Linq.Expressions;
-using Application.Features.Auth.Commands.Register;
+using Application.Features.Auth.Commands.RegisterUser;
 using Application.Features.Auth.Commands.RevokeToken;
 using AutoMapper;
 using MGH.Core.Infrastructure.Persistence.EF.Models.Filters.GetModels;
@@ -13,13 +13,13 @@ public class MappingProfiles : Profile
     {
         CreateMap<RefreshTkn, RevokedTokenResponse>().ReverseMap();
 
-        CreateMap<RegisterCommand, User>()
+        CreateMap<RegisterUserCommand, User>()
             .ForMember(d => d.Email, src =>
-                src.MapFrom(a => a.RegisterCommandDto.Email))
+                src.MapFrom(a => a.RegisterUserCommandDto.Email))
             .ForMember(d => d.FirstName, src =>
-                src.MapFrom(a => a.RegisterCommandDto.FirstName))
+                src.MapFrom(a => a.RegisterUserCommandDto.FirstName))
             .ForMember(d => d.LastName, src =>
-                src.MapFrom(a => a.RegisterCommandDto.LastName))
+                src.MapFrom(a => a.RegisterUserCommandDto.LastName))
             .ReverseMap();
 
         CreateMap<string, GetBaseModel<User>>()
