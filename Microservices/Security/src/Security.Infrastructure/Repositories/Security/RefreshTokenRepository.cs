@@ -1,31 +1,35 @@
 ﻿using System.Collections;
 using Domain.Repositories;
-using MGH.Core.Domain.BaseEntity.Abstract;
-using MGH.Core.Infrastructure.Persistence.EF.Base.Repository;
-using MGH.Core.Infrastructure.Securities.Security.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Security.Infrastructure.Contexts;
+using MGH.Core.Domain.BaseEntity.Abstract;
+using Microsoft.EntityFrameworkCore.Metadata;
+using MGH.Core.Infrastructure.Securities.Security.Entities;
+using MGH.Core.Infrastructure.Persistence.EF.Base.Repository;
 
 namespace Security.Infrastructure.Repositories.Security;
 
 public class RefreshTokenRepository(SecurityDbContext securityDbContext)
     : Repository<RefreshTkn, int>(securityDbContext), IRefreshTokenRepository
 {
-    public IQueryable<RefreshTkn> Query() => securityDbContext.Set<RefreshTkn>();
+    private IQueryable<RefreshTkn> Query() => securityDbContext.Set<RefreshTkn>();
 
+    public async Task<RefreshTkn> GetByTokenAsync(string requestRefreshToken, CancellationToken cancellationToken)
+    {
+        return await Query().Where(a => a.Token == requestRefreshToken).FirstOrDefaultAsync(cancellationToken);
+    }
 
     public async Task<IEnumerable<RefreshTkn>> GetRefreshTokenByUserId(int userId, int refreshTokenTtl,
         CancellationToken cancellationToken)
     {
         var queryable = Query();
-        var refreshTokens = queryable.Where(r =>
+        var refreshTokens = await queryable.Where(r =>
             r.UserId == userId
             && r.Revoked == null
             && r.Expires >= DateTime.UtcNow
-            && r.CreatedAt.AddDays(refreshTokenTtl) <= DateTime.UtcNow);
+            && r.CreatedAt.AddDays(refreshTokenTtl) <= DateTime.UtcNow).ToListAsync(cancellationToken);
 
-        return await queryable.ToListAsync(cancellationToken);
+        return refreshTokens;
     }
 
     public async Task DeleteRangeAsync(IEnumerable<RefreshTkn> entities, bool permanent = false)
