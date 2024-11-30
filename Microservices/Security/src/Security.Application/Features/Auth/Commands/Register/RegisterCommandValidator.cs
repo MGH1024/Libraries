@@ -6,9 +6,9 @@ public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
 {
     public RegisterCommandValidator()
     {
-        RuleFor(c => c.UserForRegisterDto.FirstName).NotEmpty().MinimumLength(2);
-        RuleFor(c => c.UserForRegisterDto.LastName).NotEmpty().MinimumLength(2);
-        RuleFor(c => c.UserForRegisterDto.Email).NotEmpty().EmailAddress();
-        RuleFor(c => c.UserForRegisterDto.Password).NotEmpty().MinimumLength(4);
+        RuleFor(c => c.RegisterCommandDto.FirstName).NotEmpty().MinimumLength(2);
+        RuleFor(c => c.RegisterCommandDto.LastName).NotEmpty().MinimumLength(2);
+        RuleFor(c => c.RegisterCommandDto.Email).NotEmpty().EmailAddress();
+        RuleFor(c => c.RegisterCommandDto.Password).NotEmpty().MinimumLength(4);
     }
 }

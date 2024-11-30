@@ -1,5 +1,3 @@
-﻿using MGH.Core.Application.DTOs.Base;
+﻿namespace Application.Features.Auth.Commands.Login;
 
-namespace Application.Features.Auth.Commands.Login;
-
-public record LoginCommandDto(string Email, string Password) : IDto;
+public record LoginCommandDto(string Email, string Password);

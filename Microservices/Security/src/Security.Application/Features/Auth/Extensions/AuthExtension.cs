@@ -10,9 +10,9 @@ public static class AuthExtension
     {
         return new User
         {
-            Email = registerCommand.UserForRegisterDto.Email,
-            FirstName = registerCommand.UserForRegisterDto.FirstName,
-            LastName = registerCommand.UserForRegisterDto.LastName,
+            Email = registerCommand.RegisterCommandDto.Email,
+            FirstName = registerCommand.RegisterCommandDto.FirstName,
+            LastName = registerCommand.RegisterCommandDto.LastName,
             PasswordHash = hashingHelperModel.PasswordHash,
             PasswordSalt = hashingHelperModel.PasswordSalt
         };

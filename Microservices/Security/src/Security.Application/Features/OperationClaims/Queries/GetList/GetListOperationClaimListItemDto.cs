@@ -1,8 +1,6 @@
-using MGH.Core.Application.DTOs.Base;
-
 namespace Application.Features.OperationClaims.Queries.GetList;
 
-public class GetListOperationClaimListItemDto(int id, string name) : IDto
+public class GetListOperationClaimListItemDto(int id, string name)
 {
     public int Id { get; set; } = id;
     public string Name { get; set; } = name;

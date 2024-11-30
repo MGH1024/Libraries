@@ -3,7 +3,6 @@ using Application.Features.Auth.Commands.Register;
 using Application.Features.Auth.Commands.RevokeToken;
 using Application.Features.Users.Commands.UpdateFromAuth;
 using Application.Features.Users.Queries.GetById;
-using MGH.Core.Application.DTOs.Security;
 
 namespace Api.Profiles;
 
@@ -17,9 +16,9 @@ public static class ApiMapper
         };
     }
     
-    public static RegisterCommand ToRegisterCommand(this UserForRegisterDto userForRegisterDto, string ipAddress)
+    public static RegisterCommand ToRegisterCommand(this RegisterCommandDto registerCommandDto, string ipAddress)
     {
-        return new RegisterCommand(userForRegisterDto);
+        return new RegisterCommand(registerCommandDto);
     }
 
     public static RefreshTokenCommand ToRefreshTokenCommand(string refreshToken)

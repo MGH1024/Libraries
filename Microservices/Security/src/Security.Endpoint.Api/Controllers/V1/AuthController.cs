@@ -4,9 +4,9 @@ using AutoMapper;
 using Quartz.Util;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
-using MGH.Core.Application.DTOs.Security;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Application.Features.Auth.Commands.Login;
+using Application.Features.Auth.Commands.Register;
 
 namespace Api.Controllers.V1;
 
@@ -43,14 +43,14 @@ public class AuthController(ISender sender, IMapper mapper) : AppController(send
     /// <summary>
     /// register new user
     /// </summary>
-    /// <param name="userForRegisterDto"></param>
+    /// <param name="registerCommandDto"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpPost("Register")]
-    public async Task<IActionResult> Register([FromBody] UserForRegisterDto userForRegisterDto,
+    public async Task<IActionResult> Register([FromBody] RegisterCommandDto registerCommandDto,
         CancellationToken cancellationToken)
     {
-        var registerCommand = userForRegisterDto.ToRegisterCommand(IpAddress());
+        var registerCommand = registerCommandDto.ToRegisterCommand(IpAddress());
 
         var result = await Sender.Send(registerCommand, cancellationToken);
         SetRefreshTokenToCookie(result.RefreshTkn.Token,result.RefreshTkn.Expires);

@@ -1,5 +1,3 @@
-using MGH.Core.Application.DTOs.Base;
-
 namespace Application.Features.OutBoxes.Queries.GetList;
 
 public class GetOutboxListDto(
@@ -9,7 +7,6 @@ public class GetOutboxListDto(
     DateTime createdAt,
     DateTime? processedAt,
     string error)
-    : IDto
 {
     public Guid Id { get; set; } = id;
     public string Type { get; set; } = type;

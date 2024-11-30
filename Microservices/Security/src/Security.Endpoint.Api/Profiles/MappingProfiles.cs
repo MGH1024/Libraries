@@ -1,7 +1,6 @@
 using AutoMapper;
 using Application.Features.Auth.Commands.Login;
 using Application.Features.Users.Queries.GetList;
-using MGH.Core.Application.DTOs.Security;
 using MGH.Core.Application.Requests;
 
 namespace Api.Profiles;

@@ -18,9 +18,9 @@ public class RegisterCommandHandler(
 {
     public async Task<RegisteredResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
-        await authBusinessRules.UserEmailShouldBeNotExists(request.UserForRegisterDto.Email, cancellationToken);
+        await authBusinessRules.UserEmailShouldBeNotExists(request.RegisterCommandDto.Email, cancellationToken);
         var newUser = mapper.Map<User>(request);
-        var hashingHelperModel = HashingHelper.CreatePasswordHash(request.UserForRegisterDto.Password);
+        var hashingHelperModel = HashingHelper.CreatePasswordHash(request.RegisterCommandDto.Password);
         newUser.SetHashPassword(hashingHelperModel);
 
         var createdUser = await uow.User.AddAsync(newUser, cancellationToken);
