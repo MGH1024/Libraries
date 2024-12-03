@@ -1,4 +1,4 @@
-﻿namespace Security.Test.Features.Auth.Commands.UserLoginCommandDto;
+﻿namespace Security.Test.Features.Auth.Commands.UserLogin;
 
 public class UserLoginDtoBuilder
 {

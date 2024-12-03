@@ -1,7 +1,7 @@
 ﻿using Application.Features.Auth.Commands.UserLogin;
 using FluentValidation.TestHelper;
 
-namespace Security.Test.Features.Auth.Commands.UserLoginCommandDto;
+namespace Security.Test.Features.Auth.Commands.UserLogin;
 
 public class UserLoginCommandDtoTest
 {

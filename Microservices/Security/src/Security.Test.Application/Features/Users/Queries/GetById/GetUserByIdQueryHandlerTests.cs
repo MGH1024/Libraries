@@ -12,7 +12,7 @@ public class GetUserByIdQueryHandlerTests(HandlerTestsFixture fixture) : IClassF
     public async Task Handle_ShouldReturnUserResponse_WhenUserExists(int userId)
     {
         // Arrange
-        var handler = GetUserByIdBuilder.GetUserByIdQueryHandlerBuilder(fixture);
+        var handler = GetUserByIdQueryHandlerFactory.GetUserByIdQueryHandler(fixture);
         var userEntity = new User { Id = userId, FirstName = "Test User" };
         var userResponse = new GetUserByIdResponse { Id = userId, FirstName = "Test User" };
         var request = new GetUserByIdQuery { Id = userId };
@@ -43,7 +43,7 @@ public class GetUserByIdQueryHandlerTests(HandlerTestsFixture fixture) : IClassF
     public async Task Handle_ShouldThrowException_WhenUserDoesNotExist(int userId)
     {
         // Arrange
-        var handler =GetUserByIdBuilder.GetUserByIdQueryHandlerBuilder(fixture);
+        var handler =GetUserByIdQueryHandlerFactory.GetUserByIdQueryHandler(fixture);
         User? userEntity = null;
 
         fixture.MockUnitOfWork.Setup(u => u.User.GetAsync(userId, It.IsAny<CancellationToken>()))

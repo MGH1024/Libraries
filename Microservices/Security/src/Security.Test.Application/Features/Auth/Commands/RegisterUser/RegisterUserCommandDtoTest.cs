@@ -1,7 +1,7 @@
 ﻿using Application.Features.Auth.Commands.RegisterUser;
 using FluentValidation.TestHelper;
 
-namespace Security.Test.Features.Auth.Commands.RegisterUserCommandDto;
+namespace Security.Test.Features.Auth.Commands.RegisterUser;
 
 public class RegisterUserCommandDtoTest
 {

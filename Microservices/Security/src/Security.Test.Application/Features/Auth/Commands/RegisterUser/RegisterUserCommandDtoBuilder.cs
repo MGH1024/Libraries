@@ -1,4 +1,4 @@
-﻿namespace Security.Test.Features.Auth.Commands.RegisterUserCommandDto;
+﻿namespace Security.Test.Features.Auth.Commands.RegisterUser;
 
 public class RegisterUserCommandDtoBuilder
 {
