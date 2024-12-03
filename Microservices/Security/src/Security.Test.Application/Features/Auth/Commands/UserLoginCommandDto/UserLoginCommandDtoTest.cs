@@ -1,11 +1,9 @@
-﻿using FluentValidation.TestHelper;
-using Security.Test.Builders.Validators;
-using Application.Features.Auth.Commands.Login;
-using Security.Test.Builders.Validators.Auth;
+﻿using Application.Features.Auth.Commands.UserLogin;
+using FluentValidation.TestHelper;
 
-namespace Security.Test.ValidatorTest;
+namespace Security.Test.Features.Auth.Commands.UserLoginCommandDto;
 
-public class LoginCommandDtoTest
+public class UserLoginCommandDtoTest
 {
     [Theory]
     [InlineData("")]
@@ -16,7 +14,7 @@ public class LoginCommandDtoTest
             .WithEmail(email)
             .Build();
 
-        var validator = new LoginCommandDtoValidator();
+        var validator = new UserLoginCommandDtoValidator();
         var result = validator.TestValidate(userLoginDto);
         result.ShouldHaveValidationErrorFor(x => x.Email);
     }
@@ -30,7 +28,7 @@ public class LoginCommandDtoTest
             .WithPassword(password)
             .Build();
 
-        var validator = new LoginCommandDtoValidator();
+        var validator = new UserLoginCommandDtoValidator();
         var result = validator.TestValidate(userLoginDto);
         result.ShouldHaveValidationErrorFor(x => x.Password);
     }
@@ -46,7 +44,7 @@ public class LoginCommandDtoTest
             .WithPassword(password)
             .Build();
 
-        var validator = new LoginCommandDtoValidator();
+        var validator = new UserLoginCommandDtoValidator();
         var result = validator.TestValidate(userLoginDto);
         result.ShouldHaveValidationErrorFor(x => x.Password);
     }

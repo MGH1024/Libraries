@@ -5,9 +5,9 @@ using Quartz.Util;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Application.Features.Auth.Commands.Login;
 using Application.Features.Auth.Commands.RefreshToken;
 using Application.Features.Auth.Commands.RegisterUser;
+using Application.Features.Auth.Commands.UserLogin;
 
 namespace Api.Controllers.V1;
 
@@ -19,17 +19,17 @@ public class AuthController(ISender sender, IMapper mapper) : AppController(send
     /// <summary>
     /// security api login 
     /// </summary>
-    /// <param name="loginCommandDto"></param>
+    /// <param name="userLoginCommandDto"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpPost("Login")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(LoginResponse))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserLoginCommandResponse))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> Login([FromBody] LoginCommandDto loginCommandDto, CancellationToken
+    public async Task<IActionResult> Login([FromBody] UserLoginCommandDto userLoginCommandDto, CancellationToken
         cancellationToken)
     {
-        var command = mapper.Map<LoginCommand>(loginCommandDto);
+        var command = mapper.Map<UserLoginCommand>(userLoginCommandDto);
 
         var response = await Sender.Send(command, cancellationToken);
         if (!response.IsSuccess)

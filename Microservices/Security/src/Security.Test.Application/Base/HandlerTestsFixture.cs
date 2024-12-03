@@ -3,7 +3,7 @@ using AutoMapper;
 using Domain;
 using Moq;
 
-namespace Security.Test.Fixtures;
+namespace Security.Test.Base;
 
 public  class HandlerTestsFixture
 {

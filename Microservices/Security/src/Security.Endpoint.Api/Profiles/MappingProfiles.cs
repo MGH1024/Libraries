@@ -1,7 +1,7 @@
 using AutoMapper;
-using Application.Features.Auth.Commands.Login;
 using Application.Features.Auth.Commands.RefreshToken;
 using Application.Features.Auth.Commands.RegisterUser;
+using Application.Features.Auth.Commands.UserLogin;
 using Application.Features.Users.Queries.GetList;
 using MGH.Core.Application.Requests;
 
@@ -11,7 +11,7 @@ public class MappingProfiles : Profile
 {
     public MappingProfiles()
     {
-        CreateMap<LoginCommandDto, LoginCommand>()
+        CreateMap<UserLoginCommandDto, UserLoginCommand>()
             .ForCtorParam("LoginCommandDto", opt =>
                 opt.MapFrom(src => src));
 

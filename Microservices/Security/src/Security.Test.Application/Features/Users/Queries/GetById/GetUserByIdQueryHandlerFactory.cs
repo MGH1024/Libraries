@@ -1,7 +1,7 @@
 ﻿using Application.Features.Users.Queries.GetById;
-using Security.Test.Fixtures;
+using Security.Test.Base;
 
-namespace Security.Test.Builders.Handlers;
+namespace Security.Test.Features.Users.Queries.GetById;
 
 public static class GetUserByIdBuilder
 {
