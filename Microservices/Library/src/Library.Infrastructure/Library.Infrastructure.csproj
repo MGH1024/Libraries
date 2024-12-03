@@ -29,7 +29,7 @@
     <ItemGroup>
         <ProjectReference Include="..\Library.Application\Library.Application.csproj"/>
         <ProjectReference Include="..\Library.Domain\Library.Domain.csproj"/>
-        <ProjectReference Include="..\..\..\..\Framework\MGH.Core.Infrastructure.MessageBroker.RabbitMq\MGH.Core.Infrastructure.MessageBroker.RabbitMq.csproj"/>
+        <ProjectReference Include="..\..\..\..\Framework\MGH.Core.Infrastructure.EventBus.RabbitMq\MGH.Core.Infrastructure.EventBus.RabbitMq.csproj" />
         <ProjectReference Include="..\..\..\..\Framework\MGH.Core.Infrastructure.Securities\MGH.Core.Infrastructure.Securities.csproj"/>
     </ItemGroup>
 

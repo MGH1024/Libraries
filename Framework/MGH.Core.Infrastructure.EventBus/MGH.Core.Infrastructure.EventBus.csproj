@@ -4,6 +4,11 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <RootNamespace>MGH.Core.Infrastructure.MessageBroker</RootNamespace>
     </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\MGH.Core.Domain\MGH.Core.Domain.csproj" />
+    </ItemGroup>
 
 </Project>

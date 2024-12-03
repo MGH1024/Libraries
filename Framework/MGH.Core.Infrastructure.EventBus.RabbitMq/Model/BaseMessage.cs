@@ -1,4 +1,4 @@
-﻿namespace MGH.Core.Infrastructure.MessageBroker;
+﻿namespace MGH.Core.Infrastructure.MessageBroker.RabbitMq.Model;
 
 public class BaseMessage(string routingKey, string exchangeName, string exchangeType, string queueName)
 {

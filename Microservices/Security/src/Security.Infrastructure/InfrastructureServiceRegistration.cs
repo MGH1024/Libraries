@@ -168,6 +168,6 @@ public static class InfrastructureServiceRegistration
     private static void AddRabbitMq(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<RabbitMq>(option => configuration.GetSection(nameof(RabbitMq)).Bind(option));
-        services.AddTransient(typeof(IMessageSender<>), typeof(RabbitMqService<>));
+        services.AddTransient<IEventBusDispatcher,RabbitMqEventBusDispatcher>();
     }
 }

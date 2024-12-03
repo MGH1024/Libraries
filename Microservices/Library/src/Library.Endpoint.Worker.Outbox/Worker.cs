@@ -1,12 +1,14 @@
-using Application.Features.OutBoxes.Commands.UpdateProcessAt;
-using Application.Features.OutBoxes.Queries.GetList;
 using MediatR;
 using MGH.Core.Application.Requests;
+using Application.Features.OutBoxes.Queries.GetList;
+using MGH.Core.Infrastructure.MessageBroker.RabbitMq;
+using Application.Features.OutBoxes.Commands.UpdateProcessAt;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Base;
-using MGH.Core.Infrastructure.MessageBroker;
+using MGH.Core.Infrastructure.MessageBroker.RabbitMq.Atributes;
 
 namespace Library.Endpoint.Worker.Outbox;
 
+[BaseMessage("mgh-routingkey", "direct", "mgh-exchange", "mgh-queue")]
 public class Worker(IServiceProvider serviceProvider) : BackgroundService
 {
     protected override async Task ExecuteAsync(CancellationToken cancellationToken)
@@ -14,8 +16,6 @@ public class Worker(IServiceProvider serviceProvider) : BackgroundService
         using var scope = serviceProvider.CreateScope();
         var sender = scope.ServiceProvider.GetRequiredService<ISender>();
         var elastic = scope.ServiceProvider.GetRequiredService<IElasticSearch>();
-        var messageBus = scope.ServiceProvider
-            .GetRequiredService<IMessageSender<GetOutboxListDto>>();
 
         while (!cancellationToken.IsCancellationRequested)
         {
@@ -32,15 +32,10 @@ public class Worker(IServiceProvider serviceProvider) : BackgroundService
                 Guids = result.Items.Select(a => a.Id)
             }, cancellationToken);
 
+            // ReSharper disable once CoVariantArrayConversion
             await elastic.InsertManyAsync("libraries", result.Items.ToArray());
 
-            var baseMessage = new BaseMessage(routingKey: "mgh-routingkey", exchangeType: "direct"
-                , exchangeName: "mgh-exchange", queueName: "mgh-queue");
-
-            messageBus.Publish(new BatchMessageModel<GetOutboxListDto>(baseMessage)
-            {
-                Items = result.Items.ToList(),
-            });
+            
 
             //transactionScope.Complete();
         }
