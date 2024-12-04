@@ -4,7 +4,7 @@ using Application.Features.OutBoxes.Queries.GetList;
 using MGH.Core.Infrastructure.MessageBroker.RabbitMq;
 using Application.Features.OutBoxes.Commands.UpdateProcessAt;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Base;
-using MGH.Core.Infrastructure.MessageBroker.RabbitMq.Atributes;
+using MGH.Core.Infrastructure.MessageBroker.RabbitMq.Attributes;
 
 namespace Library.Endpoint.Worker.Outbox;
 

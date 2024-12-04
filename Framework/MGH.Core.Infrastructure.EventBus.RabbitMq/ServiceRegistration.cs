@@ -12,6 +12,5 @@ public static class ServiceRegistration
         services.Configure<Model.RabbitMq>(option => configuration.GetSection(nameof(RabbitMq)).Bind(option));
         services.AddTransient<IEventBusDispatcher, EventBusDispatcher>();
         services.AddTransient<IRabbitMqConnection, Connection>();
-        services.AddTransient<IRabbitMqPublisher, Publisher>();
     }
 }

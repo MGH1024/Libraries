@@ -1,4 +1,4 @@
-﻿namespace MGH.Core.Infrastructure.MessageBroker.RabbitMq.Atributes;
+﻿namespace MGH.Core.Infrastructure.MessageBroker.RabbitMq.Attributes;
 
 [AttributeUsage(AttributeTargets.Class, Inherited = false)]
 public sealed class BaseMessageAttribute(string routingKey, string exchangeType, string exchangeName, string queueName)
