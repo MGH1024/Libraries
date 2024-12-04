@@ -1,33 +1,31 @@
-﻿using System.Globalization;
-using System.Reflection;
+﻿using Nest;
 using Domain;
+using Prometheus;
+using System.Reflection;
 using Domain.Repositories;
-using MGH.Core.CrossCutting.Localizations.RouteConstraints;
-using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch;
-using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Base;
-using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Models;
-using MGH.Core.Infrastructure.HealthCheck;
-using MGH.Core.Infrastructure.MessageBroker;
-using MGH.Core.Infrastructure.MessageBroker.RabbitMq;
-using MGH.Core.Infrastructure.MessageBroker.RabbitMq.Model;
-using MGH.Core.Infrastructure.Persistence.EF.Interceptors;
-using MGH.Core.Infrastructure.Persistence.EF.Models.Configuration;
-using MGH.Core.Infrastructure.Public;
-using MGH.Core.Infrastructure.Securities.Security;
-using Microsoft.AspNetCore.Builder;
+using System.Globalization;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using Nest;
-using Prometheus;
+using MGH.Core.Infrastructure.Public;
 using Security.Infrastructure.Contexts;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.Extensions.Configuration;
+using MGH.Core.Infrastructure.HealthCheck;
 using Security.Infrastructure.Repositories;
+using Microsoft.Extensions.DependencyInjection;
+using MGH.Core.Infrastructure.Securities.Security;
 using Security.Infrastructure.Repositories.Security;
+using MGH.Core.Infrastructure.MessageBroker.RabbitMq;
 using LogLevel = Microsoft.Extensions.Logging.LogLevel;
+using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch;
+using MGH.Core.Infrastructure.Persistence.EF.Interceptors;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using MGH.Core.CrossCutting.Localizations.RouteConstraints;
+using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Base;
+using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Models;
+using MGH.Core.Infrastructure.Persistence.EF.Models.Configuration;
 
 namespace Security.Infrastructure;
 
@@ -47,8 +45,8 @@ public static class InfrastructureServiceRegistration
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
         services.AddCulture();
         services.AddElasticSearch(configuration);
-        services.AddRabbitMq(configuration);
-        services.AddPrometheus(configuration);
+        services.AddRabbitMqEventBus(configuration);
+        services.AddPrometheus();
         services.AddInfrastructureHealthChecks<SecurityDbContext>(configuration);
         return services;
     }
@@ -61,7 +59,7 @@ public static class InfrastructureServiceRegistration
         services.AddSingleton<AuditEntityInterceptor>();
     }
 
-    private static void AddPrometheus(this IServiceCollection services, IConfiguration configuration)
+    private static void AddPrometheus(this IServiceCollection services)
     {
         services.UseHttpClientMetrics(); 
     }
@@ -140,7 +138,7 @@ public static class InfrastructureServiceRegistration
             .AddLocalization(opt => { opt.ResourcesPath = "Resources"; });
     }
 
-    private static async void AddElasticSearch(this IServiceCollection services, IConfiguration configuration)
+    private static async Task AddElasticSearch(this IServiceCollection services, IConfiguration configuration)
     {
         const string configurationSection = "ElasticSearchConfig";
         var setting =
@@ -163,11 +161,5 @@ public static class InfrastructureServiceRegistration
                 );
             }
         }
-    }
-
-    private static void AddRabbitMq(this IServiceCollection services, IConfiguration configuration)
-    {
-        services.Configure<RabbitMq>(option => configuration.GetSection(nameof(RabbitMq)).Bind(option));
-        services.AddTransient<IEventBusDispatcher,RabbitMqEventBusDispatcher>();
     }
 }

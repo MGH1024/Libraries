@@ -2,7 +2,7 @@
 
 namespace MGH.Core.Infrastructure.MessageBroker;
 
-public interface IEventBusDispatcher : IDisposable
+public interface IEventBusDispatcher 
 {
-    void PublishAsync<T>(T model) where T : IntegratedEvent;
+    void Publish<T>(T model) where T : IntegratedEvent;
 }
