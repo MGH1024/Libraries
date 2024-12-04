@@ -2,7 +2,7 @@
 using Polly;
 using Polly.Extensions.Http;
 
-namespace MGH.Core.Application.HttpClients;
+namespace MGH.Core.Infrastructure.HttpClient;
 
 public static class HttpClientExtensions
 {

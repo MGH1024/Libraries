@@ -2,9 +2,9 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace MGH.Core.Application.HttpClients.Base;
+namespace MGH.Core.Infrastructure.HttpClient.Base;
 
-public abstract class BaseHttpClient(HttpClient httpClient)
+public abstract class BaseHttpClient(System.Net.Http.HttpClient httpClient)
 {
     protected string Token { get; set; }
     protected DateTime TokenExpiry { get; set; }
