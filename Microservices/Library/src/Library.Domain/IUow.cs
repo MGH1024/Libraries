@@ -1,5 +1,5 @@
 ﻿using Domain.Entities.Libraries;
-using MGH.Core.Infrastructure.Persistence.EF.Base;
+using MGH.Core.Domain;
 
 namespace Domain;
 
