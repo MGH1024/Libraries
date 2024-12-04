@@ -55,7 +55,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MGH.Core.Infrastructure", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MGH.Core.Endpoint.Swagger", "Framework\MGH.Core.Endpoint.Swagger\MGH.Core.Endpoint.Swagger.csproj", "{075FF53A-CF15-40F7-B487-694594065F22}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MGH.Core.Infrastruture.HttpClient", "Framework\MGH.Core.Infrastruture.HttpClient\MGH.Core.Infrastruture.HttpClient.csproj", "{78D1A88F-FFF8-4EBD-8098-6DE16609C6A4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MGH.Core.Infrastructure.HttpClient", "Framework\MGH.Core.Infrastructure.HttpClient\MGH.Core.Infrastructure.HttpClient.csproj", "{78D1A88F-FFF8-4EBD-8098-6DE16609C6A4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MGH.Core.Infrastructure.Persistence.Dapper", "Framework\MGH.Core.Infrastructure.Persistence.Dapper\MGH.Core.Infrastructure.Persistence.Dapper.csproj", "{E72AD29C-722C-4006-A5D1-6B2C69EF1997}"
 EndProject
