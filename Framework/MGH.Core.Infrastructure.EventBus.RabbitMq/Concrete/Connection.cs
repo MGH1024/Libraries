@@ -1,11 +1,12 @@
-﻿using Microsoft.Extensions.Options;
+﻿using MGH.Core.Infrastructure.MessageBroker.RabbitMq.Abstracts;
+using Microsoft.Extensions.Options;
 using Polly;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
-namespace MGH.Core.Infrastructure.MessageBroker.RabbitMq;
+namespace MGH.Core.Infrastructure.MessageBroker.RabbitMq.Concrete;
 
-public class RabbitMqConnection : IRabbitMqConnection
+public class Connection : IRabbitMqConnection
 {
     private Policy _connectionPolicy;
     private ConnectionFactory _connectionFactory;
@@ -15,7 +16,7 @@ public class RabbitMqConnection : IRabbitMqConnection
     private bool IsServiceConnected => _connection is not null && _connection.IsOpen;
     private bool IsChannelConnected => _channel is not null && _channel.IsOpen;
     
-    public RabbitMqConnection(IOptions<Model.RabbitMq> options)
+    public Connection(IOptions<Model.RabbitMq> options)
     {
         CreateConnectionPolicy();
         CreateConnectionFactory(options.Value);

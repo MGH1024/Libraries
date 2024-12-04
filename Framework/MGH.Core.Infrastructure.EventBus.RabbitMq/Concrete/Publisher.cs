@@ -1,16 +1,17 @@
 ﻿using System.Text;
-using RabbitMQ.Client;
 using System.Text.Json;
-using MGH.Core.Infrastructure.MessageBroker.RabbitMq.Model;
+using MGH.Core.Infrastructure.MessageBroker.RabbitMq.Abstracts;
 using MGH.Core.Infrastructure.MessageBroker.RabbitMq.Atributes;
+using MGH.Core.Infrastructure.MessageBroker.RabbitMq.Model;
+using RabbitMQ.Client;
 
-namespace MGH.Core.Infrastructure.MessageBroker.RabbitMq;
+namespace MGH.Core.Infrastructure.MessageBroker.RabbitMq.Concrete;
 
-public class RabbitMqPublisher : IRabbitMqPublisher
+public class Publisher : IRabbitMqPublisher
 {
     private readonly IRabbitMqConnection _rabbitMqConnection;
 
-    public RabbitMqPublisher(IRabbitMqConnection connection)
+    public Publisher(IRabbitMqConnection connection)
     {
         _rabbitMqConnection = connection;
         _rabbitMqConnection.ConnectService();

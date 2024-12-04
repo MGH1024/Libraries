@@ -10,6 +10,7 @@ using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Base;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Models;
 using MGH.Core.Infrastructure.MessageBroker;
 using MGH.Core.Infrastructure.MessageBroker.RabbitMq;
+using MGH.Core.Infrastructure.MessageBroker.RabbitMq.Concrete;
 using MGH.Core.Infrastructure.MessageBroker.RabbitMq.Model;
 using MGH.Core.Infrastructure.Persistence.EF.Models.Configuration;
 using MGH.Core.Infrastructure.Public;
@@ -136,6 +137,6 @@ public static class InfrastructureServiceRegistration
     private static void AddRabbitMq(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<RabbitMq>(option => configuration.GetSection(nameof(RabbitMq)).Bind(option));
-        services.AddTransient<IEventBusDispatcher, RabbitMqEventBusDispatcher>();
+        services.AddTransient<IEventBusDispatcher, EventBusDispatcher>();
     }
 }

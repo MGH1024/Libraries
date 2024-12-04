@@ -1,6 +1,6 @@
 ﻿using RabbitMQ.Client;
 
-namespace MGH.Core.Infrastructure.MessageBroker.RabbitMq;
+namespace MGH.Core.Infrastructure.MessageBroker.RabbitMq.Abstracts;
 
 public interface IRabbitMqConnection :IDisposable
 {
