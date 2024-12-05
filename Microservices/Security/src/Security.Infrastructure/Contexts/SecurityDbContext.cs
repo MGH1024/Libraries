@@ -1,5 +1,5 @@
 ﻿using MGH.Core.Domain.BaseEntity;
-using MGH.Core.Domain.Entity.Logs;
+using MGH.Core.Domain.Entity.Audits;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
 using Microsoft.EntityFrameworkCore;
 
