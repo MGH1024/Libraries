@@ -3,7 +3,7 @@ using Domain;
 using MediatR;
 using MGH.Core.Application.Requests;
 using MGH.Core.Application.Responses;
-using MGH.Core.Infrastructure.Persistence.EF.Models.Filters.GetModels;
+using MGH.Core.Infrastructure.Persistence.Models.Filters.GetModels;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
 
 namespace Application.Features.UserOperationClaims.Queries.GetList;

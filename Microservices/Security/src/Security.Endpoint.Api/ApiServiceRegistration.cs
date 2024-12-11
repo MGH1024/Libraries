@@ -52,7 +52,6 @@ public static class ApiServiceRegistration
         app.AddPrometheus();
         app.Run();
     }
-    
 
     private static void AddOptions(this IServiceCollection services, IConfiguration configuration)
     {

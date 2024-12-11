@@ -1,7 +1,7 @@
 ﻿using Application.Features.UserOperationClaims.Rules;
 using Domain.Repositories;
-using MGH.Core.Infrastructure.Persistence.EF.Models.Filters.GetModels;
-using MGH.Core.Infrastructure.Persistence.EF.Models.Paging;
+using MGH.Core.Infrastructure.Persistence.Models.Filters.GetModels;
+using MGH.Core.Infrastructure.Persistence.Models.Paging;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
 
 namespace Application.Features.UserOperationClaims.Services;

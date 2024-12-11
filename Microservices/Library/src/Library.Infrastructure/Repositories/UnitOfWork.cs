@@ -1,59 +1,38 @@
 ﻿using Domain;
-using Domain.Entities.Libraries;
-using MGH.Core.Infrastructure.Public;
-using Microsoft.EntityFrameworkCore.Storage;
 using Persistence.Contexts;
+using Domain.Entities.Libraries;
+using MGH.Core.Infrastructure.Persistence.Base;
 
 namespace Persistence.Repositories;
 
-public class UnitOfWork(LibraryDbContext context, IDateTime dateTime) : IUow
+public class UnitOfWork(
+    LibraryDbContext context,
+    ITransactionManager<LibraryDbContext> transactionManager,
+    ILibraryRepository libraryRepository,
+    IOutBoxRepository outBoxRepository)
+    : IUow, IDisposable
 {
-    private IDbContextTransaction _transaction;
-    private LibraryRepository _libraryRepository;
-    private OutBoxRepository _outBoxRepository;
+    public ILibraryRepository Library => libraryRepository;
+    public IOutBoxRepository OutBox => outBoxRepository;
 
-    public ILibraryRepository Library => _libraryRepository ??= new LibraryRepository(context);
-    public IOutBoxRepository OutBox => _outBoxRepository ??= new OutBoxRepository(context, dateTime);
-
-    
-    public async Task<int> CompleteAsync(CancellationToken cancellationToken)
+    public Task<int> CompleteAsync(CancellationToken cancellationToken)
     {
-        return await context.SaveChangesAsync(cancellationToken);
+        return context.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task BeginTransactionAsync(CancellationToken cancellationToken)
+    public Task BeginTransactionAsync(CancellationToken cancellationToken)
     {
-        _transaction = await context.Database.BeginTransactionAsync(cancellationToken);
+        return transactionManager.BeginTransactionAsync(cancellationToken);
     }
 
-    public async Task CommitTransactionAsync(CancellationToken cancellationToken)
+    public Task CommitTransactionAsync(CancellationToken cancellationToken)
     {
-        try
-        {
-            await context.SaveChangesAsync(cancellationToken);
-            await _transaction.CommitAsync(cancellationToken);
-        }
-        catch
-        {
-            await RollbackTransactionAsync(cancellationToken);
-            throw;
-        }
-        finally
-        {
-            await _transaction.DisposeAsync();
-        }
+        return transactionManager.CommitTransactionAsync(cancellationToken);
     }
 
-    public async Task RollbackTransactionAsync(CancellationToken cancellationToken)
+    public Task RollbackTransactionAsync(CancellationToken cancellationToken)
     {
-        try
-        {
-            await _transaction.RollbackAsync(cancellationToken);
-        }
-        finally
-        {
-            await _transaction.DisposeAsync();
-        }
+        return transactionManager.RollbackTransactionAsync(cancellationToken);
     }
 
     public void Dispose()

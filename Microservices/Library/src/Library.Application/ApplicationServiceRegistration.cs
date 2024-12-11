@@ -18,6 +18,26 @@ public static class ApplicationServiceRegistration
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
+        services.AddMediatRAndBehaviors();
+        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+        services.AddSubClassesOfType(Assembly.GetExecutingAssembly(), typeof(BaseBusinessRules));
+        services.AddBusinessRule();
+        services.AddServices();
+        return services;
+    }
+
+    private static void AddServices(this IServiceCollection services)
+    {
+        services.AddSingleton<IElasticSearch, ElasticSearchService>();
+    }
+
+    private static void AddBusinessRule(this IServiceCollection services)
+    {
+        services.AddSingleton<ILibraryBusinessRules, LibraryBusinessRules>();
+    }
+
+    private static void AddMediatRAndBehaviors(this IServiceCollection services)
+    {
         services.AddMediatR(configuration =>
         {
             configuration.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
@@ -27,12 +47,6 @@ public static class ApplicationServiceRegistration
             configuration.AddOpenBehavior(typeof(TransactionScopeBehavior<,>));
             configuration.AddOpenBehavior(typeof(RequestValidationBehavior<,>));
         });
-        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-        services.AddSubClassesOfType(Assembly.GetExecutingAssembly(), typeof(BaseBusinessRules));
-        services.AddSingleton<IElasticSearch, ElasticSearchService>();
-        services.AddSingleton<ILibraryBusinessRules, LibraryBusinessRules>();
-
-        return services;
     }
 
     private static void AddSubClassesOfType(this IServiceCollection services, Assembly assembly,

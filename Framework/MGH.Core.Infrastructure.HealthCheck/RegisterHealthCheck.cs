@@ -1,12 +1,12 @@
 ﻿using HealthChecks.UI.Client;
 using MGH.Core.Infrastructure.MessageBroker.RabbitMq.Model;
-using MGH.Core.Infrastructure.Persistence.EF.Models.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using MGH.Core.Infrastructure.Cache.Redis.Models;
+using MGH.Core.Infrastructure.Persistence.Models.Configuration;
 
 namespace MGH.Core.Infrastructure.HealthCheck;
 

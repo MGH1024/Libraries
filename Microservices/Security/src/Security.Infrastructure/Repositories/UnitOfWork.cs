@@ -1,72 +1,43 @@
 ﻿using Domain;
 using Domain.Repositories;
-using Microsoft.EntityFrameworkCore.Storage;
 using Security.Infrastructure.Contexts;
-using Security.Infrastructure.Repositories.Security;
+using MGH.Core.Infrastructure.Persistence.Base;
 
 namespace Security.Infrastructure.Repositories;
 
-public class UnitOfWork(SecurityDbContext context) : IUow
+public class UnitOfWork(
+    SecurityDbContext context,
+    ITransactionManager<SecurityDbContext> transactionManager,
+    IOperationClaimRepository operationClaimRepository,
+    IRefreshTokenRepository refreshTokenRepository,
+    IUserOperationClaimRepository userOperationClaimRepository,
+    IUserRepository userRepository)
+    : IUow, IDisposable
 {
-    private IDbContextTransaction _transaction;
-    private OperationClaimRepository _operationClaimRepository;
-    private RefreshTokenRepository _refreshTokenRepository;
-    private UserOperationClaimRepository _userOperationClaimRepository;
-    private UserRepository _userRepository;
+    public IUserRepository User => userRepository;
+    public IRefreshTokenRepository RefreshToken => refreshTokenRepository;
+    public IOperationClaimRepository OperationClaim => operationClaimRepository;
+    public IUserOperationClaimRepository UserOperationClaim => userOperationClaimRepository;
 
 
-    
-    public IOperationClaimRepository OperationClaim =>
-        _operationClaimRepository ??= new OperationClaimRepository(context);
-    
-
-    public IRefreshTokenRepository RefreshToken =>
-        _refreshTokenRepository ??= new RefreshTokenRepository(context);
-
-    public IUserOperationClaimRepository UserOperationClaim =>
-        _userOperationClaimRepository ??= new UserOperationClaimRepository(context);
-
-    public IUserRepository User => _userRepository ??= new UserRepository(context);
-
-
-    public async Task<int> CompleteAsync(CancellationToken cancellationToken)
+    public Task<int> CompleteAsync(CancellationToken cancellationToken)
     {
-        return await context.SaveChangesAsync(cancellationToken);
+        return context.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task BeginTransactionAsync(CancellationToken cancellationToken)
+    public Task BeginTransactionAsync(CancellationToken cancellationToken)
     {
-        _transaction = await context.Database.BeginTransactionAsync(cancellationToken);
+        return transactionManager.BeginTransactionAsync(cancellationToken);
     }
 
-    public async Task CommitTransactionAsync(CancellationToken cancellationToken)
+    public Task CommitTransactionAsync(CancellationToken cancellationToken)
     {
-        try
-        {
-            await context.SaveChangesAsync(cancellationToken);
-            await _transaction.CommitAsync(cancellationToken);
-        }
-        catch
-        {
-            await RollbackTransactionAsync(cancellationToken);
-            throw;
-        }
-        finally
-        {
-            await _transaction.DisposeAsync();
-        }
+        return transactionManager.CommitTransactionAsync(cancellationToken);
     }
 
-    public async Task RollbackTransactionAsync(CancellationToken cancellationToken)
+    public Task RollbackTransactionAsync(CancellationToken cancellationToken)
     {
-        try
-        {
-            await _transaction.RollbackAsync(cancellationToken);
-        }
-        finally
-        {
-            await _transaction.DisposeAsync();
-        }
+        return transactionManager.RollbackTransactionAsync(cancellationToken);
     }
 
     public void Dispose()

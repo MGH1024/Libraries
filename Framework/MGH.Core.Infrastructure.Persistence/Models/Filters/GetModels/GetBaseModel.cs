@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace MGH.Core.Infrastructure.Persistence.EF.Models.Filters.GetModels;
+namespace MGH.Core.Infrastructure.Persistence.Models.Filters.GetModels;
 
 public class GetBaseModel<TEntity>
 {

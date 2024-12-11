@@ -31,17 +31,27 @@ public static class ApplicationServiceRegistration
         services.AddMediatRAndBehaviors();
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         services.AddSubClassesOfType(Assembly.GetExecutingAssembly(), typeof(BaseBusinessRules));
-        services.AddSingleton<IElasticSearch, ElasticSearchService>();
-        services.AddScoped<IAuthService, AuthManager>();
-        services.AddScoped<IOperationClaimService, OperationClaimManager>();
-        services.AddScoped<IUserOperationClaimService, UserUserOperationClaimManager>();
-        services.AddScoped<IUserService, UserManager>();
+        services.AddServices();
+        services.AddBusinessRules();
+        services.AddRedis(configuration);
+        return services;
+    }
+
+    private static void AddBusinessRules(this IServiceCollection services)
+    {
         services.AddScoped<IUserBusinessRules, UserBusinessRules>();
         services.AddScoped<IAuthBusinessRules, AuthBusinessRules>();
         services.AddScoped<IOperationClaimBusinessRules, OperationClaimBusinessRules>();
         services.AddScoped<IUserOperationClaimBusinessRules, UserOperationClaimBusinessRules>();
-        services.AddRedis(configuration);
-        return services;
+    }
+
+    private static void AddServices(this IServiceCollection services)
+    {
+        services.AddScoped<IAuthService, AuthManager>();
+        services.AddScoped<IOperationClaimService, OperationClaimManager>();
+        services.AddScoped<IUserOperationClaimService, UserUserOperationClaimManager>();
+        services.AddScoped<IUserService, UserManager>();
+        services.AddSingleton<IElasticSearch, ElasticSearchService>();
     }
 
     private static void AddMediatRAndBehaviors(this IServiceCollection services)
@@ -67,6 +77,4 @@ public static class ApplicationServiceRegistration
             else
                 addWithLifeCycle(services, type);
     }
-    
-    
 }

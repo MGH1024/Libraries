@@ -1,15 +1,19 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Reflection;
+using Microsoft.AspNetCore.Mvc;
 using System.Text.Json.Serialization;
+using Asp.Versioning;
 using MGH.Core.CrossCutting.Exceptions;
 using MGH.Core.CrossCutting.Localizations.ModelBinders;
 using MGH.Core.CrossCutting.Logging;
 using MGH.Core.Endpoint.Swagger;
 using MGH.Core.Endpoint.Swagger.Models;
+using MGH.Core.Infrastructure.HealthCheck;
 using MGH.Core.Infrastructure.Securities.Security.Encryption;
 using MGH.Core.Infrastructure.Securities.Security.JWT;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.IdentityModel.Tokens;
+using Persistence;
 
 namespace Api;
 
@@ -22,13 +26,14 @@ public static class ApiServiceRegistration
         services.AddOptions(configuration);
         services.AddSwagger(configuration);
         services.AddCors();
+        services.AddVersioning();
         services.AddBaseMvc();
         services.AddMemoryCache();
         services.AddHttpContextAccessor();
         services.AddEndpointsApiExplorer();
         services.AddJwt(configuration);
+        services.AddAutoMapper(Assembly.GetExecutingAssembly());
     }
-
 
     public static void RegisterApp(this WebApplicationBuilder builder)
     {
@@ -41,13 +46,35 @@ public static class ApiServiceRegistration
         app.UseCors("CorsPolicy");
         app.MapControllers();
         app.UseExceptionMiddleWare();
+        app.UseStaticFiles();
+        app.AddHealthCheck();
+        app.AddPrometheus();
         app.Run();
     }
-
+    
     private static void AddOptions(this IServiceCollection services,IConfiguration configuration)
     {
         services.Configure<TokenOptions>(option =>
             configuration.GetSection(nameof(TokenOptions)).Bind(option));
+    }
+    
+    private static void AddVersioning(this IServiceCollection services)
+    {
+        services.AddApiVersioning(options =>
+            {
+                options.DefaultApiVersion = new ApiVersion(1, 2);
+                options.ReportApiVersions = true;
+                options.AssumeDefaultVersionWhenUnspecified = true;
+                options.ApiVersionReader = ApiVersionReader.Combine(
+                    new UrlSegmentApiVersionReader(),
+                    new HeaderApiVersionReader("X-Api-Version"));
+            })
+            .AddMvc() // This is needed for controllers
+            .AddApiExplorer(options =>
+            {
+                options.GroupNameFormat = "'v'V";
+                options.SubstituteApiVersionInUrl = true;
+            });
     }
     
     private static void AddJwt(this IServiceCollection services, IConfiguration configuration)

@@ -17,8 +17,4 @@
         <Reference Include="Microsoft.EntityFrameworkCore">
         </Reference>
     </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Entities\" />
-    </ItemGroup>
 </Project>

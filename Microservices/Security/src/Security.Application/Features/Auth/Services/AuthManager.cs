@@ -2,10 +2,10 @@
 using Microsoft.Extensions.Options;
 using MGH.Core.Infrastructure.Public;
 using Application.Features.Users.Extensions;
+using MGH.Core.Infrastructure.Persistence.Models.Filters.GetModels;
 using MGH.Core.Infrastructure.Securities.Security.JWT;
 using MGH.Core.Infrastructure.Securities.Security.Hashing;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
-using MGH.Core.Infrastructure.Persistence.EF.Models.Filters.GetModels;
 
 namespace Application.Features.Auth.Services;
 

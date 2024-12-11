@@ -1,8 +1,8 @@
 ﻿using Application.Features.OutBoxes.Queries.GetList;
 using MGH.Core.Application.Responses;
 using MGH.Core.Domain.Entity.Outboxes;
-using MGH.Core.Infrastructure.Persistence.EF.Models.Filters.GetModels;
-using MGH.Core.Infrastructure.Persistence.EF.Models.Paging;
+using MGH.Core.Infrastructure.Persistence.Models.Filters.GetModels;
+using MGH.Core.Infrastructure.Persistence.Models.Paging;
 
 namespace Application.Features.OutBoxes.Extensions;
 

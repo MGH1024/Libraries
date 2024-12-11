@@ -4,7 +4,7 @@ using AutoMapper;
 using Domain;
 using MGH.Core.Application.Pipelines.Authorization;
 using MGH.Core.Domain.Buses.Commands;
-using MGH.Core.Infrastructure.Persistence.EF.Models.Filters.GetModels;
+using MGH.Core.Infrastructure.Persistence.Models.Filters.GetModels;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
 
 namespace Application.Features.OperationClaims.Commands.Update;

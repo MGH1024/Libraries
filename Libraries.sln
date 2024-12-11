@@ -67,6 +67,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security.Test.Architecture"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security.Test.Load", "Microservices\Security\src\Security.Test.Load\Security.Test.Load.csproj", "{25310453-88B5-47AC-8DF0-4A74AD54EB45}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MGH.Core.Infrastructure.Persistence", "Framework\MGH.Core.Infrastructure.Persistence\MGH.Core.Infrastructure.Persistence.csproj", "{0340298D-B00A-4778-A1F1-5313EC33C7A3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -185,6 +187,10 @@ Global
 		{25310453-88B5-47AC-8DF0-4A74AD54EB45}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{25310453-88B5-47AC-8DF0-4A74AD54EB45}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{25310453-88B5-47AC-8DF0-4A74AD54EB45}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0340298D-B00A-4778-A1F1-5313EC33C7A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0340298D-B00A-4778-A1F1-5313EC33C7A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0340298D-B00A-4778-A1F1-5313EC33C7A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0340298D-B00A-4778-A1F1-5313EC33C7A3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -220,6 +226,7 @@ Global
 		{99299A61-65F6-4C18-87E4-91931A9C5B92} = {88C6BDD9-95BF-462A-9585-C5CB14B1EB4D}
 		{A12CC87E-FFF9-488D-B8C2-426038E0BBA1} = {5F055678-C2FB-44FF-B72E-8403510D7F1F}
 		{25310453-88B5-47AC-8DF0-4A74AD54EB45} = {5F055678-C2FB-44FF-B72E-8403510D7F1F}
+		{0340298D-B00A-4778-A1F1-5313EC33C7A3} = {084E41B7-2029-4EB7-8CC3-EDBEE5C66534}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {04EE5569-4196-47F2-A52B-CF1049C542F2}

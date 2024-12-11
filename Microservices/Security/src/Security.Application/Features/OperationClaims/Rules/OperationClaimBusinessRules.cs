@@ -2,7 +2,7 @@ using Application.Features.OperationClaims.Constants;
 using Domain;
 using MGH.Core.Application.Rules;
 using MGH.Core.CrossCutting.Exceptions.Types;
-using MGH.Core.Infrastructure.Persistence.EF.Models.Filters.GetModels;
+using MGH.Core.Infrastructure.Persistence.Models.Filters.GetModels;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
 
 namespace Application.Features.OperationClaims.Rules;

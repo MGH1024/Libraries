@@ -15,6 +15,7 @@ using MGH.Core.Infrastructure.HealthCheck;
 using Security.Infrastructure.Repositories;
 using MGH.Core.Infrastructure.ElasticSearch;
 using Microsoft.Extensions.DependencyInjection;
+using MGH.Core.Infrastructure.Persistence.Base;
 using MGH.Core.Infrastructure.Securities.Security;
 using Security.Infrastructure.Repositories.Security;
 using MGH.Core.Infrastructure.MessageBroker.RabbitMq;
@@ -22,7 +23,7 @@ using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 using MGH.Core.Infrastructure.Persistence.EF.Interceptors;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using MGH.Core.CrossCutting.Localizations.RouteConstraints;
-using MGH.Core.Infrastructure.Persistence.EF.Models.Configuration;
+using MGH.Core.Infrastructure.Persistence.Models.Configuration;
 
 namespace Security.Infrastructure;
 
@@ -35,9 +36,8 @@ public static class InfrastructureServiceRegistration
         services.AddDbContextSqlServer(configuration);
         services.AddDbContext<SecurityDbContext>(options => options.UseInMemoryDatabase("LibraryDbContext-InMemory"));
         services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-        services.AddSecurityRepositories();
+        services.AddRepositories();
         services.AddSecurityServices();
-        services.AddScoped<IUow, UnitOfWork>();
         services.AddTransient<IDateTime, DateTimeService>();
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
         services.AddCulture();
@@ -104,12 +104,14 @@ public static class InfrastructureServiceRegistration
                     .LogTo(Console.Write, LogLevel.Information));
     }
 
-    private static void AddSecurityRepositories(this IServiceCollection services)
+    private static void AddRepositories(this IServiceCollection services)
     {
+        services.AddScoped<IUow, UnitOfWork>();
         services.AddScoped<IOperationClaimRepository, OperationClaimRepository>();
         services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
         services.AddScoped<IUserOperationClaimRepository, UserOperationClaimRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped(typeof(ITransactionManager<>), typeof(TransactionManager<>));
     }
 
     private static void AddCulture(this IServiceCollection services)
@@ -134,4 +136,5 @@ public static class InfrastructureServiceRegistration
             })
             .AddLocalization(opt => { opt.ResourcesPath = "Resources"; });
     }
+   
 }

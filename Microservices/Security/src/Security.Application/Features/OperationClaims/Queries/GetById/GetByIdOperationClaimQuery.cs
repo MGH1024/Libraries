@@ -4,7 +4,7 @@ using AutoMapper;
 using Domain;
 using MediatR;
 using MGH.Core.Application.Pipelines.Authorization;
-using MGH.Core.Infrastructure.Persistence.EF.Models.Filters.GetModels;
+using MGH.Core.Infrastructure.Persistence.Models.Filters.GetModels;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
 using Microsoft.EntityFrameworkCore;
 
