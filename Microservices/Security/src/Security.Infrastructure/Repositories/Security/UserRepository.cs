@@ -9,7 +9,7 @@ namespace Security.Infrastructure.Repositories.Security;
 public class UserRepository(SecurityDbContext securityDbContext) : Repository<User, int>(securityDbContext), 
     IUserRepository
 {
-    public IQueryable<User> Query() => securityDbContext.Set<User>();
+    private IQueryable<User> Query() => securityDbContext.Set<User>();
 
     public async Task<User> GetByEmailAsync(string email, CancellationToken cancellationToken)
     {

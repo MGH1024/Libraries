@@ -1,8 +1,8 @@
 ﻿using Domain.Repositories;
-using MGH.Core.Infrastructure.Persistence.EF.Base.Repository;
-using MGH.Core.Infrastructure.Securities.Security.Entities;
 using Microsoft.EntityFrameworkCore;
 using Security.Infrastructure.Contexts;
+using MGH.Core.Infrastructure.Securities.Security.Entities;
+using MGH.Core.Infrastructure.Persistence.EF.Base.Repository;
 
 namespace Security.Infrastructure.Repositories.Security;
 
@@ -20,7 +20,8 @@ public class UserOperationClaimRepository(SecurityDbContext securityDbContext)
         return await queryable.ToListAsync(cancellationToken);
     }
 
-    public async Task<IEnumerable<UserOperationClaim>> GetUserOperationClaims(int userId, CancellationToken cancellationToken)
+    public async Task<IEnumerable<UserOperationClaim>> GetUserOperationClaims(int userId,
+        CancellationToken cancellationToken)
     {
         var queryable = await Query().Where(p => p.UserId == userId).ToListAsync(cancellationToken);
         return queryable;
@@ -36,7 +37,8 @@ public class UserOperationClaimRepository(SecurityDbContext securityDbContext)
         return await queryable.FirstOrDefaultAsync(cancellationToken);
     }
 
-    public async Task<UserOperationClaim> GetOperationClaimByIdAndUserAndOperationClaim(int id, int userId, int operationClaimId,
+    public async Task<UserOperationClaim> GetOperationClaimByIdAndUserAndOperationClaim(int id, int userId,
+        int operationClaimId,
         CancellationToken cancellationToken)
     {
         var queryable =

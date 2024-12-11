@@ -187,7 +187,7 @@ public class Repository<TEntity, TKey>(DbContext dbContext) : IRepository<TEntit
                 .MakeGenericMethod(navigationPropertyType);
         var queryProviderQuery =
             (IQueryable<object>)createQueryMethod.Invoke(query.Provider,
-                parameters: new object[] { query.Expression })!;
+                parameters: [query.Expression])!;
         return queryProviderQuery.Where(x => !((IAuditAbleEntity)x).DeletedAt.HasValue);
     }
 }

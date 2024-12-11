@@ -36,7 +36,7 @@ public class RefreshTokenRepository(SecurityDbContext securityDbContext)
     {
         foreach (var refreshTkn in entities)
         {
-            await this.DeleteAsync(refreshTkn, false);
+            await DeleteAsync(refreshTkn);
         }
     }
 
@@ -120,7 +120,7 @@ public class RefreshTokenRepository(SecurityDbContext securityDbContext)
                     IQueryable query = securityDbContext.Entry(entity).Reference(navigation.PropertyInfo.Name).Query();
                     navValue = await GetRelationLoaderQuery(query,
                             navigationPropertyType: navigation.PropertyInfo.GetType())
-                        .FirstOrDefaultAsync();
+                        .FirstOrDefaultAsync(cancellationToken: cancellationToken);
                     if (navValue == null)
                         continue;
                 }
@@ -142,7 +142,7 @@ public class RefreshTokenRepository(SecurityDbContext securityDbContext)
                 .MakeGenericMethod(navigationPropertyType);
         var queryProviderQuery =
             (IQueryable<object>)createQueryMethod.Invoke(query.Provider,
-                parameters: new object[] { query.Expression })!;
+                parameters: [query.Expression])!;
         return queryProviderQuery.Where(x => !((IAuditAbleEntity)x).DeletedAt.HasValue);
     }
 }
