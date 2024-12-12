@@ -1,4 +1,5 @@
-﻿using Persistence.Contexts;
+﻿using Domain;
+using Persistence.Contexts;
 using Domain.Entities.Libraries;
 using MGH.Core.Domain.Entity.Outboxes;
 using MGH.Core.Infrastructure.Public;
