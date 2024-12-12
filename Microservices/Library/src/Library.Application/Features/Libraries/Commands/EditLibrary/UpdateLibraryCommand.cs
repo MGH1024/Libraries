@@ -1,9 +1,9 @@
 ﻿using Application.Features.Libraries.Constants;
+using Application.Features.Libraries.Profiles;
 using Domain;
 using MGH.Core.Domain.Buses.Commands;
 using Domain.Entities.Libraries.Constant;
 using Application.Features.Libraries.Rules;
-using Application.Features.Libraries.Extensions;
 using MGH.Core.Application.Pipelines.Authorization;
 
 namespace Application.Features.Libraries.Commands.EditLibrary;
@@ -15,7 +15,7 @@ public class UpdateLibraryCommand : ICommand<Guid>
     public string Name { get; set; }
     public string Code { get; set; }
     public string Location { get; set; }
-    public District District { get; set; }
+    public DistrictEnum DistrictEnum { get; set; }
     public DateTime RegistrationDate { get; set; }
 }
 
@@ -32,7 +32,7 @@ public class EditLibraryCommandHandler(
         if (request.Code != library.Code)
             await libraryBusinessRules.LibraryCodeMustBeUnique(request.Code);
 
-        library.EditLibrary(request.Name, request.Code, request.Location, request.District, request.RegistrationDate);
+        library.EditLibrary(request.Name, request.Code, request.Location, request.DistrictEnum, request.RegistrationDate);
         await uow.CompleteAsync(cancellationToken);
         return library.Id;
     }

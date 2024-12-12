@@ -1,7 +1,7 @@
-﻿using MGH.Core.Infrastructure.MessageBroker.RabbitMq.Abstracts;
-using MGH.Core.Infrastructure.MessageBroker.RabbitMq.Concrete;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MGH.Core.Infrastructure.MessageBroker.RabbitMq.Concrete;
+using MGH.Core.Infrastructure.MessageBroker.RabbitMq.Abstracts;
 
 namespace MGH.Core.Infrastructure.MessageBroker.RabbitMq;
 

@@ -1,6 +1,6 @@
 ﻿namespace Domain.Entities.Libraries.Constant;
 
-public enum District
+public enum DistrictEnum
 {
     One=1,
     Two=2,

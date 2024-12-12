@@ -1,8 +1,8 @@
 ﻿using Application.Features.Libraries.Constants;
+using Application.Features.Libraries.Profiles;
 using Domain;
 using MediatR;
 using MGH.Core.Domain.Buses.Commands;
-using Application.Features.Libraries.Extensions;
 using MGH.Core.Application.Pipelines.Authorization;
 
 namespace Application.Features.Libraries.Commands.RemoveLibraryStaff;

@@ -112,11 +112,12 @@ public class ElasticSearchService(ElasticClient elasticClient) : IElasticSearch
         return list;
     }
 
-    public async Task<IElasticSearchResult> InsertAsync(ElasticSearchInsertUpdateModel model)
+    public async Task<IElasticSearchResult> InsertAsync(ElasticSearchInsertUpdateModel model,CancellationToken cancellationToken)
     {
         var response = await elasticClient.IndexAsync(
             model.Item,
-            selector: i => i.Index(model.IndexName).Id(model.ElasticId).Refresh(Refresh.True)
+            selector: i => i.Index(model.IndexName).Id(model.ElasticId).Refresh(Refresh.True),
+            ct: cancellationToken
         );
 
         return new ElasticSearchResult(response.IsValid,

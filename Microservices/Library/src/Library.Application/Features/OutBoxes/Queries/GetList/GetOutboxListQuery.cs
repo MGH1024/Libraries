@@ -14,8 +14,7 @@ public class GetOutboxListQuery(PageRequest pageRequest) : IRequest<GetListRespo
     {
     }
 
-    public class GetOutboxListQueryHandler(IOutBoxRepository outBoxRepository)
-        : IRequestHandler<GetOutboxListQuery, GetListResponse<GetOutboxListDto>>
+    public class GetOutboxListQueryHandler(IOutBoxRepository outBoxRepository) : IRequestHandler<GetOutboxListQuery, GetListResponse<GetOutboxListDto>>
     {
         public async Task<GetListResponse<GetOutboxListDto>> Handle(GetOutboxListQuery request,
             CancellationToken cancellationToken)

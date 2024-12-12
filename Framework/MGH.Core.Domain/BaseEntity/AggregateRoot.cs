@@ -1,4 +1,5 @@
 ﻿using MGH.Core.Domain.BaseEntity.Abstract;
+using MGH.Core.Domain.BaseEntity.Abstract.Events;
 
 namespace MGH.Core.Domain.BaseEntity;
 

@@ -2,4 +2,4 @@
 
 namespace Domain.Entities.Libraries.Policies;
 
-public record LibraryPolicyData(District District);
+public record LibraryPolicyData(DistrictEnum DistrictEnum);

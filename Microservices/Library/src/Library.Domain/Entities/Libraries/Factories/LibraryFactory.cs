@@ -5,15 +5,15 @@ namespace Domain.Entities.Libraries.Factories;
 public class LibraryFactory(ILibraryPolicy policy) : ILibraryFactory
 {
     public Library Create(string name, string code, string location,
-        DateTime registrationDate, Constant.District district)
+        DateTime registrationDate, Constant.DistrictEnum districtEnum)
     {
-        var policyData = new LibraryPolicyData(district);
+        var policyData = new LibraryPolicyData(districtEnum);
         var newLibraryName = policy.GenerateName(policyData, name);
 
         var library = new Library(newLibraryName,
             code,
             location,
-            district,
+            districtEnum,
             registrationDate);
         return library;
     }

@@ -9,13 +9,7 @@ using MGH.Core.Infrastructure.Securities.Security.Entities;
 
 namespace Application.Features.Auth.Commands.RevokeToken;
 
-public class RevokeTokenCommandHandler(
-    IAuthService authService,
-    IAuthBusinessRules authBusinessRules,
-    IUow uow,
-    IDateTime time,
-    IMapper mapper)
-    : ICommandHandler<RevokeTokenCommand, RevokedTokenResponse>
+public class RevokeTokenCommandHandler(IAuthBusinessRules authBusinessRules, IUow uow, IMapper mapper) : ICommandHandler<RevokeTokenCommand, RevokedTokenResponse>
 {
     public async Task<RevokedTokenResponse> Handle(RevokeTokenCommand request, CancellationToken cancellationToken)
     {

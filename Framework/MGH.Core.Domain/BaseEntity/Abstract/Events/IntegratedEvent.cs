@@ -1,4 +1,4 @@
-﻿namespace MGH.Core.Domain.BaseEntity.Abstract;
+﻿namespace MGH.Core.Domain.BaseEntity.Abstract.Events;
 
 public abstract class IntegratedEvent : IEvent
 {

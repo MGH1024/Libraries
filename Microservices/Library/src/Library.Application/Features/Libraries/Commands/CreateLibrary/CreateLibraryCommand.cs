@@ -14,7 +14,7 @@ public class CreateLibraryCommand : ICommand<Guid>
     public string Name { get; set; }
     public string Code { get; set; }
     public string Location { get; set; }
-    public District District { get; set; }
+    public DistrictEnum DistrictEnum { get; set; }
     public DateTime RegistrationDate { get; set; }
 }
 
@@ -28,7 +28,7 @@ public class CreateLibraryCommandHandler(
         await libraryBusinessRules.LibraryCodeMustBeUnique(command.Code);
 
         var library = libraryFactory.Create(command.Name, command.Code, command.Location,
-            command.RegistrationDate, command.District);
+            command.RegistrationDate, command.DistrictEnum);
         await uow.Library.AddAsync(library, cancellationToken);
         await uow.CompleteAsync(cancellationToken);
 

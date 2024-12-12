@@ -1,19 +1,34 @@
-using Domain.Entities.Libraries.Events;
+using Domain;
 using MGH.Core.Domain.Buses.Commands;
-using MGH.Core.Infrastructure.ElasticSearch;
+using Domain.Entities.Libraries.Events;
+using Application.Features.Libraries.Rules;
+using Application.Features.Libraries.Profiles;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Base;
-using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Models;
 
 namespace Application.Features.Libraries.Commands.CreateLibraryEvent;
 
-public class LibraryCreatedDomainEventHandler(IElasticSearch elasticSearch) : ICommandHandler<LibraryCreatedDomainEvent>
+public class LibraryCreatedDomainEventHandler(IElasticSearch elasticSearch, ILibraryBusinessRules businessRules, IUow uow) : ICommandHandler<LibraryCreatedDomainEvent>
 {
     public async Task Handle(LibraryCreatedDomainEvent command, CancellationToken cancellationToken)
     {
-        await elasticSearch.InsertAsync(new ElasticSearchInsertUpdateModel(command)
+        await businessRules.LibraryCreatedDomainEventShouldBeExist(command);
+            
+        await uow.BeginTransactionAsync(cancellationToken);
+        try
         {
-            IndexName = "libraries",
-            ElasticId = command.Id
-        });
+            var outbox = command.ToOutBox();
+            await uow.OutBox.AddAsync(outbox, cancellationToken);
+
+            var elasticSearchInsertUpdateModel = command.ToElasticSearchInsertUpdateModel();
+            var elasticSearchResult = await elasticSearch.InsertAsync(elasticSearchInsertUpdateModel, cancellationToken);
+            await businessRules.LibraryCreatedEventShouldBeRaisedInElk(elasticSearchResult);
+            
+            await uow.CommitTransactionAsync(cancellationToken);
+        }
+        catch (Exception)
+        {
+            await uow.RollbackTransactionAsync(cancellationToken);
+            throw;
+        }
     }
 }

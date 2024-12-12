@@ -9,6 +9,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\..\..\Framework\MGH.Core.CrossCutting\MGH.Core.CrossCutting.csproj"/>
+        <ProjectReference Include="..\..\..\..\Framework\MGH.Core.Infrastructure.EventBus.RabbitMq\MGH.Core.Infrastructure.EventBus.RabbitMq.csproj" />
         <ProjectReference Include="..\..\..\..\Framework\MGH.Core.Infrastructure.Securities\MGH.Core.Infrastructure.Securities.csproj" />
         <ProjectReference Include="..\..\..\..\Framework\MGH.Core.Infrastructure.Persistence.EF\MGH.Core.Infrastructure.Persistence.EF.csproj" />
     </ItemGroup>

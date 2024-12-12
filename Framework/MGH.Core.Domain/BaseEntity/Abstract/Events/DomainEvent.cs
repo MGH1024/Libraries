@@ -1,6 +1,4 @@
-﻿using MGH.Core.Domain.BaseEntity.Abstract;
-
-namespace MGH.Core.Domain.BaseEntity;
+﻿namespace MGH.Core.Domain.BaseEntity.Abstract.Events;
 
 public class DomainEvent : IEvent
 {

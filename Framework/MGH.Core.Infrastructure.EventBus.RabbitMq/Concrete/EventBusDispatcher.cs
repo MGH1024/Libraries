@@ -1,10 +1,10 @@
 ﻿using System.Text;
+using RabbitMQ.Client;
 using System.Text.Json;
-using MGH.Core.Domain.BaseEntity.Abstract;
+using MGH.Core.Domain.BaseEntity.Abstract.Events;
+using MGH.Core.Infrastructure.MessageBroker.RabbitMq.Model;
 using MGH.Core.Infrastructure.MessageBroker.RabbitMq.Abstracts;
 using MGH.Core.Infrastructure.MessageBroker.RabbitMq.Attributes;
-using MGH.Core.Infrastructure.MessageBroker.RabbitMq.Model;
-using RabbitMQ.Client;
 
 namespace MGH.Core.Infrastructure.MessageBroker.RabbitMq.Concrete;
 
@@ -18,7 +18,7 @@ public class EventBusDispatcher: IEventBusDispatcher
         _rabbitMqConnection.ConnectService();
     }
     
-    public void Publish<T>(T model) where T : IntegratedEvent
+    public void Publish<T>(T model) where T : IEvent
     {
         _rabbitMqConnection.ConnectService();
 
@@ -36,7 +36,33 @@ public class EventBusDispatcher: IEventBusDispatcher
             body: messageByte
         );
     }
-    
+
+    public void Publish<T>(IEnumerable<T> models) where T : IEvent
+    {
+        if (models == null || !models.Any())
+            throw new ArgumentException("The collection of models cannot be null or empty.", nameof(models));
+        
+        _rabbitMqConnection.ConnectService();
+        var channel = _rabbitMqConnection.GetChannel();
+        
+        var baseMessage = GetBaseMessageFromAttribute(typeof(T));
+        PrepareToPublish(baseMessage);
+        
+        var basicProperties = channel.CreateBasicProperties();
+        foreach (var model in models)
+        {
+            var messageJson = JsonSerializer.Serialize(model);
+            var messageByte = Encoding.UTF8.GetBytes(messageJson);
+            
+            channel.BasicPublish(
+                exchange: baseMessage.ExchangeName,
+                routingKey: baseMessage.RoutingKey,
+                basicProperties: basicProperties,
+                body: messageByte
+            );
+        }
+    }
+
     private void PrepareToPublish(BaseMessage baseMessage)
     {
         _rabbitMqConnection.GetChannel().ExchangeDeclare(

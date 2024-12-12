@@ -6,7 +6,7 @@ namespace MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Base;
 public interface IElasticSearch
 {
     Task<IElasticSearchResult> CreateNewIndexAsync(IndexModel indexModel);
-    Task<IElasticSearchResult> InsertAsync(ElasticSearchInsertUpdateModel model);
+    Task<IElasticSearchResult> InsertAsync(ElasticSearchInsertUpdateModel model,CancellationToken cancellationToken);
     Task<IElasticSearchResult> InsertManyAsync(string indexName, object[] items);
     IReadOnlyDictionary<IndexName, IndexState> GetIndexList();
 

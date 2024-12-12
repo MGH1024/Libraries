@@ -1,9 +1,9 @@
 using Application.Features.Libraries.Constants;
+using Application.Features.Libraries.Profiles;
 using MediatR;
 using Domain.Entities.Libraries;
 using MGH.Core.Application.Requests;
 using MGH.Core.Application.Responses;
-using Application.Features.Libraries.Extensions;
 using MGH.Core.Application.Pipelines.Authorization;
 
 namespace Application.Features.Libraries.Queries.GetList;
