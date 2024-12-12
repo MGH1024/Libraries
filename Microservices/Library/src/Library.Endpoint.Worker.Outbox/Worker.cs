@@ -1,15 +1,11 @@
 using MediatR;
 using System.Text.Json;
-using MGH.Core.Application.Responses;
 using MGH.Core.Infrastructure.MessageBroker;
 using Library.Endpoint.Worker.Outbox.Profiles;
 using MGH.Core.Domain.BaseEntity.Abstract.Events;
-using Application.Features.OutBoxes.Queries.GetList;
-using MGH.Core.Infrastructure.MessageBroker.RabbitMq.Attributes;
 
 namespace Library.Endpoint.Worker.Outbox;
 
-[BaseMessage("mgh-routingkey", "direct", "mgh-exchange", "mgh-queue")]
 public class Worker(IServiceProvider serviceProvider) : BackgroundService
 {
     protected override async Task ExecuteAsync(CancellationToken cancellationToken)
@@ -24,19 +20,19 @@ public class Worker(IServiceProvider serviceProvider) : BackgroundService
             var outBoxList = await sender.Send(request, cancellationToken);
             if (outBoxList.Count <= 0) continue;
 
-            var type = GetOutBoxType(outBoxList);
-            if (type == null)
-                throw new Exception("type is null");
-
-            var items = outBoxList.Items.Select(x => x.Content).ToList();
-            var deserializedContent = items.Select(content => JsonSerializer.Deserialize(content, type)).ToList();
-            if (!deserializedContent.Any())
-                throw new ApplicationException($"No content found for type {type}");
-
-            var events = deserializedContent.Cast<IEvent>().ToList();
-            eventBus.Publish(events);
-
-
+            var groupedOutboxItems = outBoxList.Items.GroupBy(item => item.Type).ToList();
+            foreach (var group in groupedOutboxItems)
+            {
+                var type = GetOutBoxType(group.Key);
+                if (type == null)
+                    throw new Exception("type is null");
+                var items = group.Select(x => x.Content).ToList();
+                var deserializedContent = items.Select(content => JsonSerializer.Deserialize(content, type)).ToList();
+                if (!deserializedContent.Any())
+                    throw new ApplicationException($"No content found for type {type}");
+                var events = deserializedContent.Cast<IEvent>().ToList();
+                eventBus.Publish(events);
+            }
             var updateProcessAtCommand = outBoxList.ToUpdateProcessAtCommand();
             await sender.Send(updateProcessAtCommand, cancellationToken);
         }
@@ -44,11 +40,11 @@ public class Worker(IServiceProvider serviceProvider) : BackgroundService
         await Task.Delay(1000, cancellationToken);
     }
 
-    private static Type? GetOutBoxType(GetListResponse<GetOutboxListDto> outBoxList)
+    private static Type? GetOutBoxType(string itemType)
     {
         return AppDomain.CurrentDomain
             .GetAssemblies()
-            .Select(assembly => assembly.GetType(outBoxList.Items.First().Type))
+            .Select(assembly => assembly.GetType(itemType))
             .FirstOrDefault(t => t != null);
     }
 }
