@@ -1,3 +1,3 @@
-﻿namespace Domain.Entities.Books.Exceptions;
+﻿namespace Library.Domain.Entities.Books.Exceptions;
 
 public class BookPublicationDateException() : BookException("book publication date is invalid");

@@ -1,3 +1,3 @@
-namespace Domain.Entities.Books.Policies;
+namespace Library.Domain.Entities.Books.Policies;
 
 public record BookPolicyData();

@@ -1,9 +1,9 @@
-﻿using MGH.Core.Infrastructure.Securities.Security.Entities;
+﻿using Library.Infrastructure.Configurations.Base;
+using MGH.Core.Infrastructure.Securities.Security.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Persistence.Configurations.Base;
 
-namespace Persistence.Configurations.Security;
+namespace Library.Infrastructure.Configurations.Security;
 
 public class UserOperationClaimConfiguration : IEntityTypeConfiguration<UserOperationClaim>
 {

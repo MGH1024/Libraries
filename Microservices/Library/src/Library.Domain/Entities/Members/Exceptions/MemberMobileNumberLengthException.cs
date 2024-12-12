@@ -1,4 +1,4 @@
-﻿namespace Domain.Entities.Members.Exceptions;
+﻿namespace Library.Domain.Entities.Members.Exceptions;
 
 public class MemberMobileNumberLengthException :MemberException
 {

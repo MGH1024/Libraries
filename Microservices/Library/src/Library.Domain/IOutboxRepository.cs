@@ -1,7 +1,7 @@
 ﻿using MGH.Core.Domain.Entity.Outboxes;
 using MGH.Core.Infrastructure.Persistence.Base;
 
-namespace Domain;
+namespace Library.Domain;
 
 public interface IOutBoxRepository : IRepository<OutboxMessage, Guid>
 {

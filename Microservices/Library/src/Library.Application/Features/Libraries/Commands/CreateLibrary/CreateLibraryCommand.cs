@@ -1,9 +1,9 @@
 ﻿using Application.Features.Libraries.Constants;
-using Domain;
 using MGH.Core.Domain.Buses.Commands;
-using Domain.Entities.Libraries.Constant;
-using Domain.Entities.Libraries.Factories;
 using Application.Features.Libraries.Rules;
+using Library.Domain;
+using Library.Domain.Entities.Libraries.Constant;
+using Library.Domain.Entities.Libraries.Factories;
 using MGH.Core.Application.Pipelines.Authorization;
 
 namespace Application.Features.Libraries.Commands.CreateLibrary;

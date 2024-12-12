@@ -1,14 +1,15 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using Application.Features.Libraries.Commands.AddLibraryStaff;
+﻿using Application.Features.Libraries.Commands.AddLibraryStaff;
 using Application.Features.Libraries.Commands.CreateLibrary;
 using Application.Features.Libraries.Commands.EditLibrary;
 using Application.Features.Libraries.Commands.RemoveLibrary;
 using Application.Features.Libraries.Commands.RemoveLibraryStaff;
 using Application.Features.Libraries.Queries.GetList;
+using MediatR;
 using MGH.Core.Application.Requests;
 using MGH.Core.Application.Responses;
-namespace Api.Controllers;
+using Microsoft.AspNetCore.Mvc;
+
+namespace Library.Endpoint.Api.Controllers;
 
 [ApiController]
 [Route("{culture:CultureRouteConstraint}/api/[Controller]")]

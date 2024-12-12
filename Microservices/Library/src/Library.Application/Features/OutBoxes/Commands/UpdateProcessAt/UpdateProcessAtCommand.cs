@@ -1,4 +1,4 @@
-﻿using Domain;
+﻿using Library.Domain;
 using MGH.Core.Domain.Buses.Commands;
 
 namespace Application.Features.OutBoxes.Commands.UpdateProcessAt;

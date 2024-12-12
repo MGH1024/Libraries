@@ -1,6 +1,6 @@
-﻿using Domain.Entities.Libraries.Policies;
+﻿using Library.Domain.Entities.Libraries.Policies;
 
-namespace Domain.Entities.Libraries.Factories;
+namespace Library.Domain.Entities.Libraries.Factories;
 
 public class LibraryFactory(ILibraryPolicy policy) : ILibraryFactory
 {

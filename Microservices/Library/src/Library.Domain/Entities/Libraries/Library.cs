@@ -1,10 +1,10 @@
-﻿using MGH.Core.Domain.BaseEntity;
-using Domain.Entities.Libraries.Events;
-using Domain.Entities.Libraries.Constant;
-using Domain.Entities.Libraries.Exceptions;
-using Domain.Entities.Libraries.ValueObjects;
+﻿using Library.Domain.Entities.Libraries.Constant;
+using Library.Domain.Entities.Libraries.Events;
+using Library.Domain.Entities.Libraries.Exceptions;
+using Library.Domain.Entities.Libraries.ValueObjects;
+using MGH.Core.Domain.BaseEntity;
 
-namespace Domain.Entities.Libraries;
+namespace Library.Domain.Entities.Libraries;
 
 public class Library : AggregateRoot<Guid>
 {

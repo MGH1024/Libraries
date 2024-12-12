@@ -1,4 +1,4 @@
-﻿namespace Domain.Entities.Libraries.Constant;
+﻿namespace Library.Domain.Entities.Libraries.Constant;
 
 public static class QueueItemProperty
 {

@@ -1,9 +1,7 @@
-﻿using Domain.Entities.Libraries;
-using MGH.Core.Domain;
-using MGH.Core.Infrastructure.Persistence;
+﻿using Library.Domain.Entities.Libraries;
 using MGH.Core.Infrastructure.Persistence.Base;
 
-namespace Domain;
+namespace Library.Domain;
 
 public interface IUow : IUnitOfWork
 {

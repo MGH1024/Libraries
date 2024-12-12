@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
-using Microsoft.AspNetCore.Mvc;
 using System.Text.Json.Serialization;
 using Asp.Versioning;
+using Library.Infrastructure;
 using MGH.Core.CrossCutting.Exceptions;
 using MGH.Core.CrossCutting.Localizations.ModelBinders;
 using MGH.Core.CrossCutting.Logging;
@@ -11,11 +11,11 @@ using MGH.Core.Infrastructure.HealthCheck;
 using MGH.Core.Infrastructure.Securities.Security.Encryption;
 using MGH.Core.Infrastructure.Securities.Security.JWT;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.IdentityModel.Tokens;
-using Persistence;
 
-namespace Api;
+namespace Library.Endpoint.Api;
 
 public static class ApiServiceRegistration
 {

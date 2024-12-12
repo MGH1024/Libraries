@@ -1,8 +1,8 @@
 ﻿using System.Text.RegularExpressions;
-using Domain.Entities.Members.Exceptions;
+using Library.Domain.Entities.Members.Exceptions;
 using MGH.Core.Domain.BaseEntity;
 
-namespace Domain.Entities.Members.ValueObjects;
+namespace Library.Domain.Entities.Members.ValueObjects;
 
 public class MobileNumber : ValueObject
 {

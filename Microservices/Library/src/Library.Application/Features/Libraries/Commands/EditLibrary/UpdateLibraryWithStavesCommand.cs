@@ -1,9 +1,9 @@
 ﻿using Application.Features.Libraries.Constants;
 using Application.Features.Libraries.Profiles;
-using Domain;
 using MGH.Core.Domain.Buses.Commands;
-using Domain.Entities.Libraries.Constant;
 using Application.Features.Libraries.Rules;
+using Library.Domain;
+using Library.Domain.Entities.Libraries.Constant;
 using MGH.Core.Application.Pipelines.Authorization;
 
 namespace Application.Features.Libraries.Commands.EditLibrary;

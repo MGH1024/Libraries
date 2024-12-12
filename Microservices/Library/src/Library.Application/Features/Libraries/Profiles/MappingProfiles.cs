@@ -1,7 +1,5 @@
-﻿using Domain.Entities.Libraries;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using MGH.Core.Application.Responses;
-using Domain.Entities.Libraries.ValueObjects;
 using Application.Features.Libraries.Queries.GetList;
 using MGH.Core.Infrastructure.Persistence.Models.Paging;
 using MGH.Core.Infrastructure.Persistence.Models.Filters;
@@ -9,7 +7,8 @@ using Application.Features.Libraries.Commands.EditLibrary;
 using Application.Features.Libraries.Commands.RemoveLibrary;
 using Application.Features.Libraries.Commands.AddLibraryStaff;
 using Application.Features.Libraries.Commands.RemoveLibraryStaff;
-using Domain.Entities.Libraries.Events;
+using Library.Domain.Entities.Libraries.Events;
+using Library.Domain.Entities.Libraries.ValueObjects;
 using MGH.Core.Domain.Entity.Outboxes;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Models;
 using MGH.Core.Infrastructure.Persistence.Models.Filters.GetModels;
@@ -18,7 +17,7 @@ namespace Application.Features.Libraries.Profiles;
 
 public static class MappingProfiles
 {
-    public static GetListResponse<GetLibraryListDto> ToGetLibraryListDto(this IPaginate<Library> libraries)
+    public static GetListResponse<GetLibraryListDto> ToGetLibraryListDto(this IPaginate<Library.Domain.Entities.Libraries.Library> libraries)
     {
         return new GetListResponse<GetLibraryListDto>
         {
@@ -47,17 +46,17 @@ public static class MappingProfiles
         return new Staff(staffDto.Name, staffDto.Position, staffDto.NationalCode);
     }
 
-    public static GetModel<Library> ToGetBaseLibraryModel(this string code)
+    public static GetModel<Library.Domain.Entities.Libraries.Library> ToGetBaseLibraryModel(this string code)
     {
-        return new GetModel<Library>
+        return new GetModel<Library.Domain.Entities.Libraries.Library>
         {
             Predicate = a => a.Code == code
         };
     }
 
-    public static GetModel<Library> ToGetBaseLibraryModel(this DeleteLibraryStaffCommand command, CancellationToken cancellationToken)
+    public static GetModel<Library.Domain.Entities.Libraries.Library> ToGetBaseLibraryModel(this DeleteLibraryStaffCommand command, CancellationToken cancellationToken)
     {
-        return new GetModel<Library>
+        return new GetModel<Library.Domain.Entities.Libraries.Library>
         {
             Predicate = a => a.Id == command.LibraryId,
             Include = a => a.Include(b => b.LibraryStaves),
@@ -65,35 +64,35 @@ public static class MappingProfiles
         };
     }
 
-    public static GetModel<Library> ToGetBaseLibraryModel(this UpdateLibraryCommand request, CancellationToken cancellationToken)
+    public static GetModel<Library.Domain.Entities.Libraries.Library> ToGetBaseLibraryModel(this UpdateLibraryCommand request, CancellationToken cancellationToken)
     {
-        return new GetModel<Library>()
+        return new GetModel<Library.Domain.Entities.Libraries.Library>()
         {
             Predicate = a => a.Id == request.LibraryId,
             CancellationToken = cancellationToken
         };
     }
 
-    public static GetModel<Library> ToGetBaseLibraryModel(this UpdateLibraryWithStavesCommand request, CancellationToken cancellationToken)
+    public static GetModel<Library.Domain.Entities.Libraries.Library> ToGetBaseLibraryModel(this UpdateLibraryWithStavesCommand request, CancellationToken cancellationToken)
     {
-        return new GetModel<Library>
+        return new GetModel<Library.Domain.Entities.Libraries.Library>
         {
             Predicate = a => a.Id == request.LibraryId, CancellationToken = cancellationToken
         };
     }
 
-    public static GetModel<Library> ToGetBaseLibraryModel(this DeleteLibraryCommand request, CancellationToken cancellationToken)
+    public static GetModel<Library.Domain.Entities.Libraries.Library> ToGetBaseLibraryModel(this DeleteLibraryCommand request, CancellationToken cancellationToken)
     {
-        return new GetModel<Library>
+        return new GetModel<Library.Domain.Entities.Libraries.Library>
         {
             Predicate = a => a.Id == request.LibraryId,
             CancellationToken = cancellationToken
         };
     }
 
-    public static GetModel<Library> ToGetBaseLibraryModel(this CreateLibraryStaffCommand request, CancellationToken cancellationToken)
+    public static GetModel<Library.Domain.Entities.Libraries.Library> ToGetBaseLibraryModel(this CreateLibraryStaffCommand request, CancellationToken cancellationToken)
     {
-        return new GetModel<Library>()
+        return new GetModel<Library.Domain.Entities.Libraries.Library>()
         {
             Predicate = a => a.Id == request.LibraryId,
             Include = a => a.Include(b => b.LibraryStaves),
@@ -101,12 +100,12 @@ public static class MappingProfiles
         };
     }
 
-    public static GetDynamicListModelAsync<Library> ToGetDynamicListAsyncModel(this GetLibraryListQuery request, CancellationToken cancellationToken)
+    public static GetDynamicListModelAsync<Library.Domain.Entities.Libraries.Library> ToGetDynamicListAsyncModel(this GetLibraryListQuery request, CancellationToken cancellationToken)
     {
         var dyn = new DynamicQuery();
         dyn.Filter = new Filter("Name", "contains", "par", "and", null);
         dyn.Sort = null;
-        return new GetDynamicListModelAsync<Library>()
+        return new GetDynamicListModelAsync<Library.Domain.Entities.Libraries.Library>()
         {
             Dynamic = dyn,
             CancellationToken = cancellationToken

@@ -1,6 +1,6 @@
-using Api;
 using Application;
-using Persistence;
+using Library.Endpoint.Api;
+using Library.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 

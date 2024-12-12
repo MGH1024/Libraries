@@ -1,4 +1,4 @@
-﻿namespace Persistence.Configurations.Base;
+﻿namespace Library.Infrastructure.Configurations.Base;
 
 public static class DatabaseSchema
 {

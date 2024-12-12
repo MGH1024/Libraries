@@ -1,10 +1,8 @@
 ﻿using MGH.Core.Infrastructure.Persistence.Base;
-
-namespace Persistence.Repositories;
-
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
+namespace Library.Infrastructure.Repositories;
 
 public class TransactionManager<TContext> : ITransactionManager<TContext>
     where TContext : DbContext

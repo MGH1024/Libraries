@@ -1,11 +1,10 @@
-﻿using Domain;
-using Persistence.Contexts;
-using Domain.Entities.Libraries;
+﻿using Library.Domain;
+using Library.Infrastructure.Contexts;
 using MGH.Core.Domain.Entity.Outboxes;
-using MGH.Core.Infrastructure.Public;
 using MGH.Core.Infrastructure.Persistence.EF.Base.Repository;
+using MGH.Core.Infrastructure.Public;
 
-namespace Persistence.Repositories;
+namespace Library.Infrastructure.Repositories;
 
 public class OutBoxRepository(LibraryDbContext libraryDbContext, IDateTime dateTime)
     : Repository<OutboxMessage, Guid>(libraryDbContext), IOutBoxRepository

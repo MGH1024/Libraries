@@ -1,9 +1,9 @@
-using MGH.Core.Domain.Buses.Commands;
-using Domain.Entities.Libraries.Constant;
+using Library.Domain.Entities.Libraries.Constant;
 using MGH.Core.Domain.BaseEntity.Abstract.Events;
+using MGH.Core.Domain.Buses.Commands;
 using MGH.Core.Infrastructure.MessageBroker.RabbitMq.Attributes;
 
-namespace Domain.Entities.Libraries.Events;
+namespace Library.Domain.Entities.Libraries.Events;
 
 [BaseMessage(
     QueueItemProperty.CommonRoutingKey,

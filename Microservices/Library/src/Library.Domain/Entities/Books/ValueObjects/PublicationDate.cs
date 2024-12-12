@@ -1,7 +1,7 @@
-﻿using Domain.Entities.Books.Exceptions;
+﻿using Library.Domain.Entities.Books.Exceptions;
 using MGH.Core.Domain.BaseEntity;
 
-namespace Domain.Entities.Books.ValueObjects;
+namespace Library.Domain.Entities.Books.ValueObjects;
 
 public class PublicationDate : ValueObject
 {

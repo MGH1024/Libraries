@@ -1,7 +1,6 @@
-﻿using Domain.Entities.Libraries.Constant;
-using Domain.Entities.Libraries.ValueObjects;
+﻿using Library.Domain.Entities.Libraries.Constant;
 
-namespace Domain.Entities.Libraries.Factories;
+namespace Library.Domain.Entities.Libraries.Factories;
 
 public interface ILibraryFactory
 {

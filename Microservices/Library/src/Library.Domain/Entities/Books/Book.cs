@@ -1,8 +1,8 @@
-﻿using Domain.Entities.Books.Exceptions;
-using Domain.Entities.Books.ValueObjects;
+﻿using Library.Domain.Entities.Books.Exceptions;
+using Library.Domain.Entities.Books.ValueObjects;
 using MGH.Core.Domain.BaseEntity;
 
-namespace Domain.Entities.Books;
+namespace Library.Domain.Entities.Books;
 
 public class Book : AggregateRoot<Guid>
 {

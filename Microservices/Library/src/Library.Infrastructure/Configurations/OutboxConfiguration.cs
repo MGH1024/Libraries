@@ -1,14 +1,9 @@
-﻿using Domain.Entities.Libraries;
-using Domain.Entities.Libraries.Constant;
-using Domain.Entities.Libraries.ValueObjects;
+﻿using Library.Infrastructure.Configurations.Base;
 using MGH.Core.Domain.Entity.Outboxes;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Nest;
-using Persistence.Configurations.Base;
 
-namespace Persistence.Configurations;
+namespace Library.Infrastructure.Configurations;
 
 public class OutboxConfiguration : IEntityTypeConfiguration<OutboxMessage>
 {

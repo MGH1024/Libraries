@@ -1,7 +1,7 @@
-﻿using Domain.Entities.Members.ValueObjects;
+﻿using Library.Domain.Entities.Members.ValueObjects;
 using MGH.Core.Domain.BaseEntity;
 
-namespace Domain.Entities.Members;
+namespace Library.Domain.Entities.Members;
 
 public class Member :AggregateRoot<Guid>
 {

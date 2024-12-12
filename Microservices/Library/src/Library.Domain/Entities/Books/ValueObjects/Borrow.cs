@@ -1,6 +1,6 @@
 ﻿using MGH.Core.Domain.BaseEntity;
 
-namespace Domain.Entities.Books.ValueObjects;
+namespace Library.Domain.Entities.Books.ValueObjects;
 
 public class Borrow : ValueObject
 {

@@ -1,8 +1,7 @@
-﻿using Domain.Entities.Libraries;
-using MGH.Core.Domain.Entity.Outboxes;
+﻿using MGH.Core.Domain.Entity.Outboxes;
 using Microsoft.EntityFrameworkCore;
 
-namespace Persistence.Contexts;
+namespace Library.Infrastructure.Contexts;
 
 public class LibraryDbContext(DbContextOptions<LibraryDbContext> options) : DbContext(options)
 {
@@ -18,6 +17,6 @@ public class LibraryDbContext(DbContextOptions<LibraryDbContext> options) : DbCo
         base.ConfigureConventions(configurationBuilder);
     }
 
-    private DbSet<Library> Libraries { get; set; }
+    private DbSet<Domain.Entities.Libraries.Library> Libraries { get; set; }
     private DbSet<OutboxMessage> OutboxMessages { get; set; }
 }

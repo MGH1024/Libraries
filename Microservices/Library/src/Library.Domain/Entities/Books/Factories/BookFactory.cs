@@ -1,6 +1,6 @@
-﻿using Domain.Entities.Books.ValueObjects;
+﻿using Library.Domain.Entities.Books.ValueObjects;
 
-namespace Domain.Entities.Books.Factories;
+namespace Library.Domain.Entities.Books.Factories;
 
 public class BookFactory : IBookFactory
 {

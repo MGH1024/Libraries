@@ -1,7 +1,7 @@
 using Application;
-using Persistence;
 using MGH.Core.CrossCutting.Logging;
 using Library.Endpoint.Worker.Outbox;
+using Library.Infrastructure;
 
 var builder = Host.CreateApplicationBuilder(args);
 

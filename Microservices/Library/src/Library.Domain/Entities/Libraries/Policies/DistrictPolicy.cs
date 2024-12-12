@@ -1,6 +1,6 @@
-﻿using Domain.Entities.Libraries.Constant;
+﻿using Library.Domain.Entities.Libraries.Constant;
 
-namespace Domain.Entities.Libraries.Policies;
+namespace Library.Domain.Entities.Libraries.Policies;
 
 public class DistrictPolicy : ILibraryPolicy
 {

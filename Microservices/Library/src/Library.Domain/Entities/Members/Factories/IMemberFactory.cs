@@ -1,6 +1,6 @@
-﻿using Domain.Entities.Members.ValueObjects;
+﻿using Library.Domain.Entities.Members.ValueObjects;
 
-namespace Domain.Entities.Members.Factories;
+namespace Library.Domain.Entities.Members.Factories;
 
 public interface IMemberFactory
 {

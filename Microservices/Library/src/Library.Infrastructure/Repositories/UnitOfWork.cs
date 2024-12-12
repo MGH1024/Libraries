@@ -1,9 +1,9 @@
-﻿using Domain;
-using Persistence.Contexts;
-using Domain.Entities.Libraries;
+﻿using Library.Domain;
+using Library.Domain.Entities.Libraries;
+using Library.Infrastructure.Contexts;
 using MGH.Core.Infrastructure.Persistence.Base;
 
-namespace Persistence.Repositories;
+namespace Library.Infrastructure.Repositories;
 
 public class UnitOfWork(
     LibraryDbContext context,

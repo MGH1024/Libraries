@@ -1,4 +1,4 @@
-﻿namespace Domain.Entities.Books.Policies;
+﻿namespace Library.Domain.Entities.Books.Policies;
 
 public interface IBookPolicy
 {

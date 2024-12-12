@@ -1,4 +1,4 @@
-﻿namespace Domain.Entities.Libraries.Policies;
+﻿namespace Library.Domain.Entities.Libraries.Policies;
 
 public interface ILibraryPolicy
 {

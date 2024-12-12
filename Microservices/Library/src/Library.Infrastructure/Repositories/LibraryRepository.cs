@@ -1,10 +1,10 @@
-﻿using Domain.Entities.Libraries;
+﻿using Library.Domain.Entities.Libraries;
+using Library.Infrastructure.Contexts;
 using MGH.Core.Infrastructure.Persistence.EF.Base.Repository;
-using Persistence.Contexts;
 
-namespace Persistence.Repositories;
+namespace Library.Infrastructure.Repositories;
 
-public class LibraryRepository(LibraryDbContext libraryDbContext) :AggregateRepository<Library,Guid>,ILibraryRepository
+public class LibraryRepository(LibraryDbContext libraryDbContext) :AggregateRepository<Domain.Entities.Libraries.Library,Guid>,ILibraryRepository
 {
     
 }

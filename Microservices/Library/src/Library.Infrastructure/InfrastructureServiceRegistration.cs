@@ -1,35 +1,35 @@
-﻿using Nest;
-using Domain;
+﻿using System.Globalization;
 using System.Reflection;
-using Persistence.Contexts;
-using System.Globalization;
-using Persistence.Repositories;
-using Domain.Entities.Libraries;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Routing;
-using Microsoft.EntityFrameworkCore;
-using MGH.Core.Infrastructure.Public;
-using Domain.Entities.Libraries.Factories;
-using Domain.Entities.Libraries.Policies;
+using Library.Domain;
+using Library.Domain.Entities.Libraries;
+using Library.Domain.Entities.Libraries.Factories;
+using Library.Domain.Entities.Libraries.Policies;
+using Library.Infrastructure.Contexts;
+using Library.Infrastructure.Repositories;
+using MGH.Core.CrossCutting.Localizations.RouteConstraints;
+using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch;
+using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Base;
+using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Models;
 using MGH.Core.Infrastructure.HealthCheck;
 using MGH.Core.Infrastructure.MessageBroker.RabbitMq;
 using MGH.Core.Infrastructure.Persistence.Base;
+using MGH.Core.Infrastructure.Persistence.EF.Interceptors;
+using MGH.Core.Infrastructure.Persistence.Models.Configuration;
+using MGH.Core.Infrastructure.Public;
 using MGH.Core.Infrastructure.Securities.Security;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch;
-using MGH.Core.Infrastructure.Persistence.EF.Interceptors;
-using MGH.Core.Infrastructure.Persistence.Models.Configuration;
-using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Base;
-using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Models;
-using MGH.Core.CrossCutting.Localizations.RouteConstraints;
+using Nest;
 using Prometheus;
 using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
-namespace Persistence;
+namespace Library.Infrastructure;
 
 public static class InfrastructureServiceRegistration
 {

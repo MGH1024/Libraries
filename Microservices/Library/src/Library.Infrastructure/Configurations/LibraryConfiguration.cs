@@ -1,13 +1,12 @@
-﻿using Domain.Entities.Libraries;
+﻿using Library.Infrastructure.Configurations.Base;
 using Microsoft.EntityFrameworkCore;
-using Persistence.Configurations.Base;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Persistence.Configurations;
+namespace Library.Infrastructure.Configurations;
 
-public class LibraryConfiguration : IEntityTypeConfiguration<Library>
+public class LibraryConfiguration : IEntityTypeConfiguration<Domain.Entities.Libraries.Library>
 {
-    public void Configure(EntityTypeBuilder<Library> builder)
+    public void Configure(EntityTypeBuilder<Domain.Entities.Libraries.Library> builder)
     {
         //table
         builder.ToTable(DatabaseTableName.Library, DatabaseSchema.LibrarySchema);
