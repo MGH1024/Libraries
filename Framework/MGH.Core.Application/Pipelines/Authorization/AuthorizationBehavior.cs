@@ -20,9 +20,8 @@ public class AuthorizationBehavior<TRequest, TResponse>(IHttpContextAccessor htt
         if (userRoleClaims == null)
             throw new AuthorizationException("You are not authenticated.");
 
-        var isNotMatchedAUserRoleClaimWithRequestRoles = 
-            string.IsNullOrEmpty(userRoleClaims.FirstOrDefault(urc => 
-                urc == GeneralOperationClaims.Admin || roles.Any(role => role == urc)));
+        var isNotMatchedAUserRoleClaimWithRequestRoles = string.IsNullOrEmpty(userRoleClaims.FirstOrDefault(urc =>
+            urc == GeneralOperationClaims.Admin || roles.Any(role => role == urc)));
         
         if (isNotMatchedAUserRoleClaimWithRequestRoles)
             throw new AuthorizationException("You are not authorized.");
