@@ -1,12 +1,12 @@
-﻿using Application.Features.Libraries.Constants;
-using MGH.Core.Domain.Buses.Commands;
-using Application.Features.Libraries.Rules;
+﻿using Library.Application.Features.Libraries.Constants;
+using Library.Application.Features.Libraries.Rules;
 using Library.Domain;
 using Library.Domain.Entities.Libraries.Constant;
 using Library.Domain.Entities.Libraries.Factories;
 using MGH.Core.Application.Pipelines.Authorization;
+using MGH.Core.Domain.Buses.Commands;
 
-namespace Application.Features.Libraries.Commands.CreateLibrary;
+namespace Library.Application.Features.Libraries.Commands.CreateLibrary;
 
 [Roles(LibraryOperationClaims.AddLibraries)]
 public class CreateLibraryCommand : ICommand<Guid>

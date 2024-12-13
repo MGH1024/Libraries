@@ -5,7 +5,7 @@ namespace Library.Domain.Entities.Libraries.ValueObjects;
 
 public class District : ValueObject
 {
-    private Constant.DistrictEnum Value { get; }
+    public Constant.DistrictEnum Value { get; }
     
     public District(Constant.DistrictEnum value)
     {

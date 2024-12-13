@@ -12,7 +12,7 @@ public class Library : AggregateRoot<Guid>
     public Code Code { get; private set; }
     public Location Location { get; private set; }
     public District District { get; private set; }
-    public DateTime RegistrationDate { get; private set; }
+    public RegistrationDate RegistrationDate { get; private set; }
 
     private readonly List<Staff> _staves = new();
     public IReadOnlyCollection<Staff> LibraryStaves => _staves;

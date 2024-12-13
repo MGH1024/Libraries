@@ -1,7 +1,7 @@
 ﻿using Library.Domain.Entities.Libraries.Events;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Models;
 
-namespace Application.Features.Libraries.Rules;
+namespace Library.Application.Features.Libraries.Rules;
 
 public interface ILibraryBusinessRules
 {

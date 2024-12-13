@@ -1,10 +1,10 @@
-using Application.Features.OutBoxes.Extensions;
+using Library.Application.Features.OutBoxes.Extensions;
 using Library.Domain;
 using MediatR;
 using MGH.Core.Application.Requests;
 using MGH.Core.Application.Responses;
 
-namespace Application.Features.OutBoxes.Queries.GetList;
+namespace Library.Application.Features.OutBoxes.Queries.GetList;
 
 public class GetOutboxListQuery(PageRequest pageRequest) : IRequest<GetListResponse<GetOutboxListDto>>
 {

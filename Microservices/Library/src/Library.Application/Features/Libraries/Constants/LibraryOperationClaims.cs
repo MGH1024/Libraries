@@ -1,4 +1,4 @@
-﻿namespace Application.Features.Libraries.Constants;
+﻿namespace Library.Application.Features.Libraries.Constants;
 
 public static class LibraryOperationClaims
 {

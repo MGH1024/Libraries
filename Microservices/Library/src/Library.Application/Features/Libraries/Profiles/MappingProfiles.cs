@@ -1,19 +1,19 @@
-﻿using Microsoft.EntityFrameworkCore;
-using MGH.Core.Application.Responses;
-using Application.Features.Libraries.Queries.GetList;
-using MGH.Core.Infrastructure.Persistence.Models.Paging;
-using MGH.Core.Infrastructure.Persistence.Models.Filters;
-using Application.Features.Libraries.Commands.EditLibrary;
-using Application.Features.Libraries.Commands.RemoveLibrary;
-using Application.Features.Libraries.Commands.AddLibraryStaff;
-using Application.Features.Libraries.Commands.RemoveLibraryStaff;
+﻿using Library.Application.Features.Libraries.Commands.AddLibraryStaff;
+using Library.Application.Features.Libraries.Commands.EditLibrary;
+using Library.Application.Features.Libraries.Commands.RemoveLibrary;
+using Library.Application.Features.Libraries.Commands.RemoveLibraryStaff;
+using Library.Application.Features.Libraries.Queries.GetList;
 using Library.Domain.Entities.Libraries.Events;
 using Library.Domain.Entities.Libraries.ValueObjects;
+using MGH.Core.Application.Responses;
 using MGH.Core.Domain.Entity.Outboxes;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Models;
+using MGH.Core.Infrastructure.Persistence.Models.Filters;
 using MGH.Core.Infrastructure.Persistence.Models.Filters.GetModels;
+using MGH.Core.Infrastructure.Persistence.Models.Paging;
+using Microsoft.EntityFrameworkCore;
 
-namespace Application.Features.Libraries.Profiles;
+namespace Library.Application.Features.Libraries.Profiles;
 
 public static class MappingProfiles
 {

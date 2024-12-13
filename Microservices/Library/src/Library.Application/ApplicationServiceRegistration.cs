@@ -1,27 +1,30 @@
 ﻿using System.Reflection;
-using Application.Features.Libraries.Rules;
 using FluentValidation;
+using Library.Application.Features.Libraries.Rules;
 using MGH.Core.Application.Pipelines.Authorization;
 using MGH.Core.Application.Pipelines.Caching;
 using MGH.Core.Application.Pipelines.Logging;
 using MGH.Core.Application.Pipelines.Transaction;
 using MGH.Core.Application.Pipelines.Validation;
 using MGH.Core.Application.Rules;
+using MGH.Core.Infrastructure.Cache.Redis;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Base;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Application;
+namespace Library.Application;
 
 public static class ApplicationServiceRegistration
 {
-    public static IServiceCollection AddApplicationServices(this IServiceCollection services)
+    public static IServiceCollection AddApplicationServices(this IServiceCollection services,IConfiguration configuration)
     {
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
         services.AddMediatRAndBehaviors();
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         services.AddSubClassesOfType(Assembly.GetExecutingAssembly(), typeof(BaseBusinessRules));
         services.AddBusinessRule();
+        services.AddRedis(configuration);
         services.AddServices();
         return services;
     }
@@ -33,7 +36,7 @@ public static class ApplicationServiceRegistration
 
     private static void AddBusinessRule(this IServiceCollection services)
     {
-        services.AddSingleton<ILibraryBusinessRules, LibraryBusinessRules>();
+        services.AddTransient<ILibraryBusinessRules, LibraryBusinessRules>();
     }
 
     private static void AddMediatRAndBehaviors(this IServiceCollection services)

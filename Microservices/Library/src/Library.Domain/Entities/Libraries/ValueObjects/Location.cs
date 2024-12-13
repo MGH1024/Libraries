@@ -5,7 +5,7 @@ namespace Library.Domain.Entities.Libraries.ValueObjects;
 
 public class Location : ValueObject
 {
-    private string Value { get; }
+    public string Value { get; }
     
     public Location(string value)
     {

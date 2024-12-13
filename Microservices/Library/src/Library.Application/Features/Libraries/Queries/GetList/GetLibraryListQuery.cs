@@ -1,12 +1,12 @@
-using Application.Features.Libraries.Constants;
-using Application.Features.Libraries.Profiles;
+using Library.Application.Features.Libraries.Constants;
+using Library.Application.Features.Libraries.Profiles;
 using Library.Domain.Entities.Libraries;
 using MediatR;
+using MGH.Core.Application.Pipelines.Authorization;
 using MGH.Core.Application.Requests;
 using MGH.Core.Application.Responses;
-using MGH.Core.Application.Pipelines.Authorization;
 
-namespace Application.Features.Libraries.Queries.GetList;
+namespace Library.Application.Features.Libraries.Queries.GetList;
 
 [Roles(LibraryOperationClaims.GetLibraries)]
 public class GetLibraryListQuery(PageRequest pageRequest) : IRequest<GetListResponse<GetLibraryListDto>>

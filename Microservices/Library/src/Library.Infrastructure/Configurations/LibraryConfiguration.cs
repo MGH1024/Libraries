@@ -1,6 +1,9 @@
-﻿using Library.Infrastructure.Configurations.Base;
+﻿using Library.Domain.Entities.Libraries.Constant;
+using Library.Domain.Entities.Libraries.ValueObjects;
+using Library.Infrastructure.Configurations.Base;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Library.Infrastructure.Configurations;
 
@@ -8,31 +11,24 @@ public class LibraryConfiguration : IEntityTypeConfiguration<Domain.Entities.Lib
 {
     public void Configure(EntityTypeBuilder<Domain.Entities.Libraries.Library> builder)
     {
-        //table
         builder.ToTable(DatabaseTableName.Library, DatabaseSchema.LibrarySchema);
-
-
-        //fix fields section
+        
         builder.Property(t => t.Id).IsRequired();
-        builder.Property(a => a.Name)
-            .HasMaxLength(128).IsRequired();
+        
+        var nameConvertor = new ValueConverter<Name, string>(a => a.Value, a => new Name(a));
+        builder.Property(a => a.Name).HasConversion(nameConvertor).HasMaxLength(128).IsRequired();
 
-        builder.Property(a => a.Code)
-            .HasMaxLength(3)
-            .IsRequired()
-            .IsUnicode();
+        var codeConvertor = new ValueConverter<Code, string>(a => a.Value, a => new Code(a));
+        builder.Property(a => a.Code).HasMaxLength(3).IsRequired().HasConversion(codeConvertor).IsUnicode();
+        
+        var locationConvertor = new ValueConverter<Location, string>(a => a.Value, a => new Location(a));
+        builder.Property(a => a.Location).HasMaxLength(256).HasConversion(locationConvertor).IsRequired();
+        
+        var districtConvertor = new ValueConverter<District, int>(a => (int)a.Value, a => new District((DistrictEnum)a));
+        builder.Property(a => a.District).HasConversion(districtConvertor).IsRequired();
 
-        builder.Property(a => a.Location)
-            .HasMaxLength(256)
-            .IsRequired();
-
-        builder
-            .Property(a => a.District)
-            .IsRequired();
-
-        builder
-            .Property(a => a.RegistrationDate)
-            .IsRequired();
+        var registrationDateConvertor = new ValueConverter<RegistrationDate, DateTime>(a =>a.Value, a => new RegistrationDate(a));
+        builder.Property(a => a.RegistrationDate).HasConversion(registrationDateConvertor).IsRequired();
 
         builder.OwnsMany(
             cu => cu.LibraryStaves,
@@ -46,40 +42,6 @@ public class LibraryConfiguration : IEntityTypeConfiguration<Domain.Entities.Lib
                 a.Property(x => x.Position).IsRequired().HasMaxLength(64);
                 a.Property(x => x.NationalCode).IsRequired().HasMaxLength(30);
             });
-
-
-        // //public
-        // builder.Ignore(a => a.Row);
-        // builder.Ignore(a => a.PageSize);
-        // builder.Ignore(a => a.TotalCount);
-        // builder.Ignore(a => a.CurrentPage);
-        //
-        // builder.Ignore(a => a.ListItemText);
-        // builder.Ignore(a => a.ListItemTextForAdmins);
-
-        builder.Property(t => t.CreatedBy)
-            .IsRequired()
-            .HasMaxLength(maxLength: 64);
-
-        builder.Property(t => t.CreatedAt)
-            .IsRequired();
-
-        builder.Property(t => t.UpdatedBy)
-            .HasMaxLength(maxLength: 64);
-
-        builder.Property(t => t.UpdatedAt)
-            .IsRequired(false);
-
-        builder.Property(t => t.DeletedBy)
-            .HasMaxLength(maxLength: 64);
-
-        builder.Property(t => t.DeletedAt)
-            .IsRequired(false);
-
-        builder.Property(a => a.CreatedBy)
-            .HasDefaultValue("user");
-
-        builder.Property(a => a.CreatedAt)
-            .HasDefaultValueSql("GetDate()");
+        
     }
 }

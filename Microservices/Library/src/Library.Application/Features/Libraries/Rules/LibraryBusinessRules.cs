@@ -1,11 +1,11 @@
-﻿using Application.Features.Libraries.Profiles;
+﻿using Library.Application.Features.Libraries.Profiles;
 using Library.Domain.Entities.Libraries;
 using Library.Domain.Entities.Libraries.Events;
 using MGH.Core.Application.Rules;
 using MGH.Core.CrossCutting.Exceptions.Types;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Models;
 
-namespace Application.Features.Libraries.Rules;
+namespace Library.Application.Features.Libraries.Rules;
 
 public  class LibraryBusinessRules(ILibraryRepository libraryRepository) : BaseBusinessRules, ILibraryBusinessRules
 {

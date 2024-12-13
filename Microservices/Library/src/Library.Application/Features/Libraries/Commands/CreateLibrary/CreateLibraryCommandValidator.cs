@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Application.Features.Libraries.Commands.CreateLibrary;
+namespace Library.Application.Features.Libraries.Commands.CreateLibrary;
 
 public class CreateLibraryCommandValidator :AbstractValidator<CreateLibraryCommand>
 {

@@ -12,7 +12,7 @@ public class UserOperationClaimConfiguration : IEntityTypeConfiguration<UserOper
         builder.ToTable(DatabaseTableName.UserOperationClaims, DatabaseSchema.SecuritySchema)
             .HasKey(ea => ea.Id);
         
-        builder.Property(uoc => uoc.Id).HasColumnName("Id").IsRequired();
+        builder.Property(uoc => uoc.Id).IsRequired();
         builder.Property(uoc => uoc.UserId).IsRequired();
         builder.Property(uoc => uoc.OperationClaimId).IsRequired();
         

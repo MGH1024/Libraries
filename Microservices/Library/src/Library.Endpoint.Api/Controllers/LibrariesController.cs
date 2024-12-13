@@ -1,9 +1,9 @@
-﻿using Application.Features.Libraries.Commands.AddLibraryStaff;
-using Application.Features.Libraries.Commands.CreateLibrary;
-using Application.Features.Libraries.Commands.EditLibrary;
-using Application.Features.Libraries.Commands.RemoveLibrary;
-using Application.Features.Libraries.Commands.RemoveLibraryStaff;
-using Application.Features.Libraries.Queries.GetList;
+﻿using Library.Application.Features.Libraries.Commands.AddLibraryStaff;
+using Library.Application.Features.Libraries.Commands.CreateLibrary;
+using Library.Application.Features.Libraries.Commands.EditLibrary;
+using Library.Application.Features.Libraries.Commands.RemoveLibrary;
+using Library.Application.Features.Libraries.Commands.RemoveLibraryStaff;
+using Library.Application.Features.Libraries.Queries.GetList;
 using MediatR;
 using MGH.Core.Application.Requests;
 using MGH.Core.Application.Responses;

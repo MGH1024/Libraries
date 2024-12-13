@@ -1,13 +1,13 @@
-﻿using Api.Profiles;
-using MediatR;
+﻿using MediatR;
 using AutoMapper;
 using Quartz.Util;
+using Api.Profiles;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Application.Features.Auth.Commands.UserLogin;
 using Application.Features.Auth.Commands.RefreshToken;
 using Application.Features.Auth.Commands.RegisterUser;
-using Application.Features.Auth.Commands.UserLogin;
 
 namespace Api.Controllers.V1;
 
@@ -26,8 +26,7 @@ public class AuthController(ISender sender, IMapper mapper) : AppController(send
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserLoginCommandResponse))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> Login([FromBody] UserLoginCommandDto userLoginCommandDto, CancellationToken
-        cancellationToken)
+    public async Task<IActionResult> Login([FromBody] UserLoginCommandDto userLoginCommandDto, CancellationToken cancellationToken)
     {
         var command = mapper.Map<UserLoginCommand>(userLoginCommandDto);
 

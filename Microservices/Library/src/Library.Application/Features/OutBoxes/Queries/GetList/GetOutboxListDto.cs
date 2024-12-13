@@ -1,4 +1,4 @@
-namespace Application.Features.OutBoxes.Queries.GetList;
+namespace Library.Application.Features.OutBoxes.Queries.GetList;
 
 public class GetOutboxListDto
 {

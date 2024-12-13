@@ -1,7 +1,7 @@
 ﻿using Library.Domain;
 using MGH.Core.Domain.Buses.Commands;
 
-namespace Application.Features.OutBoxes.Commands.UpdateProcessAt;
+namespace Library.Application.Features.OutBoxes.Commands.UpdateProcessAt;
 
 public class UpdateProcessAtCommand : ICommand
 {

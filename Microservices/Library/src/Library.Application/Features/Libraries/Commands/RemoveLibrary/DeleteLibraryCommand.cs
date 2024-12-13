@@ -1,13 +1,12 @@
-﻿using Application.Features.Libraries.Constants;
-using Application.Features.Libraries.Profiles;
-using MediatR;
-using MGH.Core.Domain.Buses.Commands;
-using Application.Features.Libraries.Rules;
+﻿using Library.Application.Features.Libraries.Constants;
+using Library.Application.Features.Libraries.Profiles;
+using Library.Application.Features.Libraries.Rules;
 using Library.Domain;
+using MediatR;
 using MGH.Core.Application.Pipelines.Authorization;
+using MGH.Core.Domain.Buses.Commands;
 
-
-namespace Application.Features.Libraries.Commands.RemoveLibrary;
+namespace Library.Application.Features.Libraries.Commands.RemoveLibrary;
 
 [Roles(LibraryOperationClaims.DeleteLibraries)]
 public class DeleteLibraryCommand : ICommand<Unit>

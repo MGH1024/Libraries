@@ -5,7 +5,7 @@ namespace Library.Domain.Entities.Libraries.ValueObjects;
 
 public class Code : ValueObject
 {
-    private string Value { get; }
+    public string Value { get; }
     
     public Code(string value)
     {

@@ -5,7 +5,7 @@ namespace Library.Domain.Entities.Libraries.ValueObjects;
 
 public class RegistrationDate : ValueObject
 {
-    private DateTime Value { get; }
+    public DateTime Value { get; }
     
     public RegistrationDate(DateTime value)
     {

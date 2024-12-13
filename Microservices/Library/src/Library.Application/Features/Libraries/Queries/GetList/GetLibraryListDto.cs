@@ -1,4 +1,4 @@
-namespace Application.Features.Libraries.Queries.GetList;
+namespace Library.Application.Features.Libraries.Queries.GetList;
 
 public class GetLibraryListDto(Guid id, string title,DateTime createdDate)
 {

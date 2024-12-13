@@ -1,11 +1,11 @@
-using MGH.Core.Domain.Buses.Commands;
-using Application.Features.Libraries.Rules;
-using Application.Features.Libraries.Profiles;
+using Library.Application.Features.Libraries.Profiles;
+using Library.Application.Features.Libraries.Rules;
 using Library.Domain;
 using Library.Domain.Entities.Libraries.Events;
+using MGH.Core.Domain.Buses.Commands;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Base;
 
-namespace Application.Features.Libraries.Commands.CreateLibraryEvent;
+namespace Library.Application.Features.Libraries.Commands.CreateLibraryEvent;
 
 public class LibraryCreatedDomainEventHandler(IElasticSearch elasticSearch, ILibraryBusinessRules businessRules, IUow uow) : ICommandHandler<LibraryCreatedDomainEvent>
 {

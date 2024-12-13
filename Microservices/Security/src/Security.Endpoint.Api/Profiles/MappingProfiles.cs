@@ -12,20 +12,19 @@ public class MappingProfiles : Profile
     public MappingProfiles()
     {
         CreateMap<UserLoginCommandDto, UserLoginCommand>()
-            .ForCtorParam("LoginCommandDto", opt =>
+            .ForCtorParam("UserLoginCommandDto", opt => 
                 opt.MapFrom(src => src));
 
         CreateMap<PageRequest, GetListUserQuery>()
             .ForCtorParam("PageRequest", opt =>
                 opt.MapFrom(src => src));
 
-
         CreateMap<string, RefreshTokenCommand>()
             .ForMember(d => d.RefreshToken, opt
                 => opt.MapFrom(src => src));
-        
+
         CreateMap<RegisterUserCommandDto, RegisterUserCommand>()
-            .ForCtorParam("RegisterUserCommandDto",opt
-                =>opt.MapFrom(src => src));
+            .ForCtorParam("RegisterUserCommandDto", opt
+                => opt.MapFrom(src => src));
     }
 }

@@ -1,5 +1,5 @@
-﻿using Application.Features.OutBoxes.Commands.UpdateProcessAt;
-using Application.Features.OutBoxes.Queries.GetList;
+﻿using Library.Application.Features.OutBoxes.Commands.UpdateProcessAt;
+using Library.Application.Features.OutBoxes.Queries.GetList;
 using MGH.Core.Application.Requests;
 using MGH.Core.Application.Responses;
 
