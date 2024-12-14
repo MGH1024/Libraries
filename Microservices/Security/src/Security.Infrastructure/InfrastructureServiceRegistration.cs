@@ -29,12 +29,11 @@ namespace Security.Infrastructure;
 
 public static class InfrastructureServiceRegistration
 {
-    public static IServiceCollection AddInfrastructuresServices(this IServiceCollection services,
-        IConfiguration configuration)
+    public static IServiceCollection AddInfrastructuresServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.RegisterInterceptors();
         services.AddDbContextSqlServer(configuration);
-        services.AddDbContext<SecurityDbContext>(options => options.UseInMemoryDatabase("LibraryDbContext-InMemory"));
+        services.AddDbContext<SecurityDbContext>(options => options.UseInMemoryDatabase("SecurityDbContext-InMemory"));
         services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         services.AddRepositories();
         services.AddSecurityServices();
