@@ -19,8 +19,7 @@ namespace Api;
 
 public static class ApiServiceRegistration
 {
-    public static void AddApiService(this IServiceCollection services, IConfiguration configuration,
-        IHostBuilder hostBuilder)
+    public static void AddApiService(this IServiceCollection services, IConfiguration configuration, IHostBuilder hostBuilder)
     {
         AddLogger(configuration, hostBuilder);
         services.AddOptions(configuration);
@@ -55,8 +54,7 @@ public static class ApiServiceRegistration
 
     private static void AddOptions(this IServiceCollection services, IConfiguration configuration)
     {
-        services.Configure<TokenOptions>(option =>
-            configuration.GetSection(nameof(TokenOptions)).Bind(option));
+        services.Configure<TokenOptions>(option => configuration.GetSection(nameof(TokenOptions)).Bind(option));
     }
 
     private static void AddVersioning(this IServiceCollection services)

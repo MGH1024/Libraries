@@ -24,8 +24,7 @@ namespace Application;
 
 public static class ApplicationServiceRegistration
 {
-    public static IServiceCollection AddApplicationServices(this IServiceCollection services,IConfiguration 
-        configuration)
+    public static void AddApplicationServices(this IServiceCollection services,IConfiguration configuration)
     {
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
         services.AddMediatRAndBehaviors();
@@ -34,7 +33,6 @@ public static class ApplicationServiceRegistration
         services.AddServices();
         services.AddBusinessRules();
         services.AddRedis(configuration);
-        return services;
     }
 
     private static void AddBusinessRules(this IServiceCollection services)

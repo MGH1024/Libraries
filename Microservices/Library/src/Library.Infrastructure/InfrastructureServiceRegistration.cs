@@ -33,8 +33,7 @@ namespace Library.Infrastructure;
 
 public static class InfrastructureServiceRegistration
 {
-    public static IServiceCollection AddInfrastructuresServices(this IServiceCollection services,
-        IConfiguration configuration)
+    public static void AddInfrastructuresServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.RegisterInterceptors();
         services.AddDbContextSqlServer(configuration);
@@ -50,7 +49,6 @@ public static class InfrastructureServiceRegistration
         services.AddFactories();
         services.AddPrometheus();
         services.AddInfrastructureHealthChecks<LibraryDbContext>(configuration);
-        return services;
     }
 
     private static void AddFactories(this IServiceCollection services)
@@ -74,7 +72,7 @@ public static class InfrastructureServiceRegistration
 
     private static void AddRepositories(this IServiceCollection services)
     {
-        services.AddScoped<IUow, UnitOfWork>(); 
+        services.AddScoped<IUow, UnitOfWork>();
         services.AddScoped<ILibraryRepository, LibraryRepository>();
         services.AddScoped<IOutBoxRepository, OutBoxRepository>();
         services.AddScoped(typeof(ITransactionManager<>), typeof(TransactionManager<>));
@@ -164,11 +162,10 @@ public static class InfrastructureServiceRegistration
                     .AddInterceptors()
                     .LogTo(Console.Write, LogLevel.Information));
     }
-    
+
     public static void AddPrometheus(this WebApplication app)
     {
         app.UseMetricServer();
         app.UseHttpMetrics();
     }
-    
 }

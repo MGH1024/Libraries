@@ -29,7 +29,7 @@ namespace Security.Infrastructure;
 
 public static class InfrastructureServiceRegistration
 {
-    public static IServiceCollection AddInfrastructuresServices(this IServiceCollection services, IConfiguration configuration)
+    public static void AddInfrastructuresServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.RegisterInterceptors();
         services.AddDbContextSqlServer(configuration);
@@ -44,7 +44,6 @@ public static class InfrastructureServiceRegistration
         services.AddRabbitMqEventBus(configuration);
         services.AddPrometheus();
         services.AddInfrastructureHealthChecks<SecurityDbContext>(configuration);
-        return services;
     }
 
     private static void RegisterInterceptors(this IServiceCollection services)
