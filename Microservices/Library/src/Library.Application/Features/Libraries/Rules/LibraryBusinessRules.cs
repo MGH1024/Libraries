@@ -1,6 +1,6 @@
 ﻿using Library.Application.Features.Libraries.Profiles;
-using Library.Domain.Entities.Libraries;
-using Library.Domain.Entities.Libraries.Events;
+using Library.Domain.Libraries;
+using Library.Domain.Libraries.Events;
 using MGH.Core.Application.Rules;
 using MGH.Core.CrossCutting.Exceptions.Types;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Models;
@@ -16,7 +16,7 @@ public  class LibraryBusinessRules(ILibraryRepository libraryRepository) : BaseB
             throw new BusinessException("library code must be unique");
     }
 
-    public Task LibraryShouldBeExistsWhenSelected(Library.Domain.Entities.Libraries.Library library)
+    public Task LibraryShouldBeExistsWhenSelected(Domain.Libraries.Library library)
     {
         if (library is null)
             throw new BusinessException("library not found");

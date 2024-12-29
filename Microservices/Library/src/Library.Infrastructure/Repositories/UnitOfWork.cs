@@ -1,5 +1,7 @@
 ﻿using Library.Domain;
-using Library.Domain.Entities.Libraries;
+using Library.Domain.Lendings;
+using Library.Domain.Libraries;
+using Library.Domain.Outboxes;
 using Library.Infrastructure.Contexts;
 using MGH.Core.Infrastructure.Persistence.Base;
 
@@ -7,13 +9,16 @@ namespace Library.Infrastructure.Repositories;
 
 public class UnitOfWork(
     LibraryDbContext context,
-    ITransactionManager<LibraryDbContext> transactionManager,
+    IOutBoxRepository outBoxRepository,
     ILibraryRepository libraryRepository,
-    IOutBoxRepository outBoxRepository)
+    ILendingRepository iLendingRepository,
+    ITransactionManager<LibraryDbContext> transactionManager)
     : IUow, IDisposable
 {
     public ILibraryRepository Library => libraryRepository;
     public IOutBoxRepository OutBox => outBoxRepository;
+
+    public ILendingRepository Lending => iLendingRepository;
 
     public Task<int> CompleteAsync(CancellationToken cancellationToken)
     {

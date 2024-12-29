@@ -23,7 +23,7 @@ public class RemoveLibraryCommandHandler(IUow uow,
         var library = await uow.Library.GetAsync(request.ToGetBaseLibraryModel(cancellationToken));
         await libraryBusinessRules.LibraryShouldBeExistsWhenSelected(library);
 
-        await Library.Domain.Entities.Libraries.Library.RemoveLibrary(library);
+        await Domain.Libraries.Library.RemoveLibrary(library);
         await uow.Library.DeleteAsync(library, true);
         await uow.CompleteAsync(cancellationToken);
         return Unit.Value;

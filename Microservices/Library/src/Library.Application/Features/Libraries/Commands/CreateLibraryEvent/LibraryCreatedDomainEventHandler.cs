@@ -1,7 +1,7 @@
 using Library.Application.Features.Libraries.Profiles;
 using Library.Application.Features.Libraries.Rules;
 using Library.Domain;
-using Library.Domain.Entities.Libraries.Events;
+using Library.Domain.Libraries.Events;
 using MGH.Core.Domain.Buses.Commands;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Base;
 

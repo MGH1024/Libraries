@@ -1,9 +1,10 @@
 ﻿using System.Globalization;
 using System.Reflection;
 using Library.Domain;
-using Library.Domain.Entities.Libraries;
-using Library.Domain.Entities.Libraries.Factories;
-using Library.Domain.Entities.Libraries.Policies;
+using Library.Domain.Libraries;
+using Library.Domain.Libraries.Factories;
+using Library.Domain.Libraries.Policies;
+using Library.Domain.Outboxes;
 using Library.Infrastructure.Contexts;
 using Library.Infrastructure.Repositories;
 using MGH.Core.CrossCutting.Localizations.RouteConstraints;

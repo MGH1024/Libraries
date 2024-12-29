@@ -2,7 +2,7 @@
 using Library.Application.Features.Libraries.Profiles;
 using Library.Application.Features.Libraries.Rules;
 using Library.Domain;
-using Library.Domain.Entities.Libraries.ValueObjects;
+using Library.Domain.Libraries.ValueObjects;
 using MediatR;
 using MGH.Core.Application.Pipelines.Authorization;
 using MGH.Core.Domain.Buses.Commands;

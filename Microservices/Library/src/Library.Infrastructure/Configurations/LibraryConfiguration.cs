@@ -1,5 +1,5 @@
-﻿using Library.Domain.Entities.Libraries.Constant;
-using Library.Domain.Entities.Libraries.ValueObjects;
+﻿using Library.Domain.Libraries.Constant;
+using Library.Domain.Libraries.ValueObjects;
 using Library.Infrastructure.Configurations.Base;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -7,9 +7,9 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Library.Infrastructure.Configurations;
 
-public class LibraryConfiguration : IEntityTypeConfiguration<Domain.Entities.Libraries.Library>
+public class LibraryConfiguration : IEntityTypeConfiguration<Domain.Libraries.Library>
 {
-    public void Configure(EntityTypeBuilder<Domain.Entities.Libraries.Library> builder)
+    public void Configure(EntityTypeBuilder<Domain.Libraries.Library> builder)
     {
         builder.ToTable(DatabaseTableName.Library, DatabaseSchema.LibrarySchema);
         

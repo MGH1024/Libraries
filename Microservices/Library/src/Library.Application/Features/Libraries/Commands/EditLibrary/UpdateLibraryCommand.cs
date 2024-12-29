@@ -2,7 +2,7 @@
 using Library.Application.Features.Libraries.Profiles;
 using Library.Application.Features.Libraries.Rules;
 using Library.Domain;
-using Library.Domain.Entities.Libraries.Constant;
+using Library.Domain.Libraries.Constant;
 using MGH.Core.Application.Pipelines.Authorization;
 using MGH.Core.Domain.Buses.Commands;
 

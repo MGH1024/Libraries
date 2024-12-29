@@ -1,6 +1,6 @@
 using Library.Application.Features.Libraries.Constants;
 using Library.Application.Features.Libraries.Profiles;
-using Library.Domain.Entities.Libraries;
+using Library.Domain.Libraries;
 using MediatR;
 using MGH.Core.Application.Pipelines.Authorization;
 using MGH.Core.Application.Requests;

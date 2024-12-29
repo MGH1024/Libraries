@@ -1,5 +1,6 @@
 using Library.Application.Features.OutBoxes.Extensions;
 using Library.Domain;
+using Library.Domain.Outboxes;
 using MediatR;
 using MGH.Core.Application.Requests;
 using MGH.Core.Application.Responses;

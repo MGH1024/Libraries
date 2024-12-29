@@ -1,4 +1,5 @@
 ﻿using Library.Domain;
+using Library.Domain.Outboxes;
 using Library.Infrastructure.Contexts;
 using MGH.Core.Domain.Entity.Outboxes;
 using MGH.Core.Infrastructure.Persistence.EF.Base.Repository;

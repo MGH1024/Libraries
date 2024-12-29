@@ -1,8 +1,8 @@
 ﻿using Library.Application.Features.Libraries.Constants;
 using Library.Application.Features.Libraries.Rules;
 using Library.Domain;
-using Library.Domain.Entities.Libraries.Constant;
-using Library.Domain.Entities.Libraries.Factories;
+using Library.Domain.Libraries.Constant;
+using Library.Domain.Libraries.Factories;
 using MGH.Core.Application.Pipelines.Authorization;
 using MGH.Core.Domain.Buses.Commands;
 

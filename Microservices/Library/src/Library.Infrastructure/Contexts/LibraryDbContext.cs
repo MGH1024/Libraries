@@ -17,6 +17,6 @@ public class LibraryDbContext(DbContextOptions<LibraryDbContext> options) : DbCo
         base.ConfigureConventions(configurationBuilder);
     }
 
-    private DbSet<Domain.Entities.Libraries.Library> Libraries { get; set; }
+    private DbSet<Domain.Libraries.Library> Libraries { get; set; }
     private DbSet<OutboxMessage> OutboxMessages { get; set; }
 }
