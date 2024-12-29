@@ -2,7 +2,7 @@
 
 namespace Library.Domain.Lendings;
 
-public interface ILendingRepository :IAggregateRepository<Lending, Guid>
+public interface ILendingRepository :IRepository<Lending, Guid>
 {
     
 }

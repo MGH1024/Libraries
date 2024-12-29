@@ -1,6 +1,6 @@
-﻿using Library.Domain.Lendings.Events;
+﻿using MGH.Core.Domain.BaseEntity;
+using Library.Domain.Lendings.Events;
 using Library.Domain.Lendings.ValueObjects;
-using MGH.Core.Domain.BaseEntity;
 
 namespace Library.Domain.Lendings;
 
@@ -10,7 +10,7 @@ public class Lending : AggregateRoot<Guid>
     public Guid LibraryId { get; private set; }
     public Guid MemberId { get; private set; }
     public LendingDate LendingDate { get;private set;  }
-    private protected ReturnDate ReturnDate { get; private set; }
+    public ReturnDate ReturnDate { get; private set; }
 
     private Lending()
     {

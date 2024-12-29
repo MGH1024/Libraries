@@ -1,4 +1,5 @@
-﻿using Library.Domain.Members.Exceptions;
+﻿using System.Text.Json;
+using Library.Domain.Members.Exceptions;
 using MGH.Core.Domain.BaseEntity;
 
 namespace Library.Domain.Members.ValueObjects;
@@ -20,6 +21,18 @@ public class Address : ValueObject
     
     protected override IEnumerable<object> GetEqualityComponents()
     {
-        yield return new object[] { State, City, Street, PostalCode };
+        yield return Street;
+        yield return City;
+        yield return State;
+        yield return PostalCode;
+    }
+
+    // Serialization helper to convert Address to JSON string
+    public string Value => JsonSerializer.Serialize(this);
+
+    // Factory method for creating Address from JSON string
+    public static Address FromValue(string json)
+    {
+        return JsonSerializer.Deserialize<Address>(json) ?? throw new MemberAddressException("Invalid address JSON.");
     }
 }

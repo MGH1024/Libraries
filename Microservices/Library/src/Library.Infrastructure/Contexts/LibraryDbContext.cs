@@ -1,4 +1,5 @@
-﻿using MGH.Core.Domain.Entity.Outboxes;
+﻿using Library.Domain.Lendings;
+using MGH.Core.Domain.Entity.Outboxes;
 using Microsoft.EntityFrameworkCore;
 
 namespace Library.Infrastructure.Contexts;
@@ -18,5 +19,6 @@ public class LibraryDbContext(DbContextOptions<LibraryDbContext> options) : DbCo
     }
 
     private DbSet<Domain.Libraries.Library> Libraries { get; set; }
+    private DbSet<Lending> Lendings { get; set; }
     private DbSet<OutboxMessage> OutboxMessages { get; set; }
 }

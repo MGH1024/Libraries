@@ -2,7 +2,7 @@
 
 namespace Library.Domain.Libraries;
 
-public interface ILibraryRepository : IAggregateRepository<Library, Guid>
+public interface ILibraryRepository : IRepository<Library, Guid>
 {
     
 }

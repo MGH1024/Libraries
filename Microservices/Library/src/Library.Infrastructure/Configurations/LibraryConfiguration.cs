@@ -1,7 +1,7 @@
-﻿using Library.Domain.Libraries.Constant;
+﻿using Microsoft.EntityFrameworkCore;
+using Library.Domain.Libraries.Constant;
 using Library.Domain.Libraries.ValueObjects;
 using Library.Infrastructure.Configurations.Base;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
@@ -42,6 +42,5 @@ public class LibraryConfiguration : IEntityTypeConfiguration<Domain.Libraries.Li
                 a.Property(x => x.Position).IsRequired().HasMaxLength(64);
                 a.Property(x => x.NationalCode).IsRequired().HasMaxLength(30);
             });
-        
     }
 }

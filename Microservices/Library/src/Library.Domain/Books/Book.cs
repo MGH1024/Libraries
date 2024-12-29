@@ -15,8 +15,7 @@ public class Book : AggregateRoot<Guid>
     private readonly List<Author> _bookAuthors = new();
     public IReadOnlyCollection<Author> BookAuthors => _bookAuthors;
 
-    public Book(Isbn isbn, Title title, PublicationDate publicationDate,
-        UniqueCode uniqueCode, IsReference isReference)
+    public Book(Isbn isbn, Title title, PublicationDate publicationDate, UniqueCode uniqueCode, IsReference isReference)
     {
         Id = Guid.NewGuid();
         Isbn = isbn;
@@ -35,32 +34,32 @@ public class Book : AggregateRoot<Guid>
         PublicationDate = publicationDate;
         UniqueCode = uniqueCode;
         IsReference = isReference;
-        _bookAuthors.RemoveAll(a=>!string.IsNullOrEmpty(a.Name));
+        _bookAuthors.RemoveAll(a=>!string.IsNullOrEmpty(a.FullName));
         bookAuthors.ForEach(AddBookAuthor);
     }
     
     public void AddBookAuthor(Author author)
     {
-        if (BookAuthorExist(author.Name))
+        if (BookAuthorExist(author.FullName))
             throw new BookAuthorAlreadyExistException();
         _bookAuthors.Add(author);
     }
 
     public void RemoveBookAuthor(Author author)
     {
-        if (!BookAuthorExist(author.Name))
+        if (!BookAuthorExist(author.FullName))
             throw new BookAuthorNotFoundException();
         _bookAuthors.Remove(author);
     }
     
 
     bool BookAuthorExist(string name)
-        => _bookAuthors.Exists(a => a.Name == name);
+        => _bookAuthors.Exists(a => a.FullName == name);
     
 
     Author GetAuthorByName(string name)
     {
-        return _bookAuthors.Find(a => a.Name == name);
+        return _bookAuthors.Find(a => a.FullName == name);
     }
     
 }

@@ -1,9 +1,12 @@
 ﻿using System.Globalization;
 using System.Reflection;
 using Library.Domain;
+using Library.Domain.Books;
+using Library.Domain.Lendings;
 using Library.Domain.Libraries;
 using Library.Domain.Libraries.Factories;
 using Library.Domain.Libraries.Policies;
+using Library.Domain.Members;
 using Library.Domain.Outboxes;
 using Library.Infrastructure.Contexts;
 using Library.Infrastructure.Repositories;
@@ -75,6 +78,9 @@ public static class InfrastructureServiceRegistration
     {
         services.AddScoped<IUow, UnitOfWork>();
         services.AddScoped<ILibraryRepository, LibraryRepository>();
+        services.AddScoped<ILendingRepository, LendingRepository>();
+        services.AddScoped<IBookRepository, BookRepository>();
+        services.AddScoped<IMemberRepository, MemberRepository>();
         services.AddScoped<IOutBoxRepository, OutBoxRepository>();
         services.AddScoped(typeof(ITransactionManager<>), typeof(TransactionManager<>));
     }
