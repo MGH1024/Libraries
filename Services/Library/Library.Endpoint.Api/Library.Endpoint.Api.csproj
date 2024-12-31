@@ -23,7 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\..\..\Framework\MGH.Core.Endpoint.Swagger\MGH.Core.Endpoint.Swagger.csproj" />
+        <ProjectReference Include="..\..\..\Framework\MGH.Core.Endpoint.Swagger\MGH.Core.Endpoint.Swagger.csproj" />
         <ProjectReference Include="..\Library.Infrastructure\Library.Infrastructure.csproj" />
     </ItemGroup>
 </Project>

@@ -29,12 +29,12 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\..\..\Framework\MGH.Core.Infrastructure.ElasticSearch\MGH.Core.Infrastructure.ElasticSearch.csproj" />
-        <ProjectReference Include="..\..\..\..\Framework\MGH.Core.Infrastructure.HealthCheck\MGH.Core.Infrastructure.HealthCheck.csproj" />
-        <ProjectReference Include="..\..\..\..\Framework\MGH.Core.Infrastructure\MGH.Core.Infrastructure.csproj" />
+        <ProjectReference Include="..\..\..\Framework\MGH.Core.Infrastructure.ElasticSearch\MGH.Core.Infrastructure.ElasticSearch.csproj" />
+        <ProjectReference Include="..\..\..\Framework\MGH.Core.Infrastructure.HealthCheck\MGH.Core.Infrastructure.HealthCheck.csproj" />
+        <ProjectReference Include="..\..\..\Framework\MGH.Core.Infrastructure\MGH.Core.Infrastructure.csproj" />
         <ProjectReference Include="..\Security.Domain\Security.Domain.csproj" />
-        <ProjectReference Include="..\..\..\..\Framework\MGH.Core.Infrastructure.EventBus.RabbitMq\MGH.Core.Infrastructure.EventBus.RabbitMq.csproj" />
-        <ProjectReference Include="..\..\..\..\Framework\MGH.Core.Infrastructure.Securities\MGH.Core.Infrastructure.Securities.csproj" />
+        <ProjectReference Include="..\..\..\Framework\MGH.Core.Infrastructure.EventBus.RabbitMq\MGH.Core.Infrastructure.EventBus.RabbitMq.csproj" />
+        <ProjectReference Include="..\..\..\Framework\MGH.Core.Infrastructure.Securities\MGH.Core.Infrastructure.Securities.csproj" />
     </ItemGroup>
 
 

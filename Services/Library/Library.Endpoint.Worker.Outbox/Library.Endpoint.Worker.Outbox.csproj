@@ -12,7 +12,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\..\..\Framework\MGH.Core.Infrastructure.EventBus\MGH.Core.Infrastructure.EventBus.csproj" />
+        <ProjectReference Include="..\..\..\Framework\MGH.Core.Infrastructure.EventBus\MGH.Core.Infrastructure.EventBus.csproj" />
         <ProjectReference Include="..\Library.Application\Library.Application.csproj"/>
         <ProjectReference Include="..\Library.Infrastructure\Library.Infrastructure.csproj" />
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.4"/>
