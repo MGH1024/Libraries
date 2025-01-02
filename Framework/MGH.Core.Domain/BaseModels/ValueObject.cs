@@ -1,4 +1,4 @@
-namespace MGH.Core.Domain.BaseEntity;
+namespace MGH.Core.Domain.BaseModels;
 
 public abstract class ValueObject
 {

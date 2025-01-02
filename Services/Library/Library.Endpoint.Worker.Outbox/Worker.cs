@@ -2,7 +2,7 @@ using MediatR;
 using System.Text.Json;
 using MGH.Core.Infrastructure.MessageBroker;
 using Library.Endpoint.Worker.Outbox.Profiles;
-using MGH.Core.Domain.BaseEntity.Abstract.Events;
+using MGH.Core.Domain.Events;
 
 namespace Library.Endpoint.Worker.Outbox;
 

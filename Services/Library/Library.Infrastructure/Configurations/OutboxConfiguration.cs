@@ -1,5 +1,5 @@
 ﻿using Library.Infrastructure.Configurations.Base;
-using MGH.Core.Domain.Entity.Outboxes;
+using MGH.Core.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

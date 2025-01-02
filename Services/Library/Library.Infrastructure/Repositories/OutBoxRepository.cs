@@ -1,7 +1,7 @@
 ﻿using Library.Domain;
 using Library.Domain.Outboxes;
 using Library.Infrastructure.Contexts;
-using MGH.Core.Domain.Entity.Outboxes;
+using MGH.Core.Domain.Entities;
 using MGH.Core.Infrastructure.Persistence.EF.Base.Repository;
 using MGH.Core.Infrastructure.Public;
 

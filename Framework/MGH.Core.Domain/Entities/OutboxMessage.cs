@@ -1,8 +1,8 @@
-using MGH.Core.Domain.BaseEntity;
+using MGH.Core.Domain.BaseModels;
 
-namespace MGH.Core.Domain.Entity.Outboxes;
+namespace MGH.Core.Domain.Entities;
 
-public class OutboxMessage : AuditAbleEntity<Guid>
+public class OutboxMessage : Entity<Guid>
 {
     public string Type { get; set; } = string.Empty;
     public string Content { get; set; } = String.Empty;

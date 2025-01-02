@@ -2,11 +2,11 @@
 using Library.Domain.Libraries.Events;
 using Library.Domain.Libraries.Exceptions;
 using Library.Domain.Libraries.ValueObjects;
-using MGH.Core.Domain.BaseEntity;
+using MGH.Core.Domain.BaseModels;
 
 namespace Library.Domain.Libraries;
 
-public class Library : AggregateRoot<Guid>
+public class Library : Aggregate<Guid>
 {
     public Name Name { get; private set; }
     public Code Code { get; private set; }
@@ -30,7 +30,7 @@ public class Library : AggregateRoot<Guid>
         District = district;
         RegistrationDate = registrationDate;
 
-        AddEvent(new LibraryCreatedDomainEvent(name, code, location, district, registrationDate));
+        AddDomainEvent(new LibraryCreatedDomainEvent(name, code, location, district, registrationDate));
     }
 
     public void EditLibrary(string name, string libraryCode, string libraryLocation, District libraryDistrict, DateTime libraryRegistrationDate)

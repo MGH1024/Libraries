@@ -1,7 +1,7 @@
 ﻿using Library.Domain.Lendings.ValueObjects;
 using Library.Domain.Libraries.Constant;
-using MGH.Core.Domain.BaseEntity.Abstract.Events;
 using MGH.Core.Domain.Buses.Commands;
+using MGH.Core.Domain.Events;
 using MGH.Core.Infrastructure.MessageBroker.RabbitMq.Attributes;
 
 namespace Library.Domain.Lendings.Events;

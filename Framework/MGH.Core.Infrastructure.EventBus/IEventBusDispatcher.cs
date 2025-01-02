@@ -1,4 +1,4 @@
-﻿using MGH.Core.Domain.BaseEntity.Abstract.Events;
+﻿using MGH.Core.Domain.Events;
 
 namespace MGH.Core.Infrastructure.MessageBroker;
 

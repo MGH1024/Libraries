@@ -1,5 +1,5 @@
 ﻿using Library.Domain.Libraries.Exceptions;
-using MGH.Core.Domain.BaseEntity;
+using MGH.Core.Domain.BaseModels;
 
 namespace Library.Domain.Libraries.ValueObjects;
 

@@ -1,4 +1,4 @@
-﻿using MGH.Core.Domain.Entity.Audits;
+﻿using MGH.Core.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Security.Infrastructure.Configurations.Base;

@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-using MGH.Core.Domain.BaseEntity.Abstract;
+using MGH.Core.Domain.BaseModels;
 using MGH.Core.Infrastructure.Persistence.Base;
 using MGH.Core.Infrastructure.Persistence.EF.Extensions;
 using MGH.Core.Infrastructure.Persistence.Models.Filters.GetModels;
@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace MGH.Core.Infrastructure.Persistence.EF.Base.Repository;
 
-public class Repository<TEntity, TKey> : IRepository<TEntity, TKey> where TEntity :class,IAuditAbleEntity
+public class Repository<TEntity, TKey> : IRepository<TEntity, TKey> where TEntity :class,IEntity
 {
     private readonly DbContext _dbContext;
 
@@ -39,7 +39,7 @@ public class Repository<TEntity, TKey> : IRepository<TEntity, TKey> where TEntit
 
     public async Task<TEntity> GetAsync(TKey id, CancellationToken cancellationToken)
     {
-        return await _dbContext.Set<TEntity>().FindAsync(id, cancellationToken);
+        return await _dbContext.Set<TEntity>().FindAsync(id,cancellationToken);
     }
 
     public async Task<IPaginate<TEntity>> GetListAsync(GetListModelAsync<TEntity> getListAsyncModel)
@@ -135,7 +135,7 @@ public class Repository<TEntity, TKey> : IRepository<TEntity, TKey> where TEntit
             );
     }
 
-    private async Task SetEntityAsSoftDeletedAsync(IAuditAbleEntity entity)
+    private async Task SetEntityAsSoftDeletedAsync(IEntity entity)
     {
         if (entity.DeletedAt.HasValue)
             return;
@@ -166,7 +166,7 @@ public class Repository<TEntity, TKey> : IRepository<TEntity, TKey> where TEntit
                         navigationPropertyType: navigation.PropertyInfo.GetType()).ToListAsync();
                 }
 
-                foreach (IAuditAbleEntity navValueItem in (IEnumerable)navValue)
+                foreach (IEntity navValueItem in (IEnumerable)navValue)
                     await SetEntityAsSoftDeletedAsync(navValueItem);
             }
             else
@@ -181,7 +181,7 @@ public class Repository<TEntity, TKey> : IRepository<TEntity, TKey> where TEntit
                         continue;
                 }
 
-                await SetEntityAsSoftDeletedAsync((IAuditAbleEntity)navValue);
+                await SetEntityAsSoftDeletedAsync((IEntity)navValue);
             }
         }
 
@@ -199,6 +199,6 @@ public class Repository<TEntity, TKey> : IRepository<TEntity, TKey> where TEntit
         var queryProviderQuery =
             (IQueryable<object>)createQueryMethod.Invoke(query.Provider,
                 parameters: [query.Expression])!;
-        return queryProviderQuery.Where(x => !((IAuditAbleEntity)x).DeletedAt.HasValue);
+        return queryProviderQuery.Where(x => !((IEntity)x).DeletedAt.HasValue);
     }
 }

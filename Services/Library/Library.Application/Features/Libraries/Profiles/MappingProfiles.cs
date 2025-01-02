@@ -6,7 +6,7 @@ using Library.Application.Features.Libraries.Queries.GetList;
 using Library.Domain.Libraries.Events;
 using Library.Domain.Libraries.ValueObjects;
 using MGH.Core.Application.Responses;
-using MGH.Core.Domain.Entity.Outboxes;
+using MGH.Core.Domain.Entities;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Models;
 using MGH.Core.Infrastructure.Persistence.Models.Filters;
 using MGH.Core.Infrastructure.Persistence.Models.Filters.GetModels;

@@ -1,5 +1,5 @@
 ﻿using Library.Domain.Lendings;
-using MGH.Core.Domain.Entity.Outboxes;
+using MGH.Core.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Library.Infrastructure.Contexts;

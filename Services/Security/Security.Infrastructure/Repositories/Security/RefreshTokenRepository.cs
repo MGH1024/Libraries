@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using Domain.Repositories;
+using MGH.Core.Domain.BaseModels;
 using Microsoft.EntityFrameworkCore;
 using Security.Infrastructure.Contexts;
-using MGH.Core.Domain.BaseEntity.Abstract;
 using Microsoft.EntityFrameworkCore.Metadata;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
 using MGH.Core.Infrastructure.Persistence.EF.Base.Repository;
@@ -79,7 +79,7 @@ public class RefreshTokenRepository(SecurityDbContext securityDbContext)
             );
     }
 
-    private async Task SetEntityAsSoftDeletedAsync(IAuditAbleEntity entity, CancellationToken cancellationToken)
+    private async Task SetEntityAsSoftDeletedAsync(IEntity entity, CancellationToken cancellationToken)
     {
         if (entity.DeletedAt.HasValue)
             return;
@@ -110,7 +110,7 @@ public class RefreshTokenRepository(SecurityDbContext securityDbContext)
                         navigationPropertyType: navigation.PropertyInfo.GetType()).ToListAsync(cancellationToken);
                 }
 
-                foreach (IAuditAbleEntity navValueItem in (IEnumerable)navValue)
+                foreach (IEntity navValueItem in (IEnumerable)navValue)
                     await SetEntityAsSoftDeletedAsync(navValueItem, cancellationToken);
             }
             else
@@ -125,7 +125,7 @@ public class RefreshTokenRepository(SecurityDbContext securityDbContext)
                         continue;
                 }
 
-                await SetEntityAsSoftDeletedAsync((IAuditAbleEntity)navValue, cancellationToken);
+                await SetEntityAsSoftDeletedAsync((IEntity)navValue, cancellationToken);
             }
         }
 
@@ -143,6 +143,6 @@ public class RefreshTokenRepository(SecurityDbContext securityDbContext)
         var queryProviderQuery =
             (IQueryable<object>)createQueryMethod.Invoke(query.Provider,
                 parameters: [query.Expression])!;
-        return queryProviderQuery.Where(x => !((IAuditAbleEntity)x).DeletedAt.HasValue);
+        return queryProviderQuery.Where(x => !((IEntity)x).DeletedAt.HasValue);
     }
 }
