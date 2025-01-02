@@ -87,6 +87,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Member.Api", "Services\Memb
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Member", "Services\Member\Member\Member.csproj", "{D9453F62-96A2-4E42-99AB-2BE22729E49E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MGH.Core.Endpoint.Web", "Framework\MGH.Core.Endpoint.Web\MGH.Core.Endpoint.Web.csproj", "{BEEC6296-3BA2-4E58-B04B-39F017D5C427}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -233,6 +235,10 @@ Global
 		{D9453F62-96A2-4E42-99AB-2BE22729E49E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D9453F62-96A2-4E42-99AB-2BE22729E49E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D9453F62-96A2-4E42-99AB-2BE22729E49E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BEEC6296-3BA2-4E58-B04B-39F017D5C427}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEEC6296-3BA2-4E58-B04B-39F017D5C427}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEEC6296-3BA2-4E58-B04B-39F017D5C427}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEEC6296-3BA2-4E58-B04B-39F017D5C427}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -278,6 +284,7 @@ Global
 		{5C661E41-332B-4496-9255-FF8BCF3B458E} = {D219B390-9D8C-4EF8-AE59-F0D47362F508}
 		{60718AB3-FE2A-44CC-9015-F08F2E167AAE} = {5C661E41-332B-4496-9255-FF8BCF3B458E}
 		{D9453F62-96A2-4E42-99AB-2BE22729E49E} = {5C661E41-332B-4496-9255-FF8BCF3B458E}
+		{BEEC6296-3BA2-4E58-B04B-39F017D5C427} = {084E41B7-2029-4EB7-8CC3-EDBEE5C66534}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {04EE5569-4196-47F2-A52B-CF1049C542F2}

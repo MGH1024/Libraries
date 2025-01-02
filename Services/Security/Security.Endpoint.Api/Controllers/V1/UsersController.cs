@@ -1,5 +1,4 @@
-﻿using Api.Profiles;
-using Application.Features.Users.Commands.Create;
+﻿using Application.Features.Users.Commands.Create;
 using Application.Features.Users.Commands.Delete;
 using Application.Features.Users.Commands.Update;
 using Application.Features.Users.Commands.UpdateFromAuth;
@@ -9,9 +8,11 @@ using Asp.Versioning;
 using AutoMapper;
 using MediatR;
 using MGH.Core.Application.Requests;
+using MGH.Core.Endpoint.Web;
 using Microsoft.AspNetCore.Mvc;
+using Security.Endpoint.Api.Profiles;
 
-namespace Api.Controllers.V1;
+namespace Security.Endpoint.Api.Controllers.V1;
 
 [ApiController] 
 [ApiVersion(1)]

@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.IdentityModel.Tokens;
 using Security.Infrastructure;
 
-namespace Api;
+namespace Security.Endpoint.Api;
 
 public static class ApiServiceRegistration
 {

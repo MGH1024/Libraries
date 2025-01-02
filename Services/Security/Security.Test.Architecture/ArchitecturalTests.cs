@@ -1,11 +1,8 @@
 ﻿using FluentAssertions;
+using NetArchTest.Rules;
 using Security.Infrastructure.Contexts;
 
 namespace Security.Test.Architecture;
-
-using NetArchTest.Rules;
-using Xunit;
-
 public class ArchitecturalTests
 {
     [Fact]
@@ -15,7 +12,7 @@ public class ArchitecturalTests
         var assembly = typeof(Domain.Repositories.IUserRepository).Assembly;
         var applicationAssembly = typeof(Application.Features.Users.Services.IUserService).Assembly.ToString();
         var infrastructureAssembly = typeof(SecurityDbContext).Assembly.ToString();
-        var endpointAssembly = typeof(Api.Controllers.AppController).Assembly.ToString();
+        var endpointAssembly = typeof(Endpoint.Api.Controllers.V1.UsersController).Assembly.ToString();
 
         var otherProjectAssembly = new[]
         {
@@ -41,7 +38,7 @@ public class ArchitecturalTests
         // Arrange
         var assembly = typeof(Application.Features.Users.Services.IUserService).Assembly;
         var infrastructureAssembly = typeof(SecurityDbContext).Assembly.ToString();
-        var endpointAssembly = typeof(Api.Controllers.AppController).Assembly.ToString();
+        var endpointAssembly = typeof(Endpoint.Api.Controllers.V1.UsersController).Assembly.ToString();
 
         var otherProjectAssembly = new[]
         {
@@ -65,7 +62,7 @@ public class ArchitecturalTests
     {
         // Arrange
         var assembly = typeof(SecurityDbContext).Assembly;
-        var endpointAssembly = typeof(Api.Controllers.AppController).Assembly.ToString();
+        var endpointAssembly = typeof(Endpoint.Api.Controllers.V1.UsersController).Assembly.ToString();
 
         var otherProjectAssembly = new[]
         {

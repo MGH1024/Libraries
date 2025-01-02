@@ -6,4 +6,12 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Folder Include="Books\Dtos\" />
+      <Folder Include="Books\Exceptions\" />
+      <Folder Include="Books\Features\" />
+      <Folder Include="Books\Models\" />
+      <Folder Include="Books\ValueObjects\" />
+    </ItemGroup>
+
 </Project>

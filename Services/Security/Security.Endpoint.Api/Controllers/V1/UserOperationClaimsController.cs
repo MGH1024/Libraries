@@ -7,9 +7,10 @@ using Asp.Versioning;
 using MediatR;
 using MGH.Core.Application.Requests;
 using MGH.Core.Application.Responses;
+using MGH.Core.Endpoint.Web;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Api.Controllers.V1;
+namespace Security.Endpoint.Api.Controllers.V1;
 
 [ApiController]
 [ApiVersion(1)]

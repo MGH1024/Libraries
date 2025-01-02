@@ -1,5 +1,5 @@
-using Api;
 using Application;
+using Security.Endpoint.Api;
 using Security.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);

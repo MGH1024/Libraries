@@ -1,15 +1,15 @@
-﻿using MediatR;
-using AutoMapper;
-using Quartz.Util;
-using Api.Profiles;
+﻿using Application.Features.Auth.Commands.RefreshToken;
+using Application.Features.Auth.Commands.RegisterUser;
+using Application.Features.Auth.Commands.UserLogin;
 using Asp.Versioning;
+using AutoMapper;
+using MediatR;
+using MGH.Core.Endpoint.Web;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Application.Features.Auth.Commands.UserLogin;
-using Application.Features.Auth.Commands.RefreshToken;
-using Application.Features.Auth.Commands.RegisterUser;
+using Security.Endpoint.Api.Profiles;
 
-namespace Api.Controllers.V1;
+namespace Security.Endpoint.Api.Controllers.V1;
 
 [ApiController]
 [ApiVersion(1)]
@@ -34,7 +34,7 @@ public class AuthController(ISender sender, IMapper mapper) : AppController(send
         if (!response.IsSuccess)
             return BadRequest("Failed to login");
 
-        if (!response.RefreshToken.IsNullOrWhiteSpace())
+        if (!string.IsNullOrWhiteSpace(response.RefreshToken))
             SetRefreshTokenToCookie(response.RefreshToken, response.RefreshTokenExpiry);
 
         return Ok(response);

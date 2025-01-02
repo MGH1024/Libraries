@@ -1,8 +1,8 @@
 ﻿using MediatR;
-using MGH.Core.Infrastructure.Securities.Security.Extensions;
 using Microsoft.AspNetCore.Mvc;
+using MGH.Core.Infrastructure.Securities.Security.Extensions;
 
-namespace Library.Endpoint.Api.Controllers;
+namespace MGH.Core.Endpoint.Web;
 
 public abstract class AppController(ISender sender) : ControllerBase
 {

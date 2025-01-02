@@ -1,9 +1,8 @@
-﻿using Application.Features.Auth.Commands.RefreshToken;
-using Application.Features.Auth.Commands.RevokeToken;
+﻿using Application.Features.Auth.Commands.RevokeToken;
 using Application.Features.Users.Commands.UpdateFromAuth;
 using Application.Features.Users.Queries.GetById;
 
-namespace Api.Profiles;
+namespace Security.Endpoint.Api.Profiles;
 
 public static class ApiMapper
 {

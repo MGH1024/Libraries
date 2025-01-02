@@ -29,7 +29,7 @@ public class DesignTests
     public void Controllers_Should_HaveDependencyOnMediatR()
     {
         // Arrange
-        var assembly = typeof(Api.Controllers.AppController).Assembly;
+        var assembly = typeof(Endpoint.Api.Controllers.V1.UsersController).Assembly;
 
         // Act
         var testResult =
