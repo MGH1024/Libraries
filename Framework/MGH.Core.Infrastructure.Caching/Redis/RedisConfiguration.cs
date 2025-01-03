@@ -1,4 +1,4 @@
-namespace MGH.Core.Infrastructure.Cache.Redis.Models;
+namespace MGH.Core.Infrastructure.Caching.Redis;
 
 public class RedisConfiguration
 {

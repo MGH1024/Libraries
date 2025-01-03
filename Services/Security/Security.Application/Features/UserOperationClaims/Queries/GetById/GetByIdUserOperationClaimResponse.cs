@@ -1,6 +1,6 @@
 using MGH.Core.Application.Responses;
 
-namespace Application.Features.UserOperationClaims.Queries.GetById;
+namespace Security.Application.Features.UserOperationClaims.Queries.GetById;
 
 public class GetByIdUserOperationClaimResponse : IResponse
 {

@@ -1,11 +1,11 @@
-using Application.Features.UserOperationClaims.Rules;
 using AutoMapper;
-using Domain;
 using MediatR;
 using MGH.Core.Infrastructure.Persistence.Models.Filters.GetModels;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
+using Security.Application.Features.UserOperationClaims.Rules;
+using Security.Domain;
 
-namespace Application.Features.UserOperationClaims.Queries.GetById;
+namespace Security.Application.Features.UserOperationClaims.Queries.GetById;
 
 public class GetByIdUserOperationClaimQuery : IRequest<GetByIdUserOperationClaimResponse>
 {

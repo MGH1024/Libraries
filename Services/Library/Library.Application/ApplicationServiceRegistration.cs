@@ -1,17 +1,17 @@
-﻿using System.Reflection;
-using FluentValidation;
-using Library.Application.Features.Libraries.Rules;
-using MGH.Core.Application.Pipelines.Authorization;
-using MGH.Core.Application.Pipelines.Caching;
-using MGH.Core.Application.Pipelines.Logging;
-using MGH.Core.Application.Pipelines.Transaction;
-using MGH.Core.Application.Pipelines.Validation;
+﻿using FluentValidation;
+using System.Reflection;
 using MGH.Core.Application.Rules;
-using MGH.Core.Infrastructure.Cache.Redis;
+using Microsoft.Extensions.Configuration;
+using MGH.Core.Application.Pipelines.Logging;
+using Microsoft.Extensions.DependencyInjection;
+using MGH.Core.Application.Pipelines.Validation;
+using MGH.Core.Application.Pipelines.Transaction;
+using MGH.Core.Application.Pipelines.Authorization;
+using Library.Application.Features.Libraries.Rules;
+using MGH.Core.Infrastructure.Caching;
+using MGH.Core.Infrastructure.Caching.Models;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Base;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Library.Application;
 
@@ -25,6 +25,8 @@ public static class ApplicationServiceRegistration
         services.AddSubClassesOfType(Assembly.GetExecutingAssembly(), typeof(BaseBusinessRules));
         services.AddBusinessRule();
         services.AddRedis(configuration);
+        services.AddGeneralCachingService();
+        services.AddGeneralCachingService();
         services.AddServices();
     }
 

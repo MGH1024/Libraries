@@ -2,7 +2,7 @@
 using MGH.Core.Infrastructure.Persistence.Models.Paging;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
 
-namespace Application.Features.UserOperationClaims.Services;
+namespace Security.Application.Features.UserOperationClaims.Services;
 
 public interface IUserOperationClaimService
 {

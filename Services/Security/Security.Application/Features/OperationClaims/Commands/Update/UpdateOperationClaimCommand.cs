@@ -1,13 +1,13 @@
-using Application.Features.OperationClaims.Constants;
-using Application.Features.OperationClaims.Rules;
 using AutoMapper;
-using Domain;
 using MGH.Core.Application.Pipelines.Authorization;
 using MGH.Core.Domain.Buses.Commands;
 using MGH.Core.Infrastructure.Persistence.Models.Filters.GetModels;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
+using Security.Application.Features.OperationClaims.Constants;
+using Security.Application.Features.OperationClaims.Rules;
+using Security.Domain;
 
-namespace Application.Features.OperationClaims.Commands.Update;
+namespace Security.Application.Features.OperationClaims.Commands.Update;
 
 [Roles(OperationClaimOperationClaims.UpdateOperationClaims)]
 public class UpdateOperationClaimCommand(int id, string name) : ICommand<UpdatedOperationClaimResponse>

@@ -1,4 +1,6 @@
-﻿namespace Security.Test.Features.Auth.Commands.RegisterUser;
+﻿using Security.Application.Features.Auth.Commands.RegisterUser;
+
+namespace Security.Test.Application.Features.Auth.Commands.RegisterUser;
 
 public class RegisterUserCommandDtoBuilder
 {
@@ -31,8 +33,8 @@ public class RegisterUserCommandDtoBuilder
         return this;
     }
 
-    public Application.Features.Auth.Commands.RegisterUser.RegisterUserCommandDto Build()
+    public RegisterUserCommandDto Build()
     {
-        return new Application.Features.Auth.Commands.RegisterUser.RegisterUserCommandDto(_email, _password, _firstName, _lastName);
+        return new RegisterUserCommandDto(_email, _password, _firstName, _lastName);
     }
 }

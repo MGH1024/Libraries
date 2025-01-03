@@ -1,9 +1,9 @@
-using Application.Features.Users.Queries.GetById;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
 using Moq;
-using Security.Test.Base;
+using Security.Application.Features.Users.Queries.GetById;
+using Security.Test.Application.Base;
 
-namespace Security.Test.Features.Users.Queries.GetById;
+namespace Security.Test.Application.Features.Users.Queries.GetById;
 
 public class GetUserByIdQueryHandlerTests(HandlerTestsFixture fixture) : IClassFixture<HandlerTestsFixture>
 {

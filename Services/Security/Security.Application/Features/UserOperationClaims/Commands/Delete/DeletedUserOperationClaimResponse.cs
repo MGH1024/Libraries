@@ -1,6 +1,6 @@
 using MGH.Core.Application.Responses;
 
-namespace Application.Features.UserOperationClaims.Commands.Delete;
+namespace Security.Application.Features.UserOperationClaims.Commands.Delete;
 
 public class DeletedUserOperationClaimResponse : IResponse
 {

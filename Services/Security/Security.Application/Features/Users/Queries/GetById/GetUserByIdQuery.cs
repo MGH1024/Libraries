@@ -1,19 +1,19 @@
-using Domain;
-using MediatR;
 using AutoMapper;
-using Application.Features.Users.Constants;
-using Application.Features.Users.Rules;
-using MGH.Core.Application.Pipelines.Caching;
+using MediatR;
 using MGH.Core.Application.Pipelines.Authorization;
-using MGH.Core.Infrastructure.Securities.Security.Entities;
+using MGH.Core.Infrastructure.Caching.Models;
+using Security.Application.Features.Users.Constants;
+using Security.Application.Features.Users.Rules;
+using Security.Domain;
 
-namespace Application.Features.Users.Queries.GetById;
+namespace Security.Application.Features.Users.Queries.GetById;
 
 [Roles(UsersOperationClaims.GetUsers)]
-[Cache(CacheDuration = 5, EntityName = nameof(User))]
-public class GetUserByIdQuery : IRequest<GetUserByIdResponse>
+public class GetUserByIdQuery : IRequest<GetUserByIdResponse>, ICacheRequest
 {
     public int Id { get; set; }
+    public string CacheKey => $"GetUserById={Id}";
+    public int AbsoluteExpirationRelativeToNow => 60;
 }
 
 public class GetUserByIdQueryHandler(

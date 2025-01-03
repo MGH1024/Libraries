@@ -1,7 +1,7 @@
 ﻿using MGH.Core.Infrastructure.Securities.Security.Entities;
 using MGH.Core.Infrastructure.Securities.Security.JWT;
 
-namespace Application.Features.Auth.Services;
+namespace Security.Application.Features.Auth.Services;
 
 public interface IAuthService
 {

@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Application.Features.OperationClaims.Commands.Update;
+namespace Security.Application.Features.OperationClaims.Commands.Update;
 
 public class UpdateOperationClaimCommandValidator : AbstractValidator<UpdateOperationClaimCommand>
 {

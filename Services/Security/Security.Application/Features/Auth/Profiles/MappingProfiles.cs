@@ -1,11 +1,11 @@
 using System.Linq.Expressions;
-using Application.Features.Auth.Commands.RegisterUser;
-using Application.Features.Auth.Commands.RevokeToken;
 using AutoMapper;
 using MGH.Core.Infrastructure.Persistence.Models.Filters.GetModels;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
+using Security.Application.Features.Auth.Commands.RegisterUser;
+using Security.Application.Features.Auth.Commands.RevokeToken;
 
-namespace Application.Features.Auth.Profiles;
+namespace Security.Application.Features.Auth.Profiles;
 
 public class MappingProfiles : Profile
 {

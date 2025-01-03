@@ -1,4 +1,4 @@
-namespace Application.Features.UserOperationClaims.Queries.GetList;
+namespace Security.Application.Features.UserOperationClaims.Queries.GetList;
 
 public class GetListUserOperationClaimListItemDto
 {

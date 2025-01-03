@@ -1,6 +1,4 @@
-using Application.Features.OperationClaims.Constants;
 using AutoMapper;
-using Domain.Repositories;
 using MediatR;
 using MGH.Core.Application.Pipelines.Authorization;
 using MGH.Core.Application.Requests;
@@ -8,8 +6,10 @@ using MGH.Core.Application.Responses;
 using MGH.Core.Infrastructure.Persistence.Models.Filters.GetModels;
 using MGH.Core.Infrastructure.Persistence.Models.Paging;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
+using Security.Application.Features.OperationClaims.Constants;
+using Security.Domain.Repositories;
 
-namespace Application.Features.OperationClaims.Queries.GetList;
+namespace Security.Application.Features.OperationClaims.Queries.GetList;
 
 [Roles(OperationClaimOperationClaims.GetOperationClaims)]
 public class GetListOperationClaimQuery(PageRequest pageRequest)

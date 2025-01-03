@@ -1,13 +1,13 @@
-﻿using Domain;
-using Microsoft.Extensions.Options;
+﻿using MGH.Core.Infrastructure.Persistence.Models.Filters.GetModels;
 using MGH.Core.Infrastructure.Public;
-using Application.Features.Users.Extensions;
-using MGH.Core.Infrastructure.Persistence.Models.Filters.GetModels;
-using MGH.Core.Infrastructure.Securities.Security.JWT;
-using MGH.Core.Infrastructure.Securities.Security.Hashing;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
+using MGH.Core.Infrastructure.Securities.Security.Hashing;
+using MGH.Core.Infrastructure.Securities.Security.JWT;
+using Microsoft.Extensions.Options;
+using Security.Application.Features.Users.Extensions;
+using Security.Domain;
 
-namespace Application.Features.Auth.Services;
+namespace Security.Application.Features.Auth.Services;
 
 public class AuthManager(IUow uow, ITokenHelper tokenHelper, IDateTime time, IOptions<TokenOptions> options)
     : IAuthService

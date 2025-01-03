@@ -1,12 +1,12 @@
-﻿using Domain;
-using AutoMapper;
-using MGH.Core.Domain.Buses.Commands;
-using Application.Features.OperationClaims.Rules;
-using Application.Features.OperationClaims.Constants;
+﻿using AutoMapper;
 using MGH.Core.Application.Pipelines.Authorization;
+using MGH.Core.Domain.Buses.Commands;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
+using Security.Application.Features.OperationClaims.Constants;
+using Security.Application.Features.OperationClaims.Rules;
+using Security.Domain;
 
-namespace Application.Features.OperationClaims.Commands.Create;
+namespace Security.Application.Features.OperationClaims.Commands.Create;
 
 [Roles(OperationClaimOperationClaims.AddOperationClaims)]
 public class CreateOperationClaimCommand(string name) : ICommand<CreatedOperationClaimResponse>

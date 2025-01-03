@@ -1,6 +1,6 @@
 using MGH.Core.Application.Responses;
 
-namespace Application.Features.Users.Queries.GetById;
+namespace Security.Application.Features.Users.Queries.GetById;
 
 
 public class GetUserByIdResponse(int id, string firstName, string lastName, string email, bool status)

@@ -1,14 +1,14 @@
-using Application.Features.OperationClaims.Constants;
-using Application.Features.OperationClaims.Rules;
 using AutoMapper;
-using Domain;
 using MediatR;
 using MGH.Core.Application.Pipelines.Authorization;
 using MGH.Core.Infrastructure.Persistence.Models.Filters.GetModels;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
 using Microsoft.EntityFrameworkCore;
+using Security.Application.Features.OperationClaims.Constants;
+using Security.Application.Features.OperationClaims.Rules;
+using Security.Domain;
 
-namespace Application.Features.OperationClaims.Queries.GetById;
+namespace Security.Application.Features.OperationClaims.Queries.GetById;
 
 [Roles(OperationClaimOperationClaims.GetOperationClaims)]
 public class GetByIdOperationClaimQuery : IRequest<GetByIdOperationClaimResponse>

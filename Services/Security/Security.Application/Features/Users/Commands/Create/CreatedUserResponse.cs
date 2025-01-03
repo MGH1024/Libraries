@@ -1,6 +1,6 @@
 using MGH.Core.Application.Responses;
 
-namespace Application.Features.Users.Commands.Create;
+namespace Security.Application.Features.Users.Commands.Create;
 
 public class CreatedUserResponse(int id, string firstName, string lastName, string email, bool status)
     : IResponse

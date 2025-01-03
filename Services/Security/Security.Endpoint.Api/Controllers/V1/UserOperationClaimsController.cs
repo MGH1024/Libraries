@@ -1,14 +1,14 @@
-﻿using Application.Features.UserOperationClaims.Commands.Create;
-using Application.Features.UserOperationClaims.Commands.Delete;
-using Application.Features.UserOperationClaims.Commands.Update;
-using Application.Features.UserOperationClaims.Queries.GetById;
-using Application.Features.UserOperationClaims.Queries.GetList;
-using Asp.Versioning;
+﻿using Asp.Versioning;
 using MediatR;
 using MGH.Core.Application.Requests;
 using MGH.Core.Application.Responses;
 using MGH.Core.Endpoint.Web;
 using Microsoft.AspNetCore.Mvc;
+using Security.Application.Features.UserOperationClaims.Commands.Create;
+using Security.Application.Features.UserOperationClaims.Commands.Delete;
+using Security.Application.Features.UserOperationClaims.Commands.Update;
+using Security.Application.Features.UserOperationClaims.Queries.GetById;
+using Security.Application.Features.UserOperationClaims.Queries.GetList;
 
 namespace Security.Endpoint.Api.Controllers.V1;
 

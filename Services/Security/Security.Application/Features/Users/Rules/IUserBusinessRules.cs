@@ -1,6 +1,6 @@
 ﻿using MGH.Core.Infrastructure.Securities.Security.Entities;
 
-namespace Application.Features.Users.Rules;
+namespace Security.Application.Features.Users.Rules;
 
 public interface IUserBusinessRules
 {

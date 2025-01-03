@@ -1,7 +1,7 @@
-﻿using Domain;
-using Domain.Repositories;
-using Security.Infrastructure.Contexts;
+﻿using Security.Infrastructure.Contexts;
 using MGH.Core.Infrastructure.Persistence.Base;
+using Security.Domain;
+using Security.Domain.Repositories;
 
 namespace Security.Infrastructure.Repositories;
 

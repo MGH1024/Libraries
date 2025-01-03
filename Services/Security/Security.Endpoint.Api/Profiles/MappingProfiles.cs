@@ -1,9 +1,9 @@
-using Application.Features.Auth.Commands.RefreshToken;
-using Application.Features.Auth.Commands.RegisterUser;
-using Application.Features.Auth.Commands.UserLogin;
-using Application.Features.Users.Queries.GetList;
 using AutoMapper;
 using MGH.Core.Application.Requests;
+using Security.Application.Features.Auth.Commands.RefreshToken;
+using Security.Application.Features.Auth.Commands.RegisterUser;
+using Security.Application.Features.Auth.Commands.UserLogin;
+using Security.Application.Features.Users.Queries.GetList;
 
 namespace Security.Endpoint.Api.Profiles;
 

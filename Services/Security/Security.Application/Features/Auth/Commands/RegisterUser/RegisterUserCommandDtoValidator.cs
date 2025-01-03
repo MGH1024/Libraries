@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Application.Features.Auth.Commands.RegisterUser;
+namespace Security.Application.Features.Auth.Commands.RegisterUser;
 
 public class RegisterUserCommandDtoValidator : AbstractValidator<RegisterUserCommandDto>
 {

@@ -1,4 +1,4 @@
-﻿namespace Application.Features.OperationClaims.Constants;
+﻿namespace Security.Application.Features.OperationClaims.Constants;
 
 public  static class OperationClaimOperationClaims
 {

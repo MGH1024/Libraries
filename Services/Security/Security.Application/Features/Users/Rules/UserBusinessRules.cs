@@ -1,13 +1,12 @@
-using Application.Features.Auth.Constants;
-using Domain;
 using MGH.Core.Application.Rules;
 using MGH.Core.CrossCutting.Exceptions.Types;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
 using MGH.Core.Infrastructure.Securities.Security.Hashing;
-using Application.Features.Users.Extensions;
-using Microsoft.Identity.Client;
+using Security.Application.Features.Auth.Constants;
+using Security.Application.Features.Users.Extensions;
+using Security.Domain;
 
-namespace Application.Features.Users.Rules;
+namespace Security.Application.Features.Users.Rules;
 
 public class UserBusinessRules(IUow uow) : BaseBusinessRules,IUserBusinessRules
 {

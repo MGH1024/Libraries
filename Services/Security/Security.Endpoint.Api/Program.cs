@@ -1,4 +1,4 @@
-using Application;
+using Security.Application;
 using Security.Endpoint.Api;
 using Security.Infrastructure;
 

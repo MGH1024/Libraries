@@ -1,13 +1,13 @@
-using Application.Features.Users.Constants;
-using Application.Features.Users.Extensions;
 using AutoMapper;
-using Domain;
 using MediatR;
 using MGH.Core.Application.Pipelines.Authorization;
 using MGH.Core.Application.Requests;
 using MGH.Core.Application.Responses;
+using Security.Application.Features.Users.Constants;
+using Security.Application.Features.Users.Extensions;
+using Security.Domain;
 
-namespace Application.Features.Users.Queries.GetList;
+namespace Security.Application.Features.Users.Queries.GetList;
 
 [Roles(UsersOperationClaims.GetUsers)]
 public class GetListUserQuery(PageRequest pageRequest)

@@ -1,11 +1,11 @@
 ﻿using System.Collections;
-using Domain.Repositories;
 using MGH.Core.Domain.BaseModels;
 using Microsoft.EntityFrameworkCore;
 using Security.Infrastructure.Contexts;
 using Microsoft.EntityFrameworkCore.Metadata;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
 using MGH.Core.Infrastructure.Persistence.EF.Base.Repository;
+using Security.Domain.Repositories;
 
 namespace Security.Infrastructure.Repositories.Security;
 

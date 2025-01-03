@@ -2,7 +2,7 @@
 using MGH.Core.Infrastructure.Persistence.Models.Paging;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
 
-namespace Application.Features.Users.Services;
+namespace Security.Application.Features.Users.Services;
 
 public interface IUserService
 {

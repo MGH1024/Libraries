@@ -1,12 +1,12 @@
-﻿using Application.Features.OperationClaims.Rules;
-using AutoMapper;
-using Domain;
+﻿using AutoMapper;
 using MGH.Core.Domain.Buses.Commands;
 using MGH.Core.Infrastructure.Persistence.Models.Filters.GetModels;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
 using Microsoft.EntityFrameworkCore;
+using Security.Application.Features.OperationClaims.Rules;
+using Security.Domain;
 
-namespace Application.Features.OperationClaims.Commands.Delete;
+namespace Security.Application.Features.OperationClaims.Commands.Delete;
 
 public class DeleteOperationClaimCommandHandler(
     IUow uow,

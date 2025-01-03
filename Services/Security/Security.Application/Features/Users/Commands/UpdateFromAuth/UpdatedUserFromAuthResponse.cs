@@ -1,7 +1,7 @@
 ﻿using MGH.Core.Application.Responses;
 using MGH.Core.Infrastructure.Securities.Security.JWT;
 
-namespace Application.Features.Users.Commands.UpdateFromAuth;
+namespace Security.Application.Features.Users.Commands.UpdateFromAuth;
 
 public class UpdatedUserFromAuthResponse(
     int id,

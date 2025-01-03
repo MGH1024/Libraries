@@ -1,6 +1,6 @@
 ﻿using MGH.Core.Domain.Events;
 
-namespace MGH.Core.Infrastructure.MessageBroker;
+namespace MGH.Core.Infrastructure.EventBus;
 
 public interface IEventBusDispatcher 
 {

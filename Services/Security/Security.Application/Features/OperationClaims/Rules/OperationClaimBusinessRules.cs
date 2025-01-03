@@ -1,11 +1,11 @@
-using Application.Features.OperationClaims.Constants;
-using Domain;
 using MGH.Core.Application.Rules;
 using MGH.Core.CrossCutting.Exceptions.Types;
 using MGH.Core.Infrastructure.Persistence.Models.Filters.GetModels;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
+using Security.Application.Features.OperationClaims.Constants;
+using Security.Domain;
 
-namespace Application.Features.OperationClaims.Rules;
+namespace Security.Application.Features.OperationClaims.Rules;
 
 public class OperationClaimBusinessRules(IUow uow) : BaseBusinessRules, IOperationClaimBusinessRules
 {

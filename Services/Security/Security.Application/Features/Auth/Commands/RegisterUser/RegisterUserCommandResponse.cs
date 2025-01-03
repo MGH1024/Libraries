@@ -1,4 +1,4 @@
-﻿namespace Application.Features.Auth.Commands.RegisterUser;
+﻿namespace Security.Application.Features.Auth.Commands.RegisterUser;
 
 public record RegisterUserCommandResponse(
     string Token,

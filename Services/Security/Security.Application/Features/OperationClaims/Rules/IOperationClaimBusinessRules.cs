@@ -1,6 +1,6 @@
 ﻿using MGH.Core.Infrastructure.Securities.Security.Entities;
 
-namespace Application.Features.OperationClaims.Rules;
+namespace Security.Application.Features.OperationClaims.Rules;
 
 public interface IOperationClaimBusinessRules
 {

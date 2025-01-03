@@ -1,11 +1,11 @@
-using Application.Features.Auth.Constants;
-using Domain;
 using MGH.Core.Application.Rules;
 using MGH.Core.CrossCutting.Exceptions.Types;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
 using MGH.Core.Infrastructure.Securities.Security.Hashing;
+using Security.Application.Features.Auth.Constants;
+using Security.Domain;
 
-namespace Application.Features.Auth.Rules;
+namespace Security.Application.Features.Auth.Rules;
 
 public class AuthBusinessRules(IUow uow) : BaseBusinessRules, IAuthBusinessRules
 {

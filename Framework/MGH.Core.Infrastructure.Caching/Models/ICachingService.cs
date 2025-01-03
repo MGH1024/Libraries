@@ -1,4 +1,4 @@
-﻿namespace MGH.Core.Infrastructure.Cache.Redis.Services;
+﻿namespace MGH.Core.Infrastructure.Caching.Models;
 
 public interface ICachingService<T> 
 {

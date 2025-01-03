@@ -1,6 +1,6 @@
 using MGH.Core.Application.Responses;
 
-namespace Application.Features.UserOperationClaims.Commands.Create;
+namespace Security.Application.Features.UserOperationClaims.Commands.Create;
 
 public class CreatedUserOperationClaimResponse : IResponse
 {

@@ -1,6 +1,6 @@
-﻿using Application.Features.Auth.Commands.RevokeToken;
-using Application.Features.Users.Commands.UpdateFromAuth;
-using Application.Features.Users.Queries.GetById;
+﻿using Security.Application.Features.Auth.Commands.RevokeToken;
+using Security.Application.Features.Users.Commands.UpdateFromAuth;
+using Security.Application.Features.Users.Queries.GetById;
 
 namespace Security.Endpoint.Api.Profiles;
 

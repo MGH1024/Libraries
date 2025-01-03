@@ -1,9 +1,9 @@
-﻿using Domain;
-using MGH.Core.Domain.Buses.Commands;
-using Application.Features.Auth.Rules;
-using Application.Features.Auth.Services;
+﻿using MGH.Core.Domain.Buses.Commands;
+using Security.Application.Features.Auth.Rules;
+using Security.Application.Features.Auth.Services;
+using Security.Domain;
 
-namespace Application.Features.Auth.Commands.RefreshToken;
+namespace Security.Application.Features.Auth.Commands.RefreshToken;
 
 public class RefreshTokenCommandHandler(IAuthService authService, IUow uow, IAuthBusinessRules authBusinessRules)
     : ICommandHandler<RefreshTokenCommand, RefreshTokenResponse>

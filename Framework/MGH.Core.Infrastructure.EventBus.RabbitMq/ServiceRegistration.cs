@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using MGH.Core.Infrastructure.EventBus;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MGH.Core.Infrastructure.MessageBroker.RabbitMq.Concrete;
 using MGH.Core.Infrastructure.MessageBroker.RabbitMq.Abstracts;

@@ -1,7 +1,7 @@
-﻿using Domain.Repositories;
-using MGH.Core.Infrastructure.Persistence.EF.Base.Repository;
+﻿using MGH.Core.Infrastructure.Persistence.EF.Base.Repository;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
 using Microsoft.EntityFrameworkCore;
+using Security.Domain.Repositories;
 using Security.Infrastructure.Contexts;
 
 namespace Security.Infrastructure.Repositories.Security;

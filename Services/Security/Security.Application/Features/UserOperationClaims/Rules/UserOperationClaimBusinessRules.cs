@@ -1,10 +1,10 @@
-using Application.Features.UserOperationClaims.Constants;
-using Domain.Repositories;
 using MGH.Core.Application.Rules;
 using MGH.Core.CrossCutting.Exceptions.Types;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
+using Security.Application.Features.UserOperationClaims.Constants;
+using Security.Domain.Repositories;
 
-namespace Application.Features.UserOperationClaims.Rules;
+namespace Security.Application.Features.UserOperationClaims.Rules;
 
 public class UserOperationClaimBusinessRules(IUserOperationClaimRepository userOperationClaimRepository) : BaseBusinessRules, IUserOperationClaimBusinessRules
 {

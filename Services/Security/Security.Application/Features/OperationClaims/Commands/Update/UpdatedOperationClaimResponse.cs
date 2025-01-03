@@ -1,6 +1,6 @@
 using MGH.Core.Application.Responses;
 
-namespace Application.Features.OperationClaims.Commands.Update;
+namespace Security.Application.Features.OperationClaims.Commands.Update;
 
 public class UpdatedOperationClaimResponse(int id, string name) : IResponse
 {

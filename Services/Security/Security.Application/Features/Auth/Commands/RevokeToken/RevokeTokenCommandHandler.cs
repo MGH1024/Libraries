@@ -1,13 +1,10 @@
-﻿using Domain;
-using AutoMapper;
-using MGH.Core.Infrastructure.Public;
+﻿using AutoMapper;
 using MGH.Core.Domain.Buses.Commands;
-using Application.Features.Auth.Rules;
-using Application.Features.Auth.Services;
 using MGH.Core.Infrastructure.Persistence.Models.Filters.GetModels;
-using MGH.Core.Infrastructure.Securities.Security.Entities;
+using Security.Application.Features.Auth.Rules;
+using Security.Domain;
 
-namespace Application.Features.Auth.Commands.RevokeToken;
+namespace Security.Application.Features.Auth.Commands.RevokeToken;
 
 public class RevokeTokenCommandHandler(IAuthBusinessRules authBusinessRules, IUow uow, IMapper mapper) : ICommandHandler<RevokeTokenCommand, RevokedTokenResponse>
 {

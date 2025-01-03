@@ -1,12 +1,12 @@
-﻿using Application.Features.Auth.Commands.RefreshToken;
-using Application.Features.Auth.Commands.RegisterUser;
-using Application.Features.Auth.Commands.UserLogin;
-using Asp.Versioning;
+﻿using Asp.Versioning;
 using AutoMapper;
 using MediatR;
 using MGH.Core.Endpoint.Web;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Security.Application.Features.Auth.Commands.RefreshToken;
+using Security.Application.Features.Auth.Commands.RegisterUser;
+using Security.Application.Features.Auth.Commands.UserLogin;
 using Security.Endpoint.Api.Profiles;
 
 namespace Security.Endpoint.Api.Controllers.V1;

@@ -1,4 +1,6 @@
-﻿namespace Security.Test.Features.Auth.Commands.UserLogin;
+﻿using Security.Application.Features.Auth.Commands.UserLogin;
+
+namespace Security.Test.Application.Features.Auth.Commands.UserLogin;
 
 public class UserLoginDtoBuilder
 {
@@ -17,8 +19,8 @@ public class UserLoginDtoBuilder
         return this;
     }
 
-    public Application.Features.Auth.Commands.UserLogin.UserLoginCommandDto Build()
+    public UserLoginCommandDto Build()
     {
-        return new Application.Features.Auth.Commands.UserLogin.UserLoginCommandDto(_email, _password);
+        return new UserLoginCommandDto(_email, _password);
     }
 }

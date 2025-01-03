@@ -1,10 +1,11 @@
 ﻿using System.Net;
 using System.Text.Json;
+using MGH.Core.Infrastructure.Caching.Models;
 using StackExchange.Redis;
 
-namespace MGH.Core.Infrastructure.Cache.Redis.Services;
+namespace MGH.Core.Infrastructure.Caching.Redis;
 
-public class CachingService<T>(IConnectionMultiplexer connectionMultiplexer) : ICachingService<T>
+public class RedisCachingService<T>(IConnectionMultiplexer connectionMultiplexer) : ICachingService<T>
 {
     public T Get(string key)
     {

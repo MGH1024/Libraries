@@ -1,10 +1,10 @@
-﻿using Application.Features.OperationClaims.Rules;
-using Domain;
-using MGH.Core.Infrastructure.Persistence.Models.Filters.GetModels;
+﻿using MGH.Core.Infrastructure.Persistence.Models.Filters.GetModels;
 using MGH.Core.Infrastructure.Persistence.Models.Paging;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
+using Security.Application.Features.OperationClaims.Rules;
+using Security.Domain;
 
-namespace Application.Features.OperationClaims.Services;
+namespace Security.Application.Features.OperationClaims.Services;
 
 public class OperationClaimManager(IUow uow, IOperationClaimBusinessRules operationClaimBusinessRules) : IOperationClaimService
 {

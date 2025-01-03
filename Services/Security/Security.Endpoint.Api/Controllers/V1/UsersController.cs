@@ -1,15 +1,15 @@
-﻿using Application.Features.Users.Commands.Create;
-using Application.Features.Users.Commands.Delete;
-using Application.Features.Users.Commands.Update;
-using Application.Features.Users.Commands.UpdateFromAuth;
-using Application.Features.Users.Queries.GetById;
-using Application.Features.Users.Queries.GetList;
-using Asp.Versioning;
+﻿using Asp.Versioning;
 using AutoMapper;
 using MediatR;
 using MGH.Core.Application.Requests;
 using MGH.Core.Endpoint.Web;
 using Microsoft.AspNetCore.Mvc;
+using Security.Application.Features.Users.Commands.Create;
+using Security.Application.Features.Users.Commands.Delete;
+using Security.Application.Features.Users.Commands.Update;
+using Security.Application.Features.Users.Commands.UpdateFromAuth;
+using Security.Application.Features.Users.Queries.GetById;
+using Security.Application.Features.Users.Queries.GetList;
 using Security.Endpoint.Api.Profiles;
 
 namespace Security.Endpoint.Api.Controllers.V1;

@@ -1,8 +1,8 @@
-using Application.Features.OperationClaims.Constants;
 using MGH.Core.Application.Pipelines.Authorization;
 using MGH.Core.Domain.Buses.Commands;
+using Security.Application.Features.OperationClaims.Constants;
 
-namespace Application.Features.OperationClaims.Commands.Delete;
+namespace Security.Application.Features.OperationClaims.Commands.Delete;
 
 [Roles(OperationClaimOperationClaims.DeleteOperationClaims)]
 public class DeleteOperationClaimCommand : ICommand<DeletedOperationClaimResponse>

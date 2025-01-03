@@ -1,6 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 
-namespace MGH.Core.Persistence.Dapper;
+namespace MGH.Core.Infrastructure.Persistence.Dapper;
 
 public interface IDapperService
 {

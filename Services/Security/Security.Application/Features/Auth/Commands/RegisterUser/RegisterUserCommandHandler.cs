@@ -1,11 +1,11 @@
-﻿using Application.Features.Auth.Rules;
-using Application.Features.Auth.Services;
-using AutoMapper;
-using Domain;
+﻿using AutoMapper;
 using MGH.Core.Domain.Buses.Commands;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
+using Security.Application.Features.Auth.Rules;
+using Security.Application.Features.Auth.Services;
+using Security.Domain;
 
-namespace Application.Features.Auth.Commands.RegisterUser;
+namespace Security.Application.Features.Auth.Commands.RegisterUser;
 
 public class RegisterUserCommandHandler(
     IUow uow,

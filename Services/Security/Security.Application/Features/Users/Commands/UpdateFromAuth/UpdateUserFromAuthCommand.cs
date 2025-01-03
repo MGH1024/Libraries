@@ -1,8 +1,8 @@
-﻿using Application.Features.Users.Constants;
+﻿using MGH.Core.Application.Pipelines.Authorization;
 using MGH.Core.Domain.Buses.Commands;
-using MGH.Core.Application.Pipelines.Authorization;
+using Security.Application.Features.Users.Constants;
 
-namespace Application.Features.Users.Commands.UpdateFromAuth;
+namespace Security.Application.Features.Users.Commands.UpdateFromAuth;
 
 [Roles(UsersOperationClaims.UpdateUsers)]
 public class UpdateUserFromAuthCommand(

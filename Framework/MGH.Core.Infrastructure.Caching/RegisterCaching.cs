@@ -1,12 +1,12 @@
-﻿using MGH.Core.Infrastructure.Cache.Redis.Services;
+﻿using StackExchange.Redis;
 using Microsoft.Extensions.Configuration;
+using MGH.Core.Infrastructure.Caching.Redis;
+using MGH.Core.Infrastructure.Caching.Models;
 using Microsoft.Extensions.DependencyInjection;
-using StackExchange.Redis;
-using MGH.Core.Infrastructure.Cache.Redis.Models;
 
-namespace MGH.Core.Infrastructure.Cache.Redis;
+namespace MGH.Core.Infrastructure.Caching;
 
-public static class RegisterRedis
+public static class RegisterCaching
 {
     public static void AddRedis(this IServiceCollection services,IConfiguration config)
     {
@@ -23,9 +23,13 @@ public static class RegisterRedis
         };
 
         configurationOptions.EndPoints.Add(redisConnection.Host, redisConnection.Port);
-        services.AddSingleton<IConnectionMultiplexer>(opt =>
-            ConnectionMultiplexer.Connect(configurationOptions));
+        services.AddSingleton<IConnectionMultiplexer>(opt => ConnectionMultiplexer.Connect(configurationOptions));
         
-        services.AddTransient(typeof(ICachingService<>), typeof(CachingService<>));
+        services.AddTransient(typeof(ICachingService<>), typeof(RedisCachingService<>));
+    }
+
+    public static void AddGeneralCachingService(this IServiceCollection services)
+    {
+        services.AddScoped(typeof(ICacheFactory<>), typeof(CacheFactory<>));
     }
 }

@@ -61,7 +61,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MGH.Core.Infrastructure.Per
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MGH.Core.Infrastructure.HealthCheck", "Framework\MGH.Core.Infrastructure.HealthCheck\MGH.Core.Infrastructure.HealthCheck.csproj", "{8EADBBAD-A960-4028-A989-4DFBB633F022}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MGH.Core.Infrastructure.Cache.Redis", "Framework\MGH.Core.Infrastructure.Cache.Redis\MGH.Core.Infrastructure.Cache.Redis.csproj", "{DE6DADEB-3F94-49F6-A116-F7D8E134D779}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MGH.Core.Infrastructure.Caching", "Framework\MGH.Core.Infrastructure.Caching\MGH.Core.Infrastructure.Caching.csproj", "{DE6DADEB-3F94-49F6-A116-F7D8E134D779}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Security.Test.Architecture", "Services\Security\Security.Test.Architecture\Security.Test.Architecture.csproj", "{A12CC87E-FFF9-488D-B8C2-426038E0BBA1}"
 EndProject

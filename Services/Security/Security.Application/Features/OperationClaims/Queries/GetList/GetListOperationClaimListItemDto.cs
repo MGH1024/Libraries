@@ -1,4 +1,4 @@
-namespace Application.Features.OperationClaims.Queries.GetList;
+namespace Security.Application.Features.OperationClaims.Queries.GetList;
 
 public class GetListOperationClaimListItemDto(int id, string name)
 {

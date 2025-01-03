@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Application.Features.OperationClaims.Commands.Create;
+namespace Security.Application.Features.OperationClaims.Commands.Create;
 
 public class CreateOperationClaimCommandValidator : AbstractValidator<CreateOperationClaimCommand>
 {

@@ -1,8 +1,8 @@
-using Application.Features.Users.Constants;
 using MGH.Core.Application.Pipelines.Authorization;
 using MGH.Core.Domain.Buses.Commands;
+using Security.Application.Features.Users.Constants;
 
-namespace Application.Features.Users.Commands.Update;
+namespace Security.Application.Features.Users.Commands.Update;
 
 [Roles(UsersOperationClaims.UpdateUsers)]
 public record UpdateUserCommand(

@@ -1,12 +1,12 @@
 using AutoMapper;
-using Domain;
 using MediatR;
 using MGH.Core.Application.Requests;
 using MGH.Core.Application.Responses;
 using MGH.Core.Infrastructure.Persistence.Models.Filters.GetModels;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
+using Security.Domain;
 
-namespace Application.Features.UserOperationClaims.Queries.GetList;
+namespace Security.Application.Features.UserOperationClaims.Queries.GetList;
 
 public class GetListUserOperationClaimQuery(PageRequest pageRequest)
     : IRequest<GetListResponse<GetListUserOperationClaimListItemDto>>

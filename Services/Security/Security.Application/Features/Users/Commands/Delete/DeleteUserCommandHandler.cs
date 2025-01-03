@@ -1,11 +1,11 @@
-﻿using Application.Features.Users.Rules;
-using AutoMapper;
-using Domain;
+﻿using AutoMapper;
 using MGH.Core.Domain.Buses.Commands;
 using MGH.Core.Infrastructure.Persistence.Models.Filters.GetModels;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
+using Security.Application.Features.Users.Rules;
+using Security.Domain;
 
-namespace Application.Features.Users.Commands.Delete;
+namespace Security.Application.Features.Users.Commands.Delete;
 
 public class DeleteUserCommandHandler(IMapper mapper, IUow uow, IUserBusinessRules userBusinessRules)
     : ICommandHandler<DeleteUserCommand, DeletedUserResponse>

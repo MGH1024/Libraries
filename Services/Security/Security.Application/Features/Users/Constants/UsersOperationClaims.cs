@@ -1,4 +1,4 @@
-﻿namespace Application.Features.Users.Constants;
+﻿namespace Security.Application.Features.Users.Constants;
 
 public static class UsersOperationClaims
 {

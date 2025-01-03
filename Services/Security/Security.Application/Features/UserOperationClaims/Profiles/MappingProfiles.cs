@@ -1,17 +1,17 @@
 using System.Linq.Expressions;
-using Application.Features.UserOperationClaims.Commands.Create;
-using Application.Features.UserOperationClaims.Commands.Delete;
-using Application.Features.UserOperationClaims.Commands.Update;
-using Application.Features.UserOperationClaims.Queries.GetById;
-using Application.Features.UserOperationClaims.Queries.GetList;
-using Application.Helpers;
 using AutoMapper;
 using MGH.Core.Application.Responses;
 using MGH.Core.Infrastructure.Persistence.Models.Filters.GetModels;
 using MGH.Core.Infrastructure.Persistence.Models.Paging;
 using MGH.Core.Infrastructure.Securities.Security.Entities;
+using Security.Application.Features.UserOperationClaims.Commands.Create;
+using Security.Application.Features.UserOperationClaims.Commands.Delete;
+using Security.Application.Features.UserOperationClaims.Commands.Update;
+using Security.Application.Features.UserOperationClaims.Queries.GetById;
+using Security.Application.Features.UserOperationClaims.Queries.GetList;
+using Security.Application.Helpers;
 
-namespace Application.Features.UserOperationClaims.Profiles;
+namespace Security.Application.Features.UserOperationClaims.Profiles;
 
 public class MappingProfiles : Profile
 {

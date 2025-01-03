@@ -1,4 +1,4 @@
-namespace Application.Features.Users.Queries.GetList;
+namespace Security.Application.Features.Users.Queries.GetList;
 
 public class GetListUserListItemDto(int id, string firstName, string lastName, string email, bool status)
 {

@@ -1,12 +1,12 @@
-﻿using Application.Features.Auth.Services;
-using Application.Features.Users.Extensions;
-using Application.Features.Users.Rules;
-using AutoMapper;
-using Domain;
+﻿using AutoMapper;
 using MGH.Core.Domain.Buses.Commands;
 using MGH.Core.Infrastructure.Securities.Security.Hashing;
+using Security.Application.Features.Auth.Services;
+using Security.Application.Features.Users.Extensions;
+using Security.Application.Features.Users.Rules;
+using Security.Domain;
 
-namespace Application.Features.Users.Commands.UpdateFromAuth;
+namespace Security.Application.Features.Users.Commands.UpdateFromAuth;
 
 public class UpdateUserFromAuthCommandHandler(
     IUow uow,

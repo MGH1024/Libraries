@@ -3,6 +3,7 @@ using System.Text.Json;
 using MGH.Core.Infrastructure.MessageBroker;
 using Library.Endpoint.Worker.Outbox.Profiles;
 using MGH.Core.Domain.Events;
+using MGH.Core.Infrastructure.EventBus;
 
 namespace Library.Endpoint.Worker.Outbox;
 

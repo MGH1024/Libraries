@@ -1,7 +1,5 @@
-﻿using Domain;
-using Prometheus;
+﻿using Prometheus;
 using System.Reflection;
-using Domain.Repositories;
 using System.Globalization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Builder;
@@ -24,6 +22,8 @@ using MGH.Core.Infrastructure.Persistence.EF.Interceptors;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using MGH.Core.CrossCutting.Localizations.RouteConstraints;
 using MGH.Core.Infrastructure.Persistence.Models.Configuration;
+using Security.Domain;
+using Security.Domain.Repositories;
 
 namespace Security.Infrastructure;
 

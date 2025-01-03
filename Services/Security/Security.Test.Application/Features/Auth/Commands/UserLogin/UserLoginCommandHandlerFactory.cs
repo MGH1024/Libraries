@@ -1,7 +1,7 @@
-﻿using Application.Features.Auth.Commands.UserLogin;
-using Security.Test.Base;
+﻿using Security.Application.Features.Auth.Commands.UserLogin;
+using Security.Test.Application.Base;
 
-namespace Security.Test.Features.Auth.Commands.UserLogin;
+namespace Security.Test.Application.Features.Auth.Commands.UserLogin;
 
 public static class UserLoginCommandHandlerFactory
 {

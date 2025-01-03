@@ -2,6 +2,7 @@
 using RabbitMQ.Client;
 using System.Text.Json;
 using MGH.Core.Domain.Events;
+using MGH.Core.Infrastructure.EventBus;
 using MGH.Core.Infrastructure.MessageBroker.RabbitMq.Model;
 using MGH.Core.Infrastructure.MessageBroker.RabbitMq.Abstracts;
 using MGH.Core.Infrastructure.MessageBroker.RabbitMq.Attributes;

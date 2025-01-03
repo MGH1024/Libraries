@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Application.Features.Auth.Commands.UserLogin;
+namespace Security.Application.Features.Auth.Commands.UserLogin;
 
 public class UserLoginCommandDtoValidator : AbstractValidator<UserLoginCommandDto>
 {

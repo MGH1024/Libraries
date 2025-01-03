@@ -1,26 +1,26 @@
 ﻿using System.Reflection;
-using Application.Features.Auth.Rules;
-using Application.Features.Auth.Services;
-using Application.Features.OperationClaims.Rules;
-using Application.Features.OperationClaims.Services;
-using Application.Features.UserOperationClaims.Rules;
-using Application.Features.UserOperationClaims.Services;
-using Application.Features.Users.Rules;
-using Application.Features.Users.Services;
 using FluentValidation;
 using MGH.Core.Application.Pipelines.Authorization;
-using MGH.Core.Application.Pipelines.Caching;
 using MGH.Core.Application.Pipelines.Logging;
 using MGH.Core.Application.Pipelines.Transaction;
 using MGH.Core.Application.Pipelines.Validation;
 using MGH.Core.Application.Rules;
-using MGH.Core.Infrastructure.Cache.Redis;
+using MGH.Core.Infrastructure.Caching;
+using MGH.Core.Infrastructure.Caching.Models;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Base;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Security.Application.Features.Auth.Rules;
+using Security.Application.Features.Auth.Services;
+using Security.Application.Features.OperationClaims.Rules;
+using Security.Application.Features.OperationClaims.Services;
+using Security.Application.Features.UserOperationClaims.Rules;
+using Security.Application.Features.UserOperationClaims.Services;
+using Security.Application.Features.Users.Rules;
+using Security.Application.Features.Users.Services;
 
-namespace Application;
+namespace Security.Application;
 
 public static class ApplicationServiceRegistration
 {

@@ -1,6 +1,6 @@
 ﻿using MGH.Core.Infrastructure.Securities.Security.Entities;
 
-namespace Application.Features.Auth.Rules;
+namespace Security.Application.Features.Auth.Rules;
 
 public interface IAuthBusinessRules
 {

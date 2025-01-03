@@ -1,7 +1,7 @@
-﻿using Domain.Repositories;
-using MGH.Core.Infrastructure.Persistence.Base;
+﻿using MGH.Core.Infrastructure.Persistence.Base;
+using Security.Domain.Repositories;
 
-namespace Domain;
+namespace Security.Domain;
 
 public interface IUow : IUnitOfWork
 {

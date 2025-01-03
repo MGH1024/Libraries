@@ -1,11 +1,11 @@
-﻿using Application.Features.Auth.Rules;
-using Application.Features.Auth.Services;
-using Application.Features.Users.Rules;
-using AutoMapper;
-using Domain;
+﻿using AutoMapper;
 using Moq;
+using Security.Application.Features.Auth.Rules;
+using Security.Application.Features.Auth.Services;
+using Security.Application.Features.Users.Rules;
+using Security.Domain;
 
-namespace Security.Test.Base;
+namespace Security.Test.Application.Base;
 
 public  class HandlerTestsFixture
 {
