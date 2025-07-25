@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Library.Infrastructure.Migrations
 {
     [DbContext(typeof(LibraryDbContext))]
-    [Migration("20241230170027_AddLending")]
-    partial class AddLending
+    [Migration("20250521084159_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -86,8 +86,8 @@ namespace Library.Infrastructure.Migrations
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");
 
-                    b.Property<int>("Version")
-                        .HasColumnType("int");
+                    b.Property<long>("Version")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -148,8 +148,8 @@ namespace Library.Infrastructure.Migrations
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");
 
-                    b.Property<int>("Version")
-                        .HasColumnType("int");
+                    b.Property<long>("Version")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -217,8 +217,8 @@ namespace Library.Infrastructure.Migrations
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");
 
-                    b.Property<int>("Version")
-                        .HasColumnType("int");
+                    b.Property<long>("Version")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -285,49 +285,15 @@ namespace Library.Infrastructure.Migrations
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");
 
-                    b.Property<int>("Version")
-                        .HasColumnType("int");
+                    b.Property<long>("Version")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
                     b.ToTable("Members", "lib");
                 });
 
-            modelBuilder.Entity("MGH.Core.Domain.BaseEntity.Abstract.Events.DomainEvent", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("BookId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("LendingId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("LibraryId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("MemberId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("OccurredOn")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BookId");
-
-                    b.HasIndex("LendingId");
-
-                    b.HasIndex("LibraryId");
-
-                    b.HasIndex("MemberId");
-
-                    b.ToTable("DomainEvent");
-                });
-
-            modelBuilder.Entity("MGH.Core.Domain.Entity.Outboxes.OutboxMessage", b =>
+            modelBuilder.Entity("MGH.Core.Domain.Entities.OutboxMessage", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -382,6 +348,9 @@ namespace Library.Infrastructure.Migrations
                     b.Property<string>("UpdatedByIp")
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");
+
+                    b.Property<long>("Version")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -459,45 +428,6 @@ namespace Library.Infrastructure.Migrations
                         });
 
                     b.Navigation("LibraryStaves");
-                });
-
-            modelBuilder.Entity("MGH.Core.Domain.BaseEntity.Abstract.Events.DomainEvent", b =>
-                {
-                    b.HasOne("Library.Domain.Books.Book", null)
-                        .WithMany("Events")
-                        .HasForeignKey("BookId");
-
-                    b.HasOne("Library.Domain.Lendings.Lending", null)
-                        .WithMany("Events")
-                        .HasForeignKey("LendingId");
-
-                    b.HasOne("Library.Domain.Libraries.Library", null)
-                        .WithMany("Events")
-                        .HasForeignKey("LibraryId");
-
-                    b.HasOne("Library.Domain.Members.Member", null)
-                        .WithMany("Events")
-                        .HasForeignKey("MemberId");
-                });
-
-            modelBuilder.Entity("Library.Domain.Books.Book", b =>
-                {
-                    b.Navigation("Events");
-                });
-
-            modelBuilder.Entity("Library.Domain.Lendings.Lending", b =>
-                {
-                    b.Navigation("Events");
-                });
-
-            modelBuilder.Entity("Library.Domain.Libraries.Library", b =>
-                {
-                    b.Navigation("Events");
-                });
-
-            modelBuilder.Entity("Library.Domain.Members.Member", b =>
-                {
-                    b.Navigation("Events");
                 });
 #pragma warning restore 612, 618
         }

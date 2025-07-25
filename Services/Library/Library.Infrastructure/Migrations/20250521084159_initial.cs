@@ -6,28 +6,13 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Library.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class AddLending : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<Guid>(
-                name: "BookId",
-                table: "DomainEvent",
-                type: "uniqueidentifier",
-                nullable: true);
-
-            migrationBuilder.AddColumn<Guid>(
-                name: "LendingId",
-                table: "DomainEvent",
-                type: "uniqueidentifier",
-                nullable: true);
-
-            migrationBuilder.AddColumn<Guid>(
-                name: "MemberId",
-                table: "DomainEvent",
-                type: "uniqueidentifier",
-                nullable: true);
+            migrationBuilder.EnsureSchema(
+                name: "lib");
 
             migrationBuilder.CreateTable(
                 name: "Books",
@@ -40,7 +25,7 @@ namespace Library.Infrastructure.Migrations
                     UniqueCode = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
                     IsReference = table.Column<bool>(type: "bit", nullable: false),
                     PublicationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Version = table.Column<int>(type: "int", nullable: false),
+                    Version = table.Column<long>(type: "bigint", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
                     CreatedByIp = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
@@ -67,7 +52,7 @@ namespace Library.Infrastructure.Migrations
                     MemberId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     LendingDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ReturnDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Version = table.Column<int>(type: "int", nullable: false),
+                    Version = table.Column<long>(type: "bigint", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
                     CreatedByIp = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
@@ -84,6 +69,33 @@ namespace Library.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Libraries",
+                schema: "lib",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    Code = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
+                    Location = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    District = table.Column<int>(type: "int", nullable: false),
+                    RegistrationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Version = table.Column<long>(type: "bigint", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
+                    CreatedByIp = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedBy = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
+                    UpdatedByIp = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
+                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedBy = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
+                    DeletedByIp = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Libraries", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Members",
                 schema: "lib",
                 columns: table => new
@@ -93,7 +105,7 @@ namespace Library.Infrastructure.Migrations
                     NationalCode = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     MobileNumber = table.Column<string>(type: "nvarchar(13)", maxLength: 13, nullable: false),
                     Address = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: false),
-                    Version = table.Column<int>(type: "int", nullable: false),
+                    Version = table.Column<long>(type: "bigint", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
                     CreatedByIp = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
@@ -107,6 +119,32 @@ namespace Library.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Members", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OutBox",
+                schema: "lib",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Type = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(max)", maxLength: 4096, nullable: false),
+                    ProcessedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Error = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
+                    Version = table.Column<long>(type: "bigint", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
+                    CreatedByIp = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedBy = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
+                    UpdatedByIp = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
+                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedBy = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
+                    DeletedByIp = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OutBox", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -131,20 +169,28 @@ namespace Library.Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_DomainEvent_BookId",
-                table: "DomainEvent",
-                column: "BookId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_DomainEvent_LendingId",
-                table: "DomainEvent",
-                column: "LendingId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_DomainEvent_MemberId",
-                table: "DomainEvent",
-                column: "MemberId");
+            migrationBuilder.CreateTable(
+                name: "Staves",
+                schema: "lib",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    Position = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    NationalCode = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    LibraryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Staves", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Staves_Libraries_LibraryId",
+                        column: x => x.LibraryId,
+                        principalSchema: "lib",
+                        principalTable: "Libraries",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Authors_BookId",
@@ -152,46 +198,16 @@ namespace Library.Infrastructure.Migrations
                 table: "Authors",
                 column: "BookId");
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_DomainEvent_Books_BookId",
-                table: "DomainEvent",
-                column: "BookId",
-                principalSchema: "lib",
-                principalTable: "Books",
-                principalColumn: "Id");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_DomainEvent_Lendings_LendingId",
-                table: "DomainEvent",
-                column: "LendingId",
-                principalSchema: "lib",
-                principalTable: "Lendings",
-                principalColumn: "Id");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_DomainEvent_Members_MemberId",
-                table: "DomainEvent",
-                column: "MemberId",
-                principalSchema: "lib",
-                principalTable: "Members",
-                principalColumn: "Id");
+            migrationBuilder.CreateIndex(
+                name: "IX_Staves_LibraryId",
+                schema: "lib",
+                table: "Staves",
+                column: "LibraryId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_DomainEvent_Books_BookId",
-                table: "DomainEvent");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_DomainEvent_Lendings_LendingId",
-                table: "DomainEvent");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_DomainEvent_Members_MemberId",
-                table: "DomainEvent");
-
             migrationBuilder.DropTable(
                 name: "Authors",
                 schema: "lib");
@@ -205,32 +221,20 @@ namespace Library.Infrastructure.Migrations
                 schema: "lib");
 
             migrationBuilder.DropTable(
+                name: "OutBox",
+                schema: "lib");
+
+            migrationBuilder.DropTable(
+                name: "Staves",
+                schema: "lib");
+
+            migrationBuilder.DropTable(
                 name: "Books",
                 schema: "lib");
 
-            migrationBuilder.DropIndex(
-                name: "IX_DomainEvent_BookId",
-                table: "DomainEvent");
-
-            migrationBuilder.DropIndex(
-                name: "IX_DomainEvent_LendingId",
-                table: "DomainEvent");
-
-            migrationBuilder.DropIndex(
-                name: "IX_DomainEvent_MemberId",
-                table: "DomainEvent");
-
-            migrationBuilder.DropColumn(
-                name: "BookId",
-                table: "DomainEvent");
-
-            migrationBuilder.DropColumn(
-                name: "LendingId",
-                table: "DomainEvent");
-
-            migrationBuilder.DropColumn(
-                name: "MemberId",
-                table: "DomainEvent");
+            migrationBuilder.DropTable(
+                name: "Libraries",
+                schema: "lib");
         }
     }
 }

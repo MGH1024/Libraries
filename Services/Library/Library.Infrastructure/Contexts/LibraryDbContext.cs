@@ -1,5 +1,6 @@
 ﻿using Library.Domain.Lendings;
 using MGH.Core.Domain.Entities;
+using MGH.Core.Domain.Events;
 using Microsoft.EntityFrameworkCore;
 
 namespace Library.Infrastructure.Contexts;
@@ -9,6 +10,7 @@ public class LibraryDbContext(DbContextOptions<LibraryDbContext> options) : DbCo
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(LibraryDbContext).Assembly);
+        modelBuilder.Ignore<DomainEvent>();
         base.OnModelCreating(modelBuilder);
     }
 
