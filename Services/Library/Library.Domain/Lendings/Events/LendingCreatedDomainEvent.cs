@@ -2,11 +2,11 @@
 using Library.Domain.Libraries.Constant;
 using MGH.Core.Domain.Buses.Commands;
 using MGH.Core.Domain.Events;
-using MGH.Core.Infrastructure.MessageBroker.RabbitMq.Attributes;
+using MGH.Core.Infrastructure.EventBus.RabbitMq.Attributes;
 
 namespace Library.Domain.Lendings.Events;
 
-[BaseMessage(
+[Event(
     QueueItemProperty.CommonRoutingKey,
     QueueItemProperty.CommonExchangeType,
     QueueItemProperty.CommonExchangeName,

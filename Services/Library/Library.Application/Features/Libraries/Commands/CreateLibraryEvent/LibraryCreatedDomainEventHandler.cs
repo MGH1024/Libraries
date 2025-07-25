@@ -7,7 +7,8 @@ using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Base;
 
 namespace Library.Application.Features.Libraries.Commands.CreateLibraryEvent;
 
-public class LibraryCreatedDomainEventHandler(IElasticSearch elasticSearch, ILibraryBusinessRules businessRules, IUow uow) : ICommandHandler<LibraryCreatedDomainEvent>
+public class LibraryCreatedDomainEventHandler(IElasticSearch elasticSearch, ILibraryBusinessRules businessRules, IUow uow) : 
+    ICommandHandler<LibraryCreatedDomainEvent>
 {
     public async Task Handle(LibraryCreatedDomainEvent command, CancellationToken cancellationToken)
     {

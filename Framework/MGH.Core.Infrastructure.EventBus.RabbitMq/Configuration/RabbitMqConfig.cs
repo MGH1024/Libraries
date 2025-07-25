@@ -1,6 +1,6 @@
-﻿namespace MGH.Core.Infrastructure.MessageBroker.RabbitMq.Model;
+﻿namespace MGH.Core.Infrastructure.EventBus.RabbitMq.Configuration;
 
-public class RabbitMqConnection
+public class RabbitMqConfig
 {
     public string Host { get; set; }
     public string Port { get; set; }
@@ -9,10 +9,8 @@ public class RabbitMqConnection
     public string VirtualHost { get; set; }
     public string ReceiveEndpoint { get; set; }
 
-    public Uri HostAddress
-    {
-        get { return new Uri($"rabbitmq://{Username}:{Password}@{Host}:{Port}/{VirtualHost}"); }
-    }
+    public Uri HostAddress => new($"rabbitmq://{Username}:{Password}@{Host}:{Port}/{VirtualHost}");
+
     public Uri HealthAddress
     {
         get

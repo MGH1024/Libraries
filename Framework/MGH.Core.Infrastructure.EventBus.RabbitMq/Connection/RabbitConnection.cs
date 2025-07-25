@@ -1,12 +1,12 @@
-﻿using MGH.Core.Infrastructure.MessageBroker.RabbitMq.Abstracts;
+﻿using MGH.Core.Infrastructure.EventBus.RabbitMq.Configuration;
 using Microsoft.Extensions.Options;
 using Polly;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
-namespace MGH.Core.Infrastructure.MessageBroker.RabbitMq.Concrete;
+namespace MGH.Core.Infrastructure.EventBus.RabbitMq.Connection;
 
-public class Connection : IRabbitMqConnection
+public class RabbitConnection : IRabbitConnection
 {
     private Policy _connectionPolicy;
     private ConnectionFactory _connectionFactory;
@@ -16,7 +16,7 @@ public class Connection : IRabbitMqConnection
     private bool IsServiceConnected => _connection is not null && _connection.IsOpen;
     private bool IsChannelConnected => _channel is not null && _channel.IsOpen;
     
-    public Connection(IOptions<Model.RabbitMq> options)
+    public RabbitConnection(IOptions<EventBusConfig> options)
     {
         CreateConnectionPolicy();
         CreateConnectionFactory(options.Value);
@@ -63,15 +63,15 @@ public class Connection : IRabbitMqConnection
             );
     }
     
-    private void CreateConnectionFactory(Model.RabbitMq rabbitMq)
+    private void CreateConnectionFactory(EventBusConfig eventBusConfig)
     {
         _connectionFactory = new ConnectionFactory
         {
-            UserName = rabbitMq.DefaultConnection.Username,
-            Password = rabbitMq.DefaultConnection.Password,
-            VirtualHost = rabbitMq.DefaultConnection.VirtualHost,
-            HostName = rabbitMq.DefaultConnection.Host,
-            Port = Convert.ToInt32(rabbitMq.DefaultConnection.Port),
+            UserName = eventBusConfig.DefaultConfig.Username,
+            Password = eventBusConfig.DefaultConfig.Password,
+            VirtualHost = eventBusConfig.DefaultConfig.VirtualHost,
+            HostName = eventBusConfig.DefaultConfig.Host,
+            Port = Convert.ToInt32(eventBusConfig.DefaultConfig.Port),
         };
     }
     

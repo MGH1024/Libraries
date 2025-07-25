@@ -1,6 +1,7 @@
 ﻿using HealthChecks.UI.Client;
 using MGH.Core.Infrastructure.Caching.Redis;
-using MGH.Core.Infrastructure.MessageBroker.RabbitMq.Model;
+using MGH.Core.Infrastructure.EventBus.RabbitMq;
+using MGH.Core.Infrastructure.EventBus.RabbitMq.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,8 +20,8 @@ public static class RegisterHealthCheck
             configuration.GetSection(nameof(DatabaseConnection)).GetValue<string>("SqlConnection") ??
             throw new ArgumentNullException(nameof(DatabaseConnection.SqlConnection));
 
-        var defaultConnection = configuration.GetSection("RabbitMq:DefaultConnection").Get<RabbitMqConnection>()
-                                ?? throw new ArgumentNullException(nameof(RabbitMq.DefaultConnection));
+        var defaultConnection = configuration.GetSection("RabbitMq:DefaultConnection").Get<RabbitMqConfig>()
+                                ?? throw new ArgumentNullException(nameof(EventBusConfig.DefaultConfig));
 
         var redisConnection = configuration.GetSection("RedisConnections:DefaultConfiguration")
                                   .Get<RedisConfiguration>()

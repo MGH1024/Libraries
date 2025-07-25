@@ -1,9 +1,8 @@
 using MediatR;
 using System.Text.Json;
-using MGH.Core.Infrastructure.MessageBroker;
-using Library.Endpoint.Worker.Outbox.Profiles;
 using MGH.Core.Domain.Events;
 using MGH.Core.Infrastructure.EventBus;
+using Library.Endpoint.Worker.Outbox.Profiles;
 
 namespace Library.Endpoint.Worker.Outbox;
 
@@ -13,7 +12,7 @@ public class Worker(IServiceProvider serviceProvider) : BackgroundService
     {
         using var scope = serviceProvider.CreateScope();
         var sender = scope.ServiceProvider.GetRequiredService<ISender>();
-        var eventBus = scope.ServiceProvider.GetRequiredService<IEventBusDispatcher>();
+        var eventBus = scope.ServiceProvider.GetRequiredService<IEventBus>();
 
         while (!cancellationToken.IsCancellationRequested)
         {
@@ -27,10 +26,12 @@ public class Worker(IServiceProvider serviceProvider) : BackgroundService
                 var type = GetOutBoxType(group.Key);
                 if (type == null)
                     throw new Exception("type is null");
+                
                 var items = group.Select(x => x.Content).ToList();
                 var deserializedContent = items.Select(content => JsonSerializer.Deserialize(content, type)).ToList();
                 if (!deserializedContent.Any())
                     throw new ApplicationException($"No content found for type {type}");
+                
                 var events = deserializedContent.Cast<IEvent>().ToList();
                 eventBus.Publish(events);
             }

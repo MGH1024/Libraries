@@ -1,7 +1,6 @@
-using Library.Domain.Libraries.Constant;
+﻿using Library.Domain.Libraries.Constant;
 using MGH.Core.Domain.Buses.Commands;
 using MGH.Core.Domain.Events;
-using MGH.Core.Infrastructure.EventBus.RabbitMq;
 using MGH.Core.Infrastructure.EventBus.RabbitMq.Attributes;
 
 namespace Library.Domain.Libraries.Events;
@@ -12,7 +11,7 @@ namespace Library.Domain.Libraries.Events;
     QueueItemProperty.CommonExchangeName,
     QueueItemProperty.CommonQueueName
 )]
-public class LibraryCreatedDomainEvent(string libraryName, string libraryCode, string libraryLocation, DistrictEnum libraryDistrict, DateTime libraryRegistrationDate)
+public class LibraryCreatedDomainEvent2(string libraryName, string libraryCode, string libraryLocation, DistrictEnum libraryDistrict, DateTime libraryRegistrationDate)
     : DomainEvent, ICommand
 {
     public string LibraryName { get; set; } = libraryName;
