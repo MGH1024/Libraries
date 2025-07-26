@@ -67,11 +67,11 @@ public class RabbitConnection : IRabbitConnection
     {
         _connectionFactory = new ConnectionFactory
         {
-            UserName = eventBusConfig.DefaultConfig.Username,
-            Password = eventBusConfig.DefaultConfig.Password,
-            VirtualHost = eventBusConfig.DefaultConfig.VirtualHost,
-            HostName = eventBusConfig.DefaultConfig.Host,
-            Port = Convert.ToInt32(eventBusConfig.DefaultConfig.Port),
+            UserName = eventBusConfig.DefaultConnection.Username,
+            Password = eventBusConfig.DefaultConnection.Password,
+            VirtualHost = eventBusConfig.DefaultConnection.VirtualHost,
+            HostName = eventBusConfig.DefaultConnection.Host,
+            Port = Convert.ToInt32(eventBusConfig.DefaultConnection.Port),
         };
     }
     

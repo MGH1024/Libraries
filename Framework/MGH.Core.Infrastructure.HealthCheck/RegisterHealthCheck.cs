@@ -20,8 +20,8 @@ public static class RegisterHealthCheck
             configuration.GetSection(nameof(DatabaseConnection)).GetValue<string>("SqlConnection") ??
             throw new ArgumentNullException(nameof(DatabaseConnection.SqlConnection));
 
-        var defaultConnection = configuration.GetSection("RabbitMq:DefaultConnection").Get<RabbitMqConfig>()
-                                ?? throw new ArgumentNullException(nameof(EventBusConfig.DefaultConfig));
+        var defaultConnection = configuration.GetSection("EventBusConfig:DefaultConnection").Get<RabbitMqConfig>()
+                                ?? throw new ArgumentNullException(nameof(EventBusConfig.DefaultConnection));
 
         var redisConnection = configuration.GetSection("RedisConnections:DefaultConfiguration")
                                   .Get<RedisConfiguration>()

@@ -2,5 +2,5 @@
 
 public class EventBusConfig
 {
-    public RabbitMqConfig DefaultConfig { get; set; }
+    public RabbitMqConfig DefaultConnection { get; set; }
 }

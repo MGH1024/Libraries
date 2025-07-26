@@ -91,6 +91,7 @@ public class EventBus: IEventBus
 
         channel.BasicConsume(baseMessage.QueueName, false, consumer);
     }
+
     public void Consume<T>() where T : IEvent
     {
         _rabbitConnection.ConnectService();
@@ -110,20 +111,35 @@ public class EventBus: IEventBus
                     throw new InvalidOperationException($"Handler for event type {typeof(T).Name} not registered.");
 
                 var json = Encoding.UTF8.GetString(ea.Body.ToArray());
-                var message = JsonSerializer.Deserialize<T>(json);
-                if (message != null)
-                    await handler.HandleAsync(message);
 
+                var message = JsonSerializer.Deserialize<T>(json, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                });
+
+                if (message == null)
+                {
+                    channel.BasicNack(ea.DeliveryTag, false, false); // discard message
+                    return;
+                }
+
+                await handler.HandleAsync(message);
                 channel.BasicAck(ea.DeliveryTag, false);
             }
-            catch
+            catch (Exception ex)
             {
-                channel.BasicNack(ea.DeliveryTag, false, false);
+                var json = Encoding.UTF8.GetString(ea.Body.ToArray());
+                Console.WriteLine($"❌ Error handling message for type {typeof(T).Name}: {ex.Message}");
+                Console.WriteLine($"Raw message: {json}");
+
+                // Optional: log to Serilog or ILogger here
+                channel.BasicNack(ea.DeliveryTag, false, false); // reject and don't requeue
             }
         };
 
-        channel.BasicConsume(baseMessage.QueueName, false, consumer);
+        channel.BasicConsume(queue: baseMessage.QueueName, autoAck: false, consumer: consumer);
     }
+
     public void StartConsumingAllHandlers()
     {
         var handlerTypes = AppDomain.CurrentDomain

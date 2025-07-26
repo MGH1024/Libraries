@@ -89,6 +89,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Member", "Services\Member\M
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MGH.Core.Endpoint.Web", "Framework\MGH.Core.Endpoint.Web\MGH.Core.Endpoint.Web.csproj", "{BEEC6296-3BA2-4E58-B04B-39F017D5C427}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Library.Endpoint.Worker.Inbox", "Services\Library\Library.Endpoint.Worker.Inbox\Library.Endpoint.Worker.Inbox.csproj", "{7B4A95DC-9C21-F3BF-7646-7401A8DE0982}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -239,6 +241,10 @@ Global
 		{BEEC6296-3BA2-4E58-B04B-39F017D5C427}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BEEC6296-3BA2-4E58-B04B-39F017D5C427}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BEEC6296-3BA2-4E58-B04B-39F017D5C427}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B4A95DC-9C21-F3BF-7646-7401A8DE0982}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B4A95DC-9C21-F3BF-7646-7401A8DE0982}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B4A95DC-9C21-F3BF-7646-7401A8DE0982}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B4A95DC-9C21-F3BF-7646-7401A8DE0982}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -285,6 +291,7 @@ Global
 		{60718AB3-FE2A-44CC-9015-F08F2E167AAE} = {5C661E41-332B-4496-9255-FF8BCF3B458E}
 		{D9453F62-96A2-4E42-99AB-2BE22729E49E} = {5C661E41-332B-4496-9255-FF8BCF3B458E}
 		{BEEC6296-3BA2-4E58-B04B-39F017D5C427} = {084E41B7-2029-4EB7-8CC3-EDBEE5C66534}
+		{7B4A95DC-9C21-F3BF-7646-7401A8DE0982} = {88C6BDD9-95BF-462A-9585-C5CB14B1EB4D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {04EE5569-4196-47F2-A52B-CF1049C542F2}
