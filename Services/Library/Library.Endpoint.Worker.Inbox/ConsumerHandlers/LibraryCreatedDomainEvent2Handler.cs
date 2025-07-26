@@ -19,3 +19,13 @@ public class LibraryCreatedDomainEvent2Handler : IEventHandler<LibraryCreatedDom
         return Task.CompletedTask;
     }
 }
+
+
+//payload message :
+//{
+//  "libraryName": "Test",
+//  "libraryCode": "101",
+//  "libraryLocation": "location",
+//  "libraryDistrict": 1,
+//  "libraryRegistrationDate": "2025-07-26T12:00:00Z"
+//}
