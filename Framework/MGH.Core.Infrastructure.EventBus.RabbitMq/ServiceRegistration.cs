@@ -33,4 +33,35 @@ public static class ServiceRegistration
             services.AddTransient(t.iface, t.impl);
         }
     }
+
+    public static void StartConsumingRegisteredEventHandlers(this IServiceProvider serviceProvider)
+    {
+        var eventBus = serviceProvider.GetRequiredService<IEventBus>();
+
+        var handlerInterfaceType = typeof(IEventHandler<>);
+
+        var eventHandlerTypes = AppDomain.CurrentDomain
+            .GetAssemblies()
+            .SelectMany(a => a.GetTypes())
+            .Where(t => !t.IsAbstract && !t.IsInterface)
+            .SelectMany(t => t.GetInterfaces(), (impl, iface) => new { impl, iface })
+            .Where(x =>
+                x.iface.IsGenericType &&
+                x.iface.GetGenericTypeDefinition() == handlerInterfaceType)
+            .Select(x => x.iface.GetGenericArguments()[0])
+            .Distinct()
+            .ToList();
+
+        foreach (var eventType in eventHandlerTypes)
+        {
+            //var method = typeof(IEventBus).GetMethod(nameof(IEventBus.Consume))!;
+            var method = typeof(IEventBus).GetMethods()
+                .Where(m => m.Name == "Consume" && m.IsGenericMethodDefinition)
+                .Where(m => m.GetParameters().Length == 0) // Only pick the parameterless one
+                .Single();
+            var genericMethod = method.MakeGenericMethod(eventType);
+            genericMethod.Invoke(eventBus, null);
+        }
+    }
+
 }

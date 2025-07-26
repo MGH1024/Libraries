@@ -1,10 +1,9 @@
 using Library.Application;
-using Library.Endpoint.Worker.Inbox;
-using Library.Endpoint.Worker.Inbox.ConsumerHandlers;
 using Library.Infrastructure;
+using Library.Endpoint.Worker.Inbox;
 using MGH.Core.CrossCutting.Logging;
-using MGH.Core.Infrastructure.EventBus;
 using MGH.Core.Infrastructure.EventBus.RabbitMq;
+using Library.Endpoint.Worker.Inbox.ConsumerHandlers;
 
 var builder = Host.CreateApplicationBuilder(args);
 
@@ -18,7 +17,6 @@ RegisterLogger.CreateLoggerByConfig(builder.Configuration);
 builder.Services.AddHostedService<Worker>();
 var host = builder.Build();
 
-var eventBus = host.Services.GetRequiredService<IEventBus>();
-eventBus.StartConsumingAllHandlers();
+host.Services.StartConsumingRegisteredEventHandlers();
 
 await host.RunAsync();

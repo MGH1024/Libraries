@@ -23,9 +23,4 @@ public interface IEventBus
     /// Consume a specific event type using the registered IEventHandler<T> from DI.
     /// </summary>
     void Consume<T>() where T : IEvent;
-
-    /// <summary>
-    /// Automatically discover and subscribe all IEventHandler<T> types from DI.
-    /// </summary>
-    void StartConsumingAllHandlers();
 }

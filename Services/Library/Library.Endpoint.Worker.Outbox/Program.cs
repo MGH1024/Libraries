@@ -2,12 +2,9 @@ using Library.Application;
 using Library.Infrastructure;
 using MGH.Core.CrossCutting.Logging;
 using Library.Endpoint.Worker.Outbox;
-using Library.Domain.Libraries.Events;
-using MGH.Core.Infrastructure.EventBus;
 
 var builder = Host.CreateApplicationBuilder(args);
 
-builder.Services.AddInfrastructuresServices(builder.Configuration);
 builder.Services.AddInfrastructuresServices(builder.Configuration);
 builder.Services.AddApplicationServices(builder.Configuration);
 

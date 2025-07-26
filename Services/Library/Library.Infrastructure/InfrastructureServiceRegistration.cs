@@ -52,7 +52,7 @@ public static class InfrastructureServiceRegistration
         services.AddRabbitMqEventBus(configuration);
         services.AddFactories();
         services.AddPrometheus();
-        //services.AddInfrastructureHealthChecks<LibraryDbContext>(configuration);
+        services.AddInfrastructureHealthChecks<LibraryDbContext>(configuration);
     }
 
     private static void AddFactories(this IServiceCollection services)

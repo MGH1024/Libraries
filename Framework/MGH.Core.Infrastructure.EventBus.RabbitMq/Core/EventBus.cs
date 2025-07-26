@@ -140,30 +140,7 @@ public class EventBus: IEventBus
         channel.BasicConsume(queue: baseMessage.QueueName, autoAck: false, consumer: consumer);
     }
 
-    public void StartConsumingAllHandlers()
-    {
-        var handlerTypes = AppDomain.CurrentDomain
-            .GetAssemblies()
-            .SelectMany(a => a.GetTypes())
-            .Where(t => !t.IsAbstract && !t.IsInterface)
-            .SelectMany(t => t.GetInterfaces(), (t, i) => new { Implementation = t, Interface = i })
-            .Where(x =>
-                x.Interface.IsGenericType &&
-                x.Interface.GetGenericTypeDefinition() == typeof(IEventHandler<>))
-            .ToList();
-
-        foreach (var handler in handlerTypes)
-        {
-            var eventType = handler.Interface.GetGenericArguments()[0];
-            var method = typeof(EventBus).GetMethod(nameof(ConsumeGeneric), BindingFlags.Instance | BindingFlags.NonPublic);
-            var genericMethod = method!.MakeGenericMethod(eventType);
-            genericMethod.Invoke(this, null);
-        }
-    }
-    private void ConsumeGeneric<T>() where T : IEvent
-    {
-        Consume<T>();
-    }
+  
     private void PrepareToPublish(BaseMessage baseMessage)
     {
         _rabbitConnection.GetChannel().ExchangeDeclare(
