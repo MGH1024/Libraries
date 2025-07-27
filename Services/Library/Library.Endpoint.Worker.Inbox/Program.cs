@@ -7,7 +7,7 @@ using Library.Endpoint.Worker.Inbox.ConsumerHandlers;
 
 var builder = Host.CreateApplicationBuilder(args);
 
-builder.Services.AddInfrastructuresServices(builder.Configuration);
+builder.Services.AddInfrastructuresServicesForWorkers(builder.Configuration);
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddEventHandlers(typeof(LibraryCreatedDomainEvent2Handler).Assembly);
 

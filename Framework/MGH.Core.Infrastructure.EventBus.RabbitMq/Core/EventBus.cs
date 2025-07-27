@@ -91,7 +91,6 @@ public class EventBus: IEventBus
 
         channel.BasicConsume(baseMessage.QueueName, false, consumer);
     }
-
     public void Consume<T>() where T : IEvent
     {
         _rabbitConnection.ConnectService();
@@ -139,8 +138,6 @@ public class EventBus: IEventBus
 
         channel.BasicConsume(queue: baseMessage.QueueName, autoAck: false, consumer: consumer);
     }
-
-  
     private void PrepareToPublish(BaseMessage baseMessage)
     {
         _rabbitConnection.GetChannel().ExchangeDeclare(
@@ -163,11 +160,21 @@ public class EventBus: IEventBus
             throw new InvalidOperationException($"BaseMessageAttribute is not defined for type {type.Name}.");
         }
 
+        var (exchangeName, queueName) = ResolveQueue(attribute.RoutingKey,attribute.ExchangeType);
+
         return new BaseMessage(
             routingKey: attribute.RoutingKey,
             exchangeType: attribute.ExchangeType,
-            exchangeName: attribute.ExchangeName,
-            queueName: attribute.QueueName
+            exchangeName: exchangeName,
+            queueName: queueName
         );
+    }
+    public static (string ExchangeName, string QueueName) ResolveQueue(string routingKey, string exchangeType)
+    {
+        var rk = routingKey.Trim().Replace(".routing.key","").ToLowerInvariant();
+        var exchangeName = $"{rk}.exchange";
+        var queueName = $"{rk}.queue";
+
+        return (exchangeName, queueName);
     }
 }

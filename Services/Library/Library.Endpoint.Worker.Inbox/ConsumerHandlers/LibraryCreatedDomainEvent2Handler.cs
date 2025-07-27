@@ -29,3 +29,5 @@ public class LibraryCreatedDomainEvent2Handler : IEventHandler<LibraryCreatedDom
 //  "libraryDistrict": 1,
 //  "libraryRegistrationDate": "2025-07-26T12:00:00Z"
 //}
+
+//library.created.routing.key

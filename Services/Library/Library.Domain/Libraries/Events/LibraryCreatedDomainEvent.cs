@@ -6,12 +6,7 @@ using MGH.Core.Infrastructure.EventBus.RabbitMq.Attributes;
 
 namespace Library.Domain.Libraries.Events;
 
-[Event(
-    QueueItemProperty.CommonRoutingKey,
-    QueueItemProperty.CommonExchangeType,
-    QueueItemProperty.CommonExchangeName,
-    QueueItemProperty.CommonQueueName
-)]
+[Event(QueueItemProperty.CommonRoutingKey, QueueItemProperty.CommonExchangeType)]
 public class LibraryCreatedDomainEvent(string libraryName, string libraryCode, string libraryLocation, DistrictEnum libraryDistrict, DateTime libraryRegistrationDate)
     : DomainEvent, ICommand
 {

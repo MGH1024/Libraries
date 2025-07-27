@@ -55,6 +55,23 @@ public static class InfrastructureServiceRegistration
         services.AddInfrastructureHealthChecks<LibraryDbContext>(configuration);
     }
 
+    public static void AddInfrastructuresServicesForWorkers(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.RegisterInterceptors();
+        services.AddDbContextSqlServer(configuration);
+        services.AddDbContext<LibraryDbContext>(options => options.UseInMemoryDatabase("LibraryDbContext-InMemory"));
+        services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+        services.AddRepositories();
+        services.AddSecurityServices();
+        services.AddTransient<IDateTime, DateTimeService>();
+        services.AddAutoMapper(Assembly.GetExecutingAssembly());
+        services.AddCulture();
+        services.AddElasticSearch(configuration);
+        services.AddRabbitMqEventBus(configuration);
+        services.AddFactories();
+        services.AddPrometheus();
+    }
+
     private static void AddFactories(this IServiceCollection services)
     {
         services.AddScoped<ILibraryFactory, LibraryFactory>();
