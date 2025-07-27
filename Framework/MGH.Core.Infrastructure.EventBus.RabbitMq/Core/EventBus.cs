@@ -152,8 +152,8 @@ public class EventBus: IEventBus
     }
     private BaseMessage GetBaseMessageFromAttribute(Type type)
     {
-        var attribute = type.GetCustomAttributes(typeof(EventAttribute), true)
-            .FirstOrDefault() as EventAttribute;
+        var attribute = type.GetCustomAttributes(typeof(EventRoutingAttribute), true)
+            .FirstOrDefault() as EventRoutingAttribute;
 
         if (attribute == null)
         {
