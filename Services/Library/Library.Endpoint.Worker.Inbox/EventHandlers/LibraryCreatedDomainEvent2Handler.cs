@@ -1,7 +1,7 @@
 ﻿using Library.Domain.Libraries.Events;
 using MGH.Core.Infrastructure.EventBus;
 
-namespace Library.Endpoint.Worker.Inbox.ConsumerHandlers;
+namespace Library.Endpoint.Worker.Inbox.EventHandlers;
 
 public class LibraryCreatedDomainEvent2Handler : IEventHandler<LibraryCreatedDomainEvent2>
 {
@@ -19,15 +19,3 @@ public class LibraryCreatedDomainEvent2Handler : IEventHandler<LibraryCreatedDom
         return Task.CompletedTask;
     }
 }
-
-
-//payload message :
-//{
-//  "libraryName": "Test",
-//  "libraryCode": "101",
-//  "libraryLocation": "location",
-//  "libraryDistrict": 1,
-//  "libraryRegistrationDate": "2025-07-26T12:00:00Z"
-//}
-
-//library.created.routing.key

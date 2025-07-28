@@ -3,7 +3,7 @@ using Library.Infrastructure;
 using Library.Endpoint.Worker.Inbox;
 using MGH.Core.CrossCutting.Logging;
 using MGH.Core.Infrastructure.EventBus.RabbitMq;
-using Library.Endpoint.Worker.Inbox.ConsumerHandlers;
+using Library.Endpoint.Worker.Inbox.EventHandlers;
 
 var builder = Host.CreateApplicationBuilder(args);
 

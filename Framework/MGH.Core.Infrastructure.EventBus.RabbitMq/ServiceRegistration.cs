@@ -54,14 +54,12 @@ public static class ServiceRegistration
 
         foreach (var eventType in eventHandlerTypes)
         {
-            //var method = typeof(IEventBus).GetMethod(nameof(IEventBus.Consume))!;
             var method = typeof(IEventBus).GetMethods()
                 .Where(m => m.Name == "Consume" && m.IsGenericMethodDefinition)
-                .Where(m => m.GetParameters().Length == 0) // Only pick the parameterless one
+                .Where(m => m.GetParameters().Length == 0)
                 .Single();
             var genericMethod = method.MakeGenericMethod(eventType);
             genericMethod.Invoke(eventBus, null);
         }
     }
-
 }
