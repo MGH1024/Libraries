@@ -1,4 +1,4 @@
-﻿namespace MGH.Core.Infrastructure.EventBus.RabbitMq.Configuration;
+﻿namespace MGH.Core.Infrastructure.EventBus.RabbitMq.Configurations;
 
 public class RabbitMqConfig
 {

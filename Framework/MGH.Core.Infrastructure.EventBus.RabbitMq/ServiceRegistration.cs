@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
-using MGH.Core.Infrastructure.EventBus.RabbitMq.Configuration;
-using MGH.Core.Infrastructure.EventBus.RabbitMq.Connection;
+using MGH.Core.Infrastructure.EventBus.RabbitMq.Configurations;
+using MGH.Core.Infrastructure.EventBus.RabbitMq.Connections;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,10 +10,11 @@ public static class ServiceRegistration
 {
     public static void AddRabbitMqEventBus(this IServiceCollection services, IConfiguration configuration)
     {
-        services.Configure<EventBusConfig>(option => configuration.GetSection(nameof(EventBusConfig)).Bind(option));
-        services.AddTransient<IEventBus, Core.EventBus>();
+        services.Configure<RabbitMqOptions>(configuration.GetSection("RabbitMq"));
+        services.AddTransient<IEventBus, Cores.EventBus>();
         services.AddTransient<IRabbitConnection, RabbitConnection>();
     }
+
 
     public static void AddEventHandlers(this IServiceCollection services, params Assembly[] assembliesToScan)
     {

@@ -1,6 +1,6 @@
 ﻿using RabbitMQ.Client;
 
-namespace MGH.Core.Infrastructure.EventBus.RabbitMq.Connection;
+namespace MGH.Core.Infrastructure.EventBus.RabbitMq.Connections;
 
 public interface IRabbitConnection :IDisposable
 {

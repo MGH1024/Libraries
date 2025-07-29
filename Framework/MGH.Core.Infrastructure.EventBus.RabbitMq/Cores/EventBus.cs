@@ -1,24 +1,31 @@
-﻿using System.Reflection;
-using System.Text;
+﻿using System.Text;
 using System.Text.Json;
 using MGH.Core.Domain.Events;
 using MGH.Core.Infrastructure.EventBus.RabbitMq.Attributes;
-using MGH.Core.Infrastructure.EventBus.RabbitMq.Connection;
+using MGH.Core.Infrastructure.EventBus.RabbitMq.Configurations;
+using MGH.Core.Infrastructure.EventBus.RabbitMq.Connections;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 
-namespace MGH.Core.Infrastructure.EventBus.RabbitMq.Core;
+namespace MGH.Core.Infrastructure.EventBus.RabbitMq.Cores;
 
 public class EventBus : IEventBus
 {
     private readonly IRabbitConnection _rabbitConnection;
     private readonly IServiceProvider _serviceProvider;
+    private readonly RabbitMqOptions _rabbitMqOptions;
 
-    public EventBus(IRabbitConnection rabbitConnection, IServiceProvider serviceProvider)
+    public EventBus(
+        IRabbitConnection rabbitConnection,
+        IServiceProvider serviceProvider,
+        IOptions<RabbitMqOptions> options)
     {
         _rabbitConnection = rabbitConnection;
         _serviceProvider = serviceProvider;
         _rabbitConnection.ConnectService();
+        _rabbitMqOptions = options.Value;
+        BindExchangesAndQueues(_rabbitConnection.GetChannel());
     }
 
     public void Publish<T>(T model) where T : IEvent
@@ -31,14 +38,17 @@ public class EventBus : IEventBus
         var messageByte = Encoding.UTF8.GetBytes(messageJson);
 
         var baseMessage = GetBaseMessageFromAttribute(typeof(T));
-        EnsureExchangeQueueBinding(channel, baseMessage);
+
+        channel.QueueBind(
+           queue: _rabbitMqOptions.EventBus.QueueName,
+           exchange: _rabbitMqOptions.EventBus.ExchangeName,
+           routingKey: baseMessage.RoutingKey);
 
         channel.BasicPublish(
-            exchange: baseMessage.ExchangeName,
+            exchange: _rabbitMqOptions.EventBus.ExchangeName,
             routingKey: baseMessage.RoutingKey,
             basicProperties: basicProperties,
-            body: messageByte
-        );
+            body: messageByte);
     }
 
     public void Publish<T>(IEnumerable<T> models) where T : IEvent
@@ -50,7 +60,11 @@ public class EventBus : IEventBus
         var channel = _rabbitConnection.GetChannel();
 
         var baseMessage = GetBaseMessageFromAttribute(typeof(T));
-        EnsureExchangeQueueBinding(channel, baseMessage);
+
+        channel.QueueBind(
+           queue: _rabbitMqOptions.EventBus.QueueName,
+           exchange: _rabbitMqOptions.EventBus.ExchangeName,
+           routingKey: baseMessage.RoutingKey);
 
         var basicProperties = channel.CreateBasicProperties();
         foreach (var model in models)
@@ -59,11 +73,10 @@ public class EventBus : IEventBus
             var messageByte = Encoding.UTF8.GetBytes(messageJson);
 
             channel.BasicPublish(
-                exchange: baseMessage.ExchangeName,
+                exchange: _rabbitMqOptions.EventBus.ExchangeName,
                 routingKey: baseMessage.RoutingKey,
                 basicProperties: basicProperties,
-                body: messageByte
-            );
+                body: messageByte);
         }
     }
 
@@ -73,7 +86,10 @@ public class EventBus : IEventBus
         var channel = _rabbitConnection.GetChannel();
 
         var baseMessage = GetBaseMessageFromAttribute(typeof(T));
-        EnsureExchangeQueueBinding(channel, baseMessage);
+        channel.QueueBind(
+           queue: _rabbitMqOptions.EventBus.QueueName,
+           exchange: _rabbitMqOptions.EventBus.ExchangeName,
+           routingKey: baseMessage.RoutingKey);
 
         var consumer = new RabbitMQ.Client.Events.EventingBasicConsumer(channel);
         consumer.Received += async (model, ea) =>
@@ -93,7 +109,7 @@ public class EventBus : IEventBus
             }
         };
 
-        channel.BasicConsume(baseMessage.QueueName, false, consumer);
+        channel.BasicConsume(_rabbitMqOptions.EventBus.QueueName, false, consumer);
     }
 
     public void Consume<T>() where T : IEvent
@@ -102,7 +118,11 @@ public class EventBus : IEventBus
         var channel = _rabbitConnection.GetChannel();
 
         var baseMessage = GetBaseMessageFromAttribute(typeof(T));
-        EnsureExchangeQueueBinding(channel, baseMessage);
+
+        channel.QueueBind(
+           queue: _rabbitMqOptions.EventBus.QueueName,
+           exchange: _rabbitMqOptions.EventBus.ExchangeName,
+           routingKey: baseMessage.RoutingKey);
 
         var consumer = new RabbitMQ.Client.Events.EventingBasicConsumer(channel);
         consumer.Received += async (model, ea) =>
@@ -132,67 +152,80 @@ public class EventBus : IEventBus
             catch (Exception ex)
             {
                 var json = Encoding.UTF8.GetString(ea.Body.ToArray());
-                Console.WriteLine($"❌ Error handling message for type {typeof(T).Name}: {ex.Message}");
+                Console.WriteLine($"Error handling message for type {typeof(T).Name}: {ex.Message}");
                 Console.WriteLine($"Raw message: {json}");
 
                 channel.BasicNack(ea.DeliveryTag, false, false); // reject and don't requeue
             }
         };
 
-        channel.BasicConsume(queue: baseMessage.QueueName, autoAck: false, consumer: consumer);
-    }
-
-    private void EnsureExchangeQueueBinding(IModel channel, BaseMessage baseMessage)
-    {
-        channel.ExchangeDeclare(
-            exchange: baseMessage.ExchangeName,
-            type: baseMessage.ExchangeType,
-            durable: true,
-            autoDelete: false,
-            arguments: null
-        );
-
-        channel.QueueDeclare(
-            queue: baseMessage.QueueName,
-            durable: true,
-            exclusive: false,
-            autoDelete: false,
-            arguments: null
-        );
-
-        channel.QueueBind(
-            queue: baseMessage.QueueName,
-            exchange: baseMessage.ExchangeName,
-            routingKey: baseMessage.RoutingKey
-        );
+        channel.BasicConsume(queue: _rabbitMqOptions.EventBus.QueueName, autoAck: false, consumer: consumer);
     }
 
     private BaseMessage GetBaseMessageFromAttribute(Type type)
     {
-        var attribute = type.GetCustomAttributes(typeof(EventRoutingAttribute), true)
+        var attribute = type
+            .GetCustomAttributes(typeof(EventRoutingAttribute), true)
             .FirstOrDefault() as EventRoutingAttribute;
 
         if (attribute == null)
-        {
             throw new InvalidOperationException($"EventRoutingAttribute is not defined for type {type.Name}.");
-        }
 
-        var (exchangeName, queueName) = ResolveQueue(attribute.RoutingKey, attribute.ExchangeType);
-
-        return new BaseMessage(
-            routingKey: attribute.RoutingKey,
-            exchangeType: attribute.ExchangeType,
-            exchangeName: exchangeName,
-            queueName: queueName
-        );
+        return new BaseMessage(attribute.RoutingKey);
     }
 
-    public static (string ExchangeName, string QueueName) ResolveQueue(string routingKey, string exchangeType)
+    public void BindExchangesAndQueues(IModel channel)
     {
-        var rk = routingKey.Trim().Replace(".routing.key", "").ToLowerInvariant();
-        var exchangeName = $"{rk}.exchange";
-        var queueName = $"{rk}.queue";
+        channel.ExchangeDeclare(
+           exchange: _rabbitMqOptions.EventBus.ExchangeName,
+           type: _rabbitMqOptions.EventBus.ExchangeType,
+           durable: true,
+           autoDelete: false,
+           arguments: null);
 
-        return (exchangeName, queueName);
+        channel.QueueDeclare(
+            queue: _rabbitMqOptions.EventBus.QueueName,
+            durable: true,
+            exclusive: false,
+            autoDelete: false,
+            arguments: null);
+
+
+        foreach (var item in _rabbitMqOptions.EventBus.EndToEndExchangeBindings)
+        {
+            if (string.IsNullOrWhiteSpace(item.SourceExchange) ||
+                string.IsNullOrWhiteSpace(item.DestinationExchange) ||
+                string.IsNullOrWhiteSpace(item.RoutingKey))
+                continue;
+
+            channel.ExchangeDeclare(
+                exchange: item.SourceExchange,
+                type: ExchangeType.Direct,
+                durable: true,
+                autoDelete: false);
+
+            channel.ExchangeDeclare(
+                exchange: item.DestinationExchange,
+                type: ExchangeType.Direct,
+                durable: true,
+                autoDelete: false);
+
+            channel.ExchangeBind(
+                destination: item.DestinationExchange,
+                source: item.SourceExchange,
+                routingKey: item.RoutingKey);
+
+            channel.QueueDeclare(
+                queue: _rabbitMqOptions.EventBus.QueueName,
+                durable: true,
+                exclusive: false,
+                autoDelete: false,
+                arguments: null);
+
+            channel.QueueBind(
+                queue: _rabbitMqOptions.EventBus.QueueName,
+                exchange: item.DestinationExchange,
+                routingKey: item.RoutingKey);
+        }
     }
 }
