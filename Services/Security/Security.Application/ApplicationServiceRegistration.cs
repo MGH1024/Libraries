@@ -32,6 +32,7 @@ public static class ApplicationServiceRegistration
         services.AddSubClassesOfType(Assembly.GetExecutingAssembly(), typeof(BaseBusinessRules));
         services.AddServices();
         services.AddBusinessRules();
+        services.AddGeneralCachingService();
         services.AddRedis(configuration);
     }
 

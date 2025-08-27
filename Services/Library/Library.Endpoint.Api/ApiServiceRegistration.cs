@@ -24,7 +24,7 @@ public static class ApiServiceRegistration
         AddLogger(configuration, hostBuilder);
         services.AddOptions(configuration);
         services.AddSwagger(configuration);
-        services.AddCors();
+        services.AddCORS(configuration);
         services.AddVersioning();
         services.AddBaseMvc();
         services.AddMemoryCache();
@@ -149,14 +149,29 @@ public static class ApiServiceRegistration
         });
     }
 
-    private static void AddCors(this IServiceCollection services)
+    private static void AddCORS(this IServiceCollection services, IConfiguration configuration)
     {
+        var allowedOrigins = configuration.GetSection("Cors:AllowedOrigins").Get<string[]>();
+
         services.AddCors(options =>
         {
-            options.AddPolicy("CorsPolicy", config => config
-                .AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader());
+            options.AddPolicy("CorsPolicy", builder =>
+            {
+                if (allowedOrigins != null && allowedOrigins.Length > 0)
+                {
+                    builder.WithOrigins(allowedOrigins)
+                           .AllowAnyMethod()
+                           .AllowAnyHeader()
+                           .AllowCredentials();
+                }
+                else
+                {
+                    // Fallback for development
+                    builder.AllowAnyOrigin()
+                           .AllowAnyMethod()
+                           .AllowAnyHeader();
+                }
+            });
         });
     }
 }

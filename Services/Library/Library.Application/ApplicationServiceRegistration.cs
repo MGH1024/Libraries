@@ -26,7 +26,6 @@ public static class ApplicationServiceRegistration
         services.AddBusinessRule();
         services.AddRedis(configuration);
         services.AddGeneralCachingService();
-        services.AddGeneralCachingService();
         services.AddServices();
     }
 
