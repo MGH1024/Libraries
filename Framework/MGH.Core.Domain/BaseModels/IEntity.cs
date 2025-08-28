@@ -5,7 +5,7 @@ public interface IEntity<T> : IEntity
     public T Id { get; set; }
 }
 
-public interface IEntity:IVersion
+public interface IEntity
 {
     DateTime CreatedAt { get; set; }
 

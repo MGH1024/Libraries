@@ -2,12 +2,12 @@
 
 namespace MGH.Core.Domain.BaseModels;
 
-public interface IAggregate<T> : IAggregate, IEntity<T>
-{
-}
-
-public interface IAggregate : IEntity
+public interface IAggregate : IVersion, IEntity
 {
     IReadOnlyList<DomainEvent> DomainEvents { get; }
     IEvent[] ClearDomainEvents();
+}
+
+public interface IAggregate<T> : IAggregate, IVersion, IEntity<T>
+{
 }

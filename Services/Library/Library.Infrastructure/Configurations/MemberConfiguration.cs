@@ -26,6 +26,7 @@ public class MemberConfiguration : IEntityTypeConfiguration<Member>
         
         var addressConverter = new ValueConverter<Address, string>(a => a.Value, a => Address.FromValue(a));
         builder.Property(a => a.Address).HasMaxLength(1024).HasConversion(addressConverter).IsRequired();
-        
+
+        builder.Property(a => a.Version).IsConcurrencyToken();
     }
 }

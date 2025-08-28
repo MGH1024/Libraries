@@ -3,7 +3,6 @@
 public abstract class Entity<T> : IEntity<T>
 {
     public T Id { get; set; }
-    public long Version { get; set; }
     public DateTime CreatedAt { get; set; }
     public string CreatedBy { get; set; }
     public string CreatedByIp { get; set; }

@@ -8,6 +8,7 @@ public abstract class Aggregate<T> : Entity<T>, IAggregate<T>
     private readonly List<DomainEvent> _domainEvents = new();
     public IReadOnlyList<DomainEvent> DomainEvents => _domainEvents.AsReadOnly();
 
+    public int Version { get; set; } = 0;
 
     public void AddDomainEvent(DomainEvent domainEvent)
     {
@@ -21,7 +22,7 @@ public abstract class Aggregate<T> : Entity<T>, IAggregate<T>
         _domainEvents.Clear();
         return dequeuedEvents;
     }
-    
+
     private void IncrementVersion()
     {
         Version++;

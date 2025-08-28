@@ -41,6 +41,8 @@ public class BookConfiguration : IEntityTypeConfiguration<Book>
                 a.Property(x => x.FullName).HasMaxLength(128).IsRequired();
                 a.Property(x => x.NationalCode).IsRequired().HasMaxLength(11);
             });
+
+        builder.Property(a=>a.Version).IsConcurrencyToken();
         
     }
 }

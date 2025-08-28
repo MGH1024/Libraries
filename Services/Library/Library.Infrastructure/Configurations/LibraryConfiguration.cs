@@ -42,5 +42,7 @@ public class LibraryConfiguration : IEntityTypeConfiguration<Domain.Libraries.Li
                 a.Property(x => x.Position).IsRequired().HasMaxLength(64);
                 a.Property(x => x.NationalCode).IsRequired().HasMaxLength(30);
             });
+
+        builder.Property(a => a.Version).IsConcurrencyToken();
     }
 }

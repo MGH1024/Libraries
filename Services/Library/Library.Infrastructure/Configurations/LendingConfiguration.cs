@@ -25,6 +25,7 @@ public class LendingConfiguration : IEntityTypeConfiguration<Lending>
         
         var returnDateConvertor = new ValueConverter<ReturnDate, DateTime>(a =>a.Value, a => new ReturnDate(a));
         builder.Property(a => a.ReturnDate).HasConversion(returnDateConvertor).IsRequired();
-        
+
+        builder.Property(a => a.Version).IsConcurrencyToken();
     }
 }
