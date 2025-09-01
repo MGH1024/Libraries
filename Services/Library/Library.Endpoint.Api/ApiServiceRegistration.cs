@@ -46,7 +46,7 @@ public static class ApiServiceRegistration
         app.MapControllers();
         app.UseExceptionMiddleWare();
         app.UseStaticFiles();
-        app.AddHealthCheck();
+        app.UseHealthChecksEndpoints();
         app.AddPrometheus();
         app.Run();
     }

@@ -52,7 +52,7 @@ public static class InfrastructureServiceRegistration
         services.AddRabbitMqEventBus(configuration);
         services.AddFactories();
         services.AddPrometheus();
-        services.AddInfrastructureHealthChecks<LibraryDbContext>(configuration);
+        services.AddHealthChecks(configuration);
     }
 
     public static void AddInfrastructuresServicesForWorkers(this IServiceCollection services, IConfiguration configuration)
@@ -76,6 +76,14 @@ public static class InfrastructureServiceRegistration
     {
         services.AddScoped<ILibraryFactory, LibraryFactory>();
         services.AddScoped<ILibraryPolicy, DistrictPolicy>();
+    }
+
+    private static void AddHealthChecks(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddSqlServerHealthCheck<LibraryDbContext>(configuration);
+        services.AddRabbitMqHealthCheck(configuration);
+        services.AddRedisHealthCheck(configuration);
+        services.AddHealthChecksDashboard();
     }
 
     private static void AddPrometheus(this IServiceCollection services)
