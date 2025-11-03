@@ -1,5 +1,5 @@
 ﻿using System.Text.Json;
-using MGH.Core.Domain.BaseModels;
+using MGH.Core.Domain.Base;
 using MGH.Core.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -12,7 +12,7 @@ public static class AddAuditFieldsInterceptorExtension
     public static void SetOutbox(this DbContextEventData eventData, DbContext dbContext)
     {
         var outboxMessages =
-            eventData.Context?.ChangeTracker.Entries<IAggregate>()
+            eventData.Context?.ChangeTracker.Entries<IAggregateRoot>()
                 .Select(a => a.Entity)
                 .Where(a => a.DomainEvents.Any())
                 .SelectMany(a => a.DomainEvents)

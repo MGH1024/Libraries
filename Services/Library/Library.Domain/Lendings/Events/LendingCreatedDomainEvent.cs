@@ -6,12 +6,27 @@ using MGH.Core.Infrastructure.EventBus.RabbitMq.Attributes;
 
 namespace Library.Domain.Lendings.Events;
 
-[EventRouting(QueueItemProperty.CommonRoutingKey,QueueItemProperty.CommonExchangeType)]
-public class LendingCreatedDomainEvent(Guid bookId, Guid libraryId, Guid memberId, LendingDate lendingDate,ReturnDate returnDate): DomainEvent, ICommand
+[EventRouting(QueueItemProperty.CommonRoutingKey, QueueItemProperty.CommonExchangeType)]
+public class LendingCreatedDomainEvent: DomainEvent, ICommand
 {
-    public Guid BookId => bookId;
-    public Guid LibraryId => libraryId;
-    public Guid MemberId => memberId;
-    public LendingDate LendingDate => lendingDate;
-    public ReturnDate ReturnDate => returnDate;
+    public Guid BookId { get; }
+    public Guid LibraryId { get; }
+    public Guid MemberId { get; }
+    public LendingDate LendingDate { get; }
+    public ReturnDate ReturnDate { get; }
+
+    public LendingCreatedDomainEvent(
+        Guid bookId,
+        Guid libraryId,
+        Guid memberId,
+        LendingDate lendingDate,
+        ReturnDate returnDate)
+        : base(new { bookId, libraryId, memberId, lendingDate, returnDate })
+    {
+        BookId = bookId;
+        LibraryId = libraryId;
+        MemberId = memberId;
+        LendingDate = lendingDate;
+        ReturnDate = returnDate;
+    }
 }

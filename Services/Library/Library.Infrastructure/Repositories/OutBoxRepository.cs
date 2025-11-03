@@ -1,9 +1,9 @@
 ﻿using Library.Domain;
 using Library.Domain.Outboxes;
-using Library.Infrastructure.Contexts;
 using MGH.Core.Domain.Entities;
-using MGH.Core.Infrastructure.Persistence.EF.Base.Repository;
 using MGH.Core.Infrastructure.Public;
+using Library.Infrastructure.Contexts;
+using MGH.Core.Infrastructure.Persistence.EF.Base.Repository;
 
 namespace Library.Infrastructure.Repositories;
 
@@ -20,8 +20,9 @@ public class OutBoxRepository(LibraryDbContext libraryDbContext, IDateTime dateT
 
     public void Update(IEnumerable<Guid> idList)
     {
-        var lstOutbox
-            = Query().Where(a => idList.Contains(a.Id)).ToList();
+        var lstOutbox = Query()
+            .Where(a => idList.Contains(a.Id))
+            .ToList();
 
         lstOutbox.ForEach(x => x.ProcessedAt = dateTime.IranNow);
     }

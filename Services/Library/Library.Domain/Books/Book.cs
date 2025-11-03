@@ -1,10 +1,10 @@
 ﻿using Library.Domain.Books.Exceptions;
 using Library.Domain.Books.ValueObjects;
-using MGH.Core.Domain.BaseModels;
+using MGH.Core.Domain.Base;
 
 namespace Library.Domain.Books;
 
-public class Book : Aggregate<Guid>
+public class Book : AggregateRoot<Guid>
 {
     public Isbn Isbn { get;private set; }
     public Title Title { get;private set; }

@@ -2,11 +2,11 @@
 using Library.Domain.Libraries.Events;
 using Library.Domain.Libraries.Exceptions;
 using Library.Domain.Libraries.ValueObjects;
-using MGH.Core.Domain.BaseModels;
+using MGH.Core.Domain.Base;
 
 namespace Library.Domain.Libraries;
 
-public class Library : Aggregate<Guid>
+public class Library : AggregateRoot<Guid>
 {
     public Name Name { get; private set; }
     public Code Code { get; private set; }

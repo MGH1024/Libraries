@@ -1,10 +1,10 @@
 ﻿using Library.Domain.Lendings.Events;
 using Library.Domain.Lendings.ValueObjects;
-using MGH.Core.Domain.BaseModels;
+using MGH.Core.Domain.Base;
 
 namespace Library.Domain.Lendings;
 
-public class Lending : Aggregate<Guid>
+public class Lending : AggregateRoot<Guid>
 {
     public Guid BookId { get;private set;  }
     public Guid LibraryId { get; private set; }

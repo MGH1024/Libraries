@@ -1,5 +1,5 @@
 ﻿
-using MGH.Core.Domain.BaseModels;
+using MGH.Core.Domain.Base;
 
 namespace Library.Domain.Books.ValueObjects;
 

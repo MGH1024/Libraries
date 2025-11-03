@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using Library.Domain.Members.Exceptions;
-using MGH.Core.Domain.BaseModels;
+using MGH.Core.Domain.Base;
 
 namespace Library.Domain.Members.ValueObjects;
 

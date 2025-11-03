@@ -1,9 +1,9 @@
-﻿using MGH.Core.Domain.BaseModels;
-using MGH.Core.Infrastructure.Caching.Models;
+﻿using MGH.Core.Infrastructure.Caching.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using MGH.Core.Domain.Base;
 
 namespace MGH.Core.Infrastructure.Persistence.EF.Interceptors;
 

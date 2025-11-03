@@ -1,9 +1,9 @@
 ﻿using Library.Domain.Members.ValueObjects;
-using MGH.Core.Domain.BaseModels;
+using MGH.Core.Domain.Base;
 
 namespace Library.Domain.Members;
 
-public class Member :Aggregate<Guid>
+public class Member :AggregateRoot<Guid>
 {
     public FullName FullName { get;private set; }
     public NationalCode NationalCode{ get;private set; }
