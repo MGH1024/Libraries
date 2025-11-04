@@ -1,9 +1,8 @@
-using Library.Application.Features.OutBoxes.Extensions;
-using Library.Domain;
-using Library.Domain.Outboxes;
 using MediatR;
+using Library.Domain.Outboxes;
 using MGH.Core.Application.Requests;
 using MGH.Core.Application.Responses;
+using Library.Application.Features.OutBoxes.Extensions;
 
 namespace Library.Application.Features.OutBoxes.Queries.GetList;
 
@@ -20,7 +19,7 @@ public class GetOutboxListQuery(PageRequest pageRequest) : IRequest<GetListRespo
         public async Task<GetListResponse<GetOutboxListDto>> Handle(GetOutboxListQuery request,
             CancellationToken cancellationToken)
         {
-            var outboxes = await outBoxRepository.GetListAsync(request.ToGetListAsyncMode(cancellationToken));
+            var outboxes = await outBoxRepository.GetListAsync(request.ToGetListAsyncMode());
             return outboxes.ToGetOutboxListDto();
         }
     }

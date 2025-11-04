@@ -1,10 +1,10 @@
-﻿using Library.Application.Features.Libraries.Constants;
-using Library.Application.Features.Libraries.Profiles;
-using Library.Application.Features.Libraries.Rules;
-using Library.Domain;
-using Library.Domain.Libraries.Constant;
-using MGH.Core.Application.Pipelines.Authorization;
+﻿using Library.Domain;
 using MGH.Core.Domain.Buses.Commands;
+using Library.Domain.Libraries.Constant;
+using Library.Application.Features.Libraries.Rules;
+using MGH.Core.Application.Pipelines.Authorization;
+using Library.Application.Features.Libraries.Profiles;
+using Library.Application.Features.Libraries.Constants;
 
 namespace Library.Application.Features.Libraries.Commands.EditLibrary;
 
@@ -26,7 +26,7 @@ public class EditLibraryCommandHandler(
 {
     public async Task<Guid> Handle(UpdateLibraryCommand request, CancellationToken cancellationToken)
     {
-        var library = await uow.Library.GetAsync(request.ToGetBaseLibraryModel(cancellationToken));
+        var library = await uow.Library.GetAsync(request.ToGetBaseLibraryModel());
         await libraryBusinessRules.LibraryShouldBeExistsWhenSelected(library);
 
         if (request.Code != library.Code)

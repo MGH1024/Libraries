@@ -1,8 +1,8 @@
-﻿using Library.Application.Features.OutBoxes.Queries.GetList;
+﻿using MGH.Core.Domain.Entities;
 using MGH.Core.Application.Responses;
-using MGH.Core.Domain.Entities;
-using MGH.Core.Infrastructure.Persistence.Models.Filters.GetModels;
 using MGH.Core.Infrastructure.Persistence.Models.Paging;
+using Library.Application.Features.OutBoxes.Queries.GetList;
+using MGH.Core.Infrastructure.Persistence.Models.Filters.GetModels;
 
 namespace Library.Application.Features.OutBoxes.Extensions;
 
@@ -30,13 +30,12 @@ public static class OutboxExtensions
         };
     }
 
-    public static GetListModelAsync<OutboxMessage> ToGetListAsyncMode(this GetOutboxListQuery query,CancellationToken cancellationToken)
+    public static GetListModelAsync<OutboxMessage> ToGetListAsyncMode(this GetOutboxListQuery query)
     {
         return new GetListModelAsync<OutboxMessage>
         {
             Index = query.PageRequest.PageIndex,
-            Size = query.PageRequest.PageSize,
-            CancellationToken = cancellationToken
+            Size = query.PageRequest.PageSize
         };
     }
     

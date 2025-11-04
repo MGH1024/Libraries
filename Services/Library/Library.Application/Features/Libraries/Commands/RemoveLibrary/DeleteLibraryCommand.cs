@@ -1,10 +1,10 @@
-﻿using Library.Application.Features.Libraries.Constants;
-using Library.Application.Features.Libraries.Profiles;
-using Library.Application.Features.Libraries.Rules;
+﻿using MediatR;
 using Library.Domain;
-using MediatR;
-using MGH.Core.Application.Pipelines.Authorization;
 using MGH.Core.Domain.Buses.Commands;
+using Library.Application.Features.Libraries.Rules;
+using MGH.Core.Application.Pipelines.Authorization;
+using Library.Application.Features.Libraries.Profiles;
+using Library.Application.Features.Libraries.Constants;
 
 namespace Library.Application.Features.Libraries.Commands.RemoveLibrary;
 
@@ -20,11 +20,11 @@ public class RemoveLibraryCommandHandler(IUow uow,
 {
     public async Task<Unit> Handle(DeleteLibraryCommand request, CancellationToken cancellationToken)
     {
-        var library = await uow.Library.GetAsync(request.ToGetBaseLibraryModel(cancellationToken));
+        var library = await uow.Library.GetAsync(request.ToGetBaseLibraryModel());
         await libraryBusinessRules.LibraryShouldBeExistsWhenSelected(library);
 
         await Domain.Libraries.Library.RemoveLibrary(library);
-        await uow.Library.DeleteAsync(library, true);
+        await uow.Library.DeleteAsync(library);
         await uow.CompleteAsync(cancellationToken);
         return Unit.Value;
     }

@@ -1,10 +1,10 @@
-﻿using Library.Application.Features.Libraries.Constants;
-using Library.Application.Features.Libraries.Rules;
-using Library.Domain;
+﻿using Library.Domain;
+using MGH.Core.Domain.Buses.Commands;
 using Library.Domain.Libraries.Constant;
 using Library.Domain.Libraries.Factories;
+using Library.Application.Features.Libraries.Rules;
 using MGH.Core.Application.Pipelines.Authorization;
-using MGH.Core.Domain.Buses.Commands;
+using Library.Application.Features.Libraries.Constants;
 
 namespace Library.Application.Features.Libraries.Commands.CreateLibrary;
 
@@ -29,7 +29,7 @@ public class CreateLibraryCommandHandler(
 
         var library = libraryFactory.Create(command.Name, command.Code, command.Location,
             command.RegistrationDate, command.DistrictEnum);
-        await uow.Library.AddAsync(library, cancellationToken);
+        await uow.Library.AddAsync(library);
         await uow.CompleteAsync(cancellationToken);
 
         // sender.Publish(new PublishModel<Library>

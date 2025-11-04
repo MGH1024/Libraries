@@ -1,10 +1,10 @@
-using Library.Application.Features.Libraries.Constants;
-using Library.Application.Features.Libraries.Profiles;
-using Library.Domain.Libraries;
 using MediatR;
-using MGH.Core.Application.Pipelines.Authorization;
+using Library.Domain.Libraries;
 using MGH.Core.Application.Requests;
 using MGH.Core.Application.Responses;
+using MGH.Core.Application.Pipelines.Authorization;
+using Library.Application.Features.Libraries.Profiles;
+using Library.Application.Features.Libraries.Constants;
 
 namespace Library.Application.Features.Libraries.Queries.GetList;
 
@@ -25,7 +25,7 @@ public class GetLibraryListQueryHandler(ILibraryRepository libraryRepository)
         CancellationToken cancellationToken)
     {
         var libraries = await libraryRepository
-            .GetDynamicListAsync(request.ToGetDynamicListAsyncModel(cancellationToken));
+            .GetDynamicListAsync(request.ToGetDynamicListAsyncModel());
         return libraries.ToGetLibraryListDto();
     }
 }

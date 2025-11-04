@@ -1,11 +1,11 @@
-﻿using Library.Application.Features.Libraries.Constants;
-using Library.Application.Features.Libraries.Profiles;
-using Library.Application.Features.Libraries.Rules;
+﻿using MediatR;
 using Library.Domain;
-using Library.Domain.Libraries.ValueObjects;
-using MediatR;
-using MGH.Core.Application.Pipelines.Authorization;
 using MGH.Core.Domain.Buses.Commands;
+using Library.Domain.Libraries.ValueObjects;
+using Library.Application.Features.Libraries.Rules;
+using MGH.Core.Application.Pipelines.Authorization;
+using Library.Application.Features.Libraries.Profiles;
+using Library.Application.Features.Libraries.Constants;
 
 namespace Library.Application.Features.Libraries.Commands.AddLibraryStaff;
 
@@ -23,7 +23,7 @@ public class AddLibraryStaffCommandHandler(LibraryBusinessRules libraryBusinessR
 {
     public async Task<Unit> Handle(CreateLibraryStaffCommand request, CancellationToken cancellationToken)
     {
-        var library = await uow.Library.GetAsync(request.ToGetBaseLibraryModel(cancellationToken));
+        var library = await uow.Library.GetAsync(request.ToGetBaseLibraryModel());
         await libraryBusinessRules.LibraryShouldBeExistsWhenSelected(library);
         library.AddLibraryStaff(new Staff(request.Name, request.Position, request.NationalCode));
         await uow.CompleteAsync(cancellationToken);

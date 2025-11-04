@@ -1,9 +1,9 @@
-﻿using Library.Application.Features.Libraries.Constants;
-using Library.Application.Features.Libraries.Profiles;
+﻿using MediatR;
 using Library.Domain;
-using MediatR;
-using MGH.Core.Application.Pipelines.Authorization;
 using MGH.Core.Domain.Buses.Commands;
+using MGH.Core.Application.Pipelines.Authorization;
+using Library.Application.Features.Libraries.Profiles;
+using Library.Application.Features.Libraries.Constants;
 
 namespace Library.Application.Features.Libraries.Commands.RemoveLibraryStaff;
 
@@ -19,7 +19,7 @@ public class RemoveLibraryStaffCommandHandler( IUow uow)
 {
     public async Task<Unit> Handle(DeleteLibraryStaffCommand request, CancellationToken cancellationToken)
     {
-        var library = await uow.Library.GetAsync(request.ToGetBaseLibraryModel(cancellationToken));
+        var library = await uow.Library.GetAsync(request.ToGetBaseLibraryModel());
         library.RemoveLibraryStaff(request.NationalCode);
         await uow.CompleteAsync(cancellationToken);
         return Unit.Value;
