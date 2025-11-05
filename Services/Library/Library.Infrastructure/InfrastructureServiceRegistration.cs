@@ -1,37 +1,39 @@
-﻿using System.Globalization;
-using System.Reflection;
-using Library.Domain;
-using Library.Domain.Books;
-using Library.Domain.Lendings;
-using Library.Domain.Libraries;
-using Library.Domain.Libraries.Factories;
-using Library.Domain.Libraries.Policies;
-using Library.Domain.Members;
-using Library.Domain.Outboxes;
-using Library.Infrastructure.Contexts;
-using Library.Infrastructure.Repositories;
-using MGH.Core.CrossCutting.Localizations.RouteConstraints;
-using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch;
-using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Base;
-using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Models;
-using MGH.Core.Infrastructure.EventBus.RabbitMq;
-using MGH.Core.Infrastructure.HealthCheck;
-using MGH.Core.Infrastructure.Persistence.Base;
-using MGH.Core.Infrastructure.Persistence.EF.Interceptors;
-using MGH.Core.Infrastructure.Persistence.Models.Configuration;
-using MGH.Core.Infrastructure.Public;
-using MGH.Core.Infrastructure.Securities.Security;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Localization;
-using Microsoft.AspNetCore.Routing;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using Nest;
+﻿using Nest;
 using Prometheus;
+using Library.Domain;
+using System.Reflection;
+using Library.Domain.Books;
+using System.Globalization;
+using Library.Domain.Members;
+using Library.Domain.Lendings;
+using Library.Domain.Outboxes;
+using Library.Domain.Libraries;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
+using MGH.Core.Infrastructure.Public;
+using Library.Infrastructure.Contexts;
+using Library.Domain.Libraries.Policies;
+using Microsoft.AspNetCore.Localization;
+using Library.Domain.Libraries.Factories;
+using Microsoft.Extensions.Configuration;
+using Library.Infrastructure.Repositories;
+using MGH.Core.Infrastructure.HealthCheck;
+using MGH.Core.Infrastructure.Caching.Redis;
+using Microsoft.Extensions.DependencyInjection;
+using MGH.Core.Infrastructure.Persistence.Base;
+using MGH.Core.Infrastructure.EventBus.RabbitMq;
+using MGH.Core.Infrastructure.Securities.Security;
 using LogLevel = Microsoft.Extensions.Logging.LogLevel;
+using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch;
+using MGH.Core.Infrastructure.Persistence.EF.Interceptors;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using MGH.Core.CrossCutting.Localizations.RouteConstraints;
+using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Base;
+using MGH.Core.Infrastructure.EventBus.RabbitMq.Configurations;
+using MGH.Core.Infrastructure.Persistence.Models.Configuration;
+using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Models;
 
 namespace Library.Infrastructure;
 
@@ -80,9 +82,17 @@ public static class InfrastructureServiceRegistration
 
     private static void AddHealthChecks(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddSqlServerHealthCheck<LibraryDbContext>(configuration);
-        services.AddRabbitMqHealthCheck(configuration);
-        services.AddRedisHealthCheck(configuration);
+        var defaultConnection = configuration.GetSection("RabbitMq:Connections:Default").Get<RabbitMqConfig>() ??
+                                  throw new ArgumentNullException(nameof(RabbitMqOptions.Connections.Default));
+
+        var redisConnection = configuration.GetSection("RedisConnections:DefaultConfiguration").Get<RedisConfiguration>() ??
+                                  throw new ArgumentNullException(nameof(RedisConnections.DefaultConfiguration));
+
+        var healthBuilder = services.AddHealthChecks();
+        healthBuilder.AddSqlServer(configuration["DatabaseConnection:SqlConnection"]);
+        healthBuilder.AddDbContextCheck<LibraryDbContext>();
+        healthBuilder.AddRabbitMqHealthCheck(defaultConnection.HealthAddress.ToString());
+        healthBuilder.AddRedisHealthCheck(redisConnection.Configuration);
         services.AddHealthChecksDashboard();
     }
 

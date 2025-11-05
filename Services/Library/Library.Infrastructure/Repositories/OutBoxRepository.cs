@@ -1,9 +1,8 @@
-﻿using Library.Domain;
-using Library.Domain.Outboxes;
+﻿using Library.Domain.Outboxes;
 using MGH.Core.Domain.Entities;
 using MGH.Core.Infrastructure.Public;
 using Library.Infrastructure.Contexts;
-using MGH.Core.Infrastructure.Persistence.EF.Base.Repository;
+using MGH.Core.Infrastructure.Persistence.EF.Base.Repositories;
 
 namespace Library.Infrastructure.Repositories;
 

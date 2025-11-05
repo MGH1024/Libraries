@@ -1,15 +1,15 @@
 ﻿using FluentValidation;
 using System.Reflection;
 using MGH.Core.Application.Rules;
+using MGH.Core.Infrastructure.Caching;
 using Microsoft.Extensions.Configuration;
 using MGH.Core.Application.Pipelines.Logging;
+using MGH.Core.Infrastructure.Caching.Models;
 using Microsoft.Extensions.DependencyInjection;
 using MGH.Core.Application.Pipelines.Validation;
 using MGH.Core.Application.Pipelines.Transaction;
 using MGH.Core.Application.Pipelines.Authorization;
 using Library.Application.Features.Libraries.Rules;
-using MGH.Core.Infrastructure.Caching;
-using MGH.Core.Infrastructure.Caching.Models;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Base;
 
