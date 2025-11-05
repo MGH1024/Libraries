@@ -93,7 +93,7 @@ public static class InfrastructureServiceRegistration
         healthBuilder.AddDbContextCheck<LibraryDbContext>();
         healthBuilder.AddRabbitMqHealthCheck(defaultConnection.HealthAddress.ToString());
         healthBuilder.AddRedisHealthCheck(redisConnection.Configuration);
-        services.AddHealthChecksDashboard();
+        services.AddHealthChecksDashboard("Library Health check");
     }
 
     private static void AddPrometheus(this IServiceCollection services)
