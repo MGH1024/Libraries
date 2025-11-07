@@ -100,6 +100,9 @@ public abstract class AppController(ISender sender) : ControllerBase
         if (Response == null)
             throw new InvalidOperationException("HTTP response is not available to set cookies.");
 
+        if (string.IsNullOrWhiteSpace(value))
+            throw new ArgumentException($"Cookie '{key}' cannot have a null or empty value.", nameof(value));
+
         var cookieOptions = new CookieOptions
         {
             HttpOnly = httpOnly,          // Prevent client-side scripts from reading it
