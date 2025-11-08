@@ -21,7 +21,7 @@ public class LibraryCreatedDomainEventHandler(IElasticSearch elasticSearch, ILib
             await uow.OutBox.AddAsync(outbox);
 
             var elasticSearchInsertUpdateModel = command.ToElasticSearchInsertUpdateModel();
-            var elasticSearchResult = await elasticSearch.InsertAsync(elasticSearchInsertUpdateModel, cancellationToken);
+            var elasticSearchResult = await elasticSearch.InsertAsync(elasticSearchInsertUpdateModel);
             await businessRules.LibraryCreatedEventShouldBeRaisedInElk(elasticSearchResult);
             
             await uow.CommitTransactionAsync(cancellationToken);
