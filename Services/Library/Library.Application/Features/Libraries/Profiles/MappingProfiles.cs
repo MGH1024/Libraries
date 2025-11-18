@@ -12,6 +12,8 @@ using MGH.Core.Infrastructure.Persistence.Models.Filters.GetModels;
 using Library.Application.Features.Libraries.Commands.RemoveLibrary;
 using Library.Application.Features.Libraries.Commands.AddLibraryStaff;
 using Library.Application.Features.Libraries.Commands.RemoveLibraryStaff;
+using Library.Domain.Libraries;
+using Microsoft.Extensions.DependencyModel;
 
 namespace Library.Application.Features.Libraries.Profiles;
 
@@ -106,16 +108,6 @@ public static class MappingProfiles
             Dynamic = dyn,
         };
     }
-
-    public static OutboxMessage ToOutBox(this LibraryCreatedDomainEvent libraryCreatedDomainEvent)
-    {
-        return  new OutboxMessage
-        {
-            Id = Guid.NewGuid(),
-            Type = typeof(LibraryCreatedDomainEvent).ToString(),
-            Content = System.Text.Json.JsonSerializer.Serialize(libraryCreatedDomainEvent),
-        };
-    } 
     
     public static ElasticSearchInsertUpdateModel ToElasticSearchInsertUpdateModel(this LibraryCreatedDomainEvent libraryCreatedDomainEvent)
     {
@@ -125,4 +117,14 @@ public static class MappingProfiles
             ElasticId = libraryCreatedDomainEvent.Id
         };
     } 
+
+    public static LibraryCreatedDomainEvent ToLibraryCreatedDomainEvent(this Library.Domain.Libraries.Library library)
+    {
+        return new LibraryCreatedDomainEvent(
+            library.Name,
+            library.Code,
+            library.Location,
+            library.District,
+            library.RegistrationDate);
+    }
 }

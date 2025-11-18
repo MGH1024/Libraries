@@ -6,7 +6,7 @@ using Library.Application.Features.OutBoxes.Extensions;
 
 namespace Library.Application.Features.OutBoxes.Queries.GetList;
 
-public class GetOutboxListQuery(PageRequest pageRequest) : IRequest<GetListResponse<GetOutboxListDto>>
+public class GetOutboxListQuery(PageRequest pageRequest) : IRequest<List<GetOutboxListDto>>
 {
     public PageRequest PageRequest { get; set; } = pageRequest;
 
@@ -14,12 +14,15 @@ public class GetOutboxListQuery(PageRequest pageRequest) : IRequest<GetListRespo
     {
     }
 
-    public class GetOutboxListQueryHandler(IOutBoxRepository outBoxRepository) : IRequestHandler<GetOutboxListQuery, GetListResponse<GetOutboxListDto>>
+    public class GetOutboxListQueryHandler(IOutBoxRepository outBoxRepository) : IRequestHandler<GetOutboxListQuery, List<GetOutboxListDto>>
     {
-        public async Task<GetListResponse<GetOutboxListDto>> Handle(GetOutboxListQuery request,
+        public async Task<List<GetOutboxListDto>> Handle(GetOutboxListQuery request,
             CancellationToken cancellationToken)
         {
-            var outboxes = await outBoxRepository.GetListAsync(request.ToGetListAsyncMode());
+            var outboxes = await outBoxRepository.GetListAsync(
+                request.PageRequest.PageIndex,
+                request.PageRequest.PageSize);
+
             return outboxes.ToGetOutboxListDto();
         }
     }

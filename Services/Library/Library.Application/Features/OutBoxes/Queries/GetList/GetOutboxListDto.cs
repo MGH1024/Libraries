@@ -4,8 +4,8 @@ public class GetOutboxListDto
 {
     public Guid Id { get; set; }
     public string Type { get; set; }
-    public string Content { get; set; }
-    public DateTime CreatedAt { get; set; }
+    public object Payload { get; set; }
+    public DateTime OccurredOn { get; set; }
     public DateTime? ProcessedAt { get; set; }
     public string Error { get; set; }
 
@@ -16,15 +16,15 @@ public class GetOutboxListDto
     public GetOutboxListDto(
         Guid id,
         string type,
-        string content,
-        DateTime createdAt,
+        object content,
+        DateTime occurredOn,
         DateTime? processedAt,
         string error)
     {
         Id = id;
         Type = type;
-        Content = content;
-        CreatedAt = createdAt;
+        Payload = content;
+        OccurredOn = occurredOn;
         ProcessedAt = processedAt;
         Error = error;
     }

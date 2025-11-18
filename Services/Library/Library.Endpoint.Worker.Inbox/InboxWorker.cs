@@ -1,10 +1,10 @@
 namespace Library.Endpoint.Worker.Inbox
 {
-    public class Worker : BackgroundService
+    public class InboxWorker : BackgroundService
     {
-        private readonly ILogger<Worker> _logger;
+        private readonly ILogger<InboxWorker> _logger;
 
-        public Worker(ILogger<Worker> logger)
+        public InboxWorker(ILogger<InboxWorker> logger)
         {
             _logger = logger;
         }

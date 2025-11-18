@@ -14,7 +14,7 @@ builder.Services.AddEventHandlers(typeof(LibraryCreatedDomainEvent2Handler).Asse
 
 
 RegisterLogger.CreateLoggerByConfig(builder.Configuration);
-builder.Services.AddHostedService<Worker>();
+builder.Services.AddHostedService<InboxWorker>();
 var host = builder.Build();
 
 host.Services.StartConsumingRegisteredEventHandlers();

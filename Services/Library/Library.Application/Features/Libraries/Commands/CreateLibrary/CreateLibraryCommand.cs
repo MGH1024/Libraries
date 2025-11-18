@@ -1,10 +1,15 @@
 ﻿using Library.Domain;
+using MGH.Core.Domain.Entities;
+using Library.Domain.Libraries;
 using MGH.Core.Domain.Buses.Commands;
+using MGH.Core.Infrastructure.EventBus;
 using Library.Domain.Libraries.Constant;
 using Library.Domain.Libraries.Factories;
 using Library.Application.Features.Libraries.Rules;
 using MGH.Core.Application.Pipelines.Authorization;
 using Library.Application.Features.Libraries.Constants;
+using Library.Domain.Libraries.Events;
+using Library.Application.Features.Libraries.Profiles;
 
 namespace Library.Application.Features.Libraries.Commands.CreateLibrary;
 
@@ -21,6 +26,7 @@ public class CreateLibraryCommand : ICommand<Guid>
 public class CreateLibraryCommandHandler(
     ILibraryFactory libraryFactory,
     IUow uow,
+    IEventBus eventBus,
     ILibraryBusinessRules libraryBusinessRules) : ICommandHandler<CreateLibraryCommand, Guid>
 {
     public async Task<Guid> Handle(CreateLibraryCommand command, CancellationToken cancellationToken)
@@ -30,30 +36,12 @@ public class CreateLibraryCommandHandler(
         var library = libraryFactory.Create(command.Name, command.Code, command.Location,
             command.RegistrationDate, command.DistrictEnum);
         await uow.Library.AddAsync(library);
+
+        await eventBus.PublishAsync(library.ToLibraryCreatedDomainEvent(),
+            PublishMode.Outbox,
+            cancellationToken);
+
         await uow.CompleteAsync(cancellationToken);
-
-        // sender.Publish(new PublishModel<Library>
-        // {
-        //     Item = library,
-        //     ExchangeName = "mgh-exchange",
-        //     RoutingKey = "mgh-routingkey",
-        //     QueueName = "mgh-queue",
-        //     ExchangeType = "direct",
-        // });
-
-
-        // sender.Publish(new PublishList<Library>(new List<Library>()
-        // {
-        //     library, library, library
-        // })
-        // {
-        //     ExchangeName = "mgh-exchange",
-        //     RoutingKey = "mgh-routingkey",
-        //     QueueName = "mgh-queue",
-        //     ExchangeType = "direct",
-        // });
-
-
         return library.Id;
     }
 }

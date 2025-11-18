@@ -24,6 +24,7 @@
 
     <ItemGroup>
       <Folder Include="Features\Libraries\Queries\" />
+      <Folder Include="Features\OutBoxes\Commands\" />
     </ItemGroup>
 
 </Project>

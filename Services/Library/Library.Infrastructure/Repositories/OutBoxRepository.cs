@@ -1,15 +1,46 @@
 ﻿using Library.Domain.Outboxes;
 using MGH.Core.Domain.Entities;
-using MGH.Core.Infrastructure.Public;
+using Microsoft.EntityFrameworkCore;
 using Library.Infrastructure.Contexts;
-using MGH.Core.Infrastructure.Persistence.EF.Base.Repositories;
 
 namespace Library.Infrastructure.Repositories;
 
-public class OutBoxRepository(LibraryDbContext libraryDbContext, IDateTime dateTime)
-    : Repository<OutboxMessage, Guid>(libraryDbContext), IOutBoxRepository
+public class OutBoxRepository(LibraryDbContext libraryDbContext) : IOutBoxRepository
 {
-    public IQueryable<OutboxMessage> Query() => libraryDbContext.Set<OutboxMessage>();
+    public IQueryable<OutboxMessage> Query() =>
+        libraryDbContext.Set<OutboxMessage>();
+
+    public async Task AddAsync(
+        OutboxMessage message,
+        CancellationToken cancellationToken = default)
+    {
+        await libraryDbContext.AddAsync(message, cancellationToken);
+    }
+
+    public async Task AddToOutBoxAsync(
+        OutboxMessage message,
+        CancellationToken cancellationToken = default)
+    {
+        await libraryDbContext.AddAsync(message, cancellationToken);
+    }
+
+    public async Task AddToOutBoxRangeAsync(
+        IEnumerable<OutboxMessage> messages,
+        CancellationToken cancellationToken = default)
+    {
+        await libraryDbContext.AddRangeAsync(messages, cancellationToken);
+    }
+
+    public async Task<IEnumerable<OutboxMessage>> GetListAsync(
+        int pageIndex = 1,
+        int pageSize = 10,
+        CancellationToken cancellationToken = default)
+    {
+        return await Query()
+            .Take(pageSize)
+            .Skip(pageIndex * pageSize)
+            .ToListAsync(cancellationToken);
+    }
 
     public OutboxMessage Update(OutboxMessage entity)
     {
@@ -17,12 +48,12 @@ public class OutBoxRepository(LibraryDbContext libraryDbContext, IDateTime dateT
         return entity;
     }
 
-    public void Update(IEnumerable<Guid> idList)
+    public async Task UpdateRangeAsync(
+        IEnumerable<OutboxMessage> outboxMessages,
+        CancellationToken cancellationToken = default)
     {
-        var lstOutbox = Query()
-            .Where(a => idList.Contains(a.Id))
-            .ToList();
-
-        lstOutbox.ForEach(x => x.ProcessedAt = dateTime.IranNow);
+        libraryDbContext.UpdateRange(outboxMessages);
+        await libraryDbContext.SaveChangesAsync(cancellationToken);
     }
+
 }

@@ -16,7 +16,7 @@ public class OutboxConfiguration : IEntityTypeConfiguration<OutboxMessage>
         builder.Property(t => t.Id)
             .IsRequired();
 
-        builder.Property(t => t.Content)
+        builder.Property(t => t.Payload)
             .IsRequired()
             .HasMaxLength(4096);
         
@@ -26,7 +26,7 @@ public class OutboxConfiguration : IEntityTypeConfiguration<OutboxMessage>
         builder.Property(t => t.Type)
             .IsRequired();
 
-        builder.Property(t => t.CreatedAt)
+        builder.Property(t => t.OccurredOn)
             .IsRequired();
     }
 }

@@ -1,8 +1,6 @@
-using MediatR;
-using System.Text.Json;
 using MGH.Core.Domain.Events;
+using Library.Domain.Outboxes;
 using MGH.Core.Infrastructure.EventBus;
-using Library.Endpoint.Worker.Outbox.Profiles;
 
 namespace Library.Endpoint.Worker.Outbox;
 
@@ -11,32 +9,39 @@ public class Worker(IServiceProvider serviceProvider) : BackgroundService
     protected override async Task ExecuteAsync(CancellationToken cancellationToken)
     {
         using var scope = serviceProvider.CreateScope();
-        var sender = scope.ServiceProvider.GetRequiredService<ISender>();
+        var repo = scope.ServiceProvider.GetRequiredService<IOutBoxRepository>();
         var eventBus = scope.ServiceProvider.GetRequiredService<IEventBus>();
 
         while (!cancellationToken.IsCancellationRequested)
         {
-            var request = MappingProfiles.ToGetOutboxListQuery();
-            var outBoxList = await sender.Send(request, cancellationToken);
-            if (outBoxList.Count <= 0) continue;
+            var outBoxList = await repo.GetListAsync();
+            if (!outBoxList.Any())
+            {
+                await Task.Delay(1000,cancellationToken);
+                continue;
+            }
 
-            var groupedOutboxItems = outBoxList.Items.GroupBy(item => item.Type).ToList();
+            var groupedOutboxItems = outBoxList.GroupBy(item => item.Type).ToList();
             foreach (var group in groupedOutboxItems)
             {
                 var type = GetOutBoxType(group.Key);
-                if (type == null)
+                if (type is null)
                     throw new Exception("type is null");
-                
-                var items = group.Select(x => x.Content).ToList();
-                var deserializedContent = items.Select(content => JsonSerializer.Deserialize(content, type)).ToList();
-                if (!deserializedContent.Any())
+
+                var events = group
+                   .Select(g => g.DeserializePayloadAs<IEvent>())
+                   .ToList();
+
+                if (!events.Any())
                     throw new ApplicationException($"No content found for type {type}");
-                
-                var events = deserializedContent.Cast<IEvent>().ToList();
-                eventBus.Publish(events);
+
+                await eventBus.PublishAsync(events, PublishMode.Direct, cancellationToken);
+
+                foreach (var outbox in group)
+                    outbox.MarkAsProcessed();
+
+                await repo.UpdateRangeAsync(group.ToList(), cancellationToken);
             }
-            var updateProcessAtCommand = outBoxList.ToUpdateProcessAtCommand();
-            await sender.Send(updateProcessAtCommand, cancellationToken);
         }
 
         await Task.Delay(1000, cancellationToken);

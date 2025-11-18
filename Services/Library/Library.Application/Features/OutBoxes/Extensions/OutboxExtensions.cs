@@ -21,22 +21,23 @@ public static class OutboxExtensions
             Items = libraries.Items.Select(a => new GetOutboxListDto
             {
                 Id = a.Id,
-                Content = a.Content,
+                Payload = a.Payload,
                 Error = a.Error,
                 Type = a.Type,
                 ProcessedAt = a.ProcessedAt,
-                CreatedAt = a.CreatedAt,
+                OccurredOn = a.OccurredOn,
             }).ToList()
         };
     }
 
-    public static GetListModelAsync<OutboxMessage> ToGetListAsyncMode(this GetOutboxListQuery query)
+    public static List<GetOutboxListDto> ToGetOutboxListDto(this IEnumerable<OutboxMessage> messages)
     {
-        return new GetListModelAsync<OutboxMessage>
+        return messages.Select(a => new GetOutboxListDto
         {
-            Index = query.PageRequest.PageIndex,
-            Size = query.PageRequest.PageSize
-        };
+            Id = a.Id,
+            Type = a.Type,
+            Payload = a.Payload,
+            OccurredOn = a.OccurredOn,
+        }).ToList();
     }
-    
 }
