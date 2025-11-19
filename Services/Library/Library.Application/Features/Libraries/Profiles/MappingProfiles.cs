@@ -48,14 +48,6 @@ public static class MappingProfiles
         return new Staff(staffDto.Name, staffDto.Position, staffDto.NationalCode);
     }
 
-    public static GetModel<Domain.Libraries.Library> ToGetBaseLibraryModel(this string code)
-    {
-        return new GetModel<Domain.Libraries.Library>
-        {
-            Predicate = a => a.Code == code
-        };
-    }
-
     public static GetModel<Domain.Libraries.Library> ToGetBaseLibraryModel(this DeleteLibraryStaffCommand command)
     {
         return new GetModel<Domain.Libraries.Library>

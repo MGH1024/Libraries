@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Library.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -25,7 +25,6 @@ namespace Library.Infrastructure.Migrations
                     UniqueCode = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
                     IsReference = table.Column<bool>(type: "bit", nullable: false),
                     PublicationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Version = table.Column<long>(type: "bigint", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
                     CreatedByIp = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
@@ -34,7 +33,8 @@ namespace Library.Infrastructure.Migrations
                     UpdatedByIp = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
                     DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DeletedBy = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
-                    DeletedByIp = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true)
+                    DeletedByIp = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
+                    Version = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -52,7 +52,6 @@ namespace Library.Infrastructure.Migrations
                     MemberId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     LendingDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ReturnDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Version = table.Column<long>(type: "bigint", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
                     CreatedByIp = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
@@ -61,7 +60,8 @@ namespace Library.Infrastructure.Migrations
                     UpdatedByIp = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
                     DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DeletedBy = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
-                    DeletedByIp = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true)
+                    DeletedByIp = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
+                    Version = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -79,7 +79,6 @@ namespace Library.Infrastructure.Migrations
                     Location = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     District = table.Column<int>(type: "int", nullable: false),
                     RegistrationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Version = table.Column<long>(type: "bigint", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
                     CreatedByIp = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
@@ -88,7 +87,8 @@ namespace Library.Infrastructure.Migrations
                     UpdatedByIp = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
                     DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DeletedBy = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
-                    DeletedByIp = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true)
+                    DeletedByIp = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
+                    Version = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -105,7 +105,6 @@ namespace Library.Infrastructure.Migrations
                     NationalCode = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     MobileNumber = table.Column<string>(type: "nvarchar(13)", maxLength: 13, nullable: false),
                     Address = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: false),
-                    Version = table.Column<long>(type: "bigint", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
                     CreatedByIp = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
@@ -114,7 +113,8 @@ namespace Library.Infrastructure.Migrations
                     UpdatedByIp = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
                     DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DeletedBy = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
-                    DeletedByIp = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true)
+                    DeletedByIp = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
+                    Version = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -127,20 +127,11 @@ namespace Library.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Type = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-                    Content = table.Column<string>(type: "nvarchar(max)", maxLength: 4096, nullable: false),
-                    ProcessedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Error = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
-                    Version = table.Column<long>(type: "bigint", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
-                    CreatedByIp = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
-                    UpdatedByIp = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
-                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedBy = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
-                    DeletedByIp = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true)
+                    OccurredOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ProcessedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Type = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    Payload = table.Column<string>(type: "nvarchar(max)", maxLength: 4096, nullable: false)
                 },
                 constraints: table =>
                 {

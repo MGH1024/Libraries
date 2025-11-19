@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using MGH.Core.Infrastructure.Public;
 using Library.Infrastructure.Contexts;
+using MGH.Core.Infrastructure.EventBus;
 using Library.Domain.Libraries.Policies;
 using Microsoft.AspNetCore.Localization;
 using Library.Domain.Libraries.Factories;
@@ -116,6 +117,7 @@ public static class InfrastructureServiceRegistration
         services.AddScoped<ILendingRepository, LendingRepository>();
         services.AddScoped<IBookRepository, BookRepository>();
         services.AddScoped<IMemberRepository, MemberRepository>();
+        services.AddScoped<IOutboxStore, OutBoxRepository>();
         services.AddScoped<IOutBoxRepository, OutBoxRepository>();
         services.AddScoped(typeof(ITransactionManager<>), typeof(TransactionManager<>));
     }

@@ -1,17 +1,18 @@
-﻿using FluentValidation;
-using System.Reflection;
-using MGH.Core.Application.Rules;
-using MGH.Core.Infrastructure.Caching;
-using Microsoft.Extensions.Configuration;
-using MGH.Core.Infrastructure.Caching.Models;
-using MGH.Core.Application.Pipelines.Logging;
-using Microsoft.Extensions.DependencyInjection;
-using MGH.Core.Application.Pipelines.Validation;
-using MGH.Core.Application.Pipelines.Transaction;
+﻿using System.Reflection;
+using FluentValidation;
+using Library.Application.Features.Libraries.Commands.CreateLibrary;
 using Library.Application.Features.Libraries.Rules;
 using MGH.Core.Application.Pipelines.Authorization;
+using MGH.Core.Application.Pipelines.Logging;
+using MGH.Core.Application.Pipelines.Transaction;
+using MGH.Core.Application.Pipelines.Validation;
+using MGH.Core.Application.Rules;
+using MGH.Core.Infrastructure.Caching;
+using MGH.Core.Infrastructure.Caching.Models;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Base;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Library.Application;
 
@@ -44,6 +45,7 @@ public static class ApplicationServiceRegistration
         services.AddMediatR(configuration =>
         {
             configuration.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
+            configuration.RegisterServicesFromAssembly(typeof(CreateLibraryCommand).Assembly);
             configuration.AddOpenBehavior(typeof(CachingBehavior<,>));
             configuration.AddOpenBehavior(typeof(LoggingBehaviour<,>));
             configuration.AddOpenBehavior(typeof(AuthorizationBehavior<,>));

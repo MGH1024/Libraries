@@ -16,7 +16,7 @@ namespace Library.Endpoint.Api.Controllers;
 [Route("{culture:CultureRouteConstraint}/api/[Controller]")]
 public class LibrariesController(ISender sender) : AppController(sender)
 {
-    
+
     [HttpGet]
     public async Task<IActionResult> GetList([FromQuery] PageRequest pageRequest)
     {
@@ -24,8 +24,8 @@ public class LibrariesController(ISender sender) : AppController(sender)
         GetListResponse<GetLibraryListDto> result = await Sender.Send(getLibraryListUserQuery);
         return Ok(result);
     }
-    
-    
+
+
     [HttpPost("create-library")]
     [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
     public async Task<IActionResult> InsertAsync([FromBody] CreateLibraryCommand command, CancellationToken cancellationToken)
