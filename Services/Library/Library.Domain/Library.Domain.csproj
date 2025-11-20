@@ -7,10 +7,17 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="MGH.Core.CrossCutting" Version="3.0.1" />
+      <!--<PackageReference Include="MGH.Core.CrossCutting" Version="3.0.1" />
       <PackageReference Include="MGH.Core.Infrastructure.EventBus.RabbitMq" Version="3.0.61" />
       <PackageReference Include="MGH.Core.Infrastructure.Persistence.EF" Version="3.0.7" />
-      <PackageReference Include="MGH.Core.Infrastructure.Securities" Version="3.0.3" />
+      <PackageReference Include="MGH.Core.Infrastructure.Securities" Version="3.0.3" />-->
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\shared\MGH.Core.CrossCutting\MGH.Core.CrossCutting.csproj" />
+      <ProjectReference Include="..\..\..\shared\MGH.Core.Infrastructure.EventBus.RabbitMq\MGH.Core.Infrastructure.EventBus.RabbitMq.csproj" />
+      <ProjectReference Include="..\..\..\shared\MGH.Core.Infrastructure.Persistence.EF\MGH.Core.Infrastructure.Persistence.EF.csproj" />
+      <ProjectReference Include="..\..\..\shared\MGH.Core.Infrastructure.Securities\MGH.Core.Infrastructure.Securities.csproj" />
     </ItemGroup>
 
     <ItemGroup>

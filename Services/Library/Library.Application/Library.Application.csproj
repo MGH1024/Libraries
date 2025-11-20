@@ -8,8 +8,8 @@
     
     <ItemGroup>
         <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.0.0" />
-        <PackageReference Include="MGH.Core.Application" Version="3.0.4" />
-        <PackageReference Include="MGH.Core.Infrastructure.ElasticSearch" Version="3.0.1" />
+        <!--<PackageReference Include="MGH.Core.Application" Version="3.0.4" />
+        <PackageReference Include="MGH.Core.Infrastructure.ElasticSearch" Version="3.0.1" />-->
         <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="8.0.7" />
     </ItemGroup>
 
@@ -19,6 +19,8 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\..\shared\MGH.Core.Application\MGH.Core.Application.csproj" />
+      <ProjectReference Include="..\..\..\shared\MGH.Core.Infrastructure.ElasticSearch\MGH.Core.Infrastructure.ElasticSearch.csproj" />
       <ProjectReference Include="..\Library.Domain\Library.Domain.csproj" />
     </ItemGroup>
 

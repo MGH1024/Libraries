@@ -7,10 +7,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="MGH.Core.Domain" Version="3.0.5" />
+		<!--<PackageReference Include="MGH.Core.Domain" Version="3.0.5" />
 		<PackageReference Include="MGH.Core.Infrastructure.EventBus.RabbitMq" Version="3.0.61" />
 		<PackageReference Include="MGH.Core.Infrastructure.HealthCheck" Version="3.0.4" />
-		<PackageReference Include="MGH.Core.Infrastructure.Securities" Version="3.0.3" />
+		<PackageReference Include="MGH.Core.Infrastructure.Securities" Version="3.0.3" />-->
 		<PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
 		<PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.7" />
@@ -31,6 +31,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\..\shared\MGH.Core.Domain\MGH.Core.Domain.csproj" />
+		<ProjectReference Include="..\..\..\shared\MGH.Core.Infrastructure.EventBus.RabbitMq\MGH.Core.Infrastructure.EventBus.RabbitMq.csproj" />
+		<ProjectReference Include="..\..\..\shared\MGH.Core.Infrastructure.HealthCheck\MGH.Core.Infrastructure.HealthCheck.csproj" />
+		<ProjectReference Include="..\..\..\shared\MGH.Core.Infrastructure.Securities\MGH.Core.Infrastructure.Securities.csproj" />
 		<ProjectReference Include="..\Library.Application\Library.Application.csproj" />
 		<ProjectReference Include="..\Library.Domain\Library.Domain.csproj" />
 	</ItemGroup>
