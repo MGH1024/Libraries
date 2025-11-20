@@ -19,9 +19,8 @@ using Library.Domain.Libraries.Policies;
 using Microsoft.AspNetCore.Localization;
 using Library.Domain.Libraries.Factories;
 using Microsoft.Extensions.Configuration;
-using Library.Infrastructure.Repositories;
 using MGH.Core.Infrastructure.HealthCheck;
-using MGH.Core.Infrastructure.Caching.Redis;
+using Library.Infrastructure.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 using MGH.Core.Infrastructure.Persistence.Base;
 using MGH.Core.Infrastructure.EventBus.RabbitMq;
@@ -86,14 +85,10 @@ public static class InfrastructureServiceRegistration
         var defaultConnection = configuration.GetSection("RabbitMq:Connections:Default").Get<RabbitMqConfig>() ??
                                   throw new ArgumentNullException(nameof(RabbitMqOptions.Connections.Default));
 
-        //var redisConnection = configuration.GetSection("RedisConnections:DefaultConfiguration").Get<RedisConfiguration>() ??
-        //                          throw new ArgumentNullException(nameof(RedisConnections.DefaultConfiguration));
-
         var healthBuilder = services.AddHealthChecks();
         healthBuilder.AddSqlServer(configuration["DatabaseConnection:SqlConnection"]);
         healthBuilder.AddDbContextCheck<PublicLibraryDbContext>();
         healthBuilder.AddRabbitMqHealthCheck(defaultConnection.HealthAddress.ToString());
-        //healthBuilder.AddRedisHealthCheck(redisConnection.Configuration);
         services.AddHealthChecksDashboard("Library Health check");
     }
 
@@ -104,7 +99,6 @@ public static class InfrastructureServiceRegistration
 
     private static void RegisterInterceptors(this IServiceCollection services)
     {
-        services.AddSingleton<OutBoxInterceptor>();
         services.AddSingleton<AuditFieldsInterceptor>();
         services.AddSingleton<RemoveCacheInterceptor>();
         services.AddSingleton<AuditEntityInterceptor>();
@@ -133,7 +127,6 @@ public static class InfrastructureServiceRegistration
         {
             options.UseSqlServer(sqlConfig, a => { a.EnableRetryOnFailure(); })
                 .AddInterceptors(
-                    sp.GetRequiredService<OutBoxInterceptor>(),
                     sp.GetRequiredService<AuditFieldsInterceptor>(),
                     sp.GetRequiredService<RemoveCacheInterceptor>(),
                     sp.GetRequiredService<AuditEntityInterceptor>())

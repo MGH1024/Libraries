@@ -1,6 +1,6 @@
-﻿using Library.Domain.Libraries.Constant;
+﻿using MGH.Core.Domain.Events;
 using MGH.Core.Domain.Buses.Commands;
-using MGH.Core.Domain.Events;
+using Library.Domain.Libraries.Constant;
 using MGH.Core.Infrastructure.EventBus.RabbitMq.Attributes;
 
 namespace Library.Domain.Libraries.Events;
