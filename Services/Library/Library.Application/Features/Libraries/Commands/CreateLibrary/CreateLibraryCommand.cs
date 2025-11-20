@@ -1,10 +1,12 @@
-﻿using Library.Domain;
-using MGH.Core.Domain.Buses.Commands;
+﻿using Library.Application.Features.Libraries.Constants;
+using Library.Application.Features.Libraries.Profiles;
+using Library.Application.Features.Libraries.Rules;
+using Library.Domain;
 using Library.Domain.Libraries.Constant;
 using Library.Domain.Libraries.Factories;
-using Library.Application.Features.Libraries.Rules;
 using MGH.Core.Application.Pipelines.Authorization;
-using Library.Application.Features.Libraries.Constants;
+using MGH.Core.Domain.Buses.Commands;
+using MGH.Core.Infrastructure.EventBus;
 
 namespace Library.Application.Features.Libraries.Commands.CreateLibrary;
 
@@ -20,7 +22,7 @@ public class CreateLibraryCommand : ICommand<Guid>
 
 public class CreateLibraryCommandHandler(
     IUow uow,
-    //IEventBus eventBus,
+    IEventBus eventBus,
     ILibraryFactory libraryFactory,
     ILibraryBusinessRules libraryBusinessRules) : ICommandHandler<CreateLibraryCommand, Guid>
 {
@@ -33,21 +35,10 @@ public class CreateLibraryCommandHandler(
 
         await uow.Library.AddAsync(library);
 
-
-        //await eventBus.PublishAsync(library.ToLibraryCreatedDomainEvent(),
-        //    PublishMode.Outbox,
-        //    cancellationToken);
-
-        try
-        {
-            await uow.CompleteAsync(cancellationToken);
-
-        }
-        catch (Exception ex)
-        {
-
-            throw;
-        }
+        await eventBus.PublishAsync(library.ToLibraryCreatedDomainEvent(),
+            PublishMode.Outbox,
+            cancellationToken);
+        await uow.CompleteAsync(cancellationToken);
         return library.Id;
     }
 }

@@ -110,7 +110,7 @@ public static class MappingProfiles
         };
     } 
 
-    public static LibraryCreatedDomainEvent ToLibraryCreatedDomainEvent(this Library.Domain.Libraries.Library library)
+    public static LibraryCreatedDomainEvent ToLibraryCreatedDomainEvent(this Domain.Libraries.Library library)
     {
         return new LibraryCreatedDomainEvent(
             library.Name,
