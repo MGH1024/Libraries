@@ -19,8 +19,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\..\shared\MGH.Core.Application\MGH.Core.Application.csproj" />
-      <ProjectReference Include="..\..\..\shared\MGH.Core.Infrastructure.ElasticSearch\MGH.Core.Infrastructure.ElasticSearch.csproj" />
       <ProjectReference Include="..\Library.Domain\Library.Domain.csproj" />
     </ItemGroup>
 

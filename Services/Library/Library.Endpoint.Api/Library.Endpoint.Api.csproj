@@ -25,8 +25,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\..\shared\MGH.Core.Endpoint.Swagger\MGH.Core.Endpoint.Swagger.csproj" />
-        <ProjectReference Include="..\..\..\shared\MGH.Core.Endpoint.Web\MGH.Core.Endpoint.Web.csproj" />
         <ProjectReference Include="..\Library.Infrastructure\Library.Infrastructure.csproj" />
     </ItemGroup>
 </Project>
