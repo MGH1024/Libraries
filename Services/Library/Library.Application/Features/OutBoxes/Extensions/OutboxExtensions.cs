@@ -1,8 +1,7 @@
-﻿using MGH.Core.Domain.Entities;
-using MGH.Core.Application.Responses;
+﻿using MGH.Core.Application.Responses;
+using MGH.Core.Infrastructure.Persistence.Entities;
 using MGH.Core.Infrastructure.Persistence.Models.Paging;
 using Library.Application.Features.OutBoxes.Queries.GetList;
-using MGH.Core.Infrastructure.Persistence.Models.Filters.GetModels;
 
 namespace Library.Application.Features.OutBoxes.Extensions;
 

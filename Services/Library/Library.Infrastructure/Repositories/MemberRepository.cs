@@ -4,7 +4,7 @@ using MGH.Core.Infrastructure.Persistence.EF.Base.Repositories;
 
 namespace Library.Infrastructure.Repositories;
 
-public class MemberRepository(LibraryDbContext libraryDbContext) :Repository<Member,Guid>,IMemberRepository
+public class MemberRepository(PublicLibraryDbContext libraryDbContext) :Repository<Member,Guid>,IMemberRepository
 {
     
 }

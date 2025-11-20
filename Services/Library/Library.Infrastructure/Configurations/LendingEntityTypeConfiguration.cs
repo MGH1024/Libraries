@@ -1,13 +1,13 @@
 ﻿using Library.Domain.Lendings;
+using Microsoft.EntityFrameworkCore;
 using Library.Domain.Lendings.ValueObjects;
 using Library.Infrastructure.Configurations.Base;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Library.Infrastructure.Configurations;
 
-public class LendingConfiguration : IEntityTypeConfiguration<Lending>
+public class LendingEntityTypeConfiguration : IEntityTypeConfiguration<Lending>
 {
     public void Configure(EntityTypeBuilder<Lending> builder)
     {

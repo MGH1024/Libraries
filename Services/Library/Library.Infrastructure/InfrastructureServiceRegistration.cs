@@ -44,7 +44,7 @@ public static class InfrastructureServiceRegistration
     {
         services.RegisterInterceptors();
         services.AddDbContextSqlServer(configuration);
-        services.AddDbContext<LibraryDbContext>(options => options.UseInMemoryDatabase("LibraryDbContext-InMemory"));
+        services.AddDbContext<PublicLibraryDbContext>(options => options.UseInMemoryDatabase("LibraryDbContext-InMemory"));
         services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         services.AddRepositories();
         services.AddSecurityServices();
@@ -62,7 +62,7 @@ public static class InfrastructureServiceRegistration
     {
         services.RegisterInterceptors();
         services.AddDbContextSqlServer(configuration);
-        services.AddDbContext<LibraryDbContext>(options => options.UseInMemoryDatabase("LibraryDbContext-InMemory"));
+        services.AddDbContext<PublicLibraryDbContext>(options => options.UseInMemoryDatabase("LibraryDbContext-InMemory"));
         services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         services.AddRepositories();
         services.AddSecurityServices();
@@ -77,7 +77,7 @@ public static class InfrastructureServiceRegistration
 
     private static void AddFactories(this IServiceCollection services)
     {
-        services.AddScoped<ILibraryFactory, LibraryFactory>();
+        services.AddScoped<IPublicLibraryFactory, PublicLibraryFactory>();
         services.AddScoped<ILibraryPolicy, DistrictPolicy>();
     }
 
@@ -86,14 +86,14 @@ public static class InfrastructureServiceRegistration
         var defaultConnection = configuration.GetSection("RabbitMq:Connections:Default").Get<RabbitMqConfig>() ??
                                   throw new ArgumentNullException(nameof(RabbitMqOptions.Connections.Default));
 
-        var redisConnection = configuration.GetSection("RedisConnections:DefaultConfiguration").Get<RedisConfiguration>() ??
-                                  throw new ArgumentNullException(nameof(RedisConnections.DefaultConfiguration));
+        //var redisConnection = configuration.GetSection("RedisConnections:DefaultConfiguration").Get<RedisConfiguration>() ??
+        //                          throw new ArgumentNullException(nameof(RedisConnections.DefaultConfiguration));
 
         var healthBuilder = services.AddHealthChecks();
         healthBuilder.AddSqlServer(configuration["DatabaseConnection:SqlConnection"]);
-        healthBuilder.AddDbContextCheck<LibraryDbContext>();
+        healthBuilder.AddDbContextCheck<PublicLibraryDbContext>();
         healthBuilder.AddRabbitMqHealthCheck(defaultConnection.HealthAddress.ToString());
-        healthBuilder.AddRedisHealthCheck(redisConnection.Configuration);
+        //healthBuilder.AddRedisHealthCheck(redisConnection.Configuration);
         services.AddHealthChecksDashboard("Library Health check");
     }
 
@@ -113,12 +113,12 @@ public static class InfrastructureServiceRegistration
     private static void AddRepositories(this IServiceCollection services)
     {
         services.AddScoped<IUow, UnitOfWork>();
-        services.AddScoped<ILibraryRepository, LibraryRepository>();
+        services.AddScoped<IPublicLibraryRepository, PublicLibraryRepository>();
         services.AddScoped<ILendingRepository, LendingRepository>();
         services.AddScoped<IBookRepository, BookRepository>();
         services.AddScoped<IMemberRepository, MemberRepository>();
-        services.AddScoped<IOutboxStore, OutBoxRepository>();
-        services.AddScoped<IOutBoxRepository, OutBoxRepository>();
+        services.AddScoped<IOutboxStore, OutboxMessageRepository>();
+        services.AddScoped<IOutboxMessageRepository, OutboxMessageRepository>();
         services.AddScoped(typeof(ITransactionManager<>), typeof(TransactionManager<>));
     }
 
@@ -129,7 +129,7 @@ public static class InfrastructureServiceRegistration
             .Get<DatabaseConnection>()
             .SqlConnection;
 
-        services.AddDbContext<LibraryDbContext>((sp, options) =>
+        services.AddDbContext<PublicLibraryDbContext>((sp, options) =>
         {
             options.UseSqlServer(sqlConfig, a => { a.EnableRetryOnFailure(); })
                 .AddInterceptors(
@@ -197,7 +197,7 @@ public static class InfrastructureServiceRegistration
             .Get<DatabaseConnection>()
             .PostgresConnection;
         services
-            .AddDbContext<LibraryDbContext>(options =>
+            .AddDbContext<PublicLibraryDbContext>(options =>
                 options.UseNpgsql(postgresConfig, a =>
                     {
                         a.EnableRetryOnFailure();

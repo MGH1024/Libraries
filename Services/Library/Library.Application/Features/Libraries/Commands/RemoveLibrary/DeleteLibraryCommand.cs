@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Library.Domain;
+using Library.Domain.Libraries;
 using MGH.Core.Domain.Buses.Commands;
 using Library.Application.Features.Libraries.Rules;
 using MGH.Core.Application.Pipelines.Authorization;
@@ -23,7 +24,7 @@ public class RemoveLibraryCommandHandler(IUow uow,
         var library = await uow.Library.GetAsync(request.ToGetBaseLibraryModel());
         await libraryBusinessRules.LibraryShouldBeExistsWhenSelected(library);
 
-        await Domain.Libraries.Library.RemoveLibrary(library);
+        await PublicLibrary.RemoveLibrary(library);
         await uow.Library.DeleteAsync(library);
         await uow.CompleteAsync(cancellationToken);
         return Unit.Value;

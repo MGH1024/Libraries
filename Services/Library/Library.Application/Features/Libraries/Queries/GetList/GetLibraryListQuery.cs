@@ -18,7 +18,7 @@ public class GetLibraryListQuery(PageRequest pageRequest) : IRequest<GetListResp
     }
 }
 
-public class GetLibraryListQueryHandler(ILibraryRepository libraryRepository)
+public class GetLibraryListQueryHandler(IPublicLibraryRepository libraryRepository)
     : IRequestHandler<GetLibraryListQuery, GetListResponse<GetLibraryListDto>>
 {
     public async Task<GetListResponse<GetLibraryListDto>> Handle(GetLibraryListQuery request,

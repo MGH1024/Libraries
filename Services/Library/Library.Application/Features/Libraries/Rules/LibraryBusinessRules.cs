@@ -6,7 +6,7 @@ using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Models;
 
 namespace Library.Application.Features.Libraries.Rules;
 
-public  class LibraryBusinessRules(ILibraryRepository libraryRepository) : BaseBusinessRules, ILibraryBusinessRules
+public  class LibraryBusinessRules(IPublicLibraryRepository libraryRepository) : BaseBusinessRules, ILibraryBusinessRules
 {
     public async Task LibraryCodeMustBeUnique(string code)
     {
@@ -15,7 +15,7 @@ public  class LibraryBusinessRules(ILibraryRepository libraryRepository) : BaseB
             throw new BusinessException("library code must be unique");
     }
 
-    public Task LibraryShouldBeExistsWhenSelected(Domain.Libraries.Library library)
+    public Task LibraryShouldBeExistsWhenSelected(PublicLibrary library)
     {
         if (library is null)
             throw new BusinessException("library not found");

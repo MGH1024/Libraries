@@ -1,11 +1,11 @@
 ﻿using Library.Domain.Outboxes;
-using MGH.Core.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Library.Infrastructure.Contexts;
+using MGH.Core.Infrastructure.Persistence.Entities;
 
 namespace Library.Infrastructure.Repositories;
 
-public class OutBoxRepository(LibraryDbContext libraryDbContext) : IOutBoxRepository
+public class OutboxMessageRepository(PublicLibraryDbContext libraryDbContext) : IOutboxMessageRepository
 {
     public IQueryable<OutboxMessage> Query() =>
         libraryDbContext.Set<OutboxMessage>();

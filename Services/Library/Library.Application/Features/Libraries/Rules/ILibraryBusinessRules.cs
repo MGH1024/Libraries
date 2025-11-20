@@ -1,4 +1,5 @@
-﻿using Library.Domain.Libraries.Events;
+﻿using Library.Domain.Libraries;
+using Library.Domain.Libraries.Events;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Models;
 
 namespace Library.Application.Features.Libraries.Rules;
@@ -6,7 +7,7 @@ namespace Library.Application.Features.Libraries.Rules;
 public interface ILibraryBusinessRules
 {
     Task LibraryCodeMustBeUnique(string code);
-    Task LibraryShouldBeExistsWhenSelected(Domain.Libraries.Library library);
-    Task LibraryCreatedEventShouldBeRaisedInElk(IElasticSearchResult elasticsearchResponse);
+    Task LibraryShouldBeExistsWhenSelected(PublicLibrary library);
+    Task LibraryCreatedEventShouldBeRaisedInElk(IElasticSearchResult elasticSearchResponse);
     Task LibraryCreatedDomainEventShouldBeExist(LibraryCreatedDomainEvent libraryCreatedDomainEvent);
 }

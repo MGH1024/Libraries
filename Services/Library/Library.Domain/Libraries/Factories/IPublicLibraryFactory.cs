@@ -2,8 +2,8 @@
 
 namespace Library.Domain.Libraries.Factories;
 
-public interface ILibraryFactory
+public interface IPublicLibraryFactory
 {
-    Library Create(string libraryName, string libraryCode, string libraryLocation,
+    PublicLibrary Create(string libraryName, string libraryCode, string libraryLocation,
         DateTime libraryRegistrationDate,DistrictEnum  libraryDistrictEnum);
 }

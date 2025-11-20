@@ -10,17 +10,17 @@ using MGH.Core.Infrastructure.Persistence.Base;
 namespace Library.Infrastructure.Repositories;
 
 public class UnitOfWork(
-    LibraryDbContext context,
-    IOutBoxRepository outBoxRepository,
-    ILibraryRepository libraryRepository,
+    PublicLibraryDbContext context,
+    IOutboxMessageRepository outBoxRepository,
+    IPublicLibraryRepository libraryRepository,
     ILendingRepository lendingRepository,
     IBookRepository bookRepository,
     IMemberRepository memberRepository,
-    ITransactionManager<LibraryDbContext> transactionManager)
+    ITransactionManager<PublicLibraryDbContext> transactionManager)
     : IUow, IDisposable
 {
-    public ILibraryRepository Library => libraryRepository;
-    public IOutBoxRepository OutBox => outBoxRepository;
+    public IPublicLibraryRepository Library => libraryRepository;
+    public IOutboxMessageRepository OutBox => outBoxRepository;
 
     public ILendingRepository Lending => lendingRepository;
     public IBookRepository Book => bookRepository;

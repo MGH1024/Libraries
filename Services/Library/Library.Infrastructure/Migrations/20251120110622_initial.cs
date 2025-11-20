@@ -6,13 +6,34 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Library.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.EnsureSchema(
+                name: "log");
+
+            migrationBuilder.EnsureSchema(
                 name: "lib");
+
+            migrationBuilder.CreateTable(
+                name: "AuditLogs",
+                schema: "log",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TableName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    BeforeData = table.Column<string>(type: "nvarchar(max)", maxLength: 64, nullable: true),
+                    AfterData = table.Column<string>(type: "nvarchar(max)", maxLength: 64, nullable: true),
+                    Action = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    Username = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AuditLogs", x => x.Id);
+                });
 
             migrationBuilder.CreateTable(
                 name: "Books",
@@ -69,33 +90,6 @@ namespace Library.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Libraries",
-                schema: "lib",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    Code = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
-                    Location = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-                    District = table.Column<int>(type: "int", nullable: false),
-                    RegistrationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
-                    CreatedByIp = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
-                    UpdatedByIp = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
-                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedBy = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
-                    DeletedByIp = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
-                    Version = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Libraries", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Members",
                 schema: "lib",
                 columns: table => new
@@ -122,20 +116,47 @@ namespace Library.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "OutBox",
+                name: "OutBoxMessages",
+                schema: "log",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Error = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
+                    OccurredOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ProcessedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Type = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    Payload = table.Column<string>(type: "nvarchar(max)", maxLength: 64, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OutBoxMessages", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PublicLibraries",
                 schema: "lib",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Error = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
-                    OccurredOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ProcessedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Type = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-                    Payload = table.Column<string>(type: "nvarchar(max)", maxLength: 4096, nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    Code = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
+                    Location = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    District = table.Column<int>(type: "int", nullable: false),
+                    RegistrationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
+                    CreatedByIp = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedBy = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
+                    UpdatedByIp = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
+                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedBy = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
+                    DeletedByIp = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
+                    Version = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OutBox", x => x.Id);
+                    table.PrimaryKey("PK_PublicLibraries", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -175,10 +196,10 @@ namespace Library.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_Staves", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Staves_Libraries_LibraryId",
+                        name: "FK_Staves_PublicLibraries_LibraryId",
                         column: x => x.LibraryId,
                         principalSchema: "lib",
-                        principalTable: "Libraries",
+                        principalTable: "PublicLibraries",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -190,6 +211,18 @@ namespace Library.Infrastructure.Migrations
                 column: "BookId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_OutBoxMessages_OccurredOn",
+                schema: "log",
+                table: "OutBoxMessages",
+                column: "OccurredOn");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OutBoxMessages_ProcessedAt",
+                schema: "log",
+                table: "OutBoxMessages",
+                column: "ProcessedAt");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Staves_LibraryId",
                 schema: "lib",
                 table: "Staves",
@@ -199,6 +232,10 @@ namespace Library.Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "AuditLogs",
+                schema: "log");
+
             migrationBuilder.DropTable(
                 name: "Authors",
                 schema: "lib");
@@ -212,8 +249,8 @@ namespace Library.Infrastructure.Migrations
                 schema: "lib");
 
             migrationBuilder.DropTable(
-                name: "OutBox",
-                schema: "lib");
+                name: "OutBoxMessages",
+                schema: "log");
 
             migrationBuilder.DropTable(
                 name: "Staves",
@@ -224,7 +261,7 @@ namespace Library.Infrastructure.Migrations
                 schema: "lib");
 
             migrationBuilder.DropTable(
-                name: "Libraries",
+                name: "PublicLibraries",
                 schema: "lib");
         }
     }

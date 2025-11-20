@@ -1,9 +1,9 @@
-﻿using MGH.Core.Domain.Entities;
-using MGH.Core.Infrastructure.EventBus;
+﻿using MGH.Core.Infrastructure.EventBus;
+using MGH.Core.Infrastructure.Persistence.Entities;
 
 namespace Library.Domain.Outboxes;
 
-public interface IOutBoxRepository : IOutboxStore
+public interface IOutboxMessageRepository : IOutboxStore
 {
     Task<IEnumerable<OutboxMessage>> GetListAsync(
         int pageIndex = 1,

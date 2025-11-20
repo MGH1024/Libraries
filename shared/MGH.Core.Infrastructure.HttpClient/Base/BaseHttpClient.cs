@@ -1,5 +1,5 @@
-﻿using System.Net.Http.Headers;
-using System.Text.Json;
+﻿using System.Text.Json;
+using System.Net.Http.Headers;
 using System.Text.Json.Serialization;
 
 namespace MGH.Core.Infrastructure.HttpClient.Base;
@@ -77,5 +77,5 @@ public abstract class BaseHttpClient(System.Net.Http.HttpClient httpClient)
 
     protected abstract  Task LoginAsync();
 
-    protected bool IsTokenActive() => !string.IsNullOrEmpty(Token) && DateTime.Now <= TokenExpiry;
+    protected bool IsTokenActive() => !string.IsNullOrEmpty(Token) && DateTime.UtcNow <= TokenExpiry;
 }

@@ -3,14 +3,14 @@ using Microsoft.EntityFrameworkCore.Design;
 
 namespace Library.Infrastructure.Contexts;
 
-public class SecurityDbContextFactory : IDesignTimeDbContextFactory<LibraryDbContext>
+public class SecurityDbContextFactory : IDesignTimeDbContextFactory<PublicLibraryDbContext>
 {
-    public LibraryDbContext CreateDbContext(string[] args)
+    public PublicLibraryDbContext CreateDbContext(string[] args)
     {
-        var optionsBuilder = new DbContextOptionsBuilder<LibraryDbContext>();
+        var optionsBuilder = new DbContextOptionsBuilder<PublicLibraryDbContext>();
         optionsBuilder.UseSqlServer(
             "Data Source=localhost;Initial Catalog=dbLibraryMicroservice;User ID=sa; Password=Abcd@1234;Integrated Security=false;MultipleActiveResultSets=true;TrustServerCertificate=True");
 
-        return new LibraryDbContext(optionsBuilder.Options);
+        return new PublicLibraryDbContext(optionsBuilder.Options);
     }
 }

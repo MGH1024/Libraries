@@ -9,7 +9,7 @@ public class PublicationDate : ValueObject
 
     public PublicationDate(DateTime value)
     {
-        var now = DateTime.Now.Date;
+        var now = DateTime.UtcNow.Date;
         if (value > now)
             throw new BookPublicationDateException();
         Value = value;

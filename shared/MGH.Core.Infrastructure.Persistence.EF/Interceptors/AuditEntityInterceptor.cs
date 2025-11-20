@@ -1,9 +1,9 @@
 ﻿using System.Text.Json;
-using MGH.Core.Domain.Entities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using MGH.Core.Infrastructure.Public;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using MGH.Core.Infrastructure.Persistence.Entities;
 
 namespace MGH.Core.Infrastructure.Persistence.EF.Interceptors;
 
@@ -29,7 +29,7 @@ public class AuditEntityInterceptor(IDateTime dateTime, IHttpContextAccessor htt
                 TableName = entry.Entity.GetType().Name,
                 Action = entry.State.ToString(),
                 Username = httpContextAccessor.HttpContext?.User?.Identity?.Name ?? string.Empty,
-                Timestamp = dateTime.IranNow,
+                Timestamp = dateTime.UtcNow,
             };
         
             if (entry.State == EntityState.Modified)

@@ -10,6 +10,6 @@ builder.Services.AddApplicationServices(builder.Configuration);
 
 
 RegisterLogger.CreateLoggerByConfig(builder.Configuration);
-builder.Services.AddHostedService<Worker>();
+builder.Services.AddHostedService<OutBoxWorker>();
 var host = builder.Build();
 await host.RunAsync();

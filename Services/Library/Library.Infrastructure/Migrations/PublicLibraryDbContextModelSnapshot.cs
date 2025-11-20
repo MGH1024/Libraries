@@ -4,19 +4,16 @@ using Library.Infrastructure.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
 namespace Library.Infrastructure.Migrations
 {
-    [DbContext(typeof(LibraryDbContext))]
-    [Migration("20251119191409_add-auditlogs")]
-    partial class addauditlogs
+    [DbContext(typeof(PublicLibraryDbContext))]
+    partial class PublicLibraryDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -158,7 +155,7 @@ namespace Library.Infrastructure.Migrations
                     b.ToTable("Lendings", "lib");
                 });
 
-            modelBuilder.Entity("Library.Domain.Libraries.Library", b =>
+            modelBuilder.Entity("Library.Domain.Libraries.PublicLibrary", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -225,7 +222,7 @@ namespace Library.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Libraries", "lib");
+                    b.ToTable("PublicLibraries", "lib");
                 });
 
             modelBuilder.Entity("Library.Domain.Members.Member", b =>
@@ -297,25 +294,27 @@ namespace Library.Infrastructure.Migrations
                     b.ToTable("Members", "lib");
                 });
 
-            modelBuilder.Entity("MGH.Core.Domain.Entities.AuditLog", b =>
+            modelBuilder.Entity("MGH.Core.Infrastructure.Persistence.Entities.AuditLog", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Action")
+                        .IsRequired()
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");
 
                     b.Property<string>("AfterData")
                         .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("BeforeData")
                         .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TableName")
+                        .IsRequired()
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");
 
@@ -323,30 +322,31 @@ namespace Library.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Username")
+                        .IsRequired()
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("AuditLogs");
+                    b.ToTable("AuditLogs", "log");
                 });
 
-            modelBuilder.Entity("MGH.Core.Domain.Entities.OutboxMessage", b =>
+            modelBuilder.Entity("MGH.Core.Infrastructure.Persistence.Entities.OutboxMessage", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Error")
-                        .HasMaxLength(512)
-                        .HasColumnType("nvarchar(512)");
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
 
                     b.Property<DateTime>("OccurredOn")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Payload")
                         .IsRequired()
-                        .HasMaxLength(4096)
+                        .HasMaxLength(64)
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("ProcessedAt")
@@ -354,12 +354,16 @@ namespace Library.Infrastructure.Migrations
 
                     b.Property<string>("Type")
                         .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("OutBox", "lib");
+                    b.HasIndex("OccurredOn");
+
+                    b.HasIndex("ProcessedAt");
+
+                    b.ToTable("OutBoxMessages", "log");
                 });
 
             modelBuilder.Entity("Library.Domain.Books.Book", b =>
@@ -396,7 +400,7 @@ namespace Library.Infrastructure.Migrations
                     b.Navigation("BookAuthors");
                 });
 
-            modelBuilder.Entity("Library.Domain.Libraries.Library", b =>
+            modelBuilder.Entity("Library.Domain.Libraries.PublicLibrary", b =>
                 {
                     b.OwnsMany("Library.Domain.Libraries.ValueObjects.Staff", "LibraryStaves", b1 =>
                         {

@@ -112,16 +112,16 @@ public class AuthService : IAuthService
                 //token
                 var token = await GenerateTokenByUser(user);
                 var tokenAsString = new JwtSecurityTokenHandler().WriteToken(token);
-                var tokenValidDate = DateTime.Now
+                var tokenValidDate = DateTime.UtcNow
                     .AddMinutes(_auth.TokenAddedExpirationDateValue);
 
                 //refreshToken
                 var refreshToken = GenerateRefreshToken();
-                var refreshTokenValidDate = DateTime.Now
+                var refreshTokenValidDate = DateTime.UtcNow
                     .AddMinutes(_auth.RefreshTokenAddedExpirationDateValue);
                 await _userService.CreateUserRefreshToken(new UserRefreshToken
                 {
-                    CreatedDate = DateTime.Now,
+                    CreatedDate = DateTime.UtcNow,
                     ExpirationDate = refreshTokenValidDate,
                     IpAddress = ipAddress,
                     IsInvalidated = false,
@@ -183,14 +183,14 @@ public class AuthService : IAuthService
 
 
         var newToken = new JwtSecurityTokenHandler().WriteToken(await GenerateTokenByUser(user));
-        var newTokenValidDate = DateTime.Now
+        var newTokenValidDate = DateTime.UtcNow
             .AddMinutes(_auth.TokenAddedExpirationDateValue);
 
 
-        if (userRefreshToken.ExpirationDate <DateTime.Now)
+        if (userRefreshToken.ExpirationDate <DateTime.UtcNow)
         {
             var newRefreshToken = GenerateRefreshToken();
-            var newRefreshTokenValidDate = DateTime.Now
+            var newRefreshTokenValidDate = DateTime.UtcNow
                 .AddMinutes(_auth.RefreshTokenAddedExpirationDateValue);
 
             //deActiveOldRefreshToken
@@ -200,7 +200,7 @@ public class AuthService : IAuthService
             //generate new and save in db
             await _userService.CreateUserRefreshToken(new UserRefreshToken
             {
-                CreatedDate = DateTime.Now,
+                CreatedDate = DateTime.UtcNow,
                 ExpirationDate = newRefreshTokenValidDate,
                 IpAddress = ipAddress,
                 IsInvalidated = false,

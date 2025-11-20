@@ -1,4 +1,4 @@
-﻿using MGH.Core.Domain.Entities;
+﻿using Library.Domain.Libraries;
 using Microsoft.EntityFrameworkCore;
 using MGH.Core.Application.Responses;
 using Library.Domain.Libraries.Events;
@@ -12,14 +12,12 @@ using MGH.Core.Infrastructure.Persistence.Models.Filters.GetModels;
 using Library.Application.Features.Libraries.Commands.RemoveLibrary;
 using Library.Application.Features.Libraries.Commands.AddLibraryStaff;
 using Library.Application.Features.Libraries.Commands.RemoveLibraryStaff;
-using Library.Domain.Libraries;
-using Microsoft.Extensions.DependencyModel;
 
 namespace Library.Application.Features.Libraries.Profiles;
 
 public static class MappingProfiles
 {
-    public static GetListResponse<GetLibraryListDto> ToGetLibraryListDto(this IPaginate<Domain.Libraries.Library> libraries)
+    public static GetListResponse<GetLibraryListDto> ToGetLibraryListDto(this IPaginate<PublicLibrary> libraries)
     {
         return new GetListResponse<GetLibraryListDto>
         {
@@ -48,54 +46,54 @@ public static class MappingProfiles
         return new Staff(staffDto.Name, staffDto.Position, staffDto.NationalCode);
     }
 
-    public static GetModel<Domain.Libraries.Library> ToGetBaseLibraryModel(this DeleteLibraryStaffCommand command)
+    public static GetModel<PublicLibrary> ToGetBaseLibraryModel(this DeleteLibraryStaffCommand command)
     {
-        return new GetModel<Domain.Libraries.Library>
+        return new GetModel<PublicLibrary>
         {
             Predicate = a => a.Id == command.LibraryId,
             Include = a => a.Include(b => b.LibraryStaves),
         };
     }
 
-    public static GetModel<Domain.Libraries.Library> ToGetBaseLibraryModel(this UpdateLibraryCommand request)
+    public static GetModel<PublicLibrary> ToGetBaseLibraryModel(this UpdateLibraryCommand request)
     {
-        return new GetModel<Domain.Libraries.Library>()
+        return new GetModel<PublicLibrary>()
         {
             Predicate = a => a.Id == request.LibraryId,
         };
     }
 
-    public static GetModel<Domain.Libraries.Library> ToGetBaseLibraryModel(this UpdateLibraryWithStavesCommand request)
+    public static GetModel<PublicLibrary> ToGetBaseLibraryModel(this UpdateLibraryWithStavesCommand request)
     {
-        return new GetModel<Domain.Libraries.Library>
+        return new GetModel<PublicLibrary>
         {
             Predicate = a => a.Id == request.LibraryId
         };
     }
 
-    public static GetModel<Domain.Libraries.Library> ToGetBaseLibraryModel(this DeleteLibraryCommand request)
+    public static GetModel<PublicLibrary> ToGetBaseLibraryModel(this DeleteLibraryCommand request)
     {
-        return new GetModel<Domain.Libraries.Library>
+        return new GetModel<PublicLibrary>
         {
             Predicate = a => a.Id == request.LibraryId
         };
     }
 
-    public static GetModel<Domain.Libraries.Library> ToGetBaseLibraryModel(this CreateLibraryStaffCommand request)
+    public static GetModel<PublicLibrary> ToGetBaseLibraryModel(this CreateLibraryStaffCommand request)
     {
-        return new GetModel<Domain.Libraries.Library>()
+        return new GetModel<PublicLibrary>()
         {
             Predicate = a => a.Id == request.LibraryId,
             Include = a => a.Include(b => b.LibraryStaves)
         };
     }
 
-    public static GetDynamicListModelAsync<Domain.Libraries.Library> ToGetDynamicListAsyncModel(this GetLibraryListQuery request)
+    public static GetDynamicListModelAsync<PublicLibrary> ToGetDynamicListAsyncModel(this GetLibraryListQuery request)
     {
         var dyn = new DynamicQuery();
         dyn.Filter = new Filter("Name", "contains", "par", "and", null);
         dyn.Sort = null;
-        return new GetDynamicListModelAsync<Domain.Libraries.Library>()
+        return new GetDynamicListModelAsync<PublicLibrary>()
         {
             Dynamic = dyn,
         };
@@ -110,7 +108,7 @@ public static class MappingProfiles
         };
     } 
 
-    public static LibraryCreatedDomainEvent ToLibraryCreatedDomainEvent(this Domain.Libraries.Library library)
+    public static LibraryCreatedDomainEvent ToLibraryCreatedDomainEvent(this PublicLibrary library)
     {
         return new LibraryCreatedDomainEvent(
             library.Name,

@@ -9,7 +9,7 @@ public class ReturnDate: ValueObject
 
     public ReturnDate(DateTime value)
     {
-        var now = DateTime.Now.Date;
+        var now = DateTime.UtcNow.Date;
         if (value <= now.Date)
             throw new DueDateException();
         Value = value;

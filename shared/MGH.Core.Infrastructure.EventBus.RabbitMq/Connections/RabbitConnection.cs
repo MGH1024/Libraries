@@ -13,8 +13,8 @@ public class RabbitConnection : IRabbitConnection
     private IConnection _connection;
     private Policy _connectionPolicy;
     private ConnectionFactory _connectionFactory;
-    private bool IsServiceConnected => _connection is not null && _connection.IsOpen;
     private bool IsChannelConnected => _channel is not null && _channel.IsOpen;
+    private bool IsServiceConnected => _connection is not null && _connection.IsOpen;
     
     public RabbitConnection(IOptions<RabbitMqOptions> options)
     {

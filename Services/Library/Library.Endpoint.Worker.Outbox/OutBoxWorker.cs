@@ -4,12 +4,12 @@ using MGH.Core.Infrastructure.EventBus;
 
 namespace Library.Endpoint.Worker.Outbox;
 
-public class Worker(IServiceProvider serviceProvider) : BackgroundService
+public class OutBoxWorker(IServiceProvider serviceProvider) : BackgroundService
 {
     protected override async Task ExecuteAsync(CancellationToken cancellationToken)
     {
         using var scope = serviceProvider.CreateScope();
-        var repo = scope.ServiceProvider.GetRequiredService<IOutBoxRepository>();
+        var repo = scope.ServiceProvider.GetRequiredService<IOutboxMessageRepository>();
         var eventBus = scope.ServiceProvider.GetRequiredService<IEventBus>();
 
         while (!cancellationToken.IsCancellationRequested)

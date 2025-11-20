@@ -1,13 +1,13 @@
 ﻿using Library.Domain.Books;
+using Microsoft.EntityFrameworkCore;
 using Library.Domain.Books.ValueObjects;
 using Library.Infrastructure.Configurations.Base;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Library.Infrastructure.Configurations;
 
-public class BookConfiguration : IEntityTypeConfiguration<Book>
+public class BookEntityTypeConfiguration : IEntityTypeConfiguration<Book>
 {
     public void Configure(EntityTypeBuilder<Book> builder)
     {

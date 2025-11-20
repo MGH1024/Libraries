@@ -6,7 +6,7 @@ using Library.Domain.Libraries.ValueObjects;
 
 namespace Library.Domain.Libraries;
 
-public class Library : AggregateRoot<Guid>
+public class PublicLibrary : AggregateRoot<Guid>
 {
     public Name Name { get; private set; }
     public Code Code { get; private set; }
@@ -17,11 +17,11 @@ public class Library : AggregateRoot<Guid>
     private readonly List<Staff> _staves = new();
     public IReadOnlyCollection<Staff> LibraryStaves => _staves;
 
-    private Library()
+    private PublicLibrary()
     {
     }
 
-    public Library(Name name, Code code, Location location, District district, RegistrationDate registrationDate)
+    public PublicLibrary(Name name, Code code, Location location, District district, RegistrationDate registrationDate)
     {
         Id = Guid.NewGuid();
         Name = name;
@@ -45,7 +45,7 @@ public class Library : AggregateRoot<Guid>
         _staves.AddRange(libraryStaves);
     }
 
-    public static Task RemoveLibrary(Library library)
+    public static Task RemoveLibrary(PublicLibrary library)
     {
         if (library._staves.Count != 0)
             throw new LibraryHasStavesException();

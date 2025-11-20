@@ -9,7 +9,7 @@ public class RegistrationDate : ValueObject
     
     public RegistrationDate(DateTime value)
     {
-        var now = DateTime.Now.Date;
+        var now = DateTime.UtcNow.Date;
         if (value.Date >= now || value < now.AddYears(-100))
             throw new RegistrationDateException();
         Value = value;

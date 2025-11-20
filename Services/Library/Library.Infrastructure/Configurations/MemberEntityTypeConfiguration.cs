@@ -1,13 +1,13 @@
 ﻿using Library.Domain.Members;
+using Microsoft.EntityFrameworkCore;
 using Library.Domain.Members.ValueObjects;
 using Library.Infrastructure.Configurations.Base;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Library.Infrastructure.Configurations;
 
-public class MemberConfiguration : IEntityTypeConfiguration<Member>
+public class MemberEntityTypeConfiguration : IEntityTypeConfiguration<Member>
 {
     public void Configure(EntityTypeBuilder<Member> builder)
     {

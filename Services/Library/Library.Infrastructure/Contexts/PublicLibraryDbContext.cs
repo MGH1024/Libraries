@@ -1,15 +1,17 @@
 ﻿using MGH.Core.Domain.Events;
 using Library.Domain.Lendings;
-using MGH.Core.Domain.Entities;
+using Library.Domain.Libraries;
 using Microsoft.EntityFrameworkCore;
+using MGH.Core.Infrastructure.Persistence.Entities;
 
 namespace Library.Infrastructure.Contexts;
 
-public class LibraryDbContext(DbContextOptions<LibraryDbContext> options) : DbContext(options)
+public class PublicLibraryDbContext(DbContextOptions<PublicLibraryDbContext> options) : DbContext(options)
 {
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(LibraryDbContext).Assembly);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(AuditLog).Assembly);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(PublicLibraryDbContext).Assembly);
         modelBuilder.Ignore<DomainEvent>();
         base.OnModelCreating(modelBuilder);
     }
@@ -20,7 +22,7 @@ public class LibraryDbContext(DbContextOptions<LibraryDbContext> options) : DbCo
         base.ConfigureConventions(configurationBuilder);
     }
 
-    private DbSet<Domain.Libraries.Library> Libraries { get; set; }
+    private DbSet<PublicLibrary> Libraries { get; set; }
     private DbSet<Lending> Lendings { get; set; }
     private DbSet<OutboxMessage> OutboxMessages { get; set; }
     private DbSet<AuditLog> AuditLogs { get; set; }
