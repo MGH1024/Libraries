@@ -32,9 +32,9 @@ using MGH.Core.Infrastructure.Persistence.EF.Interceptors;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using MGH.Core.CrossCutting.Localizations.RouteConstraints;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Base;
-using MGH.Core.Infrastructure.EventBus.RabbitMq.Configurations;
 using MGH.Core.Infrastructure.Persistence.Models.Configuration;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Models;
+using MGH.Core.Infrastructure.EventBus.RabbitMq.Options;
 
 namespace Library.Infrastructure;
 
@@ -83,7 +83,7 @@ public static class InfrastructureServiceRegistration
 
     private static void AddHealthChecks(this IServiceCollection services, IConfiguration configuration)
     {
-        var defaultConnection = configuration.GetSection("RabbitMq:Connections:Default").Get<RabbitMqConfig>() ??
+        var defaultConnection = configuration.GetSection("RabbitMq:Connections:Default").Get<RabbitMqSettings>() ??
                                   throw new ArgumentNullException(nameof(RabbitMqOptions.Connections.Default));
 
         //var redisConnection = configuration.GetSection("RedisConnections:DefaultConfiguration").Get<RedisConfiguration>() ??
@@ -104,7 +104,6 @@ public static class InfrastructureServiceRegistration
 
     private static void RegisterInterceptors(this IServiceCollection services)
     {
-        services.AddSingleton<OutBoxInterceptor>();
         services.AddSingleton<AuditFieldsInterceptor>();
         services.AddSingleton<RemoveCacheInterceptor>();
         services.AddSingleton<AuditEntityInterceptor>();
@@ -133,7 +132,6 @@ public static class InfrastructureServiceRegistration
         {
             options.UseSqlServer(sqlConfig, a => { a.EnableRetryOnFailure(); })
                 .AddInterceptors(
-                    sp.GetRequiredService<OutBoxInterceptor>(),
                     sp.GetRequiredService<AuditFieldsInterceptor>(),
                     sp.GetRequiredService<RemoveCacheInterceptor>(),
                     sp.GetRequiredService<AuditEntityInterceptor>())

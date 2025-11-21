@@ -8,7 +8,7 @@ public interface IEventBus
     /// Publishes a single event message to RabbitMQ
     /// </summary>
     Task PublishAsync<T>(
-        T model, 
+        T model,
         PublishMode mode,
         CancellationToken cancelationToken) where T : IEvent;
 

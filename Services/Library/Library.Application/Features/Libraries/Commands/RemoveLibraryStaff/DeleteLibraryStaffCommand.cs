@@ -1,9 +1,9 @@
 ﻿using MediatR;
 using Library.Domain;
-using MGH.Core.Domain.Buses.Commands;
 using MGH.Core.Application.Pipelines.Authorization;
 using Library.Application.Features.Libraries.Profiles;
 using Library.Application.Features.Libraries.Constants;
+using MGH.Core.Application.Buses.Commands;
 
 namespace Library.Application.Features.Libraries.Commands.RemoveLibraryStaff;
 

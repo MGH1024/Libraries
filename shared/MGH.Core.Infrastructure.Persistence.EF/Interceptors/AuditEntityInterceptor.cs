@@ -17,12 +17,12 @@ public class AuditEntityInterceptor(IDateTime dateTime, IHttpContextAccessor htt
         if (context == null) return base.SavingChangesAsync(eventData, result, cancellationToken);
 
         var auditLogs = new List<AuditLog>();
-        
+
         foreach (var entry in context.ChangeTracker.Entries())
         {
             if (entry.Entity is AuditLog || entry.State == EntityState.Detached || entry.State == EntityState.Unchanged)
                 continue;
-        
+
             var auditLog = new AuditLog
             {
                 Id = Guid.NewGuid(),
@@ -31,14 +31,14 @@ public class AuditEntityInterceptor(IDateTime dateTime, IHttpContextAccessor htt
                 Username = httpContextAccessor.HttpContext?.User?.Identity?.Name ?? string.Empty,
                 Timestamp = dateTime.UtcNow,
             };
-        
+
             if (entry.State == EntityState.Modified)
             {
                 auditLog.BeforeData = JsonSerializer.Serialize(entry.OriginalValues.Properties.ToDictionary(
                     p => p.Name,
                     p => entry.OriginalValues[p]?.ToString()
                 ));
-        
+
                 auditLog.AfterData = JsonSerializer.Serialize(entry.CurrentValues.Properties.ToDictionary(
                     p => p.Name,
                     p => entry.CurrentValues[p]?.ToString()
@@ -60,11 +60,11 @@ public class AuditEntityInterceptor(IDateTime dateTime, IHttpContextAccessor htt
                 ));
                 auditLog.AfterData = null;
             }
-        
+
             auditLogs.Add(auditLog);
         }
-        
+
         context.AddRange(auditLogs);
-        return base.SavingChangesAsync(eventData, result,cancellationToken);
+        return base.SavingChangesAsync(eventData, result, cancellationToken);
     }
 }

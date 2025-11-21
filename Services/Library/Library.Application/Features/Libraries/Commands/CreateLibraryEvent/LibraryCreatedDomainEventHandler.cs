@@ -1,10 +1,10 @@
 using Library.Domain;
-using MGH.Core.Domain.Buses.Commands;
 using Library.Domain.Libraries.Events;
 using MGH.Core.Infrastructure.EventBus;
 using Library.Application.Features.Libraries.Rules;
 using Library.Application.Features.Libraries.Profiles;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Base;
+using MGH.Core.Application.Buses.Commands;
 
 namespace Library.Application.Features.Libraries.Commands.CreateLibraryEvent;
 

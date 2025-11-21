@@ -2,7 +2,7 @@
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using Microsoft.Extensions.Options;
-using MGH.Core.Infrastructure.EventBus.RabbitMq.Configurations;
+using MGH.Core.Infrastructure.EventBus.RabbitMq.Options;
 
 namespace MGH.Core.Infrastructure.EventBus.RabbitMq.Connections;
 
@@ -15,7 +15,7 @@ public class RabbitConnection : IRabbitConnection
     private ConnectionFactory _connectionFactory;
     private bool IsChannelConnected => _channel is not null && _channel.IsOpen;
     private bool IsServiceConnected => _connection is not null && _connection.IsOpen;
-    
+
     public RabbitConnection(IOptions<RabbitMqOptions> options)
     {
         CreateConnectionPolicy();
@@ -27,7 +27,7 @@ public class RabbitConnection : IRabbitConnection
     {
         return _channel;
     }
-    
+
     public void Dispose()
     {
         if (_isDisposed) return;
@@ -53,7 +53,7 @@ public class RabbitConnection : IRabbitConnection
             ConnectChannel();
         });
     }
-    
+
     private void CreateConnectionPolicy()
     {
         _connectionPolicy = Policy
@@ -63,7 +63,7 @@ public class RabbitConnection : IRabbitConnection
                 sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(5)
             );
     }
-    
+
     private void CreateConnectionFactory(RabbitMqOptions rabbitMQ)
     {
         _connectionFactory = new ConnectionFactory
@@ -75,7 +75,7 @@ public class RabbitConnection : IRabbitConnection
             Port = Convert.ToInt32(rabbitMQ.Connections.Default.Port),
         };
     }
-    
+
     private void ConnectChannel()
     {
         if (_isDisposed || IsChannelConnected) return;

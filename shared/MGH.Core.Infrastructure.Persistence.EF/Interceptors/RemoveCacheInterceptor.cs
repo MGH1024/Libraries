@@ -36,7 +36,7 @@ public class RemoveCacheInterceptor(ICachingService<IEntityType> cachingService)
 
         return base.SavingChangesAsync(eventData, result, cancellationToken);
     }
-    
+
     private static string GeneratePatternKeyForEntities(IEntityType entityType)
     {
         return entityType?.ClrType.Name is { } entityName ? $"GetList_{entityName}" : string.Empty;

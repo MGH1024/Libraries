@@ -1,14 +1,14 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Security.Cryptography;
+﻿using AutoMapper;
 using System.Text;
-using AutoMapper;
+using Microsoft.Extensions.Options;
+using System.Security.Cryptography;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 using MGH.Core.Infrastructure.Securities.Identity.Abstract;
 using MGH.Core.Infrastructure.Securities.Identity.Entities;
 using MGH.Core.Infrastructure.Securities.Identity.Enums;
 using MGH.Core.Infrastructure.Securities.Identity.Models;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 
 namespace MGH.Core.Infrastructure.Securities.Identity.Concrete;
 
@@ -152,7 +152,7 @@ public class AuthService : IAuthService
                 errors.Add("your account is lock");
                 return new AuthResponse
                 {
-                    Success=false,
+                    Success = false,
                     Errors = errors,
                 };
             }
@@ -161,8 +161,8 @@ public class AuthService : IAuthService
         errors.Add("user not found");
         return new AuthResponse
         {
-            Errors=errors,
-            Success=false,
+            Errors = errors,
+            Success = false,
         };
     }
 
@@ -187,7 +187,7 @@ public class AuthService : IAuthService
             .AddMinutes(_auth.TokenAddedExpirationDateValue);
 
 
-        if (userRefreshToken.ExpirationDate <DateTime.UtcNow)
+        if (userRefreshToken.ExpirationDate < DateTime.UtcNow)
         {
             var newRefreshToken = GenerateRefreshToken();
             var newRefreshTokenValidDate = DateTime.UtcNow
