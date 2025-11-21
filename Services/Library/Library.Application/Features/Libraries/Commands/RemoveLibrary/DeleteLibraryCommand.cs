@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Library.Domain;
 using Library.Domain.Libraries;
-using MGH.Core.Domain.Buses.Commands;
+using MGH.Core.Application.Buses.Commands;
 using Library.Application.Features.Libraries.Rules;
 using MGH.Core.Application.Pipelines.Authorization;
 using Library.Application.Features.Libraries.Profiles;

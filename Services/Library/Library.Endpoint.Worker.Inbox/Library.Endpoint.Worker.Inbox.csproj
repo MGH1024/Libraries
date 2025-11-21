@@ -8,7 +8,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="MGH.Core.Domain" Version="3.0.6" />
+		<PackageReference Include="MGH.Core.Application" Version="3.0.5" />
 		<PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
 		<PackageReference Include="MGH.Core.Infrastructure.EventBus" Version="3.0.4" />
 		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.4" />
