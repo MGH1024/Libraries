@@ -14,17 +14,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Remove="Exceptions\Common\BadRequestException.cs" />
-      <Compile Remove="Models\Validation\ValidationError.cs" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\Library.Domain\Library.Domain.csproj" />
     </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Features\Libraries\Queries\" />
-      <Folder Include="Features\OutBoxes\Commands\" />
-    </ItemGroup>
-
 </Project>
