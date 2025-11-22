@@ -1,6 +1,5 @@
 ﻿using System.Text;
 using RabbitMQ.Client;
-using System.Text.Json;
 using MGH.Core.CrossCutting;
 using MGH.Core.Domain.Events;
 using Microsoft.Extensions.Options;
@@ -109,8 +108,7 @@ public class EventBus : IEventBus
         {
             try
             {
-                var json = Encoding.UTF8.GetString(ea.Body.ToArray());
-                var message = JsonSerializer.Deserialize<T>(json);
+                var message = EventBusJsonHelper.DeserializeEventBusEvent<T>(ea.Body.ToArray());
                 if (message != null)
                     await handler(message);
 
@@ -147,11 +145,8 @@ public class EventBus : IEventBus
                 if (handler == null)
                     throw new InvalidOperationException($"Handler for event type {typeof(T).Name} not registered.");
 
-                var json = Encoding.UTF8.GetString(ea.Body.ToArray());
-                var message = JsonSerializer.Deserialize<T>(json, new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true
-                });
+                var message = EventBusJsonHelper.DeserializeEventBusEvent<T>(ea.Body.ToArray());
+
 
                 if (message == null)
                 {
@@ -236,7 +231,7 @@ public class EventBus : IEventBus
         var channel = _rabbitConnection.GetChannel();
 
         var basicProperties = channel.CreateBasicProperties();
-        var messageByte = JsonHelper.SerializeEvent(model);
+        var messageByte = EventBusJsonHelper.SerializeEventBusEvent(model);
 
         var routingKey = GetRoutingKey(typeof(T));
 
@@ -270,7 +265,7 @@ public class EventBus : IEventBus
 
         foreach (var model in models)
         {
-            var messageByte = JsonHelper.SerializeEvent(model);
+            var messageByte = EventBusJsonHelper.SerializeEventBusEvent(model);
 
             channel.BasicPublish(
                 exchange: _options.EventBus.ExchangeName,

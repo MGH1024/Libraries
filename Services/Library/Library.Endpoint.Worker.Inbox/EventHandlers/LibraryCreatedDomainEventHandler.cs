@@ -14,7 +14,7 @@ public class LibraryCreatedDomainEventHandler : IEventHandler<LibraryCreatedDoma
 
     public Task HandleAsync(LibraryCreatedDomainEvent message)
     {
-        _logger.LogInformation("Received LibraryCreatedDomainEvent2 message: {Name}", message.Id);
+        _logger.LogInformation("Received LibraryCreatedDomainEvent message: {Name}", message.Id);
         // Logic here
         return Task.CompletedTask;
     }
