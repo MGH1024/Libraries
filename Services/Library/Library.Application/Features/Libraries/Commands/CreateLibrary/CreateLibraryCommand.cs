@@ -36,7 +36,7 @@ public class CreateLibraryCommandHandler(
         await uow.Library.AddAsync(library);
 
         await eventBus.PublishAsync(library.ToLibraryCreatedDomainEvent(),
-            PublishMode.Outbox,
+            PublishMode.Direct,
             cancellationToken);
         await uow.CompleteAsync(cancellationToken);
         return library.Id;
