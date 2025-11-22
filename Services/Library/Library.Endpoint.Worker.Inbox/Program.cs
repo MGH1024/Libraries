@@ -9,7 +9,7 @@ var builder = Host.CreateApplicationBuilder(args);
 
 builder.Services.AddInfrastructuresServicesForWorkers(builder.Configuration);
 builder.Services.AddApplicationServices(builder.Configuration);
-builder.Services.AddEventHandlers(typeof(LibraryCreatedDomainEvent2Handler).Assembly);
+builder.Services.AddEventHandlers(typeof(LibraryCreatedDomainEventHandler).Assembly);
 
 
 
