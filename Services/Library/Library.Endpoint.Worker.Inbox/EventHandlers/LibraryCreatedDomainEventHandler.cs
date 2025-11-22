@@ -3,11 +3,11 @@ using MGH.Core.Infrastructure.EventBus;
 
 namespace Library.Endpoint.Worker.Inbox.EventHandlers;
 
-public class LibraryCreatedDomainEvent2Handler : IEventHandler<LibraryCreatedDomainEvent>
+public class LibraryCreatedDomainEventHandler : IEventHandler<LibraryCreatedDomainEvent>
 {
-    private readonly ILogger<LibraryCreatedDomainEvent2Handler> _logger;
+    private readonly ILogger<LibraryCreatedDomainEventHandler> _logger;
 
-    public LibraryCreatedDomainEvent2Handler(ILogger<LibraryCreatedDomainEvent2Handler> logger)
+    public LibraryCreatedDomainEventHandler(ILogger<LibraryCreatedDomainEventHandler> logger)
     {
         _logger = logger;
     }
