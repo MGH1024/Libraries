@@ -9,10 +9,10 @@
 	<ItemGroup>
 		<PackageReference Include="MGH.Core.Domain" Version="3.0.8" />
 		<PackageReference Include="MGH.Core.Application" Version="3.0.5" />
-		<PackageReference Include="MGH.Core.CrossCutting" Version="3.0.2" />
+		<PackageReference Include="MGH.Core.CrossCutting" Version="3.0.3" />
 		<PackageReference Include="MGH.Core.Infrastructure.Securities" Version="3.0.4" />
 		<PackageReference Include="MGH.Core.Infrastructure.Persistence.EF" Version="3.0.8" />
-		<PackageReference Include="MGH.Core.Infrastructure.EventBus.RabbitMq" Version="4.0.6" />
+		<PackageReference Include="MGH.Core.Infrastructure.EventBus.RabbitMq" Version="4.0.7" />
 	</ItemGroup>
 
 	<ItemGroup>
