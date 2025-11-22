@@ -1,8 +1,8 @@
 ﻿using System.Text;
 using RabbitMQ.Client;
-using MGH.Core.CrossCutting;
 using MGH.Core.Domain.Events;
 using Microsoft.Extensions.Options;
+using MGH.Core.CrossCutting.JsonHelpers;
 using Microsoft.Extensions.DependencyInjection;
 using MGH.Core.Infrastructure.Persistence.Entities;
 using MGH.Core.Infrastructure.EventBus.RabbitMq.Options;

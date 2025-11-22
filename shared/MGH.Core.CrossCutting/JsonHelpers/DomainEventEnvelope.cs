@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace MGH.Core.CrossCutting
+namespace MGH.Core.CrossCutting.JsonHelpers
 {
     public  class DomainEventEnvelope
     {

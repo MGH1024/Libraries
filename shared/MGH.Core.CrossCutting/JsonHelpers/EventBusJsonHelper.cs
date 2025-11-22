@@ -2,7 +2,7 @@
 using System.Text.Json;
 using MGH.Core.Domain.Events;
 
-namespace MGH.Core.CrossCutting
+namespace MGH.Core.CrossCutting.JsonHelpers
 {
     /// <summary>
     /// Provides JSON serialization and deserialization helpers for EventBus events.
