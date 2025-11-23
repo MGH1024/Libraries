@@ -19,8 +19,11 @@ namespace Library.Endpoint.Api;
 
 public static class ApiServiceRegistration
 {
-    public static void AddApiService(this IServiceCollection services, IConfiguration configuration, IHostBuilder hostBuilder)
+    public static void AddApiService(this WebApplicationBuilder builder)
     {
+        var hostBuilder = builder.Host;
+        var services = builder.Services;
+        var configuration = builder.Configuration;
         AddLogger(configuration, hostBuilder);
         services.AddOptions(configuration);
         services.AddSwagger(configuration);

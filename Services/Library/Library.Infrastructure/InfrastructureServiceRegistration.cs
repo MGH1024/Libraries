@@ -5,8 +5,8 @@ using System.Reflection;
 using System.Globalization;
 using Library.Domain.Books;
 using Library.Domain.Members;
-using Library.Domain.Lendings;
 using Library.Domain.Outboxes;
+using Library.Domain.Lendings;
 using Library.Domain.Libraries;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
@@ -17,23 +17,24 @@ using Library.Infrastructure.Contexts;
 using MGH.Core.Infrastructure.EventBus;
 using Library.Domain.Libraries.Policies;
 using Microsoft.AspNetCore.Localization;
-using Microsoft.Extensions.Configuration;
 using Library.Domain.Libraries.Factories;
+using Microsoft.Extensions.Configuration;
 using Library.Infrastructure.Repositories;
 using MGH.Core.Infrastructure.HealthCheck;
-using MGH.Core.Infrastructure.Persistence.Base;
 using Microsoft.Extensions.DependencyInjection;
+using MGH.Core.Infrastructure.Persistence.Base;
 using MGH.Core.Infrastructure.EventBus.RabbitMq;
 using MGH.Core.Infrastructure.Securities.Security;
 using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 using MGH.Core.Infrastructure.EventBus.RabbitMq.Options;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch;
-using MGH.Core.Infrastructure.Persistence.EF.Interceptors;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using MGH.Core.Infrastructure.Persistence.EF.Interceptors;
 using MGH.Core.CrossCutting.Localizations.RouteConstraints;
-using MGH.Core.Infrastructure.Persistence.Models.Configuration;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Base;
+using MGH.Core.Infrastructure.Persistence.Models.Configuration;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Models;
+using Library.Application.Features.Libraries.Commands.CreateLibraryEvent;
 
 namespace Library.Infrastructure;
 
@@ -89,7 +90,7 @@ public static class InfrastructureServiceRegistration
         healthBuilder.AddSqlServer(configuration["DatabaseConnection:SqlConnection"]);
         healthBuilder.AddDbContextCheck<PublicLibraryDbContext>();
         healthBuilder.AddRabbitMqHealthCheck(defaultConnection.HealthAddress.ToString());
-        services.AddHealthChecksDashboard("Library Health check");
+        //services.AddHealthChecksDashboard("Library Health check");
     }
 
     private static void AddPrometheus(this IServiceCollection services)
