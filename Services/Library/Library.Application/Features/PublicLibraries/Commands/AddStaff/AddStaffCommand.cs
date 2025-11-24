@@ -1,0 +1,15 @@
+﻿using MediatR;
+using MGH.Core.Application.Buses.Commands;
+using MGH.Core.Application.Pipelines.Authorization;
+using Library.Application.Features.PublicLibraries.Constants;
+
+namespace Library.Application.Features.PublicLibraries.Commands.AddStaff;
+
+[Roles(PublicLibraryOperationClaims.AddStaff)]
+public class AddStaffCommand : ICommand<Unit>
+{
+    public string Name { get; set; }
+    public string Position { get; set; }
+    public string NationalCode { get; set; }
+    public Guid LibraryId { get; set; }
+}

@@ -6,12 +6,12 @@ using Library.Domain.Libraries.ValueObjects;
 using MGH.Core.Infrastructure.Persistence.Models.Paging;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Models;
 using MGH.Core.Infrastructure.Persistence.Models.Filters.GetModels;
-using Library.Application.Features.PublicLibraries.Commands.RemoveLibraryStaff;
-using Library.Application.Features.PublicLibraries.Commands.AddLibraryStaff;
-using Library.Application.Features.PublicLibraries.Commands.RemoveLibrary;
 using Library.Application.Features.PublicLibraries.Queries.GetList;
 using Library.Application.Features.PublicLibraries.Queries.GetById;
-using Library.Application.Features.PublicLibraries.Commands.EditLibrary;
+using Library.Application.Features.PublicLibraries.Commands.RemoveStaff;
+using Library.Application.Features.PublicLibraries.Commands.Remove;
+using Library.Application.Features.PublicLibraries.Commands.AddStaff;
+using Library.Application.Features.PublicLibraries.Commands.Update;
 
 namespace Library.Application.Features.PublicLibraries.Profiles;
 
@@ -65,7 +65,7 @@ public static class MappingProfiles
         return new Staff(staffDto.Name, staffDto.Position, staffDto.NationalCode);
     }
 
-    public static GetModel<PublicLibrary> ToGetBaseLibraryModel(this DeleteLibraryStaffCommand command)
+    public static GetModel<PublicLibrary> ToGetBaseLibraryModel(this RemoveStaffCommand command)
     {
         return new GetModel<PublicLibrary>
         {
@@ -74,7 +74,7 @@ public static class MappingProfiles
         };
     }
 
-    public static GetModel<PublicLibrary> ToGetBaseLibraryModel(this UpdateLibraryCommand request)
+    public static GetModel<PublicLibrary> ToGetBaseLibraryModel(this EditCommand request)
     {
         return new GetModel<PublicLibrary>()
         {
@@ -90,7 +90,7 @@ public static class MappingProfiles
         };
     }
 
-    public static GetModel<PublicLibrary> ToGetBaseLibraryModel(this DeleteLibraryCommand request)
+    public static GetModel<PublicLibrary> ToGetBaseLibraryModel(this RemoveCommand request)
     {
         return new GetModel<PublicLibrary>
         {
@@ -98,7 +98,7 @@ public static class MappingProfiles
         };
     }
 
-    public static GetModel<PublicLibrary> ToGetBaseLibraryModel(this CreateLibraryStaffCommand request)
+    public static GetModel<PublicLibrary> ToGetBaseLibraryModel(this AddStaffCommand request)
     {
         return new GetModel<PublicLibrary>()
         {

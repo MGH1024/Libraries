@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
 
-namespace Library.Application.Features.PublicLibraries.Commands.CreateLibrary;
+namespace Library.Application.Features.PublicLibraries.Commands.Add;
 
-public class CreateLibraryCommandValidator :AbstractValidator<CreateLibraryCommand>
+public class AddCommandValidator :AbstractValidator<AddCommand>
 {
-    public CreateLibraryCommandValidator()
+    public AddCommandValidator()
     {
         RuleFor(a => a.District).IsInEnum();
         RuleFor(a => a.RegistrationTime).NotEmpty();

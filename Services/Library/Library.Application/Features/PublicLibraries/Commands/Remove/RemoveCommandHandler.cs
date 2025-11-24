@@ -2,24 +2,16 @@
 using Library.Domain;
 using Library.Domain.Libraries;
 using MGH.Core.Application.Buses.Commands;
-using MGH.Core.Application.Pipelines.Authorization;
 using Library.Application.Features.PublicLibraries.Profiles;
-using Library.Application.Features.PublicLibraries.Constants;
 using Library.Application.Features.PublicLibraries.Rules;
 
-namespace Library.Application.Features.PublicLibraries.Commands.RemoveLibrary;
+namespace Library.Application.Features.PublicLibraries.Commands.Remove;
 
-[Roles(PublicLibraryOperationClaims.Delete)]
-public class DeleteLibraryCommand : ICommand<Unit>
-{
-    public Guid LibraryId { get; set; }
-}
-
-public class RemoveLibraryCommandHandler(IUow uow,
+public class RemoveCommandHandler(IUow uow,
     ILibraryBusinessRules libraryBusinessRules)
-    : ICommandHandler<DeleteLibraryCommand, Unit>
+    : ICommandHandler<RemoveCommand, Unit>
 {
-    public async Task<Unit> Handle(DeleteLibraryCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(RemoveCommand request, CancellationToken cancellationToken)
     {
         var library = await uow.Library.GetAsync(request.ToGetBaseLibraryModel());
         await libraryBusinessRules.LibraryShouldBeExistsWhenSelected(library);

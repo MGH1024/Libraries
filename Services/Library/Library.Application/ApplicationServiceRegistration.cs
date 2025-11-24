@@ -13,7 +13,7 @@ using MGH.Core.Application.Pipelines.Authorization;
 using Library.Application.Features.PublicLibraries.Rules;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Base;
-using Library.Application.Features.PublicLibraries.Commands.CreateLibrary;
+using Library.Application.Features.PublicLibraries.Commands.Add;
 
 namespace Library.Application;
 
@@ -62,7 +62,7 @@ public static class ApplicationServiceRegistration
         services.AddMediatR(configuration =>
         {
             configuration.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
-            configuration.RegisterServicesFromAssembly(typeof(CreateLibraryCommand).Assembly);
+            configuration.RegisterServicesFromAssembly(typeof(AddCommand).Assembly);
             configuration.AddOpenBehavior(typeof(CachingBehavior<,>));
             configuration.AddOpenBehavior(typeof(LoggingBehaviour<,>));
             if (environment.EnvironmentName != "Development")

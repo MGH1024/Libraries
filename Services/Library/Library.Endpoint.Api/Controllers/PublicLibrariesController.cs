@@ -5,11 +5,11 @@ using MGH.Core.Application.Requests;
 using MGH.Core.Application.Responses;
 using Library.Application.Features.PublicLibraries.Queries.GetById;
 using Library.Application.Features.PublicLibraries.Queries.GetList;
-using Library.Application.Features.PublicLibraries.Commands.EditLibrary;
-using Library.Application.Features.PublicLibraries.Commands.CreateLibrary;
-using Library.Application.Features.PublicLibraries.Commands.RemoveLibrary;
-using Library.Application.Features.PublicLibraries.Commands.AddLibraryStaff;
-using Library.Application.Features.PublicLibraries.Commands.RemoveLibraryStaff;
+using Library.Application.Features.PublicLibraries.Commands.RemoveStaff;
+using Library.Application.Features.PublicLibraries.Commands.Remove;
+using Library.Application.Features.PublicLibraries.Commands.Add;
+using Library.Application.Features.PublicLibraries.Commands.AddStaff;
+using Library.Application.Features.PublicLibraries.Commands.Update;
 
 namespace Library.Endpoint.Api.Controllers;
 
@@ -54,7 +54,7 @@ public class PublicLibrariesController : ControllerBase
     // POST /{culture}/api/PublicLibraries/create-library
     [HttpPost("create-library")]
     [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
-    public async Task<IActionResult> CreateLibrary([FromBody] CreateLibraryCommand command, CancellationToken cancellationToken)
+    public async Task<IActionResult> CreateLibrary([FromBody] AddCommand command, CancellationToken cancellationToken)
     {
         var result = await _sender.Send(command, cancellationToken);
         return Ok(result);
@@ -63,7 +63,7 @@ public class PublicLibrariesController : ControllerBase
     // POST /{culture}/api/PublicLibraries/create-staff
     [HttpPost("create-staff")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> AddStaff([FromBody] CreateLibraryStaffCommand command, CancellationToken cancellationToken)
+    public async Task<IActionResult> AddStaff([FromBody] AddStaffCommand command, CancellationToken cancellationToken)
     {
         await _sender.Send(command, cancellationToken);
         return Ok();
@@ -72,7 +72,7 @@ public class PublicLibrariesController : ControllerBase
     // POST /{culture}/api/PublicLibraries/delete-staff
     [HttpPost("delete-staff")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> RemoveStaff([FromBody] DeleteLibraryStaffCommand command, CancellationToken cancellationToken)
+    public async Task<IActionResult> RemoveStaff([FromBody] RemoveStaffCommand command, CancellationToken cancellationToken)
     {
         await _sender.Send(command, cancellationToken);
         return Ok();
@@ -81,7 +81,7 @@ public class PublicLibrariesController : ControllerBase
     // PUT /{culture}/api/PublicLibraries/update-library
     [HttpPut("update-library")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> UpdateLibrary([FromBody] UpdateLibraryCommand command, CancellationToken cancellationToken)
+    public async Task<IActionResult> UpdateLibrary([FromBody] EditCommand command, CancellationToken cancellationToken)
     {
         var result = await _sender.Send(command, cancellationToken);
         return Ok(result);
@@ -99,7 +99,7 @@ public class PublicLibrariesController : ControllerBase
     // DELETE /{culture}/api/PublicLibraries/delete-library
     [HttpDelete("delete-library")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> RemoveLibrary([FromBody] DeleteLibraryCommand command, CancellationToken cancellationToken)
+    public async Task<IActionResult> RemoveLibrary([FromBody] RemoveCommand command, CancellationToken cancellationToken)
     {
         var result = await _sender.Send(command, cancellationToken);
         return Ok(result);
