@@ -17,7 +17,7 @@ public class OutBoxWorker(IServiceProvider serviceProvider) : BackgroundService
             var outBoxList = await repo.GetListAsync();
             if (!outBoxList.Any())
             {
-                await Task.Delay(1000,cancellationToken);
+                await Task.Delay(1000, cancellationToken);
                 continue;
             }
 
@@ -35,7 +35,7 @@ public class OutBoxWorker(IServiceProvider serviceProvider) : BackgroundService
                 if (!events.Any())
                     throw new ApplicationException($"No content found for type {type}");
 
-                await eventBus.PublishAsync(events, PublishMode.Direct, cancellationToken);
+                await eventBus.PublishAsync(PublishMode.Direct, events, cancellationToken);
 
                 foreach (var outbox in group)
                     outbox.MarkAsProcessed();

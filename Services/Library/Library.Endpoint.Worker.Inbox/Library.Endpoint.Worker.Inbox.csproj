@@ -9,7 +9,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="MGH.Core.Application" Version="3.0.5" />
-		<PackageReference Include="MGH.Core.Infrastructure.EventBus" Version="3.0.4" />
+		<PackageReference Include="MGH.Core.Infrastructure.EventBus" Version="3.0.5" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -12,7 +12,7 @@
 		<PackageReference Include="MGH.Core.CrossCutting" Version="3.0.3" />
 		<PackageReference Include="MGH.Core.Infrastructure.Securities" Version="3.0.4" />
 		<PackageReference Include="MGH.Core.Infrastructure.Persistence.EF" Version="3.0.8" />
-		<PackageReference Include="MGH.Core.Infrastructure.EventBus.RabbitMq" Version="4.0.8" />
+		<PackageReference Include="MGH.Core.Infrastructure.EventBus.RabbitMq" Version="4.0.9" />
 	</ItemGroup>
 
 	<ItemGroup>

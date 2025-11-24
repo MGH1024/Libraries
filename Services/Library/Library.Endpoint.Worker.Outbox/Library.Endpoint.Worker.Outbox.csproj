@@ -9,7 +9,7 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
-        <PackageReference Include="MGH.Core.Infrastructure.EventBus" Version="3.0.4" />
+        <PackageReference Include="MGH.Core.Infrastructure.EventBus" Version="3.0.5" />
     </ItemGroup>
 
     <ItemGroup>
