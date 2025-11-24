@@ -18,14 +18,15 @@ public class GetLibraryListQuery(PageRequest pageRequest) : IRequest<GetListResp
     }
 }
 
-public class GetLibraryListQueryHandler(IPublicLibraryRepository libraryRepository)
+public class GetLibraryListQueryHandler(
+    IPublicLibraryRepository libraryRepository)
     : IRequestHandler<GetLibraryListQuery, GetListResponse<GetLibraryListDto>>
 {
-    public async Task<GetListResponse<GetLibraryListDto>> Handle(GetLibraryListQuery request,
+    public async Task<GetListResponse<GetLibraryListDto>> Handle(
+        GetLibraryListQuery request,
         CancellationToken cancellationToken)
     {
-        var libraries = await libraryRepository
-            .GetDynamicListAsync(request.ToGetDynamicListAsyncModel());
+        var libraries = await libraryRepository.GetListAsync(request.ToGetListModelAsync());
         return libraries.ToGetLibraryListDto();
     }
 }

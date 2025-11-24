@@ -4,7 +4,6 @@ using MGH.Core.Application.Responses;
 using Library.Domain.Libraries.Events;
 using Library.Domain.Libraries.ValueObjects;
 using MGH.Core.Infrastructure.Persistence.Models.Paging;
-using MGH.Core.Infrastructure.Persistence.Models.Filters;
 using Library.Application.Features.Libraries.Queries.GetList;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Models;
 using Library.Application.Features.Libraries.Commands.EditLibrary;
@@ -30,8 +29,11 @@ public static class MappingProfiles
             Items = libraries.Items.Select(a => new GetLibraryListDto
             {
                 Id = a.Id,
+                Code = a.Code,
                 Title = a.Name,
+                Location = a.Location,
                 CreatedAt = a.CreatedAt,
+                District = a.District.Value.ToString(),
             }).ToList()
         };
     }
@@ -88,17 +90,15 @@ public static class MappingProfiles
         };
     }
 
-    public static GetDynamicListModelAsync<PublicLibrary> ToGetDynamicListAsyncModel(this GetLibraryListQuery request)
+    public static GetListModelAsync<PublicLibrary> ToGetListModelAsync(this GetLibraryListQuery request)
     {
-        var dyn = new DynamicQuery();
-        dyn.Filter = new Filter("Name", "contains", "par", "and", null);
-        dyn.Sort = null;
-        return new GetDynamicListModelAsync<PublicLibrary>()
+        return new GetListModelAsync<PublicLibrary>()
         {
-            Dynamic = dyn,
+            Size = request.PageRequest.PageSize,
+            Index = request.PageRequest.PageIndex,
         };
     }
-    
+
     public static ElasticSearchInsertUpdateModel ToElasticSearchInsertUpdateModel(this LibraryCreatedDomainEvent libraryCreatedDomainEvent)
     {
         return  new ElasticSearchInsertUpdateModel(libraryCreatedDomainEvent)

@@ -1,8 +1,8 @@
 ﻿using MediatR;
+using AutoMapper;
 using MGH.Core.Endpoint.Web;
 using Microsoft.AspNetCore.Mvc;
 using MGH.Core.Application.Requests;
-using MGH.Core.Application.Responses;
 using Library.Application.Features.Libraries.Queries.GetList;
 using Library.Application.Features.Libraries.Commands.EditLibrary;
 using Library.Application.Features.Libraries.Commands.CreateLibrary;
@@ -14,17 +14,15 @@ namespace Library.Endpoint.Api.Controllers;
 
 [ApiController]
 [Route("{culture:CultureRouteConstraint}/api/[Controller]")]
-public class LibrariesController(ISender sender) : AppController(sender)
+public class LibrariesController(ISender sender, IMapper mapper) : AppController(sender)
 {
 
-    [HttpGet]
-    public async Task<IActionResult> GetList([FromQuery] PageRequest pageRequest)
+    [HttpGet()]
+    public async Task<IActionResult> Get([FromQuery] PageRequest pageRequest)
     {
-        GetLibraryListQuery getLibraryListUserQuery = new() { PageRequest = pageRequest };
-        GetListResponse<GetLibraryListDto> result = await Sender.Send(getLibraryListUserQuery);
-        return Ok(result);
+        var getLibraryListUserQuery = mapper.Map<GetLibraryListQuery>(pageRequest);
+        return Ok(await Sender.Send(getLibraryListUserQuery));
     }
-
 
     [HttpPost("create-library")]
     [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
