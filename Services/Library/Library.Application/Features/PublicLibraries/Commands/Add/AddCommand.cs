@@ -8,9 +8,9 @@ namespace Library.Application.Features.PublicLibraries.Commands.Add;
 [Roles(PublicLibraryOperationClaims.Add)]
 public class AddCommand : ICommand<Guid>
 {
-    public string Name { get; set; }
-    public string Code { get; set; }
-    public string Location { get; set; }
+    public required string Name { get; set; }
+    public required string Code { get; set; }
+    public required string Location { get; set; }
     public DistrictEnum District { get; set; }
     public DateTime RegistrationTime { get; set; }
 }

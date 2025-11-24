@@ -8,8 +8,8 @@ namespace Library.Application.Features.PublicLibraries.Commands.AddStaff;
 [Roles(PublicLibraryOperationClaims.AddStaff)]
 public class AddStaffCommand : ICommand<Unit>
 {
-    public string Name { get; set; }
-    public string Position { get; set; }
-    public string NationalCode { get; set; }
+    public required string Name { get; set; }
+    public required string Position { get; set; }
+    public required string NationalCode { get; set; }
     public Guid LibraryId { get; set; }
 }

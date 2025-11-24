@@ -8,10 +8,10 @@ using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Models;
 using MGH.Core.Infrastructure.Persistence.Models.Filters.GetModels;
 using Library.Application.Features.PublicLibraries.Queries.GetList;
 using Library.Application.Features.PublicLibraries.Queries.GetById;
-using Library.Application.Features.PublicLibraries.Commands.RemoveStaff;
 using Library.Application.Features.PublicLibraries.Commands.Remove;
-using Library.Application.Features.PublicLibraries.Commands.AddStaff;
 using Library.Application.Features.PublicLibraries.Commands.Update;
+using Library.Application.Features.PublicLibraries.Commands.AddStaff;
+using Library.Application.Features.PublicLibraries.Commands.RemoveStaff;
 
 namespace Library.Application.Features.PublicLibraries.Profiles;
 
@@ -74,7 +74,7 @@ public static class MappingProfiles
         };
     }
 
-    public static GetModel<PublicLibrary> ToGetBaseLibraryModel(this EditCommand request)
+    public static GetModel<PublicLibrary> ToGetBaseLibraryModel(this UpdateCommand request)
     {
         return new GetModel<PublicLibrary>()
         {

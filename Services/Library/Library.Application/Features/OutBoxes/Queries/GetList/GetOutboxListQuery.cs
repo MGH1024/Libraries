@@ -1,7 +1,6 @@
 using MediatR;
 using Library.Domain.Outboxes;
 using MGH.Core.Application.Requests;
-using MGH.Core.Application.Responses;
 using Library.Application.Features.OutBoxes.Extensions;
 
 namespace Library.Application.Features.OutBoxes.Queries.GetList;

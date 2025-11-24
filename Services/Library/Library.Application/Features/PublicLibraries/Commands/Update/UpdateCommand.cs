@@ -9,9 +9,9 @@ namespace Library.Application.Features.PublicLibraries.Commands.Update;
 public class UpdateCommand : ICommand<Guid>
 {
     public Guid LibraryId { get; set; }
-    public string Name { get; set; }
-    public string Code { get; set; }
-    public string Location { get; set; }
+    public required string Name { get; set; }
+    public required string Code { get; set; }
+    public required string Location { get; set; }
     public DistrictEnum DistrictEnum { get; set; }
     public DateTime RegistrationDate { get; set; }
 }

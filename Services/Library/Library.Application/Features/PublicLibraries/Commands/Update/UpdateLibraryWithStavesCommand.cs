@@ -2,9 +2,9 @@
 using Library.Domain.Libraries.Constant;
 using MGH.Core.Application.Buses.Commands;
 using MGH.Core.Application.Pipelines.Authorization;
+using Library.Application.Features.PublicLibraries.Rules;
 using Library.Application.Features.PublicLibraries.Profiles;
 using Library.Application.Features.PublicLibraries.Constants;
-using Library.Application.Features.PublicLibraries.Rules;
 
 namespace Library.Application.Features.PublicLibraries.Commands.Update;
 

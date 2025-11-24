@@ -1,7 +1,7 @@
 ﻿using Library.Domain;
 using MGH.Core.Application.Buses.Commands;
-using Library.Application.Features.PublicLibraries.Profiles;
 using Library.Application.Features.PublicLibraries.Rules;
+using Library.Application.Features.PublicLibraries.Profiles;
 
 namespace Library.Application.Features.PublicLibraries.Commands.Update;
 

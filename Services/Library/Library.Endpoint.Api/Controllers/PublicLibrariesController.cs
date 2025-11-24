@@ -3,13 +3,13 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using MGH.Core.Application.Requests;
 using MGH.Core.Application.Responses;
+using Library.Application.Features.PublicLibraries.Commands.Add;
 using Library.Application.Features.PublicLibraries.Queries.GetById;
 using Library.Application.Features.PublicLibraries.Queries.GetList;
-using Library.Application.Features.PublicLibraries.Commands.RemoveStaff;
-using Library.Application.Features.PublicLibraries.Commands.Remove;
-using Library.Application.Features.PublicLibraries.Commands.Add;
-using Library.Application.Features.PublicLibraries.Commands.AddStaff;
 using Library.Application.Features.PublicLibraries.Commands.Update;
+using Library.Application.Features.PublicLibraries.Commands.Remove;
+using Library.Application.Features.PublicLibraries.Commands.AddStaff;
+using Library.Application.Features.PublicLibraries.Commands.RemoveStaff;
 
 namespace Library.Endpoint.Api.Controllers;
 
@@ -81,7 +81,7 @@ public class PublicLibrariesController : ControllerBase
     // PUT /{culture}/api/PublicLibraries/update-library
     [HttpPut("update-library")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> UpdateLibrary([FromBody] EditCommand command, CancellationToken cancellationToken)
+    public async Task<IActionResult> UpdateLibrary([FromBody] UpdateCommand command, CancellationToken cancellationToken)
     {
         var result = await _sender.Send(command, cancellationToken);
         return Ok(result);
