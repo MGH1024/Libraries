@@ -2,14 +2,14 @@
 using Library.Domain;
 using MGH.Core.Application.Buses.Commands;
 using Library.Domain.Libraries.ValueObjects;
-using Library.Application.Features.Libraries.Rules;
 using MGH.Core.Application.Pipelines.Authorization;
-using Library.Application.Features.Libraries.Profiles;
-using Library.Application.Features.Libraries.Constants;
+using Library.Application.Features.PublicLibraries.Profiles;
+using Library.Application.Features.PublicLibraries.Constants;
+using Library.Application.Features.PublicLibraries.Rules;
 
-namespace Library.Application.Features.Libraries.Commands.AddLibraryStaff;
+namespace Library.Application.Features.PublicLibraries.Commands.AddLibraryStaff;
 
-[Roles(LibraryOperationClaims.AddStaff)]
+[Roles(PublicLibraryOperationClaims.AddStaff)]
 public class CreateLibraryStaffCommand : ICommand<Unit>
 {
     public string Name { get; set; }

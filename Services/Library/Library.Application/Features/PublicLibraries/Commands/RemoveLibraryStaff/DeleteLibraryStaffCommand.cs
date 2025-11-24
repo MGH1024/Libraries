@@ -2,12 +2,12 @@
 using Library.Domain;
 using MGH.Core.Application.Buses.Commands;
 using MGH.Core.Application.Pipelines.Authorization;
-using Library.Application.Features.Libraries.Profiles;
-using Library.Application.Features.Libraries.Constants;
+using Library.Application.Features.PublicLibraries.Profiles;
+using Library.Application.Features.PublicLibraries.Constants;
 
-namespace Library.Application.Features.Libraries.Commands.RemoveLibraryStaff;
+namespace Library.Application.Features.PublicLibraries.Commands.RemoveLibraryStaff;
 
-[Roles(LibraryOperationClaims.DeleteLibraryStaves)]
+[Roles(PublicLibraryOperationClaims.DeleteStaves)]
 public class DeleteLibraryStaffCommand : ICommand<Unit>
 {
     public string NationalCode { get; set; }

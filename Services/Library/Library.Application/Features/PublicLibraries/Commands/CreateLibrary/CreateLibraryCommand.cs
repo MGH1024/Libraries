@@ -3,14 +3,14 @@ using MGH.Core.Infrastructure.EventBus;
 using Library.Domain.Libraries.Constant;
 using Library.Domain.Libraries.Factories;
 using MGH.Core.Application.Buses.Commands;
-using Library.Application.Features.Libraries.Rules;
 using MGH.Core.Application.Pipelines.Authorization;
-using Library.Application.Features.Libraries.Profiles;
-using Library.Application.Features.Libraries.Constants;
+using Library.Application.Features.PublicLibraries.Profiles;
+using Library.Application.Features.PublicLibraries.Constants;
+using Library.Application.Features.PublicLibraries.Rules;
 
-namespace Library.Application.Features.Libraries.Commands.CreateLibrary;
+namespace Library.Application.Features.PublicLibraries.Commands.CreateLibrary;
 
-[Roles(LibraryOperationClaims.AddLibraries)]
+[Roles(PublicLibraryOperationClaims.Add)]
 public class CreateLibraryCommand : ICommand<Guid>
 {
     public string Name { get; set; }

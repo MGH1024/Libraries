@@ -2,11 +2,11 @@ using Library.Domain;
 using Library.Domain.Libraries.Events;
 using MGH.Core.Infrastructure.EventBus;
 using MGH.Core.Application.Buses.Commands;
-using Library.Application.Features.Libraries.Rules;
-using Library.Application.Features.Libraries.Profiles;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Base;
+using Library.Application.Features.PublicLibraries.Profiles;
+using Library.Application.Features.PublicLibraries.Rules;
 
-namespace Library.Application.Features.Libraries.Commands.CreateLibraryEvent;
+namespace Library.Application.Features.PublicLibraries.Commands.CreateLibraryEvent;
 
 public class LibraryCreatedDomainEventHandler(
     IUow uow,

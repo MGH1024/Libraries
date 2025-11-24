@@ -12,7 +12,7 @@ var configBuilder = new ConfigurationBuilder()
     .AddEnvironmentVariables();
 
 builder.Services.AddInfrastructuresServices(builder.Configuration);
-builder.Services.AddApplicationServices(builder.Configuration);
+builder.AddApplicationServices();
 builder.Services.AddEventHandlers(typeof(LibraryCreatedDomainEventHandler).Assembly);
 
 var host = builder.Build();

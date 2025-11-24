@@ -2,13 +2,13 @@
 using Library.Domain.Libraries.Constant;
 using MGH.Core.Application.Buses.Commands;
 using MGH.Core.Application.Pipelines.Authorization;
-using Library.Application.Features.Libraries.Rules;
-using Library.Application.Features.Libraries.Profiles;
-using Library.Application.Features.Libraries.Constants;
+using Library.Application.Features.PublicLibraries.Profiles;
+using Library.Application.Features.PublicLibraries.Constants;
+using Library.Application.Features.PublicLibraries.Rules;
 
-namespace Library.Application.Features.Libraries.Commands.EditLibrary;
+namespace Library.Application.Features.PublicLibraries.Commands.EditLibrary;
 
-[Roles(LibraryOperationClaims.UpdateLibraries)]
+[Roles(PublicLibraryOperationClaims.Update)]
 public class UpdateLibraryCommand : ICommand<Guid>
 {
     public Guid LibraryId { get; set; }

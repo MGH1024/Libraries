@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using MGH.Core.Application.Requests;
-using Library.Application.Features.Libraries.Queries.GetList;
+using Library.Application.Features.PublicLibraries.Queries.GetById;
 
 namespace Library.Endpoint.Api
 {
@@ -8,7 +8,7 @@ namespace Library.Endpoint.Api
     {
         public MappingProfiles()
         {
-            CreateMap<PageRequest, GetLibraryListQuery>();
+            CreateMap<PageRequest, GetByIdQuery>();
         }
     }
 }

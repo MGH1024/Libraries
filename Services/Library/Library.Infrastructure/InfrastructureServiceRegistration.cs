@@ -34,7 +34,6 @@ using MGH.Core.CrossCutting.Localizations.RouteConstraints;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Base;
 using MGH.Core.Infrastructure.Persistence.Models.Configuration;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Models;
-using Library.Application.Features.Libraries.Commands.CreateLibraryEvent;
 
 namespace Library.Infrastructure;
 

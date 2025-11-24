@@ -11,6 +11,6 @@ var configBuilder = new ConfigurationBuilder()
     .AddEnvironmentVariables();
 
 builder.AddApiService();
-builder.Services.AddApplicationServices(builder.Configuration);
+builder.AddApplicationServices();
 builder.Services.AddInfrastructuresServices(builder.Configuration);
 builder.RegisterApp();

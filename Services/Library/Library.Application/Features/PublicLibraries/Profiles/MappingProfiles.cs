@@ -4,21 +4,22 @@ using MGH.Core.Application.Responses;
 using Library.Domain.Libraries.Events;
 using Library.Domain.Libraries.ValueObjects;
 using MGH.Core.Infrastructure.Persistence.Models.Paging;
-using Library.Application.Features.Libraries.Queries.GetList;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Models;
-using Library.Application.Features.Libraries.Commands.EditLibrary;
 using MGH.Core.Infrastructure.Persistence.Models.Filters.GetModels;
-using Library.Application.Features.Libraries.Commands.RemoveLibrary;
-using Library.Application.Features.Libraries.Commands.AddLibraryStaff;
-using Library.Application.Features.Libraries.Commands.RemoveLibraryStaff;
+using Library.Application.Features.PublicLibraries.Commands.RemoveLibraryStaff;
+using Library.Application.Features.PublicLibraries.Commands.AddLibraryStaff;
+using Library.Application.Features.PublicLibraries.Commands.RemoveLibrary;
+using Library.Application.Features.PublicLibraries.Queries.GetList;
+using Library.Application.Features.PublicLibraries.Queries.GetById;
+using Library.Application.Features.PublicLibraries.Commands.EditLibrary;
 
-namespace Library.Application.Features.Libraries.Profiles;
+namespace Library.Application.Features.PublicLibraries.Profiles;
 
 public static class MappingProfiles
 {
-    public static GetListResponse<GetLibraryListDto> ToGetLibraryListDto(this IPaginate<PublicLibrary> libraries)
+    public static GetListResponse<GetListQueryResponse> ToGetListQueryResponse(this IPaginate<PublicLibrary> libraries)
     {
-        return new GetListResponse<GetLibraryListDto>
+        return new GetListResponse<GetListQueryResponse>
         {
             Count = libraries.Count,
             Index = libraries.Index,
@@ -26,7 +27,7 @@ public static class MappingProfiles
             Size = libraries.Size,
             HasNext = libraries.HasNext,
             HasPrevious = libraries.HasPrevious,
-            Items = libraries.Items.Select(a => new GetLibraryListDto
+            Items = libraries.Items.Select(a => new GetListQueryResponse
             {
                 Id = a.Id,
                 Code = a.Code,
@@ -35,6 +36,22 @@ public static class MappingProfiles
                 CreatedAt = a.CreatedAt,
                 District = a.District.Value.ToString(),
             }).ToList()
+        };
+    }
+
+    public static GetByIdQueryResponse ToGetPublicLibraryByIdResponse(this PublicLibrary publicLibrary)
+    {
+        if (publicLibrary is null)
+            throw new ArgumentNullException(nameof(publicLibrary));
+
+        return new GetByIdQueryResponse
+        {
+            Id = publicLibrary.Id,
+            Code = publicLibrary.Code,
+            Title = publicLibrary.Name,
+            Location = publicLibrary.Location,
+            CreatedAt = publicLibrary.CreatedAt,
+            District = publicLibrary.District.Value.ToString(),
         };
     }
 
@@ -90,7 +107,7 @@ public static class MappingProfiles
         };
     }
 
-    public static GetListModelAsync<PublicLibrary> ToGetListModelAsync(this GetLibraryListQuery request)
+    public static GetListModelAsync<PublicLibrary> ToGetListModelAsync(this GetListQuery request)
     {
         return new GetListModelAsync<PublicLibrary>()
         {
@@ -101,12 +118,12 @@ public static class MappingProfiles
 
     public static ElasticSearchInsertUpdateModel ToElasticSearchInsertUpdateModel(this LibraryCreatedDomainEvent libraryCreatedDomainEvent)
     {
-        return  new ElasticSearchInsertUpdateModel(libraryCreatedDomainEvent)
+        return new ElasticSearchInsertUpdateModel(libraryCreatedDomainEvent)
         {
             IndexName = "libraries",
             ElasticId = libraryCreatedDomainEvent.Id
         };
-    } 
+    }
 
     public static LibraryCreatedDomainEvent ToLibraryCreatedDomainEvent(this PublicLibrary library)
     {

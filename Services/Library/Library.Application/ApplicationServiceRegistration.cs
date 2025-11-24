@@ -1,27 +1,44 @@
 ﻿using FluentValidation;
 using System.Reflection;
 using MGH.Core.Application.Rules;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Hosting;
 using MGH.Core.Infrastructure.Caching;
-using Microsoft.Extensions.Configuration;
 using MGH.Core.Application.Pipelines.Logging;
 using MGH.Core.Infrastructure.Caching.Models;
 using Microsoft.Extensions.DependencyInjection;
 using MGH.Core.Application.Pipelines.Validation;
 using MGH.Core.Application.Pipelines.Transaction;
 using MGH.Core.Application.Pipelines.Authorization;
-using Library.Application.Features.Libraries.Rules;
+using Library.Application.Features.PublicLibraries.Rules;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Base;
-using Library.Application.Features.Libraries.Commands.CreateLibrary;
+using Library.Application.Features.PublicLibraries.Commands.CreateLibrary;
 
 namespace Library.Application;
 
 public static class ApplicationServiceRegistration
 {
-    public static void AddApplicationServices(this IServiceCollection services,IConfiguration configuration)
+    public static void AddApplicationServices(this WebApplicationBuilder builder)
     {
+        var services = builder.Services;
+        var configuration = builder.Configuration;
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
-        services.AddMediatRAndBehaviors();
+        services.AddMediatRAndBehaviors(builder.Environment);
+        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+        services.AddSubClassesOfType(Assembly.GetExecutingAssembly(), typeof(BaseBusinessRules));
+        services.AddBusinessRule();
+        services.AddRedis(configuration);
+        services.AddGeneralCachingService();
+        services.AddServices();
+    }
+
+    public static void AddApplicationServices(this HostApplicationBuilder builder)
+    {
+        var services = builder.Services;
+        var configuration = builder.Configuration;
+        services.AddAutoMapper(Assembly.GetExecutingAssembly());
+        services.AddMediatRAndBehaviors(builder.Environment);
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         services.AddSubClassesOfType(Assembly.GetExecutingAssembly(), typeof(BaseBusinessRules));
         services.AddBusinessRule();
@@ -40,7 +57,7 @@ public static class ApplicationServiceRegistration
         services.AddTransient<ILibraryBusinessRules, LibraryBusinessRules>();
     }
 
-    private static void AddMediatRAndBehaviors(this IServiceCollection services)
+    private static void AddMediatRAndBehaviors(this IServiceCollection services, IHostEnvironment environment)
     {
         services.AddMediatR(configuration =>
         {
@@ -48,7 +65,8 @@ public static class ApplicationServiceRegistration
             configuration.RegisterServicesFromAssembly(typeof(CreateLibraryCommand).Assembly);
             configuration.AddOpenBehavior(typeof(CachingBehavior<,>));
             configuration.AddOpenBehavior(typeof(LoggingBehaviour<,>));
-            //configuration.AddOpenBehavior(typeof(AuthorizationBehavior<,>));
+            if (environment.EnvironmentName != "Development")
+                configuration.AddOpenBehavior(typeof(AuthorizationBehavior<,>));
             configuration.AddOpenBehavior(typeof(TransactionScopeBehavior<,>));
             configuration.AddOpenBehavior(typeof(RequestValidationBehavior<,>));
         });
