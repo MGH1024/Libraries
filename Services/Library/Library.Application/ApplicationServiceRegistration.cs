@@ -23,7 +23,7 @@ public static class ApplicationServiceRegistration
     {
         var services = builder.Services;
         var configuration = builder.Configuration;
-        services.AddAutoMapper(Assembly.GetExecutingAssembly());
+        services.AddAutoMapper(cfg => { }, AppDomain.CurrentDomain.GetAssemblies());
         services.AddMediatRAndBehaviors(builder.Environment);
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         services.AddSubClassesOfType(Assembly.GetExecutingAssembly(), typeof(BaseBusinessRules));
@@ -37,7 +37,7 @@ public static class ApplicationServiceRegistration
     {
         var services = builder.Services;
         var configuration = builder.Configuration;
-        services.AddAutoMapper(Assembly.GetExecutingAssembly());
+        services.AddAutoMapper(cfg => { }, AppDomain.CurrentDomain.GetAssemblies());
         services.AddMediatRAndBehaviors(builder.Environment);
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         services.AddSubClassesOfType(Assembly.GetExecutingAssembly(), typeof(BaseBusinessRules));

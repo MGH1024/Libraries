@@ -1,18 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net8.0</TargetFramework>
+		<TargetFramework>net10.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>disable</Nullable>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="MGH.Core.Domain" Version="3.0.8" />
-		<PackageReference Include="MGH.Core.Application" Version="3.0.5" />
-		<PackageReference Include="MGH.Core.CrossCutting" Version="3.0.3" />
-		<PackageReference Include="MGH.Core.Infrastructure.Securities" Version="3.0.4" />
-		<PackageReference Include="MGH.Core.Infrastructure.Persistence.EF" Version="3.0.8" />
-		<PackageReference Include="MGH.Core.Infrastructure.EventBus.RabbitMq" Version="4.0.9" />
+		<PackageReference Include="MGH.Core.Domain" Version="4.0.0" />
+		<PackageReference Include="MGH.Core.Application" Version="4.0.0" />
+		<PackageReference Include="MGH.Core.CrossCutting" Version="4.0.0" />
+		<PackageReference Include="MGH.Core.Infrastructure.Securities" Version="4.0.0" />
+		<PackageReference Include="MGH.Core.Infrastructure.Persistence.EF" Version="4.0.0" />
+		<PackageReference Include="MGH.Core.Infrastructure.EventBus.RabbitMq" Version="5.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>

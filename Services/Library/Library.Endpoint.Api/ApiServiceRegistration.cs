@@ -1,24 +1,31 @@
 ﻿using Asp.Versioning;
-using System.Reflection;
 using Library.Infrastructure;
-using Microsoft.AspNetCore.Mvc;
-using MGH.Core.Endpoint.Swagger;
-using MGH.Core.CrossCutting.Logging;
-using System.Text.Json.Serialization;
-using Microsoft.IdentityModel.Tokens;
 using MGH.Core.CrossCutting.Exceptions;
-using MGH.Core.Endpoint.Swagger.Models;
-using MGH.Core.Infrastructure.HealthCheck;
-using Microsoft.AspNetCore.Mvc.Formatters;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using MGH.Core.Infrastructure.Securities.Security.JWT;
 using MGH.Core.CrossCutting.Localizations.ModelBinders;
+using MGH.Core.CrossCutting.Logging;
+using MGH.Core.Endpoint.Swagger;
+using MGH.Core.Infrastructure.HealthCheck;
 using MGH.Core.Infrastructure.Securities.Security.Encryption;
+using MGH.Core.Infrastructure.Securities.Security.JWT;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi;
+using System.Text.Json.Serialization;
 
 namespace Library.Endpoint.Api;
 
+/// <summary>
+/// ApiServiceRegistration
+/// </summary>
 public static class ApiServiceRegistration
 {
+    /// <summary>
+    /// Configures and registers all necessary services for the API, including logging, CORS, versioning,
+    /// Swagger, MVC, caching, JWT authentication, and AutoMapper.
+    /// </summary>
+    /// <param name="builder">The <see cref="WebApplicationBuilder"/> used to configure services and the host.</param>
     public static void AddApiService(this WebApplicationBuilder builder)
     {
         var hostBuilder = builder.Host;
@@ -26,22 +33,28 @@ public static class ApiServiceRegistration
         var configuration = builder.Configuration;
         AddLogger(configuration, hostBuilder);
         services.AddOptions(configuration);
-        services.AddSwagger(configuration);
         services.AddCORS(configuration);
         services.AddVersioning();
+        services.AddSwaggerService(configuration);
         services.AddBaseMvc();
         services.AddMemoryCache();
         services.AddHttpContextAccessor();
         services.AddEndpointsApiExplorer();
         services.AddJwt(configuration);
-        services.AddAutoMapper(Assembly.GetExecutingAssembly());
+        services.AddAutoMapper(cfg => { }, AppDomain.CurrentDomain.GetAssemblies());
+
     }
 
+    /// <summary>
+    /// Builds and configures the application pipeline, including authentication, authorization,
+    /// HTTPS redirection, CORS, controllers, exception handling, static files, health checks, Prometheus metrics, 
+    /// and Swagger documentation, then starts the application.
+    /// </summary>
+    /// <param name="builder">The <see cref="WebApplicationBuilder"/> used to build the application.</param>
     public static void RegisterApp(this WebApplicationBuilder builder)
     {
         var app = builder.Build();
         app.UseRequestLocalization();
-        app.UseSwaggerMiddleware();
         app.UseAuthentication();
         app.UseAuthorization();
         app.UseHttpsRedirection();
@@ -51,14 +64,15 @@ public static class ApiServiceRegistration
         app.UseStaticFiles();
         app.UseHealthChecksEndpoints();
         app.AddPrometheus();
+        app.UseSwaggerMiddleWare(builder.Configuration);
         app.Run();
     }
-    
-    private static void AddOptions(this IServiceCollection services,IConfiguration configuration)
+
+    private static void AddOptions(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<TokenOptions>(option => configuration.GetSection(nameof(TokenOptions)).Bind(option));
     }
-    
+
     private static void AddVersioning(this IServiceCollection services)
     {
         services.AddApiVersioning(options =>
@@ -77,7 +91,7 @@ public static class ApiServiceRegistration
                 options.SubstituteApiVersionInUrl = true;
             });
     }
-    
+
     private static void AddJwt(this IServiceCollection services, IConfiguration configuration)
     {
         var tokenOptions =
@@ -135,21 +149,6 @@ public static class ApiServiceRegistration
             });
 
         services.AddHttpContextAccessor();
-    }
-
-    private static void AddSwagger(this IServiceCollection services, IConfiguration configuration)
-    {
-        var swaggerConfig = configuration
-            .GetSection(nameof(SwaggerConfig))
-            .Get<SwaggerConfig>();
-
-        services.AddSwaggerGen(op =>
-        {
-            op.AddXmlComments();
-            op.AddBearerToken(swaggerConfig.OpenApiSecuritySchemeConfig,
-                swaggerConfig.OpenApiReferenceConfig);
-            op.AddSwaggerDoc(swaggerConfig.OpenApiInfoConfig);
-        });
     }
 
     private static void AddCORS(this IServiceCollection services, IConfiguration configuration)

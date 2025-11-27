@@ -1,39 +1,39 @@
-﻿using Nest;
-using Prometheus;
-using Library.Domain;
-using System.Reflection;
-using System.Globalization;
+﻿using Library.Domain;
 using Library.Domain.Books;
-using Library.Domain.Members;
-using Library.Domain.Outboxes;
 using Library.Domain.Lendings;
 using Library.Domain.Libraries;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Routing;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.EntityFrameworkCore;
-using MGH.Core.Infrastructure.Public;
-using Library.Infrastructure.Contexts;
-using MGH.Core.Infrastructure.EventBus;
-using Library.Domain.Libraries.Policies;
-using Microsoft.AspNetCore.Localization;
 using Library.Domain.Libraries.Factories;
-using Microsoft.Extensions.Configuration;
+using Library.Domain.Libraries.Policies;
+using Library.Domain.Members;
+using Library.Domain.Outboxes;
+using Library.Infrastructure.Contexts;
 using Library.Infrastructure.Repositories;
-using MGH.Core.Infrastructure.HealthCheck;
-using Microsoft.Extensions.DependencyInjection;
-using MGH.Core.Infrastructure.Persistence.Base;
-using MGH.Core.Infrastructure.EventBus.RabbitMq;
-using MGH.Core.Infrastructure.Securities.Security;
-using LogLevel = Microsoft.Extensions.Logging.LogLevel;
-using MGH.Core.Infrastructure.EventBus.RabbitMq.Options;
-using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using MGH.Core.Infrastructure.Persistence.EF.Interceptors;
 using MGH.Core.CrossCutting.Localizations.RouteConstraints;
+using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Base;
-using MGH.Core.Infrastructure.Persistence.Models.Configuration;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Models;
+using MGH.Core.Infrastructure.EventBus;
+using MGH.Core.Infrastructure.EventBus.RabbitMq;
+using MGH.Core.Infrastructure.EventBus.RabbitMq.Options;
+using MGH.Core.Infrastructure.HealthCheck;
+using MGH.Core.Infrastructure.Persistence.Base;
+using MGH.Core.Infrastructure.Persistence.EF.Interceptors;
+using MGH.Core.Infrastructure.Persistence.Models.Configuration;
+using MGH.Core.Infrastructure.Public;
+using MGH.Core.Infrastructure.Securities.Security;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Nest;
+using Prometheus;
+using RabbitMQ.Client;
+using System.Globalization;
+using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace Library.Infrastructure;
 
@@ -48,7 +48,7 @@ public static class InfrastructureServiceRegistration
         services.AddRepositories();
         services.AddSecurityServices();
         services.AddTransient<IDateTime, DateTimeService>();
-        services.AddAutoMapper(Assembly.GetExecutingAssembly());
+        services.AddAutoMapper(cfg => { }, AppDomain.CurrentDomain.GetAssemblies());
         services.AddCulture();
         services.AddElasticSearch(configuration);
         services.AddRabbitMqEventBus(configuration);
@@ -66,7 +66,7 @@ public static class InfrastructureServiceRegistration
         services.AddRepositories();
         services.AddSecurityServices();
         services.AddTransient<IDateTime, DateTimeService>();
-        services.AddAutoMapper(Assembly.GetExecutingAssembly());
+        services.AddAutoMapper(cfg => { }, AppDomain.CurrentDomain.GetAssemblies());
         services.AddCulture();
         services.AddElasticSearch(configuration);
         services.AddRabbitMqEventBus(configuration);
@@ -82,13 +82,28 @@ public static class InfrastructureServiceRegistration
 
     private static void AddHealthChecks(this IServiceCollection services, IConfiguration configuration)
     {
-        var defaultConnection = configuration.GetSection("RabbitMq:Connections:Default").Get<RabbitMqSettings>() ??
-                                  throw new ArgumentNullException(nameof(RabbitMqOptions.Connections.Default));
-
         var healthBuilder = services.AddHealthChecks();
         healthBuilder.AddSqlServer(configuration["DatabaseConnection:SqlConnection"]);
         healthBuilder.AddDbContextCheck<PublicLibraryDbContext>();
-        healthBuilder.AddRabbitMqHealthCheck(defaultConnection.HealthAddress.ToString());
+
+        var defaultConnection = configuration.GetSection("RabbitMq:Connections:Default").Get<RabbitMqSettings>() ??
+                                  throw new ArgumentNullException(nameof(RabbitMqOptions.Connections.Default));
+        Func<IServiceProvider, IConnection> connectionFactory =
+            sp =>
+            {
+                var factory = new ConnectionFactory
+                {
+                    HostName = defaultConnection.Host,
+                    Port     = Convert.ToInt32(defaultConnection.Port),
+                    UserName = defaultConnection.Username,
+                    Password = defaultConnection.Password,
+                    VirtualHost = defaultConnection.VirtualHost,
+                };
+
+                return factory.CreateConnectionAsync().GetAwaiter().GetResult();
+            };
+
+        healthBuilder.AddRabbitMqHealthCheck(connectionFactory);
         //services.AddHealthChecksDashboard("Library Health check");
     }
 
