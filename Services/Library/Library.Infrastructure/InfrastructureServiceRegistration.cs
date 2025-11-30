@@ -43,7 +43,6 @@ public static class InfrastructureServiceRegistration
     {
         services.RegisterInterceptors();
         services.AddDbContextSqlServer(configuration);
-        services.AddDbContext<PublicLibraryDbContext>(options => options.UseInMemoryDatabase("LibraryDbContext-InMemory"));
         services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         services.AddRepositories();
         services.AddSecurityServices();
