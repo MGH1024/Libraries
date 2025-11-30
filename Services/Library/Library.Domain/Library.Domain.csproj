@@ -12,7 +12,11 @@
 		<PackageReference Include="MGH.Core.CrossCutting" Version="4.0.0" />
 		<PackageReference Include="MGH.Core.Infrastructure.Securities" Version="4.0.0" />
 		<PackageReference Include="MGH.Core.Infrastructure.Persistence.EF" Version="4.0.0" />
-		<PackageReference Include="MGH.Core.Infrastructure.EventBus.RabbitMq" Version="5.0.0" />
+		<!--<PackageReference Include="MGH.Core.Infrastructure.EventBus.RabbitMq" Version="5.0.0" />-->
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\..\Shared\MGH.Core.Infrastructure.EventBus.RabbitMq\MGH.Core.Infrastructure.EventBus.RabbitMq.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

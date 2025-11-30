@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<PackageVersion>5.0.0</PackageVersion>
+		<Copyright>MGH</Copyright>
+		<PackageProjectUrl>https://github.com/MGH1024/MGH/tree/master/Core/MGH.Core.Infrastructure.EventBus.RabbitMq</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/MGH1024/MGH</RepositoryUrl>
+		<PackageTags>microservice, netcore</PackageTags>
+		<AssemblyVersion>5.0.0</AssemblyVersion>
+		<FileVersion>5.0.0</FileVersion>
+		<ProductVersion>5.0.0</ProductVersion>
+		<Title>MGH.Core.Infrastructure.EventBus.RabbitMq</Title>
+		<Authors>MGH</Authors>
+		<Description>it's a package for manage Core Infrastructures Event Bus Rabbit Mq</Description>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="MGH.Core.CrossCutting" Version="4.0.0" />
+        <PackageReference Include="MGH.Core.Infrastructure.EventBus" Version="4.0.0" />
+        <PackageReference Include="Polly" Version="8.6.5" />
+        <PackageReference Include="RabbitMQ.Client" Version="7.2.0" />
+        <PackageReference Include="Microsoft.Extensions.Options" Version="10.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="10.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="10.0.0" />
+    </ItemGroup>
+
+    <!--<ItemGroup>
+      <ProjectReference Include="..\MGH.Core.CrossCutting\MGH.Core.CrossCutting.csproj" />
+      <ProjectReference Include="..\MGH.Core.Infrastructure.EventBus\MGH.Core.Infrastructure.EventBus.csproj" />
+    </ItemGroup>-->
+</Project>
