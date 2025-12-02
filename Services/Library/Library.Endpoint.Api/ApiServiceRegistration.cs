@@ -1,18 +1,17 @@
 ﻿using Asp.Versioning;
 using Library.Infrastructure;
-using MGH.Core.CrossCutting.Exceptions;
-using MGH.Core.CrossCutting.Localizations.ModelBinders;
-using MGH.Core.CrossCutting.Logging;
-using MGH.Core.Endpoint.Swagger;
-using MGH.Core.Infrastructure.HealthCheck;
-using MGH.Core.Infrastructure.Securities.Security.Encryption;
-using MGH.Core.Infrastructure.Securities.Security.JWT;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Formatters;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi;
+using MGH.Core.Endpoint.Swagger;
+using MGH.Core.CrossCutting.Logging;
 using System.Text.Json.Serialization;
+using Microsoft.IdentityModel.Tokens;
+using MGH.Core.CrossCutting.Exceptions;
+using MGH.Core.Infrastructure.HealthCheck;
+using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using MGH.Core.Infrastructure.Securities.Security.JWT;
+using MGH.Core.CrossCutting.Localizations.ModelBinders;
+using MGH.Core.Infrastructure.Securities.Security.Encryption;
 
 namespace Library.Endpoint.Api;
 
@@ -31,6 +30,8 @@ public static class ApiServiceRegistration
         var hostBuilder = builder.Host;
         var services = builder.Services;
         var configuration = builder.Configuration;
+
+        AddSettings(builder);
         AddLogger(configuration, hostBuilder);
         services.AddOptions(configuration);
         services.AddCORS(configuration);
@@ -66,6 +67,15 @@ public static class ApiServiceRegistration
         app.AddPrometheus();
         app.UseSwaggerMiddleWare(builder.Configuration);
         app.Run();
+    }
+
+    private static void AddSettings(WebApplicationBuilder builder)
+    {
+        var configBuilder = new ConfigurationBuilder()
+          .AddConfiguration(builder.Configuration)
+          .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+          .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
+          .AddEnvironmentVariables();
     }
 
     private static void AddOptions(this IServiceCollection services, IConfiguration configuration)

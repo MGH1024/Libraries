@@ -1,46 +1,58 @@
-﻿using Library.Domain;
-using Library.Domain.Books;
-using Library.Domain.Lendings;
-using Library.Domain.Libraries;
-using Library.Domain.Libraries.Factories;
-using Library.Domain.Libraries.Policies;
-using Library.Domain.Members;
-using Library.Domain.Outboxes;
-using Library.Infrastructure.Contexts;
-using Library.Infrastructure.Repositories;
-using MGH.Core.CrossCutting.Localizations.RouteConstraints;
-using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch;
-using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Base;
-using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Models;
-using MGH.Core.Infrastructure.EventBus;
-using MGH.Core.Infrastructure.EventBus.RabbitMq;
-using MGH.Core.Infrastructure.EventBus.RabbitMq.Options;
-using MGH.Core.Infrastructure.HealthCheck;
-using MGH.Core.Infrastructure.Persistence.Base;
-using MGH.Core.Infrastructure.Persistence.EF.Interceptors;
-using MGH.Core.Infrastructure.Persistence.Models.Configuration;
-using MGH.Core.Infrastructure.Public;
-using MGH.Core.Infrastructure.Securities.Security;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Localization;
-using Microsoft.AspNetCore.Routing;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using Nest;
+﻿using Nest;
 using Prometheus;
+using Library.Domain;
 using RabbitMQ.Client;
 using System.Globalization;
+using Library.Domain.Books;
+using Library.Domain.Members;
+using Library.Domain.Lendings;
+using Library.Domain.Outboxes;
+using Library.Domain.Libraries;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Hosting;
+using Microsoft.EntityFrameworkCore;
+using MGH.Core.Infrastructure.Public;
+using Library.Infrastructure.Contexts;
+using MGH.Core.Infrastructure.EventBus;
+using Library.Domain.Libraries.Policies;
+using Microsoft.AspNetCore.Localization;
+using Library.Domain.Libraries.Factories;
+using Microsoft.Extensions.Configuration;
+using Library.Infrastructure.Repositories;
+using MGH.Core.Infrastructure.HealthCheck;
+using Microsoft.Extensions.DependencyInjection;
+using MGH.Core.Infrastructure.Persistence.Base;
+using MGH.Core.Infrastructure.EventBus.RabbitMq;
+using MGH.Core.Infrastructure.Securities.Security;
 using LogLevel = Microsoft.Extensions.Logging.LogLevel;
+using MGH.Core.Infrastructure.EventBus.RabbitMq.Options;
+using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using MGH.Core.Infrastructure.Persistence.EF.Interceptors;
+using MGH.Core.CrossCutting.Localizations.RouteConstraints;
+using MGH.Core.Infrastructure.Persistence.Models.Configuration;
+using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Base;
+using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Models;
 
 namespace Library.Infrastructure;
 
 public static class InfrastructureServiceRegistration
 {
-    public static void AddInfrastructuresServices(this IServiceCollection services, IConfiguration configuration)
+    public static void AddSettings(this HostApplicationBuilder builder)
     {
+        var configBuilder = new ConfigurationBuilder()
+            .AddConfiguration(builder.Configuration)
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
+            .AddEnvironmentVariables();
+    }
+
+    public static void AddApiInfrastructuresServices(this WebApplicationBuilder builder)
+    {
+        var services = builder.Services;
+        var configuration = builder.Configuration;
         services.RegisterInterceptors();
         services.AddDbContextSqlServer(configuration);
         services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -56,11 +68,12 @@ public static class InfrastructureServiceRegistration
         services.AddHealthChecks(configuration);
     }
 
-    public static void AddInfrastructuresServicesForWorkers(this IServiceCollection services, IConfiguration configuration)
+    public static void AddWorkerInfrastructuresServices(this HostApplicationBuilder builder)
     {
+        var services = builder.Services;
+        var configuration = builder.Configuration;
         services.RegisterInterceptors();
         services.AddDbContextSqlServer(configuration);
-        services.AddDbContext<PublicLibraryDbContext>(options => options.UseInMemoryDatabase("LibraryDbContext-InMemory"));
         services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         services.AddRepositories();
         services.AddSecurityServices();
@@ -93,7 +106,7 @@ public static class InfrastructureServiceRegistration
                 var factory = new ConnectionFactory
                 {
                     HostName = defaultConnection.Host,
-                    Port     = Convert.ToInt32(defaultConnection.Port),
+                    Port = Convert.ToInt32(defaultConnection.Port),
                     UserName = defaultConnection.Username,
                     Password = defaultConnection.Password,
                     VirtualHost = defaultConnection.VirtualHost,
@@ -103,7 +116,7 @@ public static class InfrastructureServiceRegistration
             };
 
         healthBuilder.AddRabbitMqHealthCheck(connectionFactory);
-        //services.AddHealthChecksDashboard("Library Health check");
+        services.AddHealthChecksDashboard("Library Health check");
     }
 
     private static void AddPrometheus(this IServiceCollection services)
