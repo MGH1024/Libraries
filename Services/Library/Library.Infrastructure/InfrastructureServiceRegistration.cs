@@ -116,7 +116,7 @@ public static class InfrastructureServiceRegistration
             };
 
         healthBuilder.AddRabbitMqHealthCheck(connectionFactory);
-        services.AddHealthChecksDashboard("Library Health check");
+        //services.AddHealthChecksDashboard("Library Health check");
     }
 
     private static void AddPrometheus(this IServiceCollection services)
