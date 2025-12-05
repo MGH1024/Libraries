@@ -27,7 +27,6 @@ using MGH.Core.Infrastructure.Persistence.Base;
 using MGH.Core.Infrastructure.EventBus.RabbitMq;
 using MGH.Core.Infrastructure.Securities.Security;
 using LogLevel = Microsoft.Extensions.Logging.LogLevel;
-using MGH.Core.Infrastructure.EventBus.RabbitMq.Options;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using MGH.Core.Infrastructure.Persistence.EF.Interceptors;
