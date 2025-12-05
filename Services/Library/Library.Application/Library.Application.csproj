@@ -7,10 +7,10 @@
     </PropertyGroup>
     
     <ItemGroup>
-        <PackageReference Include="MGH.Core.Application" Version="4.0.0" />
+        <PackageReference Include="MGH.Core.Application" Version="4.0.1" />
         <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="10.0.0" />
         <PackageReference Include="MGH.Core.Infrastructure.ElasticSearch" Version="4.0.0" />
-        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.0" />
+        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
     </ItemGroup>
 
     <ItemGroup>
