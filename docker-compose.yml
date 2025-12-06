@@ -1,0 +1,118 @@
+version: '3.9'
+
+services:
+  # ---------------------- LIBRARY API ----------------------
+  library-api:
+    container_name: library-api
+    build:
+      context: .
+      dockerfile: Services/Library/Library.Endpoint.Api/Dockerfile
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+
+      # DATABASE
+      DatabaseConnection__SqlConnection: "Server=host.docker.internal,14330;Database=dbLibraryMicroservice;User Id=sa;Password=Abcd@1234;TrustServerCertificate=True;MultipleActiveResultSets=true"
+      DatabaseConnection__SecurityConnection: "Server=host.docker.internal,14330;Database=dbSecurity;User Id=sa;Password=Abcd@1234;TrustServerCertificate=True;MultipleActiveResultSets=true"
+
+      # REDIS
+      RedisConnections__DefaultConfiguration__Host: "redis"
+      RedisConnections__DefaultConfiguration__Port: "6379"
+      RedisConnections__DefaultConfiguration__Password: "123456"
+
+      # ELASTICSEARCH
+      ElasticSearchConfig__ConnectionString: "http://elasticsearch:9200"
+
+      # RABBITMQ
+      RabbitMq__Connections__Default__Host: "rabbitmq"
+      RabbitMq__Connections__Default__Port: "5672"
+      RabbitMq__Connections__Default__Username: "guest"
+      RabbitMq__Connections__Default__Password: "guest"
+
+      # SEQ
+      #Serilog__WriteTo__3__Args__serverUrl: "http://seq:5341"
+
+      # Serilog MSSqlServer sink
+      Serilog__WriteTo__4__Args__connectionString: "Server=host.docker.internal,14330;Database=dbLibraryMicroservice;User Id=sa;Password=Abcd@1234;TrustServerCertificate=True;"
+
+    depends_on:
+      redis:
+        condition: service_healthy
+      elasticsearch:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      # seq:
+      #   condition: service_healthy
+
+    restart: always
+
+    volumes:
+      - ./Services/Library/Library.Endpoint.Api/HealthCheck:/app/HealthCheck:ro
+
+  # ---------------------- REDIS ----------------------
+  redis:
+    container_name: redis
+    image: redis:7
+    command: ["redis-server", "--requirepass", "123456"]
+    ports:
+      - "6379:6379"
+    restart: always
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "123456", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  # ---------------------- ELASTICSEARCH ----------------------
+  elasticsearch:
+    container_name: elasticsearch
+    image: elasticsearch:8.11.0
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - ES_JAVA_OPTS=-Xms1g -Xmx1g
+    ports:
+      - "9200:9200"
+    volumes:
+      - elastic-data:/usr/share/elasticsearch/data
+    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9200"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ---------------------- RABBITMQ ----------------------
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    restart: always
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ---------------------- SEQ ----------------------
+  # seq:
+  #   container_name: seq
+  #   image: datalust/seq:latest
+  #   environment:
+  #     - ACCEPT_EULA=Y
+  #   ports:
+  #     - "5341:80"
+  #   restart: always
+  #   healthcheck:
+  #     test: ["CMD", "curl", "-f", "http://localhost:80"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
+
+volumes:
+  elastic-data:
