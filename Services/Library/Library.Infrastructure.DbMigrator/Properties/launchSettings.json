@@ -1,0 +1,12 @@
+﻿{
+  "profiles": {
+    "MafPars.OnlineChannels.DbMigrator": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:60014;http://localhost:60015"
+    }
+  }
+}
