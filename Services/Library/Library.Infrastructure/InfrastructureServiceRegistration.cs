@@ -31,7 +31,6 @@ using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using MGH.Core.Infrastructure.Persistence.EF.Interceptors;
 using MGH.Core.CrossCutting.Localizations.RouteConstraints;
-using MGH.Core.Infrastructure.Persistence.Models.Configuration;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Base;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Models;
 
@@ -144,14 +143,10 @@ public static class InfrastructureServiceRegistration
 
     private static void AddDbContextSqlServer(this IServiceCollection services, IConfiguration configuration)
     {
-        var sqlConfig = configuration
-            .GetSection(nameof(DatabaseConnection))
-            .Get<DatabaseConnection>()
-            .SqlConnection;
-
+        var connectionString = configuration.GetConnectionString("Default");
         services.AddDbContext<PublicLibraryDbContext>((sp, options) =>
         {
-            options.UseSqlServer(sqlConfig, a => { a.EnableRetryOnFailure(); })
+            options.UseSqlServer(connectionString, a => { a.EnableRetryOnFailure(); })
                 .AddInterceptors(
                     sp.GetRequiredService<AuditFieldsInterceptor>(),
                     sp.GetRequiredService<RemoveCacheInterceptor>(),
@@ -211,13 +206,10 @@ public static class InfrastructureServiceRegistration
     private static void AddDbContextPostgres(this IServiceCollection services, IConfiguration configuration)
     {
         AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
-        var postgresConfig = configuration
-            .GetSection(nameof(DatabaseConnection))
-            .Get<DatabaseConnection>()
-            .PostgresConnection;
+        var connectionString = configuration.GetConnectionString("Postgres");
         services
             .AddDbContext<PublicLibraryDbContext>(options =>
-                options.UseNpgsql(postgresConfig, a =>
+                options.UseNpgsql(connectionString, a =>
                     {
                         a.EnableRetryOnFailure();
                         //a.MigrationsAssembly("Library.Api");

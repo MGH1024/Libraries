@@ -1,0 +1,8 @@
+services:
+  api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Staging
+      - ASPNETCORE_URLS=http://+:80
+      - VIRTUAL_HOST=public-library
+    networks:
+      - external

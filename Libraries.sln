@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
-VisualStudioVersion = 18.0.11217.181 d18.0
+VisualStudioVersion = 18.0.11217.181
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Library", "Library", "{88C6BDD9-95BF-462A-9585-C5CB14B1EB4D}"
 EndProject
@@ -40,6 +40,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Library.Endpoint.Worker.Inbox", "Services\Library\Library.Endpoint.Worker.Inbox\Library.Endpoint.Worker.Inbox.csproj", "{7B4A95DC-9C21-F3BF-7646-7401A8DE0982}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Library.Infrastructure.DbMigrator", "Services\Library\Library.Infrastructure.DbMigrator\Library.Infrastructure.DbMigrator.csproj", "{6F5DC0BD-CD78-92C8-C130-826F2A19A2EB}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{81DDED9D-158B-E303-5F62-77A2896D2A5A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -103,6 +105,10 @@ Global
 		{6F5DC0BD-CD78-92C8-C130-826F2A19A2EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6F5DC0BD-CD78-92C8-C130-826F2A19A2EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6F5DC0BD-CD78-92C8-C130-826F2A19A2EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81DDED9D-158B-E303-5F62-77A2896D2A5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81DDED9D-158B-E303-5F62-77A2896D2A5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81DDED9D-158B-E303-5F62-77A2896D2A5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81DDED9D-158B-E303-5F62-77A2896D2A5A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
