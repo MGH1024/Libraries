@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using MGH.Core.Application.Buses.Commands;
+using MGH.Core.Application.Buses;
 using MGH.Core.Application.Pipelines.Authorization;
 using Library.Application.Features.PublicLibraries.Constants;
 

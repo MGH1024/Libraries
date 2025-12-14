@@ -5,7 +5,6 @@ using Library.Domain.Libraries;
 using Library.Domain.Members;
 using Library.Domain.Outboxes;
 using Library.Infrastructure.Contexts;
-using MGH.Core.Infrastructure.Persistence.Base;
 
 namespace Library.Infrastructure.Repositories;
 
@@ -15,35 +14,21 @@ public class UnitOfWork(
     IPublicLibraryRepository libraryRepository,
     ILendingRepository lendingRepository,
     IBookRepository bookRepository,
-    IMemberRepository memberRepository,
-    ITransactionManager<PublicLibraryDbContext> transactionManager)
+    IMemberRepository memberRepository)
     : IUow, IDisposable
 {
     public IPublicLibraryRepository Library => libraryRepository;
     public IOutboxMessageRepository OutBox => outBoxRepository;
-
     public ILendingRepository Lending => lendingRepository;
     public IBookRepository Book => bookRepository;
     public IMemberRepository Member => memberRepository;
 
-    public Task<int> CompleteAsync(CancellationToken cancellationToken)
+    public async Task<int> CompleteAsync(CancellationToken cancellationToken = default)
     {
-        return context.SaveChangesAsync(cancellationToken);
-    }
-
-    public Task BeginTransactionAsync(CancellationToken cancellationToken)
-    {
-        return transactionManager.BeginTransactionAsync(cancellationToken);
-    }
-
-    public Task CommitTransactionAsync(CancellationToken cancellationToken)
-    {
-        return transactionManager.CommitTransactionAsync(cancellationToken);
-    }
-
-    public Task RollbackTransactionAsync(CancellationToken cancellationToken)
-    {
-        return transactionManager.RollbackTransactionAsync(cancellationToken);
+        using var transaction = await context.Database.BeginTransactionAsync(cancellationToken);
+        int result = await context.SaveChangesAsync(cancellationToken);
+        await transaction.CommitAsync(cancellationToken);
+        return result;
     }
 
     public void Dispose()

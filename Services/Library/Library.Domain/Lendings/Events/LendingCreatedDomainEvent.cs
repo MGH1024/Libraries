@@ -1,6 +1,6 @@
 ﻿using MGH.Core.Domain.Events;
+using MGH.Core.Application.Buses;
 using Library.Domain.Lendings.ValueObjects;
-using MGH.Core.Application.Buses.Commands;
 
 namespace Library.Domain.Lendings.Events;
 

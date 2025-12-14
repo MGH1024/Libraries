@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using MGH.Core.Application.Responses;
 using Library.Domain.Libraries.Events;
 using Library.Domain.Libraries.ValueObjects;
-using MGH.Core.Infrastructure.Persistence.Models.Paging;
+using MGH.Core.Infrastructure.Persistence.Paging;
+using MGH.Core.Infrastructure.Persistence.Specifications;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Models;
-using MGH.Core.Infrastructure.Persistence.Models.Filters.GetModels;
 using Library.Application.Features.PublicLibraries.Queries.GetList;
 using Library.Application.Features.PublicLibraries.Queries.GetById;
 using Library.Application.Features.PublicLibraries.Commands.Remove;
@@ -17,14 +17,14 @@ namespace Library.Application.Features.PublicLibraries.Profiles;
 
 public static class MappingProfiles
 {
-    public static GetListResponse<GetListQueryResponse> ToGetListQueryResponse(this IPaginate<PublicLibrary> libraries)
+    public static GetListResponse<GetListQueryResponse> ToGetListQueryResponse(this IPagedResult<PublicLibrary> libraries)
     {
         return new GetListResponse<GetListQueryResponse>
         {
-            Count = libraries.Count,
-            Index = libraries.Index,
-            Pages = libraries.Pages,
-            Size = libraries.Size,
+            Count = libraries.TotalCount,
+            Index = libraries.PageIndex,
+            Pages = libraries.TotalPages,
+            Size = libraries.PageSize,
             HasNext = libraries.HasNext,
             HasPrevious = libraries.HasPrevious,
             Items = libraries.Items.Select(a => new GetListQueryResponse
@@ -65,54 +65,58 @@ public static class MappingProfiles
         return new Staff(staffDto.Name, staffDto.Position, staffDto.NationalCode);
     }
 
-    public static GetModel<PublicLibrary> ToGetBaseLibraryModel(this RemoveStaffCommand command)
+    public static Specification<PublicLibrary> ToGetBaseLibraryModel(
+     this RemoveStaffCommand command)
     {
-        return new GetModel<PublicLibrary>
+        var spec = new Specification<PublicLibrary>
         {
-            Predicate = a => a.Id == command.LibraryId,
-            Include = a => a.Include(b => b.LibraryStaves),
+            Criteria = library => library.Id == command.LibraryId
+        };
+        spec.Includes.Add(library => library.LibraryStaves);
+        return spec;
+    }
+
+
+    public static Specification<PublicLibrary> ToGetBaseLibraryModel(this UpdateCommand request)
+    {
+        return new Specification<PublicLibrary>()
+        {
+            Criteria = a => a.Id == request.LibraryId,
         };
     }
 
-    public static GetModel<PublicLibrary> ToGetBaseLibraryModel(this UpdateCommand request)
+    public static Specification<PublicLibrary> ToGetBaseLibraryModel(this UpdateLibraryWithStavesCommand request)
     {
-        return new GetModel<PublicLibrary>()
+        return new Specification<PublicLibrary>
         {
-            Predicate = a => a.Id == request.LibraryId,
+            Criteria = a => a.Id == request.LibraryId
         };
     }
 
-    public static GetModel<PublicLibrary> ToGetBaseLibraryModel(this UpdateLibraryWithStavesCommand request)
+    public static Specification<PublicLibrary> ToGetBaseLibraryModel(this RemoveCommand request)
     {
-        return new GetModel<PublicLibrary>
+        return new Specification<PublicLibrary>
         {
-            Predicate = a => a.Id == request.LibraryId
+            Criteria = a => a.Id == request.LibraryId
         };
     }
 
-    public static GetModel<PublicLibrary> ToGetBaseLibraryModel(this RemoveCommand request)
+    public static Specification<PublicLibrary> ToGetBaseLibraryModel(this AddStaffCommand request)
     {
-        return new GetModel<PublicLibrary>
+        var spec = new Specification<PublicLibrary>()
         {
-            Predicate = a => a.Id == request.LibraryId
+            Criteria = a => a.Id == request.LibraryId,
         };
+        spec.Includes.Add(a => a.LibraryStaves);
+        return spec;
     }
 
-    public static GetModel<PublicLibrary> ToGetBaseLibraryModel(this AddStaffCommand request)
+    public static PagedSpecification<PublicLibrary> ToGetListModelAsync(this GetListQuery request)
     {
-        return new GetModel<PublicLibrary>()
+        return new PagedSpecification<PublicLibrary>()
         {
-            Predicate = a => a.Id == request.LibraryId,
-            Include = a => a.Include(b => b.LibraryStaves)
-        };
-    }
-
-    public static GetListModelAsync<PublicLibrary> ToGetListModelAsync(this GetListQuery request)
-    {
-        return new GetListModelAsync<PublicLibrary>()
-        {
-            Size = request.PageRequest.PageSize,
-            Index = request.PageRequest.PageIndex,
+            PageSize = request.PageRequest.PageSize,
+            PageIndex = request.PageRequest.PageIndex,
         };
     }
 

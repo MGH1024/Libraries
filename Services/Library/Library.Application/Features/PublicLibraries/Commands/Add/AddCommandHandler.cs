@@ -1,7 +1,7 @@
 ﻿using Library.Domain;
+using MGH.Core.Application.Buses;
 using MGH.Core.Infrastructure.EventBus;
 using Library.Domain.Libraries.Factories;
-using MGH.Core.Application.Buses.Commands;
 using Library.Application.Features.PublicLibraries.Rules;
 using Library.Application.Features.PublicLibraries.Profiles;
 

@@ -4,7 +4,8 @@ using MGH.Core.Infrastructure.Persistence.EF.Base.Repositories;
 
 namespace Library.Infrastructure.Repositories;
 
-public class LendingRepository(PublicLibraryDbContext libraryDbContext) :Repository<Lending,Guid>,ILendingRepository
+public class LendingRepository(PublicLibraryDbContext libraryDbContext) 
+    :Repository<Lending,Guid>(libraryDbContext),ILendingRepository
 {
     
 }

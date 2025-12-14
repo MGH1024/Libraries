@@ -138,7 +138,6 @@ public static class InfrastructureServiceRegistration
         services.AddScoped<IMemberRepository, MemberRepository>();
         services.AddScoped<IOutboxStore, OutboxMessageRepository>();
         services.AddScoped<IOutboxMessageRepository, OutboxMessageRepository>();
-        services.AddScoped(typeof(ITransactionManager<>), typeof(TransactionManager<>));
     }
 
     private static void AddDbContextSqlServer(this IServiceCollection services, IConfiguration configuration)

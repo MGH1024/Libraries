@@ -1,7 +1,7 @@
 using Library.Domain;
+using MGH.Core.Application.Buses;
 using Library.Domain.Libraries.Events;
 using MGH.Core.Infrastructure.EventBus;
-using MGH.Core.Application.Buses.Commands;
 using Library.Application.Features.PublicLibraries.Rules;
 using Library.Application.Features.PublicLibraries.Profiles;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Base;
@@ -18,22 +18,13 @@ public class AddEventHandler(
     public async Task Handle(LibraryCreatedDomainEvent command, CancellationToken cancellationToken)
     {
         await businessRules.LibraryCreatedDomainEventShouldBeExist(command);
+        await eventBus.PublishAsync(command, PublishMode.Outbox, cancellationToken);
 
-        await uow.BeginTransactionAsync(cancellationToken);
-        try
-        {
-            await eventBus.PublishAsync(command, PublishMode.Outbox, cancellationToken);
+        var elasticSearchInsertUpdateModel = command.ToElasticSearchInsertUpdateModel();
+        var elasticSearchResult = await elasticSearch.InsertAsync(elasticSearchInsertUpdateModel);
+        await businessRules.LibraryCreatedEventShouldBeRaisedInElk(elasticSearchResult);
 
-            var elasticSearchInsertUpdateModel = command.ToElasticSearchInsertUpdateModel();
-            var elasticSearchResult = await elasticSearch.InsertAsync(elasticSearchInsertUpdateModel);
-            await businessRules.LibraryCreatedEventShouldBeRaisedInElk(elasticSearchResult);
+        await uow.CompleteAsync(cancellationToken);
 
-            await uow.CommitTransactionAsync(cancellationToken);
-        }
-        catch (Exception)
-        {
-            await uow.RollbackTransactionAsync(cancellationToken);
-            throw;
-        }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Library.Domain;
 using Library.Domain.Libraries;
-using MGH.Core.Application.Buses.Commands;
+using MGH.Core.Application.Buses;
 using Library.Application.Features.PublicLibraries.Profiles;
 using Library.Application.Features.PublicLibraries.Rules;
 

@@ -1,20 +1,20 @@
 ﻿using MGH.Core.Application.Responses;
+using MGH.Core.Infrastructure.Persistence.Paging;
 using MGH.Core.Infrastructure.Persistence.Entities;
-using MGH.Core.Infrastructure.Persistence.Models.Paging;
 using Library.Application.Features.OutBoxes.Queries.GetList;
 
 namespace Library.Application.Features.OutBoxes.Extensions;
 
 public static class OutboxExtensions
 {
-    public static GetListResponse<GetOutboxListDto> ToGetOutboxListDto(this IPaginate<OutboxMessage> libraries)
+    public static GetListResponse<GetOutboxListDto> ToGetOutboxListDto(this IPagedResult<OutboxMessage> libraries)
     {
         return new GetListResponse<GetOutboxListDto>
         {
-            Count = libraries.Count,
-            Index = libraries.Index,
-            Pages = libraries.Pages,
-            Size = libraries.Size,
+            Count = libraries.TotalCount,
+            Index = libraries.PageIndex,
+            Pages = libraries.TotalPages,
+            Size = libraries.PageSize,
             HasNext = libraries.HasNext,
             HasPrevious = libraries.HasPrevious,
             Items = libraries.Items.Select(a => new GetOutboxListDto

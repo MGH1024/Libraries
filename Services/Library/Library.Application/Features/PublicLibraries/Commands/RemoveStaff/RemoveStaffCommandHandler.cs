@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Library.Domain;
-using MGH.Core.Application.Buses.Commands;
+using MGH.Core.Application.Buses;
 using Library.Application.Features.PublicLibraries.Profiles;
 
 namespace Library.Application.Features.PublicLibraries.Commands.RemoveStaff;
