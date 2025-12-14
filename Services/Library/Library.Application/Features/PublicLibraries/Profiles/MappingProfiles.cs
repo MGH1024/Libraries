@@ -50,33 +50,4 @@ public static class MappingProfiles
             District = publicLibrary.District.Value.ToString(),
         };
     }
-
-    public static IEnumerable<Staff> ToStaffList(this List<StaffDto> staffDtOs)
-    {
-        return staffDtOs.Select(a => a.ToStaff());
-    }
-
-    private static Staff ToStaff(this StaffDto staffDto)
-    {
-        return new Staff(staffDto.Name, staffDto.Position, staffDto.NationalCode);
-    }
-
-    public static ElasticSearchInsertUpdateModel ToElasticSearchInsertUpdateModel(this LibraryCreatedDomainEvent libraryCreatedDomainEvent)
-    {
-        return new ElasticSearchInsertUpdateModel(libraryCreatedDomainEvent)
-        {
-            IndexName = "libraries",
-            ElasticId = libraryCreatedDomainEvent.Id
-        };
-    }
-
-    public static LibraryCreatedDomainEvent ToLibraryCreatedDomainEvent(this PublicLibrary library)
-    {
-        return new LibraryCreatedDomainEvent(
-            library.Name,
-            library.Code,
-            library.Location,
-            library.District,
-            library.RegistrationDate);
-    }
 }

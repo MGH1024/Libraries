@@ -7,7 +7,9 @@ namespace Library.Application.Features.PublicLibraries.Commands.Update;
 public class UpdateCommandHandler(IUow uow)
     : ICommandHandler<UpdateCommand, Guid>
 {
-    public async Task<Guid> Handle(UpdateCommand request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(
+        UpdateCommand request,
+        CancellationToken cancellationToken)
     {
         var library = await uow.Library.GetAsync(request.LibraryId);
         if (library is null)

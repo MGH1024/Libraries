@@ -8,7 +8,9 @@ namespace Library.Application.Features.PublicLibraries.Commands.RemoveStaff;
 public class RemoveStaffCommandHandler(IUow uow)
     : ICommandHandler<RemoveStaffCommand, Unit>
 {
-    public async Task<Unit> Handle(RemoveStaffCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(
+        RemoveStaffCommand request,
+        CancellationToken cancellationToken)
     {
         var library = await uow.Library.GetAsync(request.LibraryId)
             ?? throw new LibraryStaffNotFoundException();

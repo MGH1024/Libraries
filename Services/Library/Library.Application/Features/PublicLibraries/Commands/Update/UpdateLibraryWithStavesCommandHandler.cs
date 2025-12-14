@@ -1,7 +1,8 @@
-﻿using Library.Domain;
-using MGH.Core.Application.Buses;
+﻿using Library.Application.Features.PublicLibraries.Profiles;
+using Library.Domain;
 using Library.Domain.Libraries.Exceptions;
-using Library.Application.Features.PublicLibraries.Profiles;
+using Library.Domain.Libraries.ValueObjects;
+using MGH.Core.Application.Buses;
 
 namespace Library.Application.Features.PublicLibraries.Commands.Update;
 
@@ -28,8 +29,22 @@ public class UpdateLibraryWithStavesCommandHandler(IUow uow)
             request.Location,
             request.DistrictEnum,
             request.RegistrationDate, 
-            request.StavesDto.ToStaffList());
+            ToStaffList(request.StavesDto));
         await uow.CompleteAsync(cancellationToken);
         return library.Id;
     }
+
+    public IEnumerable<Staff> ToStaffList(List<StaffDto> staffDtos)
+    {
+        return staffDtos.Select(ToStaff);
+    }
+
+    private Staff ToStaff(StaffDto staffDto)
+    {
+        return new Staff(
+            staffDto.Name,
+            staffDto.Position,
+            staffDto.NationalCode);
+    }
+
 }

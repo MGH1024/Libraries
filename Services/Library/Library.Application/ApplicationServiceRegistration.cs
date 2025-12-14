@@ -10,7 +10,6 @@ using Microsoft.Extensions.DependencyInjection;
 using MGH.Core.Application.Pipelines.Validation;
 using MGH.Core.Application.Pipelines.Transaction;
 using MGH.Core.Application.Pipelines.Authorization;
-using Library.Application.Features.PublicLibraries.Rules;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Base;
 using Library.Application.Features.PublicLibraries.Commands.Add;
@@ -27,7 +26,6 @@ public static class ApplicationServiceRegistration
         services.AddMediatRAndBehaviors(builder.Environment);
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         services.AddSubClassesOfType(Assembly.GetExecutingAssembly(), typeof(BaseBusinessRules));
-        services.AddBusinessRule();
         services.AddRedis(configuration);
         services.AddGeneralCachingService();
         services.AddServices();
@@ -41,7 +39,6 @@ public static class ApplicationServiceRegistration
         services.AddMediatRAndBehaviors(builder.Environment);
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         services.AddSubClassesOfType(Assembly.GetExecutingAssembly(), typeof(BaseBusinessRules));
-        services.AddBusinessRule();
         services.AddRedis(configuration);
         services.AddGeneralCachingService();
         services.AddServices();
@@ -50,11 +47,6 @@ public static class ApplicationServiceRegistration
     private static void AddServices(this IServiceCollection services)
     {
         services.AddSingleton<IElasticSearch, ElasticSearchService>();
-    }
-
-    private static void AddBusinessRule(this IServiceCollection services)
-    {
-        services.AddTransient<ILibraryBusinessRules, LibraryBusinessRules>();
     }
 
     private static void AddMediatRAndBehaviors(this IServiceCollection services, IHostEnvironment environment)
