@@ -1,8 +1,7 @@
-﻿using Library.Application.Features.PublicLibraries.Profiles;
-using Library.Domain;
+﻿using Library.Domain;
+using MGH.Core.Application.Buses;
 using Library.Domain.Libraries.Exceptions;
 using Library.Domain.Libraries.ValueObjects;
-using MGH.Core.Application.Buses;
 
 namespace Library.Application.Features.PublicLibraries.Commands.Update;
 

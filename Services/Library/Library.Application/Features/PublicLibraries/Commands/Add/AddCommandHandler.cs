@@ -28,21 +28,20 @@ public class AddCommandHandler(
             command.RegistrationTime,
             command.District);
 
-        var @event = ToEvent(newLibrary);
+        await uow.Library.AddAsync(
+            newLibrary,
+            cancellationToken: cancellationToken);
+        await uow.CompleteAsync(cancellationToken);
+
+        var @event = ToLibraryCreatedEvent(newLibrary);
         await eventBus.PublishAsync(
             @event,
             PublishMode.Outbox,
             cancellationToken);
-
-        await uow.Library.AddAsync(
-            newLibrary,
-            cancellationToken: cancellationToken);
-
-        await uow.CompleteAsync(cancellationToken);
         return newLibrary.Id;
     }
 
-    private LibraryCreatedDomainEvent ToEvent(PublicLibrary library)
+    private LibraryCreatedDomainEvent ToLibraryCreatedEvent(PublicLibrary library)
     {
         return new LibraryCreatedDomainEvent(
             library.Name,

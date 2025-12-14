@@ -1,8 +1,8 @@
 using MediatR;
 using Library.Domain.Libraries;
 using MGH.Core.Application.Responses;
+using MGH.Core.Infrastructure.Persistence.Paging;
 using MGH.Core.Infrastructure.Persistence.Specifications;
-using Library.Application.Features.PublicLibraries.Profiles;
 
 namespace Library.Application.Features.PublicLibraries.Queries.GetList;
 
@@ -20,6 +20,28 @@ public class GetListQueryHandler(
                 PageSize = request.PageRequest.PageSize,
                 PageIndex = request.PageRequest.PageIndex,
             });
-        return libraries.ToGetListQueryResponse();
+        return ToGetListQueryResponse(libraries);
+    }
+
+    private GetListResponse<GetListQueryResponse> ToGetListQueryResponse(IPagedResult<PublicLibrary> libraries)
+    {
+        return new GetListResponse<GetListQueryResponse>
+        {
+            Count = libraries.TotalCount,
+            Index = libraries.PageIndex,
+            Pages = libraries.TotalPages,
+            Size = libraries.PageSize,
+            HasNext = libraries.HasNext,
+            HasPrevious = libraries.HasPrevious,
+            Items = libraries.Items.Select(a => new GetListQueryResponse
+            {
+                Id = a.Id,
+                Code = a.Code,
+                Title = a.Name,
+                Location = a.Location,
+                CreatedAt = a.CreatedAt,
+                District = a.District.Value.ToString(),
+            }).ToList()
+        };
     }
 }
