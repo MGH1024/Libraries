@@ -15,13 +15,6 @@ public  class LibraryBusinessRules(IPublicLibraryRepository libraryRepository) :
             throw new BusinessException("library code must be unique");
     }
 
-    public Task LibraryShouldBeExistsWhenSelected(PublicLibrary library)
-    {
-        if (library is null)
-            throw new BusinessException("library not found");
-        return Task.CompletedTask;
-    }
-
     public Task LibraryCreatedEventShouldBeRaisedInElk(IElasticSearchResult elasticsearchResponse)
     {
         if(elasticsearchResponse is not null && !elasticsearchResponse.Success)
