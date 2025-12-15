@@ -1,7 +1,5 @@
 ﻿using Library.Domain;
-using Library.Domain.Libraries;
 using MGH.Core.Application.Buses;
-using Library.Domain.Libraries.Events;
 using MGH.Core.Infrastructure.EventBus;
 using Library.Domain.Libraries.Factories;
 using Library.Domain.Libraries.Exceptions;
@@ -11,14 +9,17 @@ namespace Library.Application.Features.PublicLibraries.Commands.Add;
 public class AddCommandHandler(
     IUow uow,
     IEventBus eventBus,
-    IPublicLibraryFactory libraryFactory) : ICommandHandler<AddCommand, Guid>
+    IPublicLibraryFactory libraryFactory)
+    : ICommandHandler<AddCommand, Guid>
 {
     public async Task<Guid> Handle(
         AddCommand command,
         CancellationToken cancellationToken)
     {
-        var library = await uow.Library.GetByCodeAsync(command.Code);
-        if (library is not null)
+        var existingLibrary =
+            await uow.Library.GetByCodeAsync(command.Code);
+
+        if (existingLibrary is not null)
             throw new LibraryException("library code must be unique");
 
         var newLibrary = libraryFactory.Create(
@@ -33,21 +34,15 @@ public class AddCommandHandler(
             cancellationToken: cancellationToken);
         await uow.CompleteAsync(cancellationToken);
 
-        var @event = ToLibraryCreatedEvent(newLibrary);
-        await eventBus.PublishAsync(
-            @event,
-            PublishMode.Outbox,
-            cancellationToken);
-        return newLibrary.Id;
-    }
+        foreach (var domainEvent in newLibrary.DomainEvents)
+        {
+            await eventBus.PublishAsync(
+                domainEvent,
+                PublishMode.Outbox,
+                cancellationToken);
+        }
 
-    private LibraryCreatedDomainEvent ToLibraryCreatedEvent(PublicLibrary library)
-    {
-        return new LibraryCreatedDomainEvent(
-            library.Name,
-            library.Code,
-            library.Location,
-            library.District,
-            library.RegistrationDate);
+        newLibrary.ClearDomainEvents();
+        return newLibrary.Id;
     }
 }

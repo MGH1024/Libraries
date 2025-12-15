@@ -8,6 +8,5 @@ public static class PublicLibraryOperationClaims
     public const string Update = "publiclibrary.update";
     public const string Remove = "publiclibrary.remove";
     public const string AddStaff = "publiclibrary.add.staff";
-    public const string UpdateWithStaves = "publiclibrary.update.with.staff";
     public const string RemoveStaves = "publiclibrary.remove.staff";
 }

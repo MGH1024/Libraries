@@ -1,6 +1,5 @@
 ﻿using MGH.Core.Domain.Base;
 using Library.Domain.Libraries.Events;
-using Library.Domain.Libraries.Constant;
 using Library.Domain.Libraries.Exceptions;
 using Library.Domain.Libraries.ValueObjects;
 
@@ -30,26 +29,33 @@ public class PublicLibrary : AggregateRoot<Guid>
         District = district;
         RegistrationDate = registrationDate;
 
-        AddDomainEvent(new LibraryCreatedDomainEvent(name, code, location, district, registrationDate));
+        AddDomainEvent(new LibraryAddedDomainEvent(name, code, location, district, registrationDate));
     }
 
-    public void EditLibrary(string name, string libraryCode, string libraryLocation, District libraryDistrict, DateTime libraryRegistrationDate)
+    public void UpdateLibrary(
+        string name,
+        string libraryLocation,
+        District libraryDistrict,
+        DateTime libraryRegistrationDate)
     {
-        SetLibraryPropertiesForEdit(name, libraryCode, libraryLocation, libraryDistrict, libraryRegistrationDate);
+        Name = name;
+        Location = libraryLocation;
+        District = libraryDistrict;
+        RegistrationDate = libraryRegistrationDate;
+
+        AddDomainEvent(new LibraryUpdatedDomainEvent(
+            Id,
+            name,
+            libraryLocation,
+            libraryDistrict,
+            libraryRegistrationDate));
     }
 
-    public void EditLibrary(string name, string libraryCode, string libraryLocation, District libraryDistrict, DateTime libraryRegistrationDate, IEnumerable<Staff> libraryStaves)
+    public void RemoveLibrary()
     {
-        SetLibraryPropertiesForEdit(name, libraryCode, libraryLocation, libraryDistrict, libraryRegistrationDate);
-        _staves.RemoveAll(a => !string.IsNullOrEmpty(a.NationalCode));
-        _staves.AddRange(libraryStaves);
-    }
-
-    public static Task RemoveLibrary(PublicLibrary library)
-    {
-        if (library._staves.Count != 0)
+        if (_staves.Count != 0)
             throw new LibraryHasStavesException();
-        return Task.CompletedTask;
+        AddDomainEvent(new LibraryDeletedDomainEvent(Id));
     }
 
     public void AddLibraryStaff(Staff staff)
@@ -57,6 +63,12 @@ public class PublicLibrary : AggregateRoot<Guid>
         if (LibraryStaffExist(staff.NationalCode))
             throw new LibraryStaffAlreadyExistException();
         _staves.Add(staff);
+        AddDomainEvent(new StaffAddedDomainEvent(
+            Id,
+            staff.Name,
+            staff.Position,
+            staff.NationalCode
+            ));
     }
 
     public void RemoveLibraryStaff(string nationalCode)
@@ -65,32 +77,9 @@ public class PublicLibrary : AggregateRoot<Guid>
         if (libraryStaff is null)
             throw new LibraryStaffNotFoundException();
         _staves.Remove(libraryStaff);
-    }
-
-    //BL: you can update only  the name and position of library staff
-    public void EditLibraryStaff(Staff staff)
-    {
-        var oldLibraryStaff = GetLibraryStaffByNationalCode(staff.NationalCode);
-        if (oldLibraryStaff is null)
-            throw new LibraryStaffNotFoundException();
-        RemoveLibraryStaff(oldLibraryStaff.NationalCode);
-        AddLibraryStaff(staff);
+        AddDomainEvent(new StaffDeletedDomainEvent(Id, nationalCode));
     }
 
     private bool LibraryStaffExist(string nationalCode)
         => _staves.Exists(a => a.NationalCode.Equals(nationalCode));
-
-
-    private void SetLibraryPropertiesForEdit(string name, string code, string location, DistrictEnum districtEnum,
-        DateTime registrationDate)
-    {
-        Name = name;
-        Code = code;
-        Location = location;
-        District = districtEnum;
-        RegistrationDate = registrationDate;
-    }
-
-    private Staff GetLibraryStaffByNationalCode(string nationalCode)
-        => _staves.Find(a => a.NationalCode == nationalCode);
 }

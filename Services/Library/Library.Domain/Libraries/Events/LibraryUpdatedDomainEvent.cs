@@ -4,32 +4,32 @@ using Library.Domain.Libraries.Constant;
 
 namespace Library.Domain.Libraries.Events;
 
-public sealed class LibraryCreatedDomainEvent : DomainEvent, ICommand
+public sealed class LibraryUpdatedDomainEvent : DomainEvent, ICommand
 {
+    public Guid LibraryId { get; set; }
     public string LibraryName { get; set; }
-    public string LibraryCode { get; set; }
     public string LibraryLocation { get; set; }
     public DistrictEnum LibraryDistrict { get; set; }
     public DateTime LibraryRegistrationDate { get; set; }
 
 
-    public LibraryCreatedDomainEvent(
+    public LibraryUpdatedDomainEvent(
+        Guid libraryId,
         string libraryName,
-        string libraryCode,
         string libraryLocation,
         DistrictEnum libraryDistrict,
         DateTime libraryRegistrationDate)
         : base(new
         {
+            libraryId,
             libraryName,
-            libraryCode,
             libraryLocation,
             libraryDistrict,
             libraryRegistrationDate
         })
     {
+        LibraryId = libraryId;
         LibraryName = libraryName;
-        LibraryCode = libraryCode;
         LibraryLocation = libraryLocation;
         LibraryDistrict = libraryDistrict;
         LibraryRegistrationDate = libraryRegistrationDate;

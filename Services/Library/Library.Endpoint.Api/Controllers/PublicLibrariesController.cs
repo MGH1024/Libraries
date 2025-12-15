@@ -87,15 +87,6 @@ public class PublicLibrariesController : ControllerBase
         return Ok(result);
     }
 
-    // PUT /{culture}/api/PublicLibraries/update-library-with-staves
-    [HttpPut("update-library-with-staves")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> UpdateLibraryWithStaves([FromBody] UpdateLibraryWithStavesCommand command, CancellationToken cancellationToken)
-    {
-        var result = await _sender.Send(command, cancellationToken);
-        return Ok(result);
-    }
-
     // DELETE /{culture}/api/PublicLibraries/delete-library
     [HttpDelete("delete-library")]
     [ProducesResponseType(StatusCodes.Status200OK)]

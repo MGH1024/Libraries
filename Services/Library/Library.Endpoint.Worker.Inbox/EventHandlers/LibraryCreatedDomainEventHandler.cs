@@ -3,7 +3,7 @@ using MGH.Core.Infrastructure.EventBus;
 
 namespace Library.Endpoint.Worker.Inbox.EventHandlers;
 
-public class LibraryCreatedDomainEventHandler : IEventHandler<LibraryCreatedDomainEvent>
+public class LibraryCreatedDomainEventHandler : IEventHandler<LibraryAddedDomainEvent>
 {
     private readonly ILogger<LibraryCreatedDomainEventHandler> _logger;
 
@@ -12,7 +12,7 @@ public class LibraryCreatedDomainEventHandler : IEventHandler<LibraryCreatedDoma
         _logger = logger;
     }
 
-    public Task HandleAsync(LibraryCreatedDomainEvent message)
+    public Task HandleAsync(LibraryAddedDomainEvent message)
     {
         _logger.LogInformation("Received LibraryCreatedDomainEvent message: {Name}", message.Id);
         // Logic here

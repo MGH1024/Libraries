@@ -39,9 +39,9 @@ public class PublicLibraryEntityTypeConfiguration : IEntityTypeConfiguration<Pub
                 a.WithOwner().HasForeignKey("LibraryId"); // Shadow Foreign Key
                 a.Property<Guid>("Id"); // Shadow property
                 a.HasKey("Id"); // Shadow Primary Key
-                a.Property(x => x.Name).IsRequired();
+                a.Property(x => x.Name).IsRequired().HasMaxLength(64);
                 a.Property(x => x.Position).IsRequired().HasMaxLength(64);
-                a.Property(x => x.NationalCode).IsRequired().HasMaxLength(30);
+                a.Property(x => x.NationalCode).IsRequired().HasMaxLength(10);
             });
 
         builder.Property(a => a.Version).IsConcurrencyToken();

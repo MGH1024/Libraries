@@ -14,6 +14,7 @@ public class RemoveStaffCommandHandler(IUow uow)
     {
         var library = await uow.Library.GetAsync(request.LibraryId)
             ?? throw new LibraryStaffNotFoundException();
+
         library.RemoveLibraryStaff(request.NationalCode);
         await uow.CompleteAsync(cancellationToken);
         return Unit.Value;
