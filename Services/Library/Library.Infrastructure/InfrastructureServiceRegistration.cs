@@ -46,25 +46,6 @@ public static class InfrastructureServiceRegistration
             .AddEnvironmentVariables();
     }
 
-    public static void AddApiInfrastructuresServices(this WebApplicationBuilder builder)
-    {
-        var services = builder.Services;
-        var configuration = builder.Configuration;
-        services.RegisterInterceptors();
-        services.AddDbContextSqlServer(configuration);
-        services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-        services.AddRepositories();
-        services.AddSecurityServices();
-        services.AddTransient<IDateTime, DateTimeService>();
-        services.AddAutoMapper(cfg => { }, AppDomain.CurrentDomain.GetAssemblies());
-        services.AddCulture();
-        services.AddElasticSearch(configuration);
-        services.AddRabbitMqEventBus(configuration);
-        services.AddFactories();
-        services.AddPrometheus();
-        services.AddHealthChecks(configuration);
-    }
-
     public static void AddWorkerInfrastructuresServices(this HostApplicationBuilder builder)
     {
         var services = builder.Services;
@@ -77,26 +58,24 @@ public static class InfrastructureServiceRegistration
         services.AddTransient<IDateTime, DateTimeService>();
         services.AddAutoMapper(cfg => { }, AppDomain.CurrentDomain.GetAssemblies());
         services.AddCulture();
-        services.AddElasticSearch(configuration);
+        services.AddAppElasticSearch(configuration);
         services.AddRabbitMqEventBus(configuration);
         services.AddFactories();
-        services.AddPrometheus();
+        services.UseHttpClientMetrics();
     }
 
-    private static void AddFactories(this IServiceCollection services)
+    public static void AddFactories(this IServiceCollection services)
     {
         services.AddScoped<IPublicLibraryFactory, PublicLibraryFactory>();
         services.AddScoped<ILibraryPolicy, DistrictPolicy>();
     }
 
-    private static void AddHealthChecks(this IServiceCollection services, IConfiguration configuration)
+    public static void AddRabbitHealthChecks(
+        this IHealthChecksBuilder healthBuilder, 
+        IConfiguration configuration)
     {
-        var healthBuilder = services.AddHealthChecks();
-        healthBuilder.AddSqlServer(configuration["DatabaseConnection:SqlConnection"]);
-        healthBuilder.AddDbContextCheck<PublicLibraryDbContext>();
-
-        var defaultConnection = configuration.GetSection("RabbitMq:Connections:Default").Get<RabbitMqSettings>() ??
-                                  throw new ArgumentNullException(nameof(RabbitMqOptions.Connections.Default));
+        var defaultConnection = configuration.GetSection("RabbitMq:Connections:Default").Get<RabbitMqSettings>() 
+            ?? throw new ArgumentNullException(nameof(RabbitMqOptions.Connections.Default));
         Func<IServiceProvider, IConnection> connectionFactory =
             sp =>
             {
@@ -113,15 +92,9 @@ public static class InfrastructureServiceRegistration
             };
 
         healthBuilder.AddRabbitMqHealthCheck(connectionFactory);
-        //services.AddHealthChecksDashboard("Library Health check");
     }
 
-    private static void AddPrometheus(this IServiceCollection services)
-    {
-        services.UseHttpClientMetrics();
-    }
-
-    private static void RegisterInterceptors(this IServiceCollection services)
+    public static void RegisterInterceptors(this IServiceCollection services)
     {
         services.AddSingleton<AuditFieldsInterceptor>();
         services.AddSingleton<RemoveCacheInterceptor>();
@@ -129,7 +102,7 @@ public static class InfrastructureServiceRegistration
         services.AddSingleton<OutboxEntityInterceptor>();
     }
 
-    private static void AddRepositories(this IServiceCollection services)
+    public static void AddRepositories(this IServiceCollection services)
     {
         services.AddScoped<IUow, UnitOfWork>();
         services.AddScoped<IPublicLibraryRepository, PublicLibraryRepository>();
@@ -140,7 +113,7 @@ public static class InfrastructureServiceRegistration
         services.AddScoped<IOutboxMessageRepository, OutboxMessageRepository>();
     }
 
-    private static void AddDbContextSqlServer(this IServiceCollection services, IConfiguration configuration)
+    public static void AddDbContextSqlServer(this IServiceCollection services, IConfiguration configuration)
     {
         var connectionString = configuration.GetConnectionString("Default");
         services.AddDbContext<PublicLibraryDbContext>((sp, options) =>
@@ -154,7 +127,7 @@ public static class InfrastructureServiceRegistration
         });
     }
 
-    private static void AddCulture(this IServiceCollection services)
+    public static void AddCulture(this IServiceCollection services)
     {
         var supportedCultures = CultureInfo.GetCultures(CultureTypes.AllCultures);
 
@@ -177,7 +150,7 @@ public static class InfrastructureServiceRegistration
             .AddLocalization(opt => { opt.ResourcesPath = "Resources"; });
     }
 
-    private static async void AddElasticSearch(this IServiceCollection services, IConfiguration configuration)
+    public static async void AddAppElasticSearch(this IServiceCollection services, IConfiguration configuration)
     {
         const string configurationSection = "ElasticSearchConfig";
         var setting =
@@ -202,7 +175,7 @@ public static class InfrastructureServiceRegistration
         }
     }
 
-    private static void AddDbContextPostgres(this IServiceCollection services, IConfiguration configuration)
+    public static void AddDbContextPostgres(this IServiceCollection services, IConfiguration configuration)
     {
         AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         var connectionString = configuration.GetConnectionString("Postgres");

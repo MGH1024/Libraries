@@ -1,16 +1,12 @@
-﻿using Library.Domain;
+﻿using MediatR;
+using Library.Domain;
+using MGH.Core.Application.Buses;
 using Library.Domain.Libraries.Exceptions;
 using Library.Domain.Libraries.ValueObjects;
-using MediatR;
-using MGH.Core.Application.Buses;
-using MGH.Core.Infrastructure.EventBus;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Library.Application.Features.PublicLibraries.Commands.AddStaff;
 
-public class AddStaffCommandHandler(
-    IUow uow,
-    IEventBus eventBus)
+public class AddStaffCommandHandler(IUow uow)
     : ICommandHandler<AddStaffCommand, Unit>
 {
     public async Task<Unit> Handle(

@@ -1,6 +1,5 @@
 ﻿using Library.Domain;
 using MGH.Core.Application.Buses;
-using MGH.Core.Infrastructure.EventBus;
 using Library.Domain.Libraries.Factories;
 using Library.Domain.Libraries.Exceptions;
 

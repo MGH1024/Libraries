@@ -1,12 +1,7 @@
 ﻿using Asp.Versioning;
-using Library.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
-using MGH.Core.Endpoint.Swagger;
-using MGH.Core.CrossCutting.Logging;
 using System.Text.Json.Serialization;
 using Microsoft.IdentityModel.Tokens;
-using MGH.Core.CrossCutting.Exceptions;
-using MGH.Core.Infrastructure.HealthCheck;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using MGH.Core.Infrastructure.Securities.Security.JWT;
@@ -18,7 +13,7 @@ namespace Library.Endpoint.Api;
 /// <summary>
 /// ApiServiceRegistration
 /// </summary>
-public static class ApiServiceRegistration
+public static class ServiceRegistration
 {
     internal static void AddApiOptions(this IServiceCollection services, IConfiguration configuration)
     {

@@ -18,19 +18,6 @@ namespace Library.Application;
 
 public static class ApplicationServiceRegistration
 {
-    public static void AddApplicationServices(this WebApplicationBuilder builder)
-    {
-        var services = builder.Services;
-        var configuration = builder.Configuration;
-        services.AddAutoMapper(cfg => { }, AppDomain.CurrentDomain.GetAssemblies());
-        services.AddMediatRAndBehaviors(builder.Environment);
-        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-        services.AddSubClassesOfType(Assembly.GetExecutingAssembly(), typeof(BaseBusinessRules));
-        services.AddRedis(configuration);
-        services.AddGeneralCachingService();
-        services.AddServices();
-    }
-
     public static void AddApplicationServices(this HostApplicationBuilder builder)
     {
         var services = builder.Services;
@@ -41,15 +28,10 @@ public static class ApplicationServiceRegistration
         services.AddSubClassesOfType(Assembly.GetExecutingAssembly(), typeof(BaseBusinessRules));
         services.AddRedis(configuration);
         services.AddGeneralCachingService();
-        services.AddServices();
-    }
-
-    private static void AddServices(this IServiceCollection services)
-    {
         services.AddSingleton<IElasticSearch, ElasticSearchService>();
     }
 
-    private static void AddMediatRAndBehaviors(this IServiceCollection services, IHostEnvironment environment)
+    public static void AddMediatRAndBehaviors(this IServiceCollection services, IHostEnvironment environment)
     {
         services.AddMediatR(configuration =>
         {
@@ -64,7 +46,7 @@ public static class ApplicationServiceRegistration
         });
     }
 
-    private static void AddSubClassesOfType(this IServiceCollection services, Assembly assembly,
+    public static void AddSubClassesOfType(this IServiceCollection services, Assembly assembly,
         Type type, Func<IServiceCollection, Type, IServiceCollection> addWithLifeCycle = null)
     {
         var types = assembly.GetTypes().Where(t => t.IsSubclassOf(type) && type != t).ToList();
