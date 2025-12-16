@@ -20,70 +20,12 @@ namespace Library.Endpoint.Api;
 /// </summary>
 public static class ApiServiceRegistration
 {
-    /// <summary>
-    /// Configures and registers all necessary services for the API, including logging, CORS, versioning,
-    /// Swagger, MVC, caching, JWT authentication, and AutoMapper.
-    /// </summary>
-    /// <param name="builder">The <see cref="WebApplicationBuilder"/> used to configure services and the host.</param>
-    public static void AddApiService(this WebApplicationBuilder builder)
-    {
-        var hostBuilder = builder.Host;
-        var services = builder.Services;
-        var configuration = builder.Configuration;
-
-        AddSettings(builder);
-        AddLogger(configuration, hostBuilder);
-        services.AddOptions(configuration);
-        services.AddCORS(configuration);
-        services.AddVersioning();
-        services.AddSwaggerService(configuration);
-        services.AddBaseMvc();
-        services.AddMemoryCache();
-        services.AddHttpContextAccessor();
-        services.AddEndpointsApiExplorer();
-        services.AddJwt(configuration);
-        services.AddAutoMapper(cfg => { }, AppDomain.CurrentDomain.GetAssemblies());
-
-    }
-
-    /// <summary>
-    /// Builds and configures the application pipeline, including authentication, authorization,
-    /// HTTPS redirection, CORS, controllers, exception handling, static files, health checks, Prometheus metrics, 
-    /// and Swagger documentation, then starts the application.
-    /// </summary>
-    /// <param name="builder">The <see cref="WebApplicationBuilder"/> used to build the application.</param>
-    public static void RegisterApp(this WebApplicationBuilder builder)
-    {
-        var app = builder.Build();
-        app.UseRequestLocalization();
-        app.UseAuthentication();
-        app.UseAuthorization();
-        app.UseHttpsRedirection();
-        app.UseCors("CorsPolicy");
-        app.MapControllers();
-        app.UseExceptionMiddleWare();
-        app.UseStaticFiles();
-        app.UseHealthChecksEndpoints();
-        app.AddPrometheus();
-        app.UseSwaggerMiddleWare(builder.Configuration);
-        app.Run();
-    }
-
-    private static void AddSettings(WebApplicationBuilder builder)
-    {
-        var configBuilder = new ConfigurationBuilder()
-          .AddConfiguration(builder.Configuration)
-          .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-          .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
-          .AddEnvironmentVariables();
-    }
-
-    private static void AddOptions(this IServiceCollection services, IConfiguration configuration)
+    internal static void AddApiOptions(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<TokenOptions>(option => configuration.GetSection(nameof(TokenOptions)).Bind(option));
     }
 
-    private static void AddVersioning(this IServiceCollection services)
+    internal static void AddVersioning(this IServiceCollection services)
     {
         services.AddApiVersioning(options =>
             {
@@ -102,7 +44,7 @@ public static class ApiServiceRegistration
             });
     }
 
-    private static void AddJwt(this IServiceCollection services, IConfiguration configuration)
+    internal static void AddJwt(this IServiceCollection services, IConfiguration configuration)
     {
         var tokenOptions =
             configuration.GetSection("TokenOptions").Get<TokenOptions>()
@@ -124,12 +66,7 @@ public static class ApiServiceRegistration
             });
     }
 
-    private static void AddLogger(IConfiguration configuration, IHostBuilder hostBuilder)
-    {
-        RegisterLogger.CreateLoggerByConfig(configuration, hostBuilder);
-    }
-
-    private static void AddBaseMvc(this IServiceCollection services)
+    internal static void AddBaseMvc(this IServiceCollection services)
     {
         services.AddControllers(options =>
             {
@@ -161,7 +98,7 @@ public static class ApiServiceRegistration
         services.AddHttpContextAccessor();
     }
 
-    private static void AddCORS(this IServiceCollection services, IConfiguration configuration)
+    internal static void AddCORS(this IServiceCollection services, IConfiguration configuration)
     {
         var allowedOrigins = configuration.GetSection("Cors:AllowedOrigins").Get<string[]>();
 
