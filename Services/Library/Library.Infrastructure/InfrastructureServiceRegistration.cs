@@ -23,7 +23,6 @@ using Microsoft.Extensions.Configuration;
 using Library.Infrastructure.Repositories;
 using MGH.Core.Infrastructure.HealthCheck;
 using Microsoft.Extensions.DependencyInjection;
-using MGH.Core.Infrastructure.Persistence.Base;
 using MGH.Core.Infrastructure.EventBus.RabbitMq;
 using MGH.Core.Infrastructure.Securities.Security;
 using LogLevel = Microsoft.Extensions.Logging.LogLevel;
@@ -127,6 +126,7 @@ public static class InfrastructureServiceRegistration
         services.AddSingleton<AuditFieldsInterceptor>();
         services.AddSingleton<RemoveCacheInterceptor>();
         services.AddSingleton<AuditEntityInterceptor>();
+        services.AddSingleton<OutboxEntityInterceptor>();
     }
 
     private static void AddRepositories(this IServiceCollection services)

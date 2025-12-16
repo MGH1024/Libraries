@@ -18,21 +18,11 @@ public class RemoveCommandHandler(
         var library = await uow.Library.GetAsync(
             request.LibraryId,
             cancellationToken)
-           ?? throw new LibraryNotFoundException();
+                ?? throw new LibraryNotFoundException();
 
         library.Remove();
         await uow.Library.DeleteAsync(library);
         await uow.CompleteAsync(cancellationToken);
-
-        foreach (var domainEvent in library.DomainEvents)
-        {
-            await eventBus.PublishAsync(
-                domainEvent,
-                PublishMode.Outbox,
-                cancellationToken);
-        }
-
-        library.ClearDomainEvents();
         return Unit.Value;
     }
 }

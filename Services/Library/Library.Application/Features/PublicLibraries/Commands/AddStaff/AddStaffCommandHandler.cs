@@ -26,16 +26,6 @@ public class AddStaffCommandHandler(
             request.NationalCode);
         library.AddStaff(staff);
         await uow.CompleteAsync(cancellationToken);
-
-        foreach (var domainEvent in library.DomainEvents)
-        {
-            await eventBus.PublishAsync(
-                domainEvent,
-                PublishMode.Outbox,
-                cancellationToken);
-        }
-
-        library.ClearDomainEvents();
         return Unit.Value;
     }
 }

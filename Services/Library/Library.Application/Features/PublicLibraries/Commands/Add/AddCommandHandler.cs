@@ -8,7 +8,6 @@ namespace Library.Application.Features.PublicLibraries.Commands.Add;
 
 public class AddCommandHandler(
     IUow uow,
-    IEventBus eventBus,
     IPublicLibraryFactory libraryFactory)
     : ICommandHandler<AddCommand, Guid>
 {
@@ -33,16 +32,6 @@ public class AddCommandHandler(
             newLibrary,
             cancellationToken: cancellationToken);
         await uow.CompleteAsync(cancellationToken);
-
-        foreach (var domainEvent in newLibrary.DomainEvents)
-        {
-            await eventBus.PublishAsync(
-                domainEvent,
-                PublishMode.Outbox,
-                cancellationToken);
-        }
-
-        newLibrary.ClearDomainEvents();
         return newLibrary.Id;
     }
 }
