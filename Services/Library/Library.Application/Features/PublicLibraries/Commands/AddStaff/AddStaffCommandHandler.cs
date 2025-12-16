@@ -24,7 +24,7 @@ public class AddStaffCommandHandler(
             request.Name,
             request.Position,
             request.NationalCode);
-        library.AddLibraryStaff(staff);
+        library.AddStaff(staff);
         await uow.CompleteAsync(cancellationToken);
 
         foreach (var domainEvent in library.DomainEvents)

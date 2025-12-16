@@ -15,12 +15,14 @@ public class RemoveCommandHandler(
         RemoveCommand request,
         CancellationToken cancellationToken)
     {
-        var library = await uow.Library.GetAsync(request.LibraryId)
+        var library = await uow.Library.GetAsync(
+            request.LibraryId,
+            cancellationToken)
            ?? throw new LibraryNotFoundException();
 
+        library.Remove();
         await uow.Library.DeleteAsync(library);
         await uow.CompleteAsync(cancellationToken);
-        library.RemoveLibrary();
 
         foreach (var domainEvent in library.DomainEvents)
         {

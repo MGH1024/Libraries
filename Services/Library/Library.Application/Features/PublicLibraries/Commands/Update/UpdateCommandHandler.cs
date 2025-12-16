@@ -1,10 +1,13 @@
 ﻿using Library.Domain;
 using MGH.Core.Application.Buses;
 using Library.Domain.Libraries.Exceptions;
+using Library.Domain.Libraries.Factories;
 
 namespace Library.Application.Features.PublicLibraries.Commands.Update;
 
-public class UpdateCommandHandler(IUow uow)
+public class UpdateCommandHandler(
+    IUow uow,
+    IPublicLibraryFactory factory)
     : ICommandHandler<UpdateCommand, Guid>
 {
     public async Task<Guid> Handle(
@@ -15,7 +18,12 @@ public class UpdateCommandHandler(IUow uow)
         if (library is null)
             throw new LibraryNotFoundException();
 
-        library.UpdateLibrary(request.Name, request.Location, request.District, request.RegistrationTime);
+        factory.Update(
+            library,
+            request.Name,
+            request.Location,
+            request.District,
+            request.RegistrationTime);
         await uow.CompleteAsync(cancellationToken);
         return library.Id;
     }
