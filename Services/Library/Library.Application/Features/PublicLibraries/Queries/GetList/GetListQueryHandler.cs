@@ -1,7 +1,6 @@
 using MediatR;
 using Library.Domain.Libraries;
 using MGH.Core.Application.Responses;
-using MGH.Core.Infrastructure.Persistence.Paging;
 using MGH.Core.Infrastructure.Persistence.Specifications;
 
 namespace Library.Application.Features.PublicLibraries.Queries.GetList;
@@ -14,18 +13,15 @@ public class GetListQueryHandler(
         GetListQuery request,
         CancellationToken cancellationToken)
     {
+        var filter = new PagedSpecification<PublicLibrary>()
+        {
+            PageSize = request.PageRequest.PageSize,
+            PageIndex = request.PageRequest.PageIndex,
+        };
         var libraries = await libraryRepository
-            .GetListAsync(new PagedSpecification<PublicLibrary>()
-            {
-                PageSize = request.PageRequest.PageSize,
-                PageIndex = request.PageRequest.PageIndex,
-            });
-        return ToGetListQueryResponse(libraries);
-    }
+            .GetListAsync(filter);
 
-    private GetListResponse<GetListQueryResponse> ToGetListQueryResponse(IPagedResult<PublicLibrary> libraries)
-    {
-        return new GetListResponse<GetListQueryResponse>
+        var response = new GetListResponse<GetListQueryResponse>
         {
             Count = libraries.TotalCount,
             Index = libraries.PageIndex,
@@ -43,5 +39,6 @@ public class GetListQueryHandler(
                 District = a.District.Value.ToString(),
             }).ToList()
         };
+        return response;
     }
 }

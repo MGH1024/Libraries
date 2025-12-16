@@ -15,22 +15,14 @@ public class GetByIdQueryHandler(IPublicLibraryRepository libraryRepository)
         if (library is null)
             throw new LibraryNotFoundException();
 
-        return ToGetPublicLibraryByIdResponse(library);
-    }
-
-    private GetByIdQueryResponse ToGetPublicLibraryByIdResponse(PublicLibrary publicLibrary)
-    {
-        if (publicLibrary is null)
-            throw new ArgumentNullException(nameof(publicLibrary));
-
         return new GetByIdQueryResponse
         {
-            Id = publicLibrary.Id,
-            Code = publicLibrary.Code,
-            Title = publicLibrary.Name,
-            Location = publicLibrary.Location,
-            CreatedAt = publicLibrary.CreatedAt,
-            District = publicLibrary.District.Value.ToString(),
+            Id = library.Id,
+            Code = library.Code,
+            Title = library.Name,
+            Location = library.Location,
+            CreatedAt = library.CreatedAt,
+            District = library.District.Value.ToString(),
         };
     }
 }
