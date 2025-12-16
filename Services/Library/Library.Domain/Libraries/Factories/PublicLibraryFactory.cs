@@ -41,7 +41,7 @@ public class PublicLibraryFactory : IPublicLibraryFactory
     PublicLibrary library,
     string name,
     string location,
-    District district,
+    DistrictEnum district,
     DateTime registrationDate)
     {
         var updatedName = new Name(name);
