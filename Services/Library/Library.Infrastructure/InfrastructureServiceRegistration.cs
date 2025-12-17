@@ -97,7 +97,8 @@ public static class InfrastructureServiceRegistration
                 .AddInterceptors(
                     sp.GetRequiredService<AuditFieldsInterceptor>(),
                     sp.GetRequiredService<RemoveCacheInterceptor>(),
-                    sp.GetRequiredService<AuditEntityInterceptor>())
+                    sp.GetRequiredService<AuditEntityInterceptor>(),
+                    sp.GetRequiredService<OutboxEntityInterceptor>())
                 .LogTo(Console.Write, LogLevel.Information);
         });
     }
