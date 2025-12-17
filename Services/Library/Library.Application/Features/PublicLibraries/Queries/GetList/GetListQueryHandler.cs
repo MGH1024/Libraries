@@ -30,14 +30,14 @@ public class GetListQueryHandler(
             HasNext = libraries.HasNext,
             HasPrevious = libraries.HasPrevious,
             Items = libraries.Items.Select(a => new GetListQueryResponse
-            {
-                Id = a.Id,
-                Code = a.Code,
-                Title = a.Name,
-                Location = a.Location,
-                CreatedAt = a.CreatedAt,
-                District = a.District.Value.ToString(),
-            }).ToList()
+            (
+                Id: a.Id,
+                Code: a.Code,
+                Title: a.Name,
+                Location: a.Location,
+                CreatedAt: a.CreatedAt,
+                District: a.District.Value.ToString()
+           )).ToList()
         };
         return response;
     }
