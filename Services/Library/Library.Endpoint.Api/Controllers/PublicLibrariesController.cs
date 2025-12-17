@@ -37,15 +37,15 @@ public class PublicLibrariesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(Guid id)
     {
-        var result = await _sender.Send(new GetByIdQuery { Id = id });
-        return result is null ? NotFound() : Ok(result);
+        var result = await _sender.Send(new GetByIdQuery(id));
+        return Ok(result);
     }
 
     /// <summary>
     /// Gets a paginated list of public libraries.
     /// </summary>
     [HttpGet]
-    [ProducesResponseType(typeof(GetListQueryResponse),StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(GetListQueryResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAll([FromQuery] PageRequest pageRequest)
     {
         var query = _mapper.Map<GetListQuery>(pageRequest);

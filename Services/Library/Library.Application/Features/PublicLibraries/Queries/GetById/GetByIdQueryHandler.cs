@@ -16,13 +16,13 @@ public class GetByIdQueryHandler(IPublicLibraryRepository libraryRepository)
             throw new LibraryNotFoundException();
 
         return new GetByIdQueryResponse
-        {
-            Id = library.Id,
-            Code = library.Code,
-            Title = library.Name,
-            Location = library.Location,
-            CreatedAt = library.CreatedAt,
-            District = library.District.Value.ToString(),
-        };
+        (
+            Id : library.Id,
+            Code : library.Code,
+            Title : library.Name,
+            Location : library.Location,
+            CreatedAt: library.CreatedAt,
+            District : library.District.Value.ToString()
+        );
     }
 }
