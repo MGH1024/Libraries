@@ -5,6 +5,7 @@ using Library.Domain.Libraries;
 using Library.Domain.Members;
 using Library.Domain.Outboxes;
 using Library.Infrastructure.Contexts;
+using Microsoft.EntityFrameworkCore;
 
 namespace Library.Infrastructure.Repositories;
 
@@ -25,10 +26,18 @@ public class UnitOfWork(
 
     public async Task<int> CompleteAsync(CancellationToken cancellationToken = default)
     {
-        using var transaction = await context.Database.BeginTransactionAsync(cancellationToken);
-        int result = await context.SaveChangesAsync(cancellationToken);
-        await transaction.CommitAsync(cancellationToken);
-        return result;
+        var strategy = context.Database.CreateExecutionStrategy();
+
+        return await strategy.ExecuteAsync(async () =>
+        {
+            await using var transaction =
+                await context.Database.BeginTransactionAsync(cancellationToken);
+
+            var result = await context.SaveChangesAsync(cancellationToken);
+
+            await transaction.CommitAsync(cancellationToken);
+            return result;
+        });
     }
 
     public void Dispose()
