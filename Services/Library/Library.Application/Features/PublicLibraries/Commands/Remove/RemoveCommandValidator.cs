@@ -6,6 +6,6 @@ public class RemoveCommandValidator : AbstractValidator<RemoveCommand>
 {
     public RemoveCommandValidator()
     {
-        RuleFor(a => a.LibraryId).NotEmpty();
+        RuleFor(a => a.Id).NotEmpty();
     }
 }

@@ -13,7 +13,7 @@ public class RemoveCommandHandler(IUow uow)
         CancellationToken cancellationToken)
     {
         var library = await uow.Library.GetAsync(
-            request.LibraryId,
+            request.Id,
             cancellationToken)
                 ?? throw new LibraryNotFoundException();
 

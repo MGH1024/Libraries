@@ -8,5 +8,5 @@ namespace Library.Application.Features.PublicLibraries.Commands.Remove;
 [Roles(PublicLibraryOperationClaims.Remove)]
 public class RemoveCommand : ICommand<Unit>
 {
-    public Guid LibraryId { get; set; }
+    public Guid Id { get; set; }
 }

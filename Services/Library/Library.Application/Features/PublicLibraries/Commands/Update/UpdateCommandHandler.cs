@@ -14,7 +14,7 @@ public class UpdateCommandHandler(
         UpdateCommand request,
         CancellationToken cancellationToken)
     {
-        var library = await uow.Library.GetAsync(request.LibraryId);
+        var library = await uow.Library.GetAsync(request.Id);
         if (library is null)
             throw new LibraryNotFoundException();
 

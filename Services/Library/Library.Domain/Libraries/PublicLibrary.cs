@@ -1,8 +1,8 @@
-﻿using Library.Domain.Libraries.Events;
+﻿using MGH.Core.Domain.Base;
+using Library.Domain.Libraries.Events;
 using Library.Domain.Libraries.Exceptions;
-using Library.Domain.Libraries.ValueObjects;
 using Library.Domain.Members.ValueObjects;
-using MGH.Core.Domain.Base;
+using Library.Domain.Libraries.ValueObjects;
 
 public class PublicLibrary : AggregateRoot<Guid>
 {

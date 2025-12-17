@@ -8,7 +8,7 @@ namespace Library.Application.Features.PublicLibraries.Commands.Update;
 [Roles(PublicLibraryOperationClaims.Update)]
 public class UpdateCommand : ICommand<Guid>
 {
-    public Guid LibraryId { get; set; }
+    public Guid Id { get; set; }
     public required string Name { get; set; }
     public required string Location { get; set; }
     public DistrictEnum District { get; set; }
