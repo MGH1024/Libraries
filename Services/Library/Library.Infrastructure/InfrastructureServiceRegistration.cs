@@ -21,7 +21,6 @@ using Microsoft.AspNetCore.Localization;
 using Library.Domain.Libraries.Factories;
 using Microsoft.Extensions.Configuration;
 using Library.Infrastructure.Repositories;
-using MGH.Core.Infrastructure.HealthCheck;
 using Microsoft.Extensions.DependencyInjection;
 using MGH.Core.Infrastructure.EventBus.RabbitMq;
 using MGH.Core.Infrastructure.Securities.Security;
@@ -68,30 +67,6 @@ public static class InfrastructureServiceRegistration
     {
         services.AddScoped<IPublicLibraryFactory, PublicLibraryFactory>();
         services.AddScoped<ILibraryPolicy, DistrictPolicy>();
-    }
-
-    public static void AddRabbitHealthChecks(
-        this IHealthChecksBuilder healthBuilder, 
-        IConfiguration configuration)
-    {
-        var defaultConnection = configuration.GetSection("RabbitMq:Connections:Default").Get<RabbitMqSettings>() 
-            ?? throw new ArgumentNullException(nameof(RabbitMqOptions.Connections.Default));
-        Func<IServiceProvider, IConnection> connectionFactory =
-            sp =>
-            {
-                var factory = new ConnectionFactory
-                {
-                    HostName = defaultConnection.Host,
-                    Port = Convert.ToInt32(defaultConnection.Port),
-                    UserName = defaultConnection.Username,
-                    Password = defaultConnection.Password,
-                    VirtualHost = defaultConnection.VirtualHost,
-                };
-
-                return factory.CreateConnectionAsync().GetAwaiter().GetResult();
-            };
-
-        healthBuilder.AddRabbitMqHealthCheck(connectionFactory);
     }
 
     public static void RegisterInterceptors(this IServiceCollection services)

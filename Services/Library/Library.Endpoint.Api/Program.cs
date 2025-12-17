@@ -7,15 +7,14 @@ using Library.Infrastructure.Contexts;
 using MGH.Core.Application.Rules;
 using MGH.Core.CrossCutting.Exceptions;
 using MGH.Core.CrossCutting.Logging;
-using MGH.Core.Endpoint.Swagger;
 using MGH.Core.Infrastructure.Caching;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Base;
-using MGH.Core.Infrastructure.HealthCheck;
 using MGH.Core.Infrastructure.Public;
 using MGH.Core.Infrastructure.Securities.Security;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.OpenApi;
 using Prometheus;
 using System.Reflection;
 
@@ -58,7 +57,7 @@ services.UseHttpClientMetrics();
 var sqlConnection = configuration.GetConnectionString("default");
 var healthBuilder = services.AddHealthChecks()
     .AddSqlServer(sqlConnection)
-    .AddDbContextHealthCheck<PublicLibraryDbContext>(sqlConnection);
+    .AddDbContextCheck<PublicLibraryDbContext>(sqlConnection);
 
 services.AddHealthChecksUI(setup =>
 {
