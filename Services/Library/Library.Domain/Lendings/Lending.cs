@@ -24,7 +24,7 @@ public class Lending : AggregateRoot<Guid>
         LibraryId = libraryId;
         LendingDate = lendingDate;
         ReturnDate = returnDate;
-        AddDomainEvent(new LendingCreatedDomainEvent(bookId, libraryId, memberId, lendingDate,returnDate));
+        AddDomainEvent(new LendingCreated(bookId, libraryId, memberId, lendingDate,returnDate));
     }
     
 }

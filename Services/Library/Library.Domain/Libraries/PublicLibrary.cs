@@ -34,7 +34,7 @@ public class PublicLibrary : AggregateRoot<Guid>
             RegistrationDate = registrationDate
         };
 
-        library.AddDomainEvent(new LibraryAddedDomainEvent(
+        library.AddDomainEvent(new LibraryAdded(
             name, code, location, district, registrationDate));
 
         return library;
@@ -51,7 +51,7 @@ public class PublicLibrary : AggregateRoot<Guid>
         District = district;
         RegistrationDate = registrationDate;
 
-        AddDomainEvent(new LibraryUpdatedDomainEvent(
+        AddDomainEvent(new LibraryUpdated(
             Id, name, location, district, registrationDate));
     }
 
@@ -60,7 +60,7 @@ public class PublicLibrary : AggregateRoot<Guid>
         if (_staves.Any())
             throw new LibraryHasStavesException();
 
-        AddDomainEvent(new LibraryDeletedDomainEvent(Id));
+        AddDomainEvent(new LibraryDeleted(Id));
     }
 
     public void AddStaff(Staff staff)
@@ -70,7 +70,7 @@ public class PublicLibrary : AggregateRoot<Guid>
 
         _staves.Add(staff);
 
-        AddDomainEvent(new StaffAddedDomainEvent(
+        AddDomainEvent(new StaffAdded(
             Id, staff.Name, staff.Position, staff.NationalCode));
     }
 
@@ -81,7 +81,7 @@ public class PublicLibrary : AggregateRoot<Guid>
             throw new LibraryStaffNotFoundException();
 
         _staves.Remove(staff);
-        AddDomainEvent(new StaffDeletedDomainEvent(Id, nationalCode));
+        AddDomainEvent(new StaffDeleted(Id, nationalCode));
     }
 
     private bool HasStaffWith(NationalCode nationalCode)

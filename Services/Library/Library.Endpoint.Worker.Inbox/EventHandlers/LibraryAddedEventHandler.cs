@@ -3,16 +3,16 @@ using MGH.Core.Infrastructure.EventBus;
 
 namespace Library.Endpoint.Worker.Inbox.EventHandlers;
 
-public class LibraryCreatedDomainEventHandler : IEventHandler<LibraryAddedDomainEvent>
+public class LibraryAddedEventHandler : IEventHandler<LibraryAdded>
 {
-    private readonly ILogger<LibraryCreatedDomainEventHandler> _logger;
+    private readonly ILogger<LibraryAddedEventHandler> _logger;
 
-    public LibraryCreatedDomainEventHandler(ILogger<LibraryCreatedDomainEventHandler> logger)
+    public LibraryAddedEventHandler(ILogger<LibraryAddedEventHandler> logger)
     {
         _logger = logger;
     }
 
-    public Task HandleAsync(LibraryAddedDomainEvent message)
+    public Task HandleAsync(LibraryAdded message)
     {
         _logger.LogInformation("Received LibraryCreatedDomainEvent message: {Name}", message.Id);
         // Logic here
