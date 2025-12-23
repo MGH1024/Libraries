@@ -6,7 +6,7 @@ using Library.Application.Features.PublicLibraries.Constants;
 namespace Library.Application.Features.PublicLibraries.Commands.Add;
 
 [Roles(PublicLibraryOperationClaims.Add)]
-public class AddCommand : ICommand<Guid>
+public class AddCommand : ICommand<AddCommandResponse>
 {
     public required string Name { get; set; }
     public required string Code { get; set; }

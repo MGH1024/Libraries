@@ -66,32 +66,19 @@ public static class ServiceRegistration
     internal static void AddBaseMvc(this IServiceCollection services)
     {
         services.AddControllers(options =>
-            {
-                options.ModelBinderProviders.Insert(0, new DateTimeModelBinderProvider());
-                options.ValueProviderFactories.Insert(0, new SeparatedQueryStringValueProviderFactory(","));
-                options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
-            })
-            .AddJsonOptions(opts =>
-            {
-                var enumConvertor = new JsonStringEnumConverter();
-                opts.JsonSerializerOptions.Converters.Add(new DateTimeConverter());
-                opts.JsonSerializerOptions.Converters.Add(enumConvertor);
-            });
-
-        services.Configure<ApiBehaviorOptions>(options => { options.SuppressModelStateInvalidFilter = true; });
-
-        services.AddMvc(setup =>
-            {
-                setup.ReturnHttpNotAcceptable = true;
-                setup.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
-            })
-            .AddJsonOptions(options =>
-            {
-                options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
-                options.JsonSerializerOptions.PropertyNamingPolicy = null;
-                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-            });
-
+        {
+            options.ModelBinderProviders.Insert(0, new DateTimeModelBinderProvider());
+            options.ValueProviderFactories.Insert(0, new SeparatedQueryStringValueProviderFactory(","));
+            options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
+            options.ReturnHttpNotAcceptable = false;
+        }).AddJsonOptions(opts =>
+        {
+            opts.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+            opts.JsonSerializerOptions.PropertyNamingPolicy = null;
+            opts.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            opts.JsonSerializerOptions.Converters.Add(new DateTimeConverter());
+        })
+        .AddXmlDataContractSerializerFormatters(); 
         services.AddHttpContextAccessor();
     }
 
@@ -181,13 +168,13 @@ public static class ServiceRegistration
 
         //if (app.Environment.IsDevelopment())
         //{
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint($"/swagger/{settings.Version}/swagger.json", $"{settings.Title} {settings.Version}");
-                c.RoutePrefix = settings.RoutePrefix;
-                c.DocumentTitle = $"{settings.Title} Documentation";
-            });
+        app.UseSwagger();
+        app.UseSwaggerUI(c =>
+        {
+            c.SwaggerEndpoint($"/swagger/{settings.Version}/swagger.json", $"{settings.Title} {settings.Version}");
+            c.RoutePrefix = settings.RoutePrefix;
+            c.DocumentTitle = $"{settings.Title} Documentation";
+        });
         //s}
     }
 }

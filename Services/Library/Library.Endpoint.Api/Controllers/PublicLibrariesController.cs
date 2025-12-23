@@ -41,9 +41,7 @@ public class PublicLibrariesController : ControllerBase
         Guid id,
         CancellationToken cancellationToken)
     {
-        return await _sender.Send(
-            new GetByIdQuery(id),
-            cancellationToken);
+        return await _sender.Send(new GetByIdQuery(id), cancellationToken);
     }
 
     /// <summary>
@@ -64,15 +62,21 @@ public class PublicLibrariesController : ControllerBase
     /// Creates a new public library.
     /// </summary>
     [HttpPost]
-    [ProducesResponseType(typeof(Guid), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(AddCommandResponse), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Create(
-        [FromBody] AddCommand command,
-        CancellationToken cancellationToken)
+    public async Task<ActionResult<AddCommandResponse>> Create(
+    [FromBody] AddCommand command,
+    CancellationToken cancellationToken)
     {
-        var id = await _sender.Send(command, cancellationToken);
-        return CreatedAtAction(nameof(GetById), new { id }, id);
+        var response = await _sender.Send(command, cancellationToken);
+        var culture = RouteData.Values["culture"]?.ToString() ?? "en";
+
+        return CreatedAtAction(
+            nameof(GetById),
+            new { culture, id = response.Id },
+            response);
     }
+
 
     /// <summary>
     /// Updates an existing public library.

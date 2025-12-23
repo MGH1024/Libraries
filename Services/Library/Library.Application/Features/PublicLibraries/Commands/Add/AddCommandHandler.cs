@@ -8,9 +8,9 @@ namespace Library.Application.Features.PublicLibraries.Commands.Add;
 public class AddCommandHandler(
     IUow uow,
     IPublicLibraryFactory libraryFactory)
-    : ICommandHandler<AddCommand, Guid>
+    : ICommandHandler<AddCommand, AddCommandResponse>
 {
-    public async Task<Guid> Handle(
+    public async Task<AddCommandResponse> Handle(
         AddCommand command,
         CancellationToken cancellationToken)
     {
@@ -31,6 +31,6 @@ public class AddCommandHandler(
             newLibrary,
             cancellationToken: cancellationToken);
         await uow.CompleteAsync(cancellationToken);
-        return newLibrary.Id;
+        return new AddCommandResponse(newLibrary.Id);
     }
 }
