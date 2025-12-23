@@ -1,14 +1,15 @@
-﻿using MediatR;
-using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using MGH.Core.Application.Requests;
+﻿using AutoMapper;
 using Library.Application.Features.PublicLibraries.Commands.Add;
-using Library.Application.Features.PublicLibraries.Commands.Update;
+using Library.Application.Features.PublicLibraries.Commands.AddStaff;
 using Library.Application.Features.PublicLibraries.Commands.Remove;
+using Library.Application.Features.PublicLibraries.Commands.RemoveStaff;
+using Library.Application.Features.PublicLibraries.Commands.Update;
 using Library.Application.Features.PublicLibraries.Queries.GetById;
 using Library.Application.Features.PublicLibraries.Queries.GetList;
-using Library.Application.Features.PublicLibraries.Commands.AddStaff;
-using Library.Application.Features.PublicLibraries.Commands.RemoveStaff;
+using MediatR;
+using MGH.Core.Application.Requests;
+using MGH.Core.Application.Responses;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Library.Endpoint.Api.Controllers;
 
@@ -31,27 +32,33 @@ public class PublicLibrariesController : ControllerBase
 
     /// <summary>
     /// Gets a public library by identifier.
+    /// I use ActionResult to return response type and controller does not concerned with BL
     /// </summary>
     [HttpGet("{id:guid}")]
     [ProducesResponseType(typeof(GetByIdQueryResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetById(Guid id)
+    public async Task<ActionResult<GetByIdQueryResponse>> GetById(
+        Guid id,
+        CancellationToken cancellationToken)
     {
-        var result = await _sender.Send(new GetByIdQuery(id));
-        return Ok(result);
+        return await _sender.Send(
+            new GetByIdQuery(id),
+            cancellationToken);
     }
 
     /// <summary>
     /// Gets a paginated list of public libraries.
     /// </summary>
     [HttpGet]
-    [ProducesResponseType(typeof(GetListQueryResponse), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetAll([FromQuery] PageRequest pageRequest)
+    [ProducesResponseType(typeof(GetListResponse<GetListQueryResponse>), StatusCodes.Status200OK)]
+    public async Task<ActionResult<GetListResponse<GetListQueryResponse>>> GetAll(
+     [FromQuery] PageRequest pageRequest,
+     CancellationToken cancellationToken)
     {
         var query = _mapper.Map<GetListQuery>(pageRequest);
-        var result = await _sender.Send(query);
-        return Ok(result);
+        return await _sender.Send(query, cancellationToken);
     }
+
 
     /// <summary>
     /// Creates a new public library.
