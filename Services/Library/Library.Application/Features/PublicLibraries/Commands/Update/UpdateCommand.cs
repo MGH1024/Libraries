@@ -6,7 +6,7 @@ using Library.Application.Features.PublicLibraries.Constants;
 namespace Library.Application.Features.PublicLibraries.Commands.Update;
 
 [Roles(PublicLibraryOperationClaims.Update)]
-public class UpdateCommand : ICommand<Guid>
+public class UpdateCommand : ICommand<UpdateCommandResponse>
 {
     public Guid Id { get; set; }
     public required string Name { get; set; }

@@ -8,9 +8,9 @@ namespace Library.Application.Features.PublicLibraries.Commands.Update;
 public class UpdateCommandHandler(
     IUow uow,
     IPublicLibraryFactory factory)
-    : ICommandHandler<UpdateCommand, Guid>
+    : ICommandHandler<UpdateCommand, UpdateCommandResponse>
 {
-    public async Task<Guid> Handle(
+    public async Task<UpdateCommandResponse> Handle(
         UpdateCommand request,
         CancellationToken cancellationToken)
     {
@@ -25,6 +25,6 @@ public class UpdateCommandHandler(
             request.District,
             request.RegistrationTime);
         await uow.CompleteAsync(cancellationToken);
-        return library.Id;
+        return new UpdateCommandResponse(library.Id);
     }
 }
