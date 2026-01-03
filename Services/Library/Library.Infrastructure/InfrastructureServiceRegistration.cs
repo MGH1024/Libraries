@@ -14,7 +14,7 @@ using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Base;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Models;
 using MGH.Core.Infrastructure.EventBus.RabbitMq;
-using MGH.Core.Infrastructure.Persistence;
+using MGH.Core.Infrastructure.Persistence.Base;
 using MGH.Core.Infrastructure.Persistence.EF.Interceptors;
 using MGH.Core.Infrastructure.Public;
 using MGH.Core.Infrastructure.Securities.Security;

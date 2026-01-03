@@ -8,7 +8,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="MGH.Core.Domain" Version="4.0.2" />
-		<PackageReference Include="MGH.Core.CrossCutting" Version="4.0.1" />
-		<PackageReference Include="MGH.Core.Infrastructure.Persistence" Version="4.0.4" />
+		<PackageReference Include="MGH.Core.CrossCutting" Version="4.0.2" />
+		<PackageReference Include="MGH.Core.Infrastructure.Persistence" Version="4.0.41" />
 	</ItemGroup>
 </Project>
