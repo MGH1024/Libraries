@@ -1,7 +1,6 @@
 ﻿using Nest;
 using Prometheus;
 using Library.Domain;
-using RabbitMQ.Client;
 using System.Globalization;
 using Library.Domain.Books;
 using Library.Domain.Members;
@@ -15,7 +14,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using MGH.Core.Infrastructure.Public;
 using Library.Infrastructure.Contexts;
-using MGH.Core.Infrastructure.EventBus;
 using Library.Domain.Libraries.Policies;
 using Microsoft.AspNetCore.Localization;
 using Library.Domain.Libraries.Factories;
@@ -31,6 +29,7 @@ using MGH.Core.Infrastructure.Persistence.EF.Interceptors;
 using MGH.Core.CrossCutting.Localizations.RouteConstraints;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Base;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Models;
+using MGH.Core.Infrastructure.Persistence;
 
 namespace Library.Infrastructure;
 

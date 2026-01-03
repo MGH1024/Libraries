@@ -1,4 +1,4 @@
-﻿using MGH.Core.Infrastructure.EventBus;
+﻿using MGH.Core.Infrastructure.Persistence;
 using MGH.Core.Infrastructure.Persistence.Entities;
 
 namespace Library.Domain.Outboxes;
