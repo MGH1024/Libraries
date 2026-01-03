@@ -1,35 +1,36 @@
-﻿using Nest;
-using Prometheus;
-using Library.Domain;
-using System.Globalization;
+﻿using Library.Domain;
 using Library.Domain.Books;
-using Library.Domain.Members;
 using Library.Domain.Lendings;
-using Library.Domain.Outboxes;
 using Library.Domain.Libraries;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Routing;
-using Microsoft.Extensions.Hosting;
-using Microsoft.EntityFrameworkCore;
-using MGH.Core.Infrastructure.Public;
-using Library.Infrastructure.Contexts;
-using Library.Domain.Libraries.Policies;
-using Microsoft.AspNetCore.Localization;
 using Library.Domain.Libraries.Factories;
-using Microsoft.Extensions.Configuration;
+using Library.Domain.Libraries.Policies;
+using Library.Domain.Members;
+using Library.Domain.Outboxes;
+using Library.Infrastructure.Contexts;
 using Library.Infrastructure.Repositories;
-using Microsoft.Extensions.DependencyInjection;
-using MGH.Core.Infrastructure.EventBus.RabbitMq;
-using MGH.Core.Infrastructure.Securities.Security;
-using LogLevel = Microsoft.Extensions.Logging.LogLevel;
-using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using MGH.Core.Infrastructure.Persistence.EF.Interceptors;
 using MGH.Core.CrossCutting.Localizations.RouteConstraints;
+using MGH.Core.Infrastructure.Caching;
+using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Base;
 using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Models;
+using MGH.Core.Infrastructure.EventBus.RabbitMq;
 using MGH.Core.Infrastructure.Persistence;
+using MGH.Core.Infrastructure.Persistence.EF.Interceptors;
+using MGH.Core.Infrastructure.Public;
+using MGH.Core.Infrastructure.Securities.Security;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Hosting;
+using Nest;
+using Prometheus;
+using System.Globalization;
+using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace Library.Infrastructure;
 
@@ -60,6 +61,9 @@ public static class InfrastructureServiceRegistration
         services.AddRabbitMqEventBus(configuration);
         services.AddFactories();
         services.UseHttpClientMetrics();
+
+        services.AddRedis(configuration);
+        services.AddGeneralCachingService();
     }
 
     public static void AddFactories(this IServiceCollection services)
@@ -132,6 +136,8 @@ public static class InfrastructureServiceRegistration
             configuration.GetSection(configurationSection).Get<ElasticSearchConfig>()
             ?? throw new NullReferenceException($"\"{configurationSection}\" " +
                                                 $"section cannot found in configuration.");
+
+        services.AddSingleton<IElasticSearch, ElasticSearchService>();
 
         var connectionSettings = new ConnectionSettings(new Uri(setting.ConnectionString));
         var client = new ElasticClient(connectionSettings);

@@ -1,17 +1,13 @@
 ﻿using FluentValidation;
 using System.Reflection;
 using MGH.Core.Application.Rules;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Hosting;
-using MGH.Core.Infrastructure.Caching;
 using MGH.Core.Application.Pipelines.Logging;
 using MGH.Core.Infrastructure.Caching.Models;
 using Microsoft.Extensions.DependencyInjection;
 using MGH.Core.Application.Pipelines.Validation;
 using MGH.Core.Application.Pipelines.Transaction;
 using MGH.Core.Application.Pipelines.Authorization;
-using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch;
-using MGH.Core.Infrastructure.ElasticSearch.ElasticSearch.Base;
 using Library.Application.Features.PublicLibraries.Commands.Add;
 
 namespace Library.Application;
@@ -26,9 +22,6 @@ public static class ApplicationServiceRegistration
         services.AddMediatRAndBehaviors(builder.Environment);
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         services.AddSubClassesOfType(Assembly.GetExecutingAssembly(), typeof(BaseBusinessRules));
-        services.AddRedis(configuration);
-        services.AddGeneralCachingService();
-        services.AddSingleton<IElasticSearch, ElasticSearchService>();
     }
 
     public static void AddMediatRAndBehaviors(this IServiceCollection services, IHostEnvironment environment)
